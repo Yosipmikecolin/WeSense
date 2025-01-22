@@ -1,22 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Input } from "./ui/input";
+import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigation = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes manejar la lógica de envío del formulario
-    console.log("Usuario:", username, "Contraseña:", password);
+    if (username === "administrator@gmail.com" && password === "12345") {
+      setLoading(true);
+      localStorage.setItem("email", "administrator@gmail.com");
+      setTimeout(() => {
+        toast.success("Acceso administrador");
+        navigation.push("/administrator");
+      }, 1000);
+    } else if (username === "requiring@gmail.com" && password === "12345") {
+      setLoading(true);
+      localStorage.setItem("email", "requiring@gmail.com");
+      setTimeout(() => {
+        toast.success("Acceso requirente");
+        navigation.push("/requiring");
+      }, 1000);
+    } else if (username === "coordinator@gmail.com" && password === "12345") {
+      setLoading(true);
+      localStorage.setItem("email", "coordinator@gmail.com");
+      setTimeout(() => {
+        toast.success("Acceso coordinador");
+        navigation.push("/coordinator");
+      }, 1000);
+    } else {
+      toast.error("Acceso denegado");
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-3">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
@@ -61,9 +87,10 @@ const Login = () => {
             </div>
             <Button
               type="submit"
+              disabled={loading}
               className="w-full bg-green-200 hover:bg-green-300 text-green-800 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform"
             >
-              Iniciar sesión
+              {loading ? <div className="loader-button" /> : "Iniciar sesión"}
             </Button>
           </form>
         </CardContent>
