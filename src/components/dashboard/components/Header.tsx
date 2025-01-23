@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Header = () => {
@@ -36,7 +39,7 @@ const Header = () => {
           </div>
           <span className="text-gray-400">₣</span>
         </div> */}
-        <div className="flex items-center gap-4">
+        <div className="flex gap-12">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
               <span className="text-sm font-medium text-green-500">
@@ -44,6 +47,11 @@ const Header = () => {
               </span>
               <span className="text-xs text-gray-500">{email}</span>
             </div>
+            <Link href={"/"}>
+              <Button className="bg-green-100 text-green-600 hover:bg-green-200">
+                <LogOut size={16} />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

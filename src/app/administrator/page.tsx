@@ -1,28 +1,24 @@
 import { Dashboard } from "@/components";
-import { ArrowLeftRight, CreditCard, FileText, Users2 } from "lucide-react";
-import Users from "./views/users/Users";
+import { Carries, CreateCarrier, Profiles } from "@/views";
+import { UserPlus, Users, Users2 } from "lucide-react";
 
 const Admin = () => {
   const menuItems = [
     {
       icon: <Users2 size={17} />,
       label: "Perfiles",
-      content: <Users />,
+      content: <Profiles />,
     },
     {
-      icon: <ArrowLeftRight size={17} />,
-      label: "Solicitudes",
-      content: <Users />,
+      icon: <UserPlus size={17} />,
+      label: "Crear portador",
+      content: <CreateCarrier />,
     },
+
     {
-      icon: <CreditCard size={17} />,
-      label: "Reportes",
-      content: <Users />,
-    },
-    {
-      icon: <FileText size={17} />,
-      label: "Documentos",
-      content: <Users />,
+      icon: <Users size={17} />,
+      label: "Portadores",
+      content: <Carries />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
