@@ -15,7 +15,7 @@ const Sidebar = ({ view, setView, menuItems }: SiderbarProps) => {
     <div className="w-60 border-r bg-white h-screen flex flex-col">
       <div className="p-6">
         <div className="flex items-center font-semibold text-xl">
-          <span className="text-green-400">We</span>Sense
+          <span className="text-green-400">SGA</span>MGC
         </div>
       </div>
       <nav className="flex-1 px-4">

@@ -1,4 +1,4 @@
-import TableCarriers from "./components/table-carriers/TableCarriers";
+import TableCarriers from "./components/TableCarriers";
 
 const Carries = () => {
   return <TableCarriers />;

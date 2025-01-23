@@ -6,7 +6,7 @@ const Admin = () => {
   const menuItems = [
     {
       icon: <Users2 size={17} />,
-      label: "Perfiles",
+      label: "Usuarios",
       content: <Profiles />,
     },
     {

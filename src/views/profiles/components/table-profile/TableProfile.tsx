@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table as TableUI,
   TableBody,
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { profiles } from "@/utils";
-import { Eye, Pencil, Trash } from "lucide-react";
+import { Circle, Eye, Pencil, Plus, Trash } from "lucide-react";
 
 type Persona = {
   id: number;
@@ -28,27 +28,40 @@ type Persona = {
 };
 
 const TableProfile = () => {
-  const [personaSeleccionada, setPersonaSeleccionada] =
-    useState<Persona | null>(null);
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-semibold">Perfiles de usuario</h1>
-        <Button>Crear usuario</Button>
+        <CardTitle className="text-3xl font-bold tracking-tight">
+          Usuarios
+        </CardTitle>
+        <Button
+          size={"lg"}
+          variant={"secondary"}
+          className="bg-black text-white hover:bg-gray-800 gap-2 shadow-lg hover:shadow-xl transition-all"
+        >
+          <Plus className="h-4 w-4" />
+          Crear usuario
+        </Button>
       </div>
-      <Card className="w-full shadow-lg p-4">
-        <CardContent>
+      <Card className="w-full shadow-lg py-2">
+        <CardContent className="w-full px-3">
           <TableUI>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-sm font-semibold">
-                  Nombre Completo
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  NOMBRE COMPLETO
                 </TableHead>
-                <TableHead className="text-sm font-semibold">NIT</TableHead>
-                <TableHead className="text-sm font-semibold">Perfil</TableHead>
-                <TableHead className="text-sm font-semibold">Estado</TableHead>
-                <TableHead className="text-sm font-semibold w-[150px]">
-                  Acciones
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  NIT
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  PERFIL
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  ESTADO
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600 w-[150px]">
+                  ACCIONES
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -59,13 +72,12 @@ const TableProfile = () => {
                   <TableCell>{persona.nit}</TableCell>
                   <TableCell>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        (persona.perfil === "Requiriente" &&
-                          "bg-orange-200 text-orange-800") ||
-                        (persona.perfil === "Coordinador" &&
-                          "bg-indigo-200 text-indigo-800") ||
-                        (persona.perfil === "Administrador" &&
-                          "bg-red-200 text-red-800")
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
+                        persona.perfil === "Requiriente"
+                          ? "bg-orange-100 text-orange-800"
+                          : persona.perfil === "Coordinador"
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-red-100 text-red-800"
                       }`}
                     >
                       {persona.perfil}
@@ -73,62 +85,75 @@ const TableProfile = () => {
                   </TableCell>
                   <TableCell>
                     <span
-                      className={
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                         persona.status === "Activo"
-                          ? "bg-green-200 text-green-800 py-1 px-2 rounded-md text-sm"
-                          : "bg-green-100 text-green-500 py-1 px-2 rounded-md text-sm"
-                      }
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
                     >
-                      {persona.status}
+                      {persona.status === "Activo" ? (
+                        "● Activo"
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <Circle size={7} /> Inactivo
+                        </div>
+                      )}
                     </span>
                   </TableCell>
 
                   <TableCell className="w-[150px] flex items-center gap-3">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button
-                          onClick={() => setPersonaSeleccionada(persona)}
-                          className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2"
-                        >
+                        <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
                           <Eye />
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                          <DialogTitle>
-                            Detalles de {personaSeleccionada?.name}
+                          <DialogTitle className="text-xl font-semibold">
+                            Detalles de usuario
                           </DialogTitle>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">NIT:</span>
-                            <span>{personaSeleccionada?.nit}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Perfil:</span>
-                            <span>{personaSeleccionada?.perfil}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">
-                              Fecha de Nacimiento: 10-10-1998
-                            </span>
-                            <span>{personaSeleccionada?.status}</span>
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center pb-4 border-b">
+                              <span className="text-sm text-gray-500">
+                                Nombre
+                              </span>
+                              <span className="font-medium">
+                                {persona.name}
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center pb-4 border-b">
+                              <span className="text-sm text-gray-500">NIT</span>
+                              <span className="font-mono">{persona.nit}</span>
+                            </div>
+                            <div className="flex justify-between items-center pb-4 border-b">
+                              <span className="text-sm text-gray-500">
+                                Perfil
+                              </span>
+                              <span className="font-medium">
+                                {persona.perfil}
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-gray-500">
+                                Estado
+                              </span>
+                              <span className="font-medium">
+                                {persona.status}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </DialogContent>
                     </Dialog>
 
-                    <Button
-                      onClick={() => setPersonaSeleccionada(persona)}
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2"
-                    >
+                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
                       <Pencil />
                     </Button>
 
-                    <Button
-                      onClick={() => setPersonaSeleccionada(persona)}
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2"
-                    >
+                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
                       <Trash />
                     </Button>
                   </TableCell>

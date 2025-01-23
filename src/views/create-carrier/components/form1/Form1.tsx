@@ -63,6 +63,24 @@ export default function Paso1({
           onChange={handleChange}
         />
       </div>
+
+      <div>
+        <Label htmlFor="sexo">Tipo de portador</Label>
+        <Select
+          name="type_current"
+          onValueChange={(value) => handleSelectChange("type_current", value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione un tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">Personas condenada</SelectItem>
+            <SelectItem value="2">Personas sujeta a control</SelectItem>
+            <SelectItem value="3">Víctima</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div>
         <Label htmlFor="sexo">Género</Label>
         <Select
