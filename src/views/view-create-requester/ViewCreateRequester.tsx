@@ -1,7 +1,12 @@
 import FormRequest from "./components/form-request/FormRequest";
+import classes from "./ViewCreateRequester.module.css";
 
 const ViewCreateRequester = () => {
-  return <FormRequest />;
+  return (
+    <div className={classes.container}>
+      <FormRequest />
+    </div>
+  );
 };
 
 export default ViewCreateRequester;

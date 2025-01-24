@@ -1,9 +1,16 @@
 import { Dashboard } from "@/components";
-import { UserPlus, UserRoundSearch, Users, Users2 } from "lucide-react";
+import {
+  UserPlus,
+  UserRoundPlus,
+  UserRoundSearch,
+  Users,
+  Users2,
+} from "lucide-react";
 import {
   ViewCarries,
   ViewCreateCarrier,
   ViewCreateRequester,
+  ViewCreateUser,
   ViewRequester,
   ViewUsers,
 } from "@/views";
@@ -14,6 +21,11 @@ const Admin = () => {
       icon: <Users2 size={17} />,
       label: "Usuarios",
       content: <ViewUsers />,
+    },
+    {
+      icon: <UserRoundPlus size={17} />,
+      label: "Crear usuario",
+      content: <ViewCreateUser />,
     },
     {
       icon: <Users size={17} />,
@@ -31,7 +43,7 @@ const Admin = () => {
       content: <ViewRequester />,
     },
     {
-      icon: <UserPlus size={17} />,
+      icon: <UserRoundPlus size={17} />,
       label: "Crear requirente",
       content: <ViewCreateRequester />,
     },

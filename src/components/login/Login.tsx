@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
-import toast from "react-hot-toast";
+import { toast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -19,25 +19,44 @@ const Login = () => {
       setLoading(true);
       localStorage.setItem("email", "administrator@gmail.com");
       setTimeout(() => {
-        toast.success("Acceso administrador");
+        toast({
+          title: "Acceso administrador",
+          className: "bg-green-100 text-green-600",
+          description: "administrator@gmail.com",
+          variant: "default",
+        });
         navigation.push("/administrator");
       }, 1000);
     } else if (username === "requiring@gmail.com" && password === "12345") {
       setLoading(true);
       localStorage.setItem("email", "requiring@gmail.com");
       setTimeout(() => {
-        toast.success("Acceso requirente");
+        toast({
+          title: "Acceso requirente",
+          className: "bg-green-100 text-green-600",
+          description: "requiring@gmail.com",
+          variant: "default",
+        });
         navigation.push("/requiring");
       }, 1000);
     } else if (username === "coordinator@gmail.com" && password === "12345") {
       setLoading(true);
       localStorage.setItem("email", "coordinator@gmail.com");
       setTimeout(() => {
-        toast.success("Acceso coordinador");
+        toast({
+          title: "Acceso coordinador",
+          className: "bg-green-100 text-green-600",
+          description: "coordinator@gmail.com",
+          variant: "default",
+        });
         navigation.push("/coordinator");
       }, 1000);
     } else {
-      toast.error("Acceso denegado");
+      toast({
+        title: "Error",
+        description: "Acceso denegado",
+        variant: "default",
+      });
     }
   };
 
