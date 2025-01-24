@@ -22,7 +22,7 @@ import {
 
 const steps = ["Datos", "Causa", "Monitoreo"];
 
-const CreateCarrier = () => {
+const ViewCreateCarrier = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
@@ -105,4 +105,4 @@ const CreateCarrier = () => {
   );
 };
 
-export default CreateCarrier;
+export default ViewCreateCarrier;

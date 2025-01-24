@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Table as TableUI,
   TableBody,
@@ -15,19 +15,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
 import { profiles } from "@/utils";
 import { Circle, Eye, Pencil, Plus, Trash } from "lucide-react";
 
-type Persona = {
-  id: number;
-  name: string;
-  nit: string;
-  perfil: string;
-  status: string;
-};
-
-const TableProfile = () => {
+const TableUsers = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -167,4 +158,4 @@ const TableProfile = () => {
   );
 };
 
-export default TableProfile;
+export default TableUsers;

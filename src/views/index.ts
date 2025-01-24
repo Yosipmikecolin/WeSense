@@ -1,5 +1,5 @@
-import Carries from "./carriers/Carries";
-import CreateCarrier from "./create-carrier/CreateCarrier";
-import Profiles from "./profiles/Profiles";
+import ViewCarries from "./view-carriers/ViewCarries";
+import ViewCreateCarrier from "./view-create-carrier/ViewCreateCarrier";
+import ViewUsers from "./view-users/ViewUsers";
 
-export { Carries, CreateCarrier, Profiles };
+export { ViewCarries, ViewCreateCarrier, ViewUsers };

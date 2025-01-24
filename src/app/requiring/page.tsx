@@ -1,20 +1,19 @@
 import { Dashboard } from "@/components";
+import { ViewCarries, ViewCreateCarrier } from "@/views";
 import { UserPlus, Users } from "lucide-react";
-import CreateCarrier from "../../views/create-carrier/CreateCarrier";
-import { Carries } from "@/views";
 
 export default function PerfilRequirentes() {
   const menuItems = [
     {
       icon: <UserPlus size={17} />,
       label: "Consultar portador",
-      content: <CreateCarrier />,
+      content: <ViewCreateCarrier />,
     },
 
     {
       icon: <Users size={17} />,
       label: "Portadores",
-      content: <Carries />,
+      content: <ViewCarries />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
