@@ -1,6 +1,12 @@
 import { Dashboard } from "@/components";
-import { ViewCarries, ViewCreateCarrier, ViewUsers } from "@/views";
-import { UserPlus, Users, Users2 } from "lucide-react";
+import { UserPlus, UserRoundSearch, Users, Users2 } from "lucide-react";
+import {
+  ViewCarries,
+  ViewCreateCarrier,
+  ViewCreateRequester,
+  ViewRequester,
+  ViewUsers,
+} from "@/views";
 
 const Admin = () => {
   const menuItems = [
@@ -10,15 +16,24 @@ const Admin = () => {
       content: <ViewUsers />,
     },
     {
+      icon: <Users size={17} />,
+      label: "Portadores",
+      content: <ViewCarries />,
+    },
+    {
       icon: <UserPlus size={17} />,
       label: "Crear portador",
       content: <ViewCreateCarrier />,
     },
-
     {
-      icon: <Users size={17} />,
-      label: "Portadores",
-      content: <ViewCarries />,
+      icon: <UserRoundSearch size={17} />,
+      label: "Requirentes",
+      content: <ViewRequester />,
+    },
+    {
+      icon: <UserPlus size={17} />,
+      label: "Crear requirente",
+      content: <ViewCreateRequester />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

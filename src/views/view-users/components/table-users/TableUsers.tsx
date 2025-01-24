@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -16,23 +17,37 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { profiles } from "@/utils";
-import { Circle, Eye, Pencil, Plus, Trash } from "lucide-react";
+import { Circle, Eye, Pencil, Trash } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { DropdownFilter, Pagination } from "@/components";
 
 const TableUsers = () => {
+  const [idFilter, setIdFilter] = useState(1);
+  const filters = [
+    { id: 1, name: "Nombre" },
+    { id: 2, name: "Nit" },
+    { id: 3, name: "Perfil" },
+    { id: 4, name: "Estado" },
+  ];
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
         <CardTitle className="text-3xl font-bold tracking-tight">
           Usuarios
         </CardTitle>
-        <Button
-          size={"lg"}
-          variant={"secondary"}
-          className="bg-black text-white hover:bg-gray-800 gap-2 shadow-lg hover:shadow-xl transition-all"
-        >
-          <Plus className="h-4 w-4" />
-          Crear usuario
-        </Button>
+        <div className="flex gap-2">
+          <Input
+            maxLength={30}
+            placeholder={`Buscar por ${filters
+              .find((i) => i.id === idFilter)
+              ?.name.toLowerCase()}`}
+          />
+          <DropdownFilter
+            filters={filters}
+            idFilter={idFilter}
+            setIdFilter={setIdFilter}
+          />
+        </div>
       </div>
       <Card className="w-full shadow-lg py-2">
         <CardContent className="w-full px-3">
@@ -154,6 +169,7 @@ const TableUsers = () => {
           </TableUI>
         </CardContent>
       </Card>
+      <Pagination />
     </div>
   );
 };

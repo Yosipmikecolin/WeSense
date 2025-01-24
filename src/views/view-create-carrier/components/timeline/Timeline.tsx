@@ -14,17 +14,19 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
       {steps.map((step, index) => (
         <div
           key={step}
-          className={`z-20 w-9 h-9 rounded-full flex justify-center flex-col items-center relative ${
+          className={`z-20 w-9 h-9 rounded-full flex justify-center flex-col items-center relative mb-3 ${
             index <= animatedStep
               ? "bg-green-400 text-white"
               : "bg-gray-200 text-white"
           }`}
         >
           {index + 1}
-          <span className="text-black absolute top-10 text-sm">{step}</span>
+          <span className="text-black absolute top-10 text-sm font-bold">
+            {step}
+          </span>
         </div>
       ))}
-      
+
       <div
         className={`bg-green-400 rounded-lg absolute transition-all duration-500 ease-in-out h-1 ${
           currentStep + 1 === 1 && "w-0"

@@ -11,11 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Step2Data, StepProps } from "@/interfaces/create-carrier";
 
-export default function Paso2({
-  data,
-  updateData,
-  setCompleteForm,
-}: StepProps) {
+const FormCause = ({ data, updateData, setCompleteForm }: StepProps) => {
   const [formData, setFormData] = useState<Step2Data>(data as Step2Data);
 
   useEffect(() => {
@@ -109,4 +105,6 @@ export default function Paso2({
       </div>
     </div>
   );
-}
+};
+
+export default FormCause;

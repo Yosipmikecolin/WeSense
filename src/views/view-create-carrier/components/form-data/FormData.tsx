@@ -11,11 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Step1Data, StepProps } from "@/interfaces/create-carrier";
 
-export default function Paso1({
-  data,
-  setCompleteForm,
-  updateData,
-}: StepProps) {
+const FormData = ({ data, setCompleteForm, updateData }: StepProps) => {
   const [formData, setFormData] = useState<Step1Data>(data as Step1Data);
 
   useEffect(() => {
@@ -144,4 +140,6 @@ export default function Paso1({
       </div>
     </div>
   );
-}
+};
+
+export default FormData;

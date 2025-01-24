@@ -4,11 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Step3Data, StepProps } from "@/interfaces/create-carrier";
 
-export default function Paso3({
-  data,
-  updateData,
-  setCompleteForm,
-}: StepProps) {
+const FormMonitoring = ({ data, updateData, setCompleteForm }: StepProps) => {
   const [formData, setFormData] = useState<Step3Data>(data as Step3Data);
 
   useEffect(() => {
@@ -172,4 +168,6 @@ export default function Paso3({
       </div>
     </div>
   );
-}
+};
+
+export default FormMonitoring;
