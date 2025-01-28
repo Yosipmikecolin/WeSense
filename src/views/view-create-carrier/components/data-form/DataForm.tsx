@@ -9,9 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Step1Data, StepProps } from "@/interfaces/create-carrier";
+import { Step1Data, StepProps } from "../../interfaces";
 
-const FormData = ({ data, setCompleteForm, updateData }: StepProps) => {
+const DataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
   const [formData, setFormData] = useState<Step1Data>(data as Step1Data);
 
   useEffect(() => {
@@ -142,4 +142,4 @@ const FormData = ({ data, setCompleteForm, updateData }: StepProps) => {
   );
 };
 
-export default FormData;
+export default DataForm;

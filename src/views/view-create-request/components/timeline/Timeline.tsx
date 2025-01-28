@@ -28,11 +28,19 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
       ))}
 
       <div
-        className={`bg-green-400 rounded-lg absolute transition-all duration-500 ease-in-out h-1 bottom-7 ${
-          currentStep + 1 === 1 && "w-0"
-        }  ${currentStep + 1 === 2 && "w-1/2"} ${
-          currentStep + 1 === 3 && "w-full"
-        }`}
+        style={{
+          width:
+            currentStep + 1 === 1
+              ? "0%"
+              : currentStep + 1 === 2
+              ? "32%"
+              : currentStep + 1 === 3
+              ? "64%"
+              : currentStep + 1 === 4
+              ? "100%"
+              : "0%",
+        }}
+        className="bg-green-400 rounded-lg absolute transition-all duration-500 ease-in-out h-1 bottom-7"
       />
     </div>
   );

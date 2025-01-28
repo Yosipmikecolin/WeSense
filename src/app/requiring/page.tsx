@@ -1,20 +1,22 @@
 import { Dashboard } from "@/components";
-import { ViewCarries, ViewCreateCarrier } from "@/views";
-import { UserPlus, Users } from "lucide-react";
+import { ViewCarries, ViewCreateRequest } from "@/views";
+import { FileInput, Files } from "lucide-react";
 
-export default function PerfilRequirentes() {
+const ProfileRequirers = () => {
   const menuItems = [
     {
-      icon: <UserPlus size={17} />,
-      label: "Consultar portador",
-      content: <ViewCreateCarrier />,
+      icon: <FileInput size={17} />,
+      label: "Crear solicitud",
+      content: <ViewCreateRequest />,
     },
 
     {
-      icon: <Users size={17} />,
-      label: "Portadores",
+      icon: <Files size={17} />,
+      label: "Solicitudes",
       content: <ViewCarries />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
-}
+};
+
+export default ProfileRequirers;

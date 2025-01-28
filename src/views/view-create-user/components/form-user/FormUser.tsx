@@ -50,7 +50,7 @@ const FormUser = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto p-5">
       <CardHeader>
         <CardTitle className="text-3xl">Registro de usuario</CardTitle>
       </CardHeader>
@@ -112,7 +112,7 @@ const FormUser = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button type="submit" className="w-full">
+          <Button className="bg-green-400 text-white hover:bg-green-500 w-full mt-2" type="submit">
             Crear usuario
           </Button>
         </form>

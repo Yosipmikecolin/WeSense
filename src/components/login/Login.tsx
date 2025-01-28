@@ -26,7 +26,7 @@ const Login = () => {
           variant: "default",
         });
         navigation.push("/administrator");
-      }, 1000);
+      }, 500);
     } else if (username === "requiring@gmail.com" && password === "12345") {
       setLoading(true);
       localStorage.setItem("email", "requiring@gmail.com");
@@ -38,7 +38,7 @@ const Login = () => {
           variant: "default",
         });
         navigation.push("/requiring");
-      }, 1000);
+      }, 500);
     } else if (username === "coordinator@gmail.com" && password === "12345") {
       setLoading(true);
       localStorage.setItem("email", "coordinator@gmail.com");
@@ -50,7 +50,7 @@ const Login = () => {
           variant: "default",
         });
         navigation.push("/coordinator");
-      }, 1000);
+      }, 500);
     } else {
       toast({
         title: "Error",

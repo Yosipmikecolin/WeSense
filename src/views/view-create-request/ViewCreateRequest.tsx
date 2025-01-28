@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import DataForm from "./components/data-form/DataForm";
-import CauseForm from "./components/cause-form/CauseForm";
-import MonitoringForm from "./components/monitoring-form/MonitoringForm";
+import ApplicantForm from "./components/applicant-form/ApplicantForm";
+import RequesterForm from "./components/requester-form/RequesterForm";
+import ConditionForm from "./components/condition-form/ConditionForm";
 import Timeline from "./components/timeline/Timeline";
 import {
   FormData as IFormData,
@@ -20,16 +20,18 @@ import {
   Step2Data,
   Step3Data,
 } from "./interfaces";
-import classes from "./ViewCreateCarrier.module.css";
+import classes from "./ViewCreateRequest.module.css";
+import CaseForm from "./components/case-form/CaseForm";
 
-const ViewCreateCarrier = () => {
+const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const steps = ["Datos", "Causa", "Monitoreo"];
+  const steps = ["Requirente", "Solicitante ", "Condición", "Caso"];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,
     step3: {} as Step3Data,
+    step4: {} as Step3Data,
   });
 
   const nextStep = useCallback(() => {
@@ -58,7 +60,7 @@ const ViewCreateCarrier = () => {
     switch (currentStep) {
       case 0:
         return (
-          <DataForm
+          <RequesterForm
             data={formData.step1}
             updateData={(data) => updateData("step1", data)}
             setCompleteForm={setCompleteForm}
@@ -66,7 +68,7 @@ const ViewCreateCarrier = () => {
         );
       case 1:
         return (
-          <CauseForm
+          <ApplicantForm
             data={formData.step2}
             updateData={(data) => updateData("step2", data)}
             setCompleteForm={setCompleteForm}
@@ -74,9 +76,18 @@ const ViewCreateCarrier = () => {
         );
       case 2:
         return (
-          <MonitoringForm
+          <ConditionForm
             data={formData.step3}
             updateData={(data) => updateData("step3", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+
+      case 3:
+        return (
+          <CaseForm
+            data={formData.step3}
+            updateData={(data) => updateData("step4", data)}
             setCompleteForm={setCompleteForm}
           />
         );
@@ -86,13 +97,10 @@ const ViewCreateCarrier = () => {
   };
 
   return (
-    <div
-      className={classes.container}
-      style={{ height: currentStep === 2 ? "auto" : "" }}
-    >
+    <div className={classes.container}>
       <Card className="w-full max-w-3xl mx-auto p-5">
-        <CardHeader className="relative overflow-hidden">
-          <CardTitle className="text-3xl mb-3">Crear portador</CardTitle>
+        <CardHeader className="relative overflow-hidden mb-5">
+          <CardTitle className="text-3xl mb-3">Crear solicitud</CardTitle>
           <Timeline steps={steps} currentStep={currentStep} />
         </CardHeader>
         <CardContent>{renderCurrentStep()}</CardContent>
@@ -107,7 +115,7 @@ const ViewCreateCarrier = () => {
           <Button
             className="bg-green-400 text-white hover:bg-green-500"
             onClick={nextStep}
-            disabled={currentStep === steps.length - 1 || !completeForm}
+            disabled={currentStep === steps.length - 1}
           >
             Siguiente
           </Button>
@@ -117,4 +125,4 @@ const ViewCreateCarrier = () => {
   );
 };
 
-export default ViewCreateCarrier;
+export default ViewCreateRequest;

@@ -9,9 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Step2Data, StepProps } from "@/interfaces/create-carrier";
+import { Step2Data, StepProps } from "../../interfaces";
 
-const FormCause = ({ data, updateData, setCompleteForm }: StepProps) => {
+const CauseForm = ({ data, updateData, setCompleteForm }: StepProps) => {
   const [formData, setFormData] = useState<Step2Data>(data as Step2Data);
 
   useEffect(() => {
@@ -107,4 +107,4 @@ const FormCause = ({ data, updateData, setCompleteForm }: StepProps) => {
   );
 };
 
-export default FormCause;
+export default CauseForm;
