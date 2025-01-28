@@ -133,7 +133,7 @@ const TableRequester = () => {
                       <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
                           <DialogTitle className="mb-2">
-                            Detalles de {requester.fullName}
+                            Detalles del requirente
                           </DialogTitle>
                           <hr />
                         </DialogHeader>

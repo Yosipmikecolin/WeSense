@@ -5,6 +5,7 @@ import ViewRequester from "./view-requester/ViewRequester";
 import ViewCreateRequester from "./view-create-requester/ViewCreateRequester";
 import ViewCreateUser from "./view-create-user/ViewCreateUser";
 import ViewCreateRequest from "./view-create-request/ViewCreateRequest";
+import ViewRequests from "./view-requests/ViewRequests";
 
 export {
   ViewCarries,
@@ -14,4 +15,5 @@ export {
   ViewCreateUser,
   ViewCreateRequester,
   ViewCreateRequest,
+  ViewRequests,
 };

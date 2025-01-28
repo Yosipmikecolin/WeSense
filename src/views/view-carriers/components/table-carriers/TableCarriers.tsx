@@ -117,7 +117,7 @@ const TableCarriers = () => {
                       <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
                           <DialogTitle className="mb-2">
-                            Detalles de {carrier.fullName}
+                            Detalles del portador
                           </DialogTitle>
                           <hr />
                         </DialogHeader>
