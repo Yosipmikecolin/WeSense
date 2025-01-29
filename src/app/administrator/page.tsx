@@ -1,5 +1,6 @@
 import { Dashboard } from "@/components";
 import {
+  Files,
   UserPlus,
   UserRoundPlus,
   UserRoundSearch,
@@ -12,6 +13,7 @@ import {
   ViewCreateRequester,
   ViewCreateUser,
   ViewRequester,
+  ViewRequests,
   ViewUsers,
 } from "@/views";
 
@@ -46,6 +48,11 @@ const Admin = () => {
       icon: <UserRoundPlus size={17} />,
       label: "Crear requirente",
       content: <ViewCreateRequester />,
+    },
+    {
+      icon: <Files size={17} />,
+      label: "Solicitudes",
+      content: <ViewRequests />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

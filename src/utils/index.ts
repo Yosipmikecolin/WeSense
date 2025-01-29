@@ -465,6 +465,7 @@ export const requests = [
     identification_number: "123456789",
     situation_type: "Condena",
     request_date: "2023-10-01",
+    status: "Positivo",
   },
   {
     requester_type: "Tribunal",
@@ -472,6 +473,7 @@ export const requests = [
     identification_number: "987654321",
     situation_type: "Sujeción a control",
     request_date: "2023-10-02",
+    status: "Negativo",
   },
   {
     requester_type: "Abogado",
@@ -479,6 +481,7 @@ export const requests = [
     identification_number: "456789123",
     situation_type: "Condena",
     request_date: "2023-10-03",
+    status: "No recomendable",
   },
   {
     requester_type: "Juez",
@@ -486,6 +489,7 @@ export const requests = [
     identification_number: "321654987",
     situation_type: "Sujeción a control",
     request_date: "2023-10-04",
+    status: "Sin respuesta",
   },
   {
     requester_type: "Tribunal",
@@ -493,6 +497,7 @@ export const requests = [
     identification_number: "789123456",
     situation_type: "Accidente de tránsito",
     request_date: "2023-10-05",
+    status: "Positivo",
   },
   {
     requester_type: "Abogado",
@@ -500,6 +505,7 @@ export const requests = [
     identification_number: "654987321",
     situation_type: "Condena",
     request_date: "2023-10-06",
+    status: "Negativo",
   },
   {
     requester_type: "Juez",
@@ -507,6 +513,7 @@ export const requests = [
     identification_number: "234567891",
     situation_type: "Otro",
     request_date: "2023-10-07",
+    status: "No recomendable",
   },
   {
     requester_type: "Tribunal",
@@ -514,6 +521,7 @@ export const requests = [
     identification_number: "876543219",
     situation_type: "Sujeción a control",
     request_date: "2023-10-08",
+    status: "Sin respuesta",
   },
   {
     requester_type: "Abogado",
@@ -521,6 +529,7 @@ export const requests = [
     identification_number: "345678912",
     situation_type: "Condena",
     request_date: "2023-10-09",
+    status: "Positivo",
   },
   {
     requester_type: "Juez",
@@ -528,6 +537,7 @@ export const requests = [
     identification_number: "432198765",
     situation_type: "Sujeción a control",
     request_date: "2023-10-10",
+    status: "Negativo",
   },
   {
     requester_type: "Tribunal",
@@ -535,6 +545,7 @@ export const requests = [
     identification_number: "567891234",
     situation_type: "Condena",
     request_date: "2023-10-11",
+    status: "No recomendable",
   },
   {
     requester_type: "Abogado",
@@ -542,6 +553,7 @@ export const requests = [
     identification_number: "219876543",
     situation_type: "Otro",
     request_date: "2023-10-12",
+    status: "Sin respuesta",
   },
   {
     requester_type: "Juez",
@@ -549,6 +561,7 @@ export const requests = [
     identification_number: "678912345",
     situation_type: "Sujeción a control",
     request_date: "2023-10-13",
+    status: "Positivo",
   },
   {
     requester_type: "Tribunal",
@@ -556,6 +569,7 @@ export const requests = [
     identification_number: "543219876",
     situation_type: "Otro",
     request_date: "2023-10-14",
+    status: "Negativo",
   },
   {
     requester_type: "Abogado",
@@ -563,5 +577,6 @@ export const requests = [
     identification_number: "789123456",
     situation_type: "Condena",
     request_date: "2023-10-15",
+    status: "No recomendable",
   },
 ];

@@ -100,7 +100,7 @@ const ViewCreateRequest = () => {
     <div className={classes.container}>
       <Card className="w-full max-w-3xl mx-auto p-5">
         <CardHeader className="relative overflow-hidden mb-5">
-          <CardTitle className="text-3xl mb-3">Crear solicitud</CardTitle>
+          <CardTitle className="text-3xl mb-3">Crear solicitud de factibilidad técnica</CardTitle>
           <Timeline steps={steps} currentStep={currentStep} />
         </CardHeader>
         <CardContent>{renderCurrentStep()}</CardContent>
