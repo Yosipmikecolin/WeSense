@@ -32,10 +32,7 @@ const DropdownFilter = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="secondary"
-          className="bg-black text-white hover:bg-gray-800 gap-2 shadow-lg hover:shadow-xl transition-all"
-        >
+        <Button>
           <Filter className="h-4 w-4" />
           Filtrar
         </Button>

@@ -80,10 +80,10 @@ const TableUsers = () => {
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
                         persona.perfil === "Requiriente"
-                          ? "bg-orange-100 text-orange-800"
+                          ? "bg-orange-400 text-white p-1 rounded-md"
                           : persona.perfil === "Coordinador"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-red-100 text-red-800"
+                          ? "bg-blue-400 text-white p-1 rounded-md"
+                          : "bg-red-400 text-white p-1 rounded-md"
                       }`}
                     >
                       {persona.perfil}

@@ -6,7 +6,7 @@ interface PhotoUploadProps {
   onPhotosSelected: (files: File[]) => void;
 }
 
-export default function PhotoUpload({ onPhotosSelected }: PhotoUploadProps) {
+const PhotoUpload = ({ onPhotosSelected }: PhotoUploadProps) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,4 +40,6 @@ export default function PhotoUpload({ onPhotosSelected }: PhotoUploadProps) {
       )}
     </div>
   );
-}
+};
+
+export default PhotoUpload;

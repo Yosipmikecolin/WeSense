@@ -100,20 +100,22 @@ const ViewCreateRequest = () => {
     <div className={classes.container}>
       <Card className="w-full max-w-3xl mx-auto p-5">
         <CardHeader className="relative overflow-hidden mb-5">
-          <CardTitle className="text-3xl mb-3">Crear solicitud de factibilidad técnica</CardTitle>
+          <CardTitle className="text-3xl mb-3">
+            Crear solicitud de factibilidad técnica
+          </CardTitle>
           <Timeline steps={steps} currentStep={currentStep} />
         </CardHeader>
         <CardContent>{renderCurrentStep()}</CardContent>
         <CardFooter className="flex justify-between">
           <Button
-            className="bg-green-400 text-white hover:bg-green-500"
+            variant={"primary"}
             onClick={previousStep}
             disabled={currentStep === 0}
           >
             Atras
           </Button>
           <Button
-            className="bg-green-400 text-white hover:bg-green-500"
+            variant={"primary"}
             onClick={nextStep}
             disabled={currentStep === steps.length - 1}
           >

@@ -112,7 +112,7 @@ const FormUser = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-green-400 text-white hover:bg-green-500 w-full mt-2" type="submit">
+          <Button variant={"primary"} className="w-full mt-2" type="submit">
             Crear usuario
           </Button>
         </form>

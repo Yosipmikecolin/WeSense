@@ -104,11 +104,7 @@ const Login = () => {
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
               />
             </div>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-green-200 hover:bg-green-300 text-green-800 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform"
-            >
+            <Button type="submit" disabled={loading} variant={"primary"} className="w-full">
               {loading ? <div className="loader-button" /> : "Iniciar sesión"}
             </Button>
           </form>

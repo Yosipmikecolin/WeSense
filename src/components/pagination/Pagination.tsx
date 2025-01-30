@@ -12,12 +12,7 @@ const Pagination = () => {
     <PaginationUI className="mt-5">
       <PaginationContent>
         <PaginationItem>
-          <Button
-            variant="secondary"
-            className="bg-black text-white hover:bg-gray-800 gap-2 shadow-lg hover:shadow-xl transition-all"
-          >
-            Atras
-          </Button>
+          <Button>Atras</Button>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#">1</PaginationLink>
@@ -34,12 +29,7 @@ const Pagination = () => {
           <PaginationEllipsis />
         </PaginationItem>
         <PaginationItem>
-          <Button
-            variant="secondary"
-            className="bg-black text-white hover:bg-gray-800 gap-2 shadow-lg hover:shadow-xl transition-all"
-          >
-            Siguiente
-          </Button>
+          <Button>Siguiente</Button>
         </PaginationItem>
       </PaginationContent>
     </PaginationUI>

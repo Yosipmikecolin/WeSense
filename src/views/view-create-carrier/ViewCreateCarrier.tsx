@@ -98,14 +98,14 @@ const ViewCreateCarrier = () => {
         <CardContent>{renderCurrentStep()}</CardContent>
         <CardFooter className="flex justify-between">
           <Button
-            className="bg-green-400 text-white hover:bg-green-500"
+            variant={"primary"}
             onClick={previousStep}
             disabled={currentStep === 0}
           >
             Atras
           </Button>
           <Button
-            className="bg-green-400 text-white hover:bg-green-500"
+            variant={"primary"}
             onClick={nextStep}
             disabled={currentStep === steps.length - 1 || !completeForm}
           >

@@ -141,10 +141,7 @@ const FormRequest = () => {
               placeholder="Usuario activo desde enero"
             />
           </div>
-          <Button
-            className="bg-green-400 text-white hover:bg-green-500 w-full text-md h-10"
-            type="submit"
-          >
+          <Button variant={"primary"} type="submit">
             Crear requirente
           </Button>
         </form>

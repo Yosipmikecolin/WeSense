@@ -1,5 +1,6 @@
 import { Login } from "@/components";
 
-export default function Home() {
+const Home = () => {
   return <Login />;
-}
+};
+export default Home;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -25,12 +25,20 @@ import DomicilioModal from "../address-modal/AddressModal";
 const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewButton, setViewButton] = useState(false);
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (email && email === "administrator@gmail.com") {
+      setViewButton(true);
+    }
+  }, []);
 
   return (
     <div>
@@ -86,7 +94,7 @@ const TableRequests = () => {
                   <TableCell>{request.requester_type}</TableCell>
                   <TableCell>{request.requester_name}</TableCell>
                   <TableCell>{request.identification_number}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-xs">
                     {request.status === "Positivo" && (
                       <span className="bg-green-400 text-white p-1 rounded-md">
                         {request.status}
@@ -232,12 +240,14 @@ const TableRequests = () => {
                       </DialogContent>
                     </Dialog>
 
-                    <Button
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2"
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      <Pencil />
-                    </Button>
+                    {viewButton && (
+                      <Button
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2"
+                        onClick={() => setIsModalOpen(true)}
+                      >
+                        <Pencil />
+                      </Button>
+                    )}
 
                     <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
                       <Trash />

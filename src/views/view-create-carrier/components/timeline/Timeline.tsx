@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TimelineProps } from "../../interfaces";
 
-export default function Timeline({ steps, currentStep }: TimelineProps) {
+const Timeline = ({ steps, currentStep }: TimelineProps) => {
   const [animatedStep, setAnimatedStep] = useState(currentStep);
 
   useEffect(() => {
@@ -36,4 +36,6 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
       />
     </div>
   );
-}
+};
+
+export default Timeline;

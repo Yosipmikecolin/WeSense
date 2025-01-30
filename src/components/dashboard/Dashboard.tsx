@@ -13,7 +13,7 @@ interface DashboardProps {
   }[];
 }
 
-export default function Dashboard({ menuItems }: DashboardProps) {
+const Dashboard = ({ menuItems }: DashboardProps) => {
   const [view, setView] = useState(menuItems[0].label);
 
   return (
@@ -25,4 +25,6 @@ export default function Dashboard({ menuItems }: DashboardProps) {
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;
