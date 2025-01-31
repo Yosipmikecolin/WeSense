@@ -1,10 +1,13 @@
-export const profiles = [
+export const users = [
   {
     id: 1,
     name: "Yosip Mike Colin",
     nit: "83749234",
     perfil: "Requiriente",
     status: "Activo",
+    email: "yosipmikecolin@example.com",
+    creation_date: "2022-03-15",
+    phone: "+57 310 123 4567",
   },
   {
     id: 2,
@@ -12,6 +15,9 @@ export const profiles = [
     nit: "5937450378",
     perfil: "Coordinador",
     status: "Inactivo",
+    email: "andresalfonso@example.com",
+    creation_date: "2021-07-22",
+    phone: "+57 320 234 5678",
   },
   {
     id: 3,
@@ -19,6 +25,9 @@ export const profiles = [
     nit: "5905645028",
     perfil: "Administrador",
     status: "Activo",
+    email: "mariasalazar@example.com",
+    creation_date: "2023-01-10",
+    phone: "+57 300 345 6789",
   },
   {
     id: 4,
@@ -26,6 +35,9 @@ export const profiles = [
     nit: "4538294850",
     perfil: "Requiriente",
     status: "Activo",
+    email: "lucianagomez@example.com",
+    creation_date: "2022-11-05",
+    phone: "+57 315 456 7890",
   },
   {
     id: 5,
@@ -33,6 +45,9 @@ export const profiles = [
     nit: "5893247324",
     perfil: "Administrador",
     status: "Inactivo",
+    email: "carlosperez@example.com",
+    creation_date: "2021-09-30",
+    phone: "+57 318 567 8901",
   },
   {
     id: 6,
@@ -40,6 +55,9 @@ export const profiles = [
     nit: "4823952345",
     perfil: "Requiriente",
     status: "Activo",
+    email: "lauramartinez@example.com",
+    creation_date: "2023-04-12",
+    phone: "+57 311 678 9012",
   },
   {
     id: 7,
@@ -47,6 +65,9 @@ export const profiles = [
     nit: "7583940238",
     perfil: "Coordinador",
     status: "Activo",
+    email: "jorgefernandez@example.com",
+    creation_date: "2022-08-19",
+    phone: "+57 313 789 0123",
   },
   {
     id: 8,
@@ -54,6 +75,9 @@ export const profiles = [
     nit: "9384752384",
     perfil: "Administrador",
     status: "Activo",
+    email: "andreatorres@example.com",
+    creation_date: "2021-12-25",
+    phone: "+57 314 890 1234",
   },
   {
     id: 9,
@@ -61,6 +85,9 @@ export const profiles = [
     nit: "8364928472",
     perfil: "Coordinador",
     status: "Inactivo",
+    email: "camilaruiz@example.com",
+    creation_date: "2023-02-14",
+    phone: "+57 317 901 2345",
   },
   {
     id: 10,
@@ -68,6 +95,9 @@ export const profiles = [
     nit: "2394853205",
     perfil: "Coordinador",
     status: "Activo",
+    email: "felipemejia@example.com",
+    creation_date: "2022-05-20",
+    phone: "+57 319 012 3456",
   },
   {
     id: 11,
@@ -75,6 +105,9 @@ export const profiles = [
     nit: "7382947583",
     perfil: "Requiriente",
     status: "Activo",
+    email: "paolaherrera@example.com",
+    creation_date: "2021-10-08",
+    phone: "+57 312 123 4567",
   },
   {
     id: 12,
@@ -82,6 +115,9 @@ export const profiles = [
     nit: "5932840239",
     perfil: "Requiriente",
     status: "Inactivo",
+    email: "sebastianvega@example.com",
+    creation_date: "2023-03-01",
+    phone: "+57 316 234 5678",
   },
   {
     id: 13,
@@ -89,6 +125,9 @@ export const profiles = [
     nit: "8402938472",
     perfil: "Administrador",
     status: "Activo",
+    email: "nataliacastro@example.com",
+    creation_date: "2022-06-18",
+    phone: "+57 310 345 6789",
   },
   {
     id: 14,
@@ -96,6 +135,9 @@ export const profiles = [
     nit: "7562937482",
     perfil: "Coordinador",
     status: "Inactivo",
+    email: "fernandomorales@example.com",
+    creation_date: "2021-11-11",
+    phone: "+57 320 456 7890",
   },
   {
     id: 15,
@@ -103,9 +145,11 @@ export const profiles = [
     nit: "2938745029",
     perfil: "Requiriente",
     status: "Activo",
+    email: "sofiarojas@example.com",
+    creation_date: "2023-05-09",
+    phone: "+57 300 567 8901",
   },
 ];
-
 export const carriers = [
   {
     id: 1,

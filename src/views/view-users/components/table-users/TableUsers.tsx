@@ -9,20 +9,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { profiles } from "@/utils";
-import { Circle, Eye, Pencil, Trash } from "lucide-react";
+
+import { users } from "@/utils";
+import { Circle, Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import DetailsModal from "../details-modal/DetailsModal";
 
 const TableUsers = () => {
   const [idFilter, setIdFilter] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState<{
+    id: number;
+    name: string;
+    nit: string;
+    perfil: string;
+    status: string;
+  }>();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nit" },
@@ -66,38 +77,47 @@ const TableUsers = () => {
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
                   ESTADO
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600 w-[150px]">
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  EMAIL
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  FECHA DE CREACIÓN
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  TELÉFONO
+                </TableHead>
+                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {profiles.map((persona) => (
-                <TableRow key={persona.id}>
-                  <TableCell>{persona.name}</TableCell>
-                  <TableCell>{persona.nit}</TableCell>
+              {users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.nit}</TableCell>
                   <TableCell>
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
-                        persona.perfil === "Requiriente"
+                        user.perfil === "Requiriente"
                           ? "bg-orange-400 text-white p-1 rounded-md"
-                          : persona.perfil === "Coordinador"
+                          : user.perfil === "Coordinador"
                           ? "bg-blue-400 text-white p-1 rounded-md"
                           : "bg-red-400 text-white p-1 rounded-md"
                       }`}
                     >
-                      {persona.perfil}
+                      {user.perfil}
                     </span>
                   </TableCell>
                   <TableCell>
                     <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        persona.status === "Activo"
-                          ? "bg-green-100 text-green-800"
+                      className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
+                        user.status === "Activo"
+                          ? "bg-green-400 text-white"
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {persona.status === "Activo" ? (
+                      {user.status === "Activo" ? (
                         "● Activo"
                       ) : (
                         <div className="flex items-center gap-1">
@@ -106,62 +126,50 @@ const TableUsers = () => {
                       )}
                     </span>
                   </TableCell>
-
-                  <TableCell className="w-[150px] flex items-center gap-3">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                          <Eye />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle className="text-xl font-semibold">
-                            Detalles de usuario
-                          </DialogTitle>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                          <div className="space-y-4">
-                            <div className="flex justify-between items-center pb-4 border-b">
-                              <span className="text-sm text-gray-500">
-                                Nombre
-                              </span>
-                              <span className="font-medium">
-                                {persona.name}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center pb-4 border-b">
-                              <span className="text-sm text-gray-500">NIT</span>
-                              <span className="font-mono">{persona.nit}</span>
-                            </div>
-                            <div className="flex justify-between items-center pb-4 border-b">
-                              <span className="text-sm text-gray-500">
-                                Perfil
-                              </span>
-                              <span className="font-medium">
-                                {persona.perfil}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-gray-500">
-                                Estado
-                              </span>
-                              <span className="font-medium">
-                                {persona.status}
-                              </span>
-                            </div>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.creation_date}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell className="mr-10 flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                        <Ellipsis />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-10">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setIsModalOpen(true);
+                            setUser(user);
+                          }}
+                        >
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Eye />
+                            </Button>
+                            <span>Detalles</span>
                           </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                        </DropdownMenuItem>
 
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Pencil />
-                    </Button>
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Pencil />
+                            </Button>
+                            <span>Editar</span>
+                          </div>
+                        </DropdownMenuItem>
 
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Trash />
-                    </Button>
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Trash />
+                            </Button>
+                            <span>Eliminar</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}
@@ -170,6 +178,11 @@ const TableUsers = () => {
         </CardContent>
       </Card>
       <Pagination />
+      <DetailsModal
+        open={isModalOpen}
+        user={user}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

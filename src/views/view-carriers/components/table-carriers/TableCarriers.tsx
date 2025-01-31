@@ -12,21 +12,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { carriers } from "@/utils";
-import { Download, Eye, Pencil, Trash } from "lucide-react";
-import { generatePDF, generateWord } from "../../functions";
+import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import DetailsModal from "../details-modal/DetailsModal";
 
 const TableCarriers = () => {
   const [idFilter, setIdFilter] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCarrier, setSelectedCarrier] = useState<{
+    id: number;
+    fullName: string;
+    socialName: string;
+    nationality: string;
+    countryCode: string;
+    maritalStatus: string;
+    gender: string;
+    run: string;
+    phone: string;
+  }>();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nombre social" },
@@ -84,7 +98,7 @@ const TableCarriers = () => {
                 <TableHead className="text-xs font-bold text-gray-600">
                   TELÉFONO
                 </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600 w-[150px]">
+                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
                 </TableHead>
               </TableRow>
@@ -107,79 +121,46 @@ const TableCarriers = () => {
                   <TableCell>{carrier.run}</TableCell>
                   <TableCell>{carrier.phone}</TableCell>
 
-                  <TableCell className="w-[150px] flex items-center gap-3">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                          <Eye />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[600px]">
-                        <DialogHeader>
-                          <DialogTitle className="mb-2">
-                            Detalles del portador
-                          </DialogTitle>
-                          <hr />
-                        </DialogHeader>
-                        <div className="grid gap-4 mt-3">
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">
-                              Nombre social:
-                            </span>
-                            <span>{carrier.socialName}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Género:</span>
-                            <span>{carrier.gender}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Nacinalidad:</span>
-                            <span className="flex gap-2">
-                              {carrier.nationality}
-                              <Flag code={carrier.countryCode} width={20} />
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Estado civil:</span>
-                            <span>{carrier.maritalStatus}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">RUN:</span>
-                            <span>{carrier.run}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Télefono:</span>
-                            <span>{carrier.phone}</span>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              variant={"outline"}
-                              onClick={() => generatePDF(carrier)}
-                              className="bg-red-500 text-white hover:bg-red-600 hover:text-white w-full flex justify-between"
-                            >
-                              Descagar PDF
-                              <Download />
+                  <TableCell className="mr-10 flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                        <Ellipsis />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-10">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedCarrier(carrier);
+                            setIsModalOpen(true);
+                          }}
+                        >
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Eye />
                             </Button>
-                            <Button
-                              variant={"outline"}
-                              onClick={() => generateWord(carrier)}
-                              className="bg-blue-500 hover:bg-blue-600 hover:text-white text-white w-full flex justify-between"
-                            >
-                              Descagar Word
-                              <Download />
-                            </Button>
+                            <span>Detalles</span>
                           </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Pencil />
+                            </Button>
+                            <span>Editar</span>
+                          </div>
+                        </DropdownMenuItem>
 
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Pencil />
-                    </Button>
-
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Trash />
-                    </Button>
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Trash />
+                            </Button>
+                            <span>Eliminar</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}
@@ -188,6 +169,11 @@ const TableCarriers = () => {
         </CardContent>
       </Card>
       <Pagination />
+      <DetailsModal
+        open={isModalOpen}
+        carrier={selectedCarrier}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

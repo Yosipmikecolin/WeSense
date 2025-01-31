@@ -11,16 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { requesters } from "@/utils";
 import {
   BriefcaseBusiness,
+  Ellipsis,
   Eye,
   Gavel,
   Landmark,
@@ -30,9 +24,34 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import DetailsModal from "../details-modal/DetailsModal";
 
 const TableRequester = () => {
   const [idFilter, setIdFilter] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [setSelectedRequester, setSetSelectedRequester] = useState<{
+    fullName: string;
+    email: string;
+    phone: string;
+    userType: string;
+    institution: string;
+    identificationNumber: string;
+    region: string;
+    address: string;
+    accessAreas: string;
+    registrationDate: string;
+    identityVerification: string;
+    securityQuestion: string;
+    observations: string;
+  }>();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Email" },
@@ -90,7 +109,7 @@ const TableRequester = () => {
                 <TableHead className="text-xs font-bold text-gray-600">
                   NÚMERO DE IDENTIFICACIÓN
                 </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600 w-[150px]">
+                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
                 </TableHead>
               </TableRow>
@@ -101,7 +120,7 @@ const TableRequester = () => {
                   <TableCell>{requester.fullName}</TableCell>
                   <TableCell>{requester.email}</TableCell>
                   <TableCell>
-                    <div className="w-28 flex items-center justify-between gap-2 bg-green-100 text-green-500 py-1 px-2  rounded-lg">
+                    <div className="w-28 flex items-center justify-between gap-2 bg-green-400 text-white py-1 px-2 font-bold rounded-md">
                       {requester.userType}
                       {requester.userType === "Tribunal" && (
                         <Landmark size={15} />
@@ -123,64 +142,47 @@ const TableRequester = () => {
                   <TableCell>{requester.address}</TableCell>
                   <TableCell>{requester.identificationNumber}</TableCell>
 
-                  <TableCell className="w-[150px] flex items-center gap-3">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                          <Eye />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[600px]">
-                        <DialogHeader>
-                          <DialogTitle className="mb-2">
-                            Detalles del requirente
-                          </DialogTitle>
-                          <hr />
-                        </DialogHeader>
-                        <div className="grid gap-4 mt-3">
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">
-                              Nombre completo:
-                            </span>
-                            <span>{requester.fullName}</span>
+                  <TableCell className="mr-10 flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                        <Ellipsis />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-10">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSetSelectedRequester(requester);
+                            setIsModalOpen(true);
+                          }}
+                        >
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Eye />
+                            </Button>
+                            <span>Detalles</span>
                           </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Tipo:</span>
-                            <span>{requester.userType}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Telefono:</span>
-                            <span className="flex gap-2">
-                              {requester.phone}
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">
-                              Fecha de registro:
-                            </span>
-                            <span>{requester.registrationDate}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">Institucion:</span>
-                            <span>{requester.institution}</span>
-                          </div>
-                          <div className="grid grid-cols-2 items-center gap-4">
-                            <span className="font-semibold">
-                              Observaciones:
-                            </span>
-                            <span>{requester.observations}</span>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                        </DropdownMenuItem>
 
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Pencil />
-                    </Button>
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Pencil />
+                            </Button>
+                            <span>Editar</span>
+                          </div>
+                        </DropdownMenuItem>
 
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Trash />
-                    </Button>
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Trash />
+                            </Button>
+                            <span>Eliminar</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}
@@ -189,6 +191,11 @@ const TableRequester = () => {
         </CardContent>
       </Card>
       <Pagination />
+      <DetailsModal
+        open={isModalOpen}
+        requester={setSelectedRequester}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

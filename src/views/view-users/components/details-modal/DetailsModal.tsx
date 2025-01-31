@@ -1,0 +1,56 @@
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+interface Props {
+  user?: {
+    id: number;
+    name: string;
+    nit: string;
+    perfil: string;
+    status: string;
+  };
+  open: boolean;
+  onClose: VoidFunction;
+}
+
+const DetailsModal = ({ user, open, onClose }: Props) => {
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogClose />
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold">
+            Detalles de usuario
+          </DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center pb-4 border-b">
+              <span className="text-sm text-gray-500">Nombre</span>
+              <span className="font-medium">{user?.name}</span>
+            </div>
+            <div className="flex justify-between items-center pb-4 border-b">
+              <span className="text-sm text-gray-500">NIT</span>
+              <span className="font-mono">{user?.nit}</span>
+            </div>
+            <div className="flex justify-between items-center pb-4 border-b">
+              <span className="text-sm text-gray-500">Perfil</span>
+              <span className="font-medium">{user?.perfil}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">Estado</span>
+              <span className="font-medium">{user?.status}</span>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default DetailsModal;

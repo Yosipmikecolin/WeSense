@@ -38,17 +38,14 @@ const TableRequests = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
   const [viewButton, setViewButton] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState<
-    | {
-        requester_type: string;
-        requester_name: string;
-        identification_number: string;
-        situation_type: string;
-        request_date: string;
-        status: string;
-      }
-    | undefined
-  >(undefined);
+  const [selectedRequest, setSelectedRequest] = useState<{
+    requester_type: string;
+    requester_name: string;
+    identification_number: string;
+    situation_type: string;
+    request_date: string;
+    status: string;
+  }>();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
