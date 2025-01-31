@@ -11,21 +11,44 @@ import {
 } from "@/components/ui/table";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { requests } from "@/utils";
-import { Eye, EyeIcon, Pencil, Trash } from "lucide-react";
+import { Ellipsis, Eye, EyeIcon, Pencil, Trash, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
-import DomicilioModal from "../address-modal/AddressModal";
+import AddressModal from "../address-modal/AddressModal";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import DetailsModal from "../details-modal/DetailsModal";
 
 const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
   const [viewButton, setViewButton] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<
+    | {
+        requester_type: string;
+        requester_name: string;
+        identification_number: string;
+        situation_type: string;
+        request_date: string;
+        status: string;
+      }
+    | undefined
+  >(undefined);
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
@@ -80,10 +103,13 @@ const TableRequests = () => {
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
                   TIPO DE SITUACIÓN
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600 w-[150px]">
-                  FECHA DE SOLICITUD
+                <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                  FECHA DE EMISIÓN
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600 w-[150px]">
+                <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                  FECHA DE RESPUESTA
+                </TableHead>
+                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
                 </TableHead>
               </TableRow>
@@ -128,6 +154,7 @@ const TableRequests = () => {
                             />
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[425px]">
+                            <DialogClose />
                             <DialogHeader>
                               <DialogTitle className="text-xl font-semibold">
                                 Respuesta a su solicitud
@@ -187,71 +214,51 @@ const TableRequests = () => {
                   </TableCell>
                   <TableCell>{request.situation_type}</TableCell>
                   <TableCell>{request.request_date}</TableCell>
+                  <TableCell>{request.request_date}</TableCell>
 
-                  <TableCell className="w-[150px] flex items-center gap-3">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                          <Eye />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle className="text-xl font-semibold">
-                            Detalles de solicitud
-                          </DialogTitle>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                          <div className="space-y-4">
-                            <div className="flex justify-between items-center pb-4 border-b">
-                              <span className="text-sm text-gray-500">
-                                Nombre del solicitante
-                              </span>
-                              <span className="font-medium">
-                                {request.requester_name}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center pb-4 border-b">
-                              <span className="text-sm text-gray-500">
-                                Numero de identifiación del solicitante
-                              </span>
-                              <span className="font-mono">
-                                {request.identification_number}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center pb-4 border-b">
-                              <span className="text-sm text-gray-500">
-                                Tipo de solicitante
-                              </span>
-                              <span className="font-medium">
-                                {request.requester_type}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-gray-500">
-                                Fecha de solicitud
-                              </span>
-                              <span className="font-medium">
-                                {request.request_date}
-                              </span>
-                            </div>
+                  <TableCell className="mr-10 flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                        <Ellipsis />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-10">
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedRequest(request);
+                            setIsModalOpenDetails(true);
+                          }}
+                        >
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Eye />
+                            </Button>
+                            <span>Detalles</span>
                           </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-
-                    {viewButton && (
-                      <Button
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2"
-                        onClick={() => setIsModalOpen(true)}
-                      >
-                        <Pencil />
-                      </Button>
-                    )}
-
-                    <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-2">
-                      <Trash />
-                    </Button>
+                        </DropdownMenuItem>
+                        {viewButton && (
+                          <DropdownMenuItem
+                            onClick={() => setIsModalOpen(true)}
+                          >
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Pencil />
+                              </Button>
+                              <span>Editar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <Trash />
+                            </Button>
+                            <span>Eliminar</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}
@@ -260,7 +267,12 @@ const TableRequests = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <DomicilioModal
+      <DetailsModal
+        open={isModalOpenDetails}
+        request={selectedRequest}
+        onClose={() => setIsModalOpenDetails(false)}
+      />
+      <AddressModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

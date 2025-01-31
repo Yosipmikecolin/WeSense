@@ -15,6 +15,7 @@
   border-radius: 50%;
   position: absolute;
   z-index: 2;
+  animation: circle 1.5s infinite;
 }
 
 .location-ring {
@@ -38,5 +39,16 @@
   100% {
     transform: scale(1.5);
     opacity: 0;
+  }
+}
+
+@keyframes circle {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }

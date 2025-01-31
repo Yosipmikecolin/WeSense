@@ -22,7 +22,10 @@ const MapWithLeaflet = ({ latitude, longitude }: MapProps) => {
       mapInstanceRef.current.remove(); // Elimina el mapa anterior antes de crear uno nuevo
     }
 
-    const map = L.map(mapContainerRef.current).setView(coords, 18);
+    const map = L.map(mapContainerRef.current, { minZoom: 17 }).setView(
+      coords,
+      18
+    );
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -49,7 +52,7 @@ const MapWithLeaflet = ({ latitude, longitude }: MapProps) => {
   }, [latitude, longitude]);
 
   return (
-    <div ref={mapContainerRef} style={{ height: "300px", width: "100%" }} />
+    <div ref={mapContainerRef} style={{ height: "200px", width: "100%" }} />
   );
 };
 

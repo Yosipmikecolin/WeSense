@@ -18,7 +18,7 @@ const PhotoUpload = ({ onPhotosSelected }: PhotoUploadProps) => {
   };
 
   return (
-    <div className="space-y-2">
+    <div>
       <Input
         type="file"
         accept="image/*"
@@ -30,14 +30,6 @@ const PhotoUpload = ({ onPhotosSelected }: PhotoUploadProps) => {
       <Button asChild>
         <label htmlFor="photo-upload">Subir fotos</label>
       </Button>
-      {selectedFiles.length > 0 && (
-        <p className="text-sm text-muted-foreground">
-          {selectedFiles.length}{" "}
-          {selectedFiles.length === 1
-            ? "foto seleccionada"
-            : "fotos seleccionadas"}
-        </p>
-      )}
     </div>
   );
 };
