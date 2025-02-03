@@ -25,8 +25,8 @@ const Sidebar = ({ view, setView, menuItems }: SiderbarProps) => {
             key={item.label}
             className={`flex items-center gap-3 px-4 py-3 text-sm rounded-lg mb-1 cursor-pointer select-none ${
               view === item.label
-                ? "bg-green-100 text-green-600"
-                : "text-gray-600 hover:bg-gray-50"
+                ? "bg-green-500 text-white"
+                : "text-gray-600 hover:bg-gray-200"
             }`}
           >
             {item.icon}

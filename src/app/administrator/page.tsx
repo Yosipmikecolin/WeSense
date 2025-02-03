@@ -1,9 +1,11 @@
 import { Dashboard } from "@/components";
 import {
+  BriefcaseBusiness,
   Files,
+  Link,
+  Unlink,
   UserPlus,
   UserRoundPlus,
-  UserRoundSearch,
   Users,
   Users2,
 } from "lucide-react";
@@ -30,28 +32,33 @@ const Admin = () => {
       content: <ViewCreateUser />,
     },
     {
-      icon: <Users size={17} />,
+      icon: <Link size={17} />,
       label: "Portadores",
       content: <ViewCarries />,
     },
     {
-      icon: <UserPlus size={17} />,
+      icon: <Unlink size={17} />,
       label: "Crear portador",
       content: <ViewCreateCarrier />,
     },
     {
-      icon: <UserRoundSearch size={17} />,
+      icon: <Users size={17} />,
       label: "Requirentes",
       content: <ViewRequester />,
     },
     {
-      icon: <UserRoundPlus size={17} />,
+      icon: <UserPlus size={17} />,
       label: "Crear requirente",
       content: <ViewCreateRequester />,
     },
     {
       icon: <Files size={17} />,
       label: "Solicitudes",
+      content: <ViewRequests />,
+    },
+    {
+      icon: <BriefcaseBusiness size={17} />,
+      label: "Carga laboral",
       content: <ViewRequests />,
     },
   ];
