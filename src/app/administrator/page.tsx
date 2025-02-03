@@ -17,6 +17,7 @@ import {
   ViewRequester,
   ViewRequests,
   ViewUsers,
+  ViewWorkload,
 } from "@/views";
 
 const Admin = () => {
@@ -59,7 +60,7 @@ const Admin = () => {
     {
       icon: <BriefcaseBusiness size={17} />,
       label: "Carga laboral",
-      content: <ViewRequests />,
+      content: <ViewWorkload />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

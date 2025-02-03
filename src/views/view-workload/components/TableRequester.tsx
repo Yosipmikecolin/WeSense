@@ -11,17 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { requesters } from "@/utils";
-import {
-  BriefcaseBusiness,
-  Ellipsis,
-  Eye,
-  Gavel,
-  Landmark,
-  Pencil,
-  Trash,
-  UserCheck,
-} from "lucide-react";
+import { workLoad } from "@/utils";
+import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
 import {
@@ -33,39 +24,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
+import { Progress } from "@/components/ui/progress";
 
-const TableRequester = () => {
+const TableWorkload = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRequester, setSelectedRequester] = useState<{
-    fullName: string;
-    email: string;
-    phone: string;
-    userType: string;
-    institution: string;
-    identificationNumber: string;
-    region: string;
-    address: string;
-    accessAreas: string;
-    registrationDate: string;
-    identityVerification: string;
-    securityQuestion: string;
-    observations: string;
+  const [selectedWorker, setSetSelectedWorker] = useState<{
+    id: number;
+    name: string;
+    openCases: number;
+    closedCases: number;
+    laborLoad: number;
   }>();
   const filters = [
     { id: 1, name: "Nombre" },
-    { id: 2, name: "Email" },
-    { id: 3, name: "Tipo" },
-    { id: 4, name: "Institución" },
-    { id: 5, name: "Ciudad" },
-    { id: 6, name: "Dirección" },
-    { id: 7, name: "Identificación" },
+    { id: 2, name: "Casos abiertos" },
+    { id: 3, name: "Casos cerrados" },
+    { id: 4, name: "Carga laboral" },
   ];
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
         <CardTitle className="text-3xl font-bold tracking-tight">
-          Requirentes
+          Carga laboral
         </CardTitle>
         <div className="flex gap-2">
           <Input
@@ -91,23 +72,14 @@ const TableRequester = () => {
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600">
-                  EMAIL
+                  CASOS ABIERTOS
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600">
-                  TIPO
+                  CASOS CERRADOS
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  INSTITUCIÓN
-                </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600">
-                  CIUDAD
-                </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600">
-                  DIRECCIÓN
-                </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600">
-                  NÚMERO DE IDENTIFICACIÓN
+                  CARGA LABORAL
                 </TableHead>
                 <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
@@ -115,32 +87,20 @@ const TableRequester = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requesters.map((requester, index) => (
+              {workLoad.map((worker, index) => (
                 <TableRow key={index}>
-                  <TableCell>{requester.fullName}</TableCell>
-                  <TableCell>{requester.email}</TableCell>
+                  <TableCell>{worker.name}</TableCell>
+                  <TableCell>{worker.openCases}</TableCell>
+                  <TableCell>{worker.closedCases}</TableCell>
+
                   <TableCell>
-                    <div className="w-28 flex items-center justify-between gap-2 bg-green-400 text-white py-1 px-2 font-bold rounded-md">
-                      {requester.userType}
-                      {requester.userType === "Tribunal" && (
-                        <Landmark size={15} />
-                      )}
-
-                      {requester.userType === "Juez" && <Gavel size={15} />}
-
-                      {requester.userType === "Abogado" && (
-                        <BriefcaseBusiness size={15} />
-                      )}
-
-                      {requester.userType === "Personal de Instalación" && (
-                        <UserCheck size={15} />
-                      )}
+                    <div className="flex items-center gap-2">
+                      <Progress value={worker.laborLoad} className="w-full" />
+                      <span className="text-sm font-medium">
+                        {worker.laborLoad}%
+                      </span>
                     </div>
                   </TableCell>
-                  <TableCell>{requester.institution}</TableCell>
-                  <TableCell>{requester.region}</TableCell>
-                  <TableCell>{requester.address}</TableCell>
-                  <TableCell>{requester.identificationNumber}</TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
@@ -152,7 +112,7 @@ const TableRequester = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedRequester(requester);
+                            setSetSelectedWorker(worker);
                             setIsModalOpen(true);
                           }}
                         >
@@ -193,11 +153,11 @@ const TableRequester = () => {
       <Pagination />
       <DetailsModal
         open={isModalOpen}
-        requester={selectedRequester}
+        workLoad={selectedWorker}
         onClose={() => setIsModalOpen(false)}
       />
     </div>
   );
 };
 
-export default TableRequester;
+export default TableWorkload;
