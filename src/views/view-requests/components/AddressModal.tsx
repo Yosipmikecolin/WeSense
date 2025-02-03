@@ -45,17 +45,17 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
 
   const [fotos, setFotos] = useState<File[]>([]);
   const [cobertura, setCobertura] = useState<string>("");
-  const [opciones, setOpciones] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
 
   const handleSubmit = () => {
-    console.log({ status, coordinates, fotos, cobertura, opciones });
+    console.log({ status, coordinates, fotos, cobertura, options });
     onClose();
   };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-3xl mb-3">
+          <DialogTitle className="text-xl mb-3">
             Gestionar solicitud
           </DialogTitle>
         </DialogHeader>
@@ -91,7 +91,7 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
           </div>
           {status === "no-recomendable" && (
             <div className="flex flex-col gap-2 w-full">
-              <Label>Razones por que no es recomendable</Label>
+              <Label>Motivos por los que no es aconsejable</Label>
               <Textarea />
             </div>
           )}

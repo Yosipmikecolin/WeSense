@@ -24,6 +24,9 @@ const Header = () => {
       case "coordinator@gmail.com":
         return "Coordinador";
 
+      case "awardee@gmail.com":
+        return "Adjudicatorio";
+
       default:
         return "Perfil no autorizado";
     }

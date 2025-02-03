@@ -18,7 +18,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { requests } from "@/utils";
-import { Ellipsis, Eye, EyeIcon, Pencil, Trash, X } from "lucide-react";
+import {
+  Ellipsis,
+  Eye,
+  EyeIcon,
+  FileCheck2,
+  FilePen,
+  Pencil,
+  Redo2,
+  Trash,
+  X,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
 import AddressModal from "./AddressModal";
@@ -32,12 +42,16 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
+import ReturnRequestModal from "./ReturnRequestModal";
+import { Toast } from "@/components/ui/toast";
+import { toast } from "@/hooks/use-toast";
 
 const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
-  const [viewButton, setViewButton] = useState(false);
+  const [viewButton, setViewButton] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<{
     requester_type: string;
     requester_name: string;
@@ -55,8 +69,8 @@ const TableRequests = () => {
 
   useEffect(() => {
     const email = localStorage.getItem("email");
-    if (email && email === "administrator@gmail.com") {
-      setViewButton(true);
+    if (email) {
+      setViewButton(email);
     }
   }, []);
 
@@ -234,10 +248,52 @@ const TableRequests = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        {viewButton && (
+                        {viewButton === "awardee@gmail.com" && (
                           <DropdownMenuItem
                             onClick={() => setIsModalOpen(true)}
                           >
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FilePen />
+                              </Button>
+                              <span>Gestionar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+                        {viewButton === "administrator@gmail.com" && (
+                          <DropdownMenuItem
+                            onClick={() =>
+                              toast({
+                                title: "Solicitud confirmada",
+                                className: "bg-green-500 text-white",
+                                description:
+                                  "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
+                              })
+                            }
+                          >
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FileCheck2 />
+                              </Button>
+                              <span>Confirmar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {viewButton === "administrator@gmail.com" && (
+                          <DropdownMenuItem
+                            onClick={() => setIsModaReturnlOpen(true)}
+                          >
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Redo2 />
+                              </Button>
+                              <span>Devolver</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+                        {viewButton === "requiring@gmail.com" && (
+                          <DropdownMenuItem>
                             <div className="flex items-center gap-2 cursor-pointer">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                                 <Pencil />
@@ -246,14 +302,16 @@ const TableRequests = () => {
                             </div>
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Trash />
-                            </Button>
-                            <span>Eliminar</span>
-                          </div>
-                        </DropdownMenuItem>
+                        {viewButton === "requiring@gmail.com" && (
+                          <DropdownMenuItem>
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Trash />
+                              </Button>
+                              <span>Eliminar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -264,6 +322,10 @@ const TableRequests = () => {
         </CardContent>
       </Card>
       <Pagination />
+      <ReturnRequestModal
+        open={isModalReturnOpen}
+        onClose={() => setIsModaReturnlOpen(false)}
+      />
       <DetailsModal
         open={isModalOpenDetails}
         request={selectedRequest}

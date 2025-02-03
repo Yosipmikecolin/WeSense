@@ -21,9 +21,7 @@ const Login = () => {
       setTimeout(() => {
         toast({
           title: "Acceso administrador",
-          className: "bg-green-100 text-green-600",
           description: "administrator@gmail.com",
-          variant: "default",
         });
         navigation.push("/administrator");
       }, 500);
@@ -33,9 +31,7 @@ const Login = () => {
       setTimeout(() => {
         toast({
           title: "Acceso requirente",
-          className: "bg-green-100 text-green-600",
           description: "requiring@gmail.com",
-          variant: "default",
         });
         navigation.push("/requiring");
       }, 500);
@@ -45,11 +41,19 @@ const Login = () => {
       setTimeout(() => {
         toast({
           title: "Acceso coordinador",
-          className: "bg-green-100 text-green-600",
           description: "coordinator@gmail.com",
-          variant: "default",
         });
         navigation.push("/coordinator");
+      }, 500);
+    } else if (username === "awardee@gmail.com" && password === "12345") {
+      setLoading(true);
+      localStorage.setItem("email", "awardee@gmail.com");
+      setTimeout(() => {
+        toast({
+          title: "Acceso adjudicatorio",
+          description: "awardee@gmail.com",
+        });
+        navigation.push("/awardee");
       }, 500);
     } else {
       toast({
@@ -104,7 +108,12 @@ const Login = () => {
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
               />
             </div>
-            <Button type="submit" disabled={loading} variant={"primary"} className="w-full">
+            <Button
+              type="submit"
+              disabled={loading}
+              variant={"primary"}
+              className="w-full"
+            >
               {loading ? <div className="loader-button" /> : "Iniciar sesión"}
             </Button>
           </form>
