@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Step2Data, StepProps } from "../../interfaces";
+import { Step2Data, StepProps } from "../interfaces";
 
 const CauseForm = ({ data, updateData, setCompleteForm }: StepProps) => {
   const [formData, setFormData] = useState<Step2Data>(data as Step2Data);

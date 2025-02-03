@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import ApplicantForm from "./components/applicant-form/ApplicantForm";
-import RequesterForm from "./components/requester-form/RequesterForm";
-import ConditionForm from "./components/condition-form/ConditionForm";
-import Timeline from "./components/timeline/Timeline";
+import ApplicantForm from "./components/ApplicantForm";
+import RequesterForm from "./components/RequesterForm";
+import ConditionForm from "./components/ConditionForm";
+import Timeline from "./components/Timeline";
 import {
   FormData as IFormData,
   Step1Data,
@@ -21,7 +21,7 @@ import {
   Step3Data,
 } from "./interfaces";
 import classes from "./ViewCreateRequest.module.css";
-import CaseForm from "./components/case-form/CaseForm";
+import CaseForm from "./components/CaseForm";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);

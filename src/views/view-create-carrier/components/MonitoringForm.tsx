@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Step3Data, StepProps } from "../../interfaces";
+import { Step3Data, StepProps } from "../interfaces";
 
 const MonitoringForm = ({ data, updateData, setCompleteForm }: StepProps) => {
   const [formData, setFormData] = useState<Step3Data>(data as Step3Data);

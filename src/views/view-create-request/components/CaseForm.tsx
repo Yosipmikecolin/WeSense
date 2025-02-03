@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { Textarea } from "@/components/ui/textarea";
-import { StepProps } from "../../interfaces";
+import { StepProps } from "../interfaces";
 
 const CaseForm = ({ data, updateData, setCompleteForm }: StepProps) => {
   return (

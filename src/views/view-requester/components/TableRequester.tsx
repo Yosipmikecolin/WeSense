@@ -32,7 +32,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DetailsModal from "../details-modal/DetailsModal";
+import DetailsModal from "./DetailsModal";
 
 const TableRequester = () => {
   const [idFilter, setIdFilter] = useState(1);

@@ -1,6 +1,6 @@
 "use client";
 
-import TableRequests from "./components/table-requests/TableRequests";
+import TableRequests from "./components/TableRequests";
 
 const ViewRequests = () => {
   return <TableRequests />;

@@ -7,8 +7,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Flag from "react-world-flags";
-import { generatePDF, generateWord } from "../../functions";
 import { Download } from "lucide-react";
+import { generatePDF, generateWord } from "../functions";
 
 interface Props {
   carrier?: {

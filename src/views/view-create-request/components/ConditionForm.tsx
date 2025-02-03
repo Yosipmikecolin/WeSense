@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Step3Data, StepProps } from "../../interfaces";
+import { Step3Data, StepProps } from "../interfaces";
 
 const ConditionForm = ({ data, updateData, setCompleteForm }: StepProps) => {
   const [formData, setFormData] = useState<Step3Data>(data as Step3Data);

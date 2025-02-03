@@ -1,4 +1,4 @@
-import FormUser from "./components/form-user/FormUser";
+import FormUser from "./components/FormUser";
 import classes from "./ViewCreateUser.module.css";
 
 const ViewCreateUser = () => {

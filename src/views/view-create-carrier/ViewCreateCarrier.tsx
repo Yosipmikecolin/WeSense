@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import DataForm from "./components/data-form/DataForm";
-import CauseForm from "./components/cause-form/CauseForm";
-import MonitoringForm from "./components/monitoring-form/MonitoringForm";
-import Timeline from "./components/timeline/Timeline";
+import DataForm from "./components/DataForm";
+import CauseForm from "./components/CauseForm";
+import MonitoringForm from "./components/MonitoringForm";
+import Timeline from "./components/Timeline";
 import {
   FormData as IFormData,
   Step1Data,

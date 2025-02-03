@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TimelineProps } from "../../interfaces";
+import { TimelineProps } from "../interfaces";
 
 const Timeline = ({ steps, currentStep }: TimelineProps) => {
   const [animatedStep, setAnimatedStep] = useState(currentStep);

@@ -1,4 +1,4 @@
-import TableRequester from "./components/table-requester/TableRequester";
+import TableRequester from "./components/TableRequester";
 
 const ViewRequester = () => {
   return <TableRequester/>;

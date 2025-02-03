@@ -1,6 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import Flag from "react-world-flags";
 import {
   Table as TableUI,
   TableBody,
@@ -10,8 +13,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { users } from "@/utils";
-import { Circle, Ellipsis, Eye, Pencil, Trash } from "lucide-react";
+import { carriers } from "@/utils";
+import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
 import {
@@ -22,29 +25,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DetailsModal from "../details-modal/DetailsModal";
+import DetailsModal from "./DetailsModal";
 
-const TableUsers = () => {
+const TableCarriers = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [user, setUser] = useState<{
+  const [selectedCarrier, setSelectedCarrier] = useState<{
     id: number;
-    name: string;
-    nit: string;
-    perfil: string;
-    status: string;
+    fullName: string;
+    socialName: string;
+    nationality: string;
+    countryCode: string;
+    maritalStatus: string;
+    gender: string;
+    run: string;
+    phone: string;
   }>();
   const filters = [
     { id: 1, name: "Nombre" },
-    { id: 2, name: "Nit" },
-    { id: 3, name: "Perfil" },
-    { id: 4, name: "Estado" },
+    { id: 2, name: "Nombre social" },
+    { id: 3, name: "Nacioanlidad" },
+    { id: 4, name: "Estado civil" },
+    { id: 5, name: "Género" },
+    { id: 6, name: "Run" },
+    { id: 7, name: "Teléfono" },
   ];
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
         <CardTitle className="text-3xl font-bold tracking-tight">
-          Usuarios
+          Portadores
         </CardTitle>
         <div className="flex gap-2">
           <Input
@@ -65,25 +75,27 @@ const TableUsers = () => {
           <TableUI>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   NOMBRE COMPLETO
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
-                  NIT
+
+                <TableHead className="text-xs font-bold text-gray-600">
+                  NOMBRE SOCIAL
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
-                  PERFIL
+
+                <TableHead className="text-xs font-bold text-gray-600">
+                  NACIONALIDAD
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
-                  ESTADO
+                <TableHead className="text-xs font-bold text-gray-600">
+                  ESTADO CIVIL
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
-                  EMAIL
+                <TableHead className="text-xs font-bold text-gray-600">
+                  GÉNERO
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
-                  FECHA DE CREACIÓN
+                <TableHead className="text-xs font-bold text-gray-600">
+                  RUN
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   TELÉFONO
                 </TableHead>
                 <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
@@ -92,43 +104,23 @@ const TableUsers = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.nit}</TableCell>
+              {carriers.map((carrier) => (
+                <TableRow key={carrier.id}>
+                  <TableCell>{carrier.fullName}</TableCell>
+                  <TableCell>{carrier.socialName}</TableCell>
                   <TableCell>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
-                        user.perfil === "Requiriente"
-                          ? "bg-orange-400 text-white p-1 rounded-md"
-                          : user.perfil === "Coordinador"
-                          ? "bg-blue-400 text-white p-1 rounded-md"
-                          : "bg-red-400 text-white p-1 rounded-md"
-                      }`}
-                    >
-                      {user.perfil}
-                    </span>
+                    <div className="flex justify-between items-center gap-1 max-w-[150px]">
+                      <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
+                        {carrier.nationality}
+                      </span>
+                      <Flag code={carrier.countryCode} width={20} />
+                    </div>
                   </TableCell>
-                  <TableCell>
-                    <span
-                      className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
-                        user.status === "Activo"
-                          ? "bg-green-400 text-white"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {user.status === "Activo" ? (
-                        "● Activo"
-                      ) : (
-                        <div className="flex items-center gap-1">
-                          <Circle size={7} /> Inactivo
-                        </div>
-                      )}
-                    </span>
-                  </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.creation_date}</TableCell>
-                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{carrier.maritalStatus}</TableCell>
+                  <TableCell>{carrier.gender}</TableCell>
+                  <TableCell>{carrier.run}</TableCell>
+                  <TableCell>{carrier.phone}</TableCell>
+
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
@@ -139,8 +131,8 @@ const TableUsers = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
+                            setSelectedCarrier(carrier);
                             setIsModalOpen(true);
-                            setUser(user);
                           }}
                         >
                           <div className="flex items-center gap-2 cursor-pointer">
@@ -150,7 +142,6 @@ const TableUsers = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-
                         <DropdownMenuItem>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
@@ -180,11 +171,11 @@ const TableUsers = () => {
       <Pagination />
       <DetailsModal
         open={isModalOpen}
-        user={user}
+        carrier={selectedCarrier}
         onClose={() => setIsModalOpen(false)}
       />
     </div>
   );
 };
 
-export default TableUsers;
+export default TableCarriers;

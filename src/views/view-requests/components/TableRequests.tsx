@@ -21,7 +21,7 @@ import { requests } from "@/utils";
 import { Ellipsis, Eye, EyeIcon, Pencil, Trash, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
-import AddressModal from "../address-modal/AddressModal";
+import AddressModal from "./AddressModal";
 
 import {
   DropdownMenu,
@@ -31,7 +31,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import DetailsModal from "../details-modal/DetailsModal";
+import DetailsModal from "./DetailsModal";
 
 const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);

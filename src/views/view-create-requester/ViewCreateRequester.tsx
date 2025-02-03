@@ -1,4 +1,4 @@
-import FormRequest from "./components/form-request/FormRequest";
+import FormRequest from "./components/FormRequest";
 import classes from "./ViewCreateRequester.module.css";
 
 const ViewCreateRequester = () => {

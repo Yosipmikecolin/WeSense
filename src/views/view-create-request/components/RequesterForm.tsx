@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StepProps } from "../../interfaces";
+import { StepProps } from "../interfaces";
 
 const RequesterForm = ({ data, updateData, setCompleteForm }: StepProps) => {
   return (
