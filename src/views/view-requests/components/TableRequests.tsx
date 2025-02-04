@@ -166,71 +166,6 @@ const TableRequests = () => {
                         <span className="bg-orange-400 text-white p-1 rounded-md">
                           {request.status}
                         </span>
-
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <EyeIcon
-                              size={20}
-                              color="#686D76"
-                              className="cursor-pointer"
-                            />
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogClose />
-                            <DialogHeader>
-                              <DialogTitle className="text-xl font-semibold">
-                                Respuesta a su solicitud
-                              </DialogTitle>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="space-y-4">
-                                <div className="flex flex-col items-center pb-4 border-b">
-                                  <p>
-                                    Después de una cuidadosa consideración y
-                                    evaluación de la solicitud, lamento
-                                    informarle que no podemos recomendar la
-                                    instalación del dispositivo de seguimiento
-                                    en este momento.
-                                  </p>
-                                  <p>
-                                    Nuestra decisión se basa en los siguientes
-                                    factores:
-                                  </p>
-                                  <br />
-                                  <ul className="flex flex-col gap-2">
-                                    <li>
-                                      <strong>Evaluación de Riesgo:</strong> La
-                                      evaluación de riesgo del preso Albero
-                                      Rodiguez indica que no cumple con los
-                                      criterios para la instalación de un
-                                      dispositivo de seguimiento.
-                                    </li>
-                                    <li>
-                                      <strong>Recursos Limitados:</strong> La
-                                      prisión cuenta con recursos limitados para
-                                      la instalación y el mantenimiento de
-                                      dispositivos de seguimiento.
-                                    </li>
-                                    <li>
-                                      <strong>Alternativas:</strong> Existen
-                                      alternativas de supervisión y seguimiento
-                                      disponibles que se consideran más
-                                      apropiadas para el caso del preso Albero
-                                      Rodiguez.
-                                    </li>
-                                  </ul>
-
-                                  <p>
-                                    Le agradezco su comprensión y le invito a
-                                    comunicarse conmigo si tiene alguna pregunta
-                                    o desea discutir esta decisión con más
-                                    detalle.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
                       </div>
                     )}
                   </TableCell>
@@ -316,9 +251,8 @@ const TableRequests = () => {
                             </DropdownMenuItem>
                           )}
 
-                        {viewButton === "administrator@gmail.com" &&
-                          !request.confirmation &&
-                          request.status !== "Sin respuesta" && (
+                        {viewButton === "awardee@gmail.com" &&
+                          !request.confirmation && (
                             <DropdownMenuSub>
                               <DropdownMenuSubTrigger>
                                 Estado
