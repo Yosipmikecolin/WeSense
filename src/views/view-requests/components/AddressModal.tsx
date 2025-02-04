@@ -91,7 +91,7 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
           </div>
           {status === "no-recomendable" && (
             <div className="flex flex-col gap-2 w-full">
-              <Label>Motivos por los que no es aconsejable</Label>
+              <Label>Motivos por los que no es recomendable</Label>
               <Textarea />
             </div>
           )}

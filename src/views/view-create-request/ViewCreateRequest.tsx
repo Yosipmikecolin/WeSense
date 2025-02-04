@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import ApplicantForm from "./components/ApplicantForm";
-import RequesterForm from "./components/RequesterForm";
-import ConditionForm from "./components/ConditionForm";
+import ApplicantDataForm from "./components/ApplicantDataForm";
+import CaseInformationForm from "./components/CaseInformationForm";
+import PersonDataForm from "./components/PersonDataForm";
 import Timeline from "./components/Timeline";
 import {
   FormData as IFormData,
@@ -20,20 +20,27 @@ import {
   Step2Data,
   Step3Data,
 } from "./interfaces";
+import InclusionZoneForm from "./components/InclusionZoneForm";
+import ExclusionZoneForm from "./components/ExclusionZoneForm";
 import classes from "./ViewCreateRequest.module.css";
-import CaseForm from "./components/CaseForm";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const steps = ["Requirente", "Solicitante ", "Condición", "Caso"];
+  const steps = [
+    "Información de la causa",
+    "Datos Solicitante ",
+    "Datos de la persona condenada",
+    "Zona de Inclusión de la persona condenada",
+    "Zona de Exclusión para la persona condenada",
+  ];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,
     step3: {} as Step3Data,
     step4: {} as Step3Data,
+    step5: {} as Step3Data,
   });
-
   const nextStep = useCallback(() => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -60,7 +67,7 @@ const ViewCreateRequest = () => {
     switch (currentStep) {
       case 0:
         return (
-          <RequesterForm
+          <CaseInformationForm
             data={formData.step1}
             updateData={(data) => updateData("step1", data)}
             setCompleteForm={setCompleteForm}
@@ -68,7 +75,7 @@ const ViewCreateRequest = () => {
         );
       case 1:
         return (
-          <ApplicantForm
+          <ApplicantDataForm
             data={formData.step2}
             updateData={(data) => updateData("step2", data)}
             setCompleteForm={setCompleteForm}
@@ -76,7 +83,7 @@ const ViewCreateRequest = () => {
         );
       case 2:
         return (
-          <ConditionForm
+          <PersonDataForm
             data={formData.step3}
             updateData={(data) => updateData("step3", data)}
             setCompleteForm={setCompleteForm}
@@ -85,9 +92,18 @@ const ViewCreateRequest = () => {
 
       case 3:
         return (
-          <CaseForm
+          <InclusionZoneForm
             data={formData.step3}
             updateData={(data) => updateData("step4", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+
+      case 4:
+        return (
+          <ExclusionZoneForm
+            data={formData.step5}
+            updateData={(data) => updateData("step5", data)}
             setCompleteForm={setCompleteForm}
           />
         );
@@ -97,7 +113,10 @@ const ViewCreateRequest = () => {
   };
 
   return (
-    <div className={classes.container}>
+    <div
+      className={classes.container}
+      style={{ height: currentStep === 3 || currentStep === 4 ? "auto" : "" }}
+    >
       <Card className="w-full max-w-3xl mx-auto p-5">
         <CardHeader className="relative overflow-hidden mb-5">
           <CardTitle className="text-3xl mb-3">

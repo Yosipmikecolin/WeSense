@@ -21,7 +21,7 @@ const Timeline = ({ steps, currentStep }: TimelineProps) => {
           }`}
         >
           {index + 1}
-          <span className="text-black absolute top-10 text-xs font-bold">
+          <span className="text-black absolute top-10 text-xs font-bold text-center">
             {step}
           </span>
         </div>
@@ -33,10 +33,12 @@ const Timeline = ({ steps, currentStep }: TimelineProps) => {
             currentStep + 1 === 1
               ? "0%"
               : currentStep + 1 === 2
-              ? "32%"
+              ? "25%"
               : currentStep + 1 === 3
-              ? "64%"
+              ? "50%"
               : currentStep + 1 === 4
+              ? "75%"
+              : currentStep + 1 === 5
               ? "100%"
               : "0%",
         }}
