@@ -509,7 +509,9 @@ export const requests = [
     identification_number: "123456789",
     situation_type: "Condena",
     request_date: "2023-10-01",
-    status: "Positivo",
+    response_date: "----",
+    status: "Sin respuesta",
+    confirmation: false,
   },
   {
     requester_type: "Tribunal",
@@ -517,7 +519,9 @@ export const requests = [
     identification_number: "987654321",
     situation_type: "Sujeción a control",
     request_date: "2023-10-02",
+    response_date: "2023-10-03",
     status: "Negativo",
+    confirmation: false,
   },
   {
     requester_type: "Abogado",
@@ -525,7 +529,9 @@ export const requests = [
     identification_number: "456789123",
     situation_type: "Condena",
     request_date: "2023-10-03",
+    response_date: "2023-10-04",
     status: "No recomendable",
+    confirmation: true,
   },
   {
     requester_type: "Juez",
@@ -533,7 +539,9 @@ export const requests = [
     identification_number: "321654987",
     situation_type: "Sujeción a control",
     request_date: "2023-10-04",
+    response_date: "----",
     status: "Sin respuesta",
+    confirmation: false,
   },
   {
     requester_type: "Tribunal",
@@ -541,7 +549,9 @@ export const requests = [
     identification_number: "789123456",
     situation_type: "Accidente de tránsito",
     request_date: "2023-10-05",
+    response_date: "2023-10-05",
     status: "Positivo",
+    confirmation: false,
   },
   {
     requester_type: "Abogado",
@@ -549,7 +559,9 @@ export const requests = [
     identification_number: "654987321",
     situation_type: "Condena",
     request_date: "2023-10-06",
+    response_date: "2023-10-07",
     status: "Negativo",
+    confirmation: false,
   },
   {
     requester_type: "Juez",
@@ -557,7 +569,9 @@ export const requests = [
     identification_number: "234567891",
     situation_type: "Otro",
     request_date: "2023-10-07",
+    response_date: "2023-10-08",
     status: "No recomendable",
+    confirmation: false,
   },
   {
     requester_type: "Tribunal",
@@ -565,7 +579,9 @@ export const requests = [
     identification_number: "876543219",
     situation_type: "Sujeción a control",
     request_date: "2023-10-08",
+    response_date: "----",
     status: "Sin respuesta",
+    confirmation: false,
   },
   {
     requester_type: "Abogado",
@@ -573,7 +589,9 @@ export const requests = [
     identification_number: "345678912",
     situation_type: "Condena",
     request_date: "2023-10-09",
+    response_date: "2023-10-10",
     status: "Positivo",
+    confirmation: true,
   },
   {
     requester_type: "Juez",
@@ -581,7 +599,9 @@ export const requests = [
     identification_number: "432198765",
     situation_type: "Sujeción a control",
     request_date: "2023-10-10",
+    response_date: "2023-10-11",
     status: "Negativo",
+    confirmation: false,
   },
   {
     requester_type: "Tribunal",
@@ -589,7 +609,9 @@ export const requests = [
     identification_number: "567891234",
     situation_type: "Condena",
     request_date: "2023-10-11",
+    response_date: "2023-10-12",
     status: "No recomendable",
+    confirmation: true,
   },
   {
     requester_type: "Abogado",
@@ -597,7 +619,9 @@ export const requests = [
     identification_number: "219876543",
     situation_type: "Otro",
     request_date: "2023-10-12",
+    response_date: "----",
     status: "Sin respuesta",
+    confirmation: false,
   },
   {
     requester_type: "Juez",
@@ -605,7 +629,9 @@ export const requests = [
     identification_number: "678912345",
     situation_type: "Sujeción a control",
     request_date: "2023-10-13",
+    response_date: "2023-10-14",
     status: "Positivo",
+    confirmation: true,
   },
   {
     requester_type: "Tribunal",
@@ -613,7 +639,9 @@ export const requests = [
     identification_number: "543219876",
     situation_type: "Otro",
     request_date: "2023-10-14",
+    response_date: "2023-10-15",
     status: "Negativo",
+    confirmation: false,
   },
   {
     requester_type: "Abogado",
@@ -621,7 +649,9 @@ export const requests = [
     identification_number: "789123456",
     situation_type: "Condena",
     request_date: "2023-10-15",
+    response_date: "2023-10-16",
     status: "No recomendable",
+    confirmation: true,
   },
 ];
 

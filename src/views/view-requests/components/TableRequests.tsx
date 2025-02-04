@@ -19,6 +19,9 @@ import {
 } from "@/components/ui/dialog";
 import { requests } from "@/utils";
 import {
+  Check,
+  CircleCheck,
+  CircleSlash,
   Ellipsis,
   Eye,
   EyeIcon,
@@ -40,10 +43,13 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
 import ReturnRequestModal from "./ReturnRequestModal";
-import { Toast } from "@/components/ui/toast";
 import { toast } from "@/hooks/use-toast";
 
 const TableRequests = () => {
@@ -58,7 +64,9 @@ const TableRequests = () => {
     identification_number: string;
     situation_type: string;
     request_date: string;
+    response_date: string;
     status: string;
+    confirmation: boolean;
   }>();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
@@ -119,6 +127,9 @@ const TableRequests = () => {
                 </TableHead>
                 <TableHead className="text-xs font-bold uppercase text-gray-600 ">
                   FECHA DE RESPUESTA
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                  CONFIRMACIÓN
                 </TableHead>
                 <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
@@ -225,7 +236,14 @@ const TableRequests = () => {
                   </TableCell>
                   <TableCell>{request.situation_type}</TableCell>
                   <TableCell>{request.request_date}</TableCell>
-                  <TableCell>{request.request_date}</TableCell>
+                  <TableCell>{request.response_date}</TableCell>
+                  <TableCell>
+                    {request.confirmation ? (
+                      <CircleCheck size={17} color="#16a34a" />
+                    ) : (
+                      <CircleSlash size={17} color="#B7B7B7" />
+                    )}
+                  </TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
@@ -260,38 +278,94 @@ const TableRequests = () => {
                             </div>
                           </DropdownMenuItem>
                         )}
-                        {viewButton === "administrator@gmail.com" && (
-                          <DropdownMenuItem
-                            onClick={() =>
-                              toast({
-                                title: "Solicitud confirmada",
-                                className: "bg-green-500 text-white",
-                                description:
-                                  "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
-                              })
-                            }
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileCheck2 />
-                              </Button>
-                              <span>Confirmar</span>
-                            </div>
-                          </DropdownMenuItem>
-                        )}
+                        {viewButton === "administrator@gmail.com" &&
+                          request.status !== "Sin respuesta" &&
+                          !request.confirmation && (
+                            <DropdownMenuItem
+                              onClick={() =>
+                                toast({
+                                  title: "Solicitud confirmada",
+                                  className: "bg-green-500 text-white",
+                                  description:
+                                    "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
+                                })
+                              }
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FileCheck2 />
+                                </Button>
+                                <span>Confirmar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
 
-                        {viewButton === "administrator@gmail.com" && (
-                          <DropdownMenuItem
-                            onClick={() => setIsModaReturnlOpen(true)}
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Redo2 />
-                              </Button>
-                              <span>Devolver</span>
-                            </div>
-                          </DropdownMenuItem>
-                        )}
+                        {viewButton === "administrator@gmail.com" &&
+                          request.status !== "Sin respuesta" &&
+                          request.status !== "Positivo" &&
+                          !request.confirmation && (
+                            <DropdownMenuItem
+                              onClick={() => setIsModaReturnlOpen(true)}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Redo2 />
+                                </Button>
+                                <span>Devolver</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+
+                        {viewButton === "administrator@gmail.com" &&
+                          !request.confirmation &&
+                          request.status !== "Sin respuesta" && (
+                            <DropdownMenuSub>
+                              <DropdownMenuSubTrigger>
+                                Estado
+                              </DropdownMenuSubTrigger>
+                              <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      toast({
+                                        title:
+                                          "El estado ha sido cambiado a (Positivo)",
+                                        className:
+                                          "border border-green-500 text-green-600",
+                                      });
+                                    }}
+                                  >
+                                    Positivo
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      toast({
+                                        title:
+                                          "El estado ha sido cambiado a (Negativo)",
+                                        className:
+                                          "border border-red-500 text-red-600",
+                                      });
+                                    }}
+                                  >
+                                    Negativo
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      toast({
+                                        title:
+                                          "El estado ha sido cambiado a (No recomendable)",
+                                        className:
+                                          "border border-orange-500 text-orange-600",
+                                      });
+                                    }}
+                                  >
+                                    No recomendable
+                                  </DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                              </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                          )}
+
                         {viewButton === "requiring@gmail.com" && (
                           <DropdownMenuItem>
                             <div className="flex items-center gap-2 cursor-pointer">

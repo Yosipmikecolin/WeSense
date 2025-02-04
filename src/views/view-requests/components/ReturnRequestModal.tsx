@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -59,6 +60,7 @@ const ReturnRequestModal = ({ open, onClose }: ReturnRequestModalProps) => {
             </div>
           </div>
         </div>
+        <Button variant={"primary"}>Devolver solicitud</Button>
       </DialogContent>
     </Dialog>
   );
