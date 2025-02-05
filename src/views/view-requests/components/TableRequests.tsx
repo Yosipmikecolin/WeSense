@@ -49,6 +49,9 @@ const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
+  const email = "sgamgc@correo.com";
+  const subject = encodeURIComponent("SGAMGC");
+  const body = encodeURIComponent("Respuesta de la solicitud");
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
   const [viewButton, setViewButton] = useState("");
   const [stateFilter, setStateFilter] = useState("");
@@ -75,6 +78,11 @@ const TableRequests = () => {
       setViewButton(email);
     }
   }, []);
+
+  const handleClick = () => {
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, "_blank");
+  };
 
   return (
     <div>
@@ -264,16 +272,7 @@ const TableRequests = () => {
                                 </DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
                                   <DropdownMenuSubContent>
-                                    <DropdownMenuItem
-                                      onClick={() => {
-                                        toast({
-                                          title:
-                                            "Se envio el correo al requirente",
-                                          className:
-                                            "bg-green-100 text-green-600",
-                                        });
-                                      }}
-                                    >
+                                    <DropdownMenuItem onClick={handleClick}>
                                       <Mail size={15} />
                                       Email
                                     </DropdownMenuItem>

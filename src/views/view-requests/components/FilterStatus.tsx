@@ -19,7 +19,7 @@ const FilterStatus = ({ stateFilter, setStateFilter }: FilterStatusProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={"ghost"}>
+        <Button variant={"ghost"} className="bg-gray-200 text-gray-600">
           <Filter className="h-4 w-4" />
           Filtrar por estado
         </Button>
