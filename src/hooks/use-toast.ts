@@ -17,7 +17,7 @@ type ToasterToast = ToastProps & {
   description?: React.ReactNode
   action?: ToastActionElement
 }
-// @ts-expect-error
+// @ts-expect-error: Se usa para evitar el error de tipo al definir actionTypes
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
