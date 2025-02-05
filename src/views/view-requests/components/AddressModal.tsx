@@ -45,10 +45,9 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
 
   const [fotos, setFotos] = useState<File[]>([]);
   const [cobertura, setCobertura] = useState<string>("");
-  const [options, setOptions] = useState<string[]>([]);
 
   const handleSubmit = () => {
-    console.log({ status, coordinates, fotos, cobertura, options });
+    console.log({ status, coordinates, fotos, cobertura });
     onClose();
   };
   return (

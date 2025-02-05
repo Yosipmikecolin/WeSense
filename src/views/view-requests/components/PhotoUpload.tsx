@@ -7,12 +7,12 @@ interface PhotoUploadProps {
 }
 
 const PhotoUpload = ({ onPhotosSelected }: PhotoUploadProps) => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  /* const [selectedFiles, setSelectedFiles] = useState<File[]>([]); */
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setSelectedFiles(filesArray);
+      /*    setSelectedFiles(filesArray); */
       onPhotosSelected(filesArray);
     }
   };
