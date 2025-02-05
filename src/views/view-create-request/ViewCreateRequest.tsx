@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -26,6 +26,15 @@ import classes from "./ViewCreateRequest.module.css";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Esto asegurará que el componente solo se renderice en el cliente
+  }
   const steps = [
     "Información de la causa",
     "Datos Solicitante ",
