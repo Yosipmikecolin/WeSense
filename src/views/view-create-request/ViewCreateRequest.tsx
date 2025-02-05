@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -26,23 +26,17 @@ import classes from "./ViewCreateRequest.module.css";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [isClient, setIsClient] = useState(false);
-
-  const [formData, _setFormData] = useState<IFormData>({
+  const [_completeForm, setCompleteForm] = useState<boolean>(false);
+  const [formData, setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,
     step3: {} as Step3Data,
     step4: {} as Step3Data,
     step5: {} as Step3Data,
   });
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   const steps = [
     "Información de la causa",
-    "Datos Solicitante",
+    "Datos Solicitante ",
     "Datos de la persona condenada",
     "Zona de Inclusión de la persona condenada",
     "Zona de Exclusión para la persona condenada",
@@ -52,7 +46,7 @@ const ViewCreateRequest = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
-  }, [currentStep, steps.length]);
+  }, [currentStep]);
 
   const previousStep = useCallback(() => {
     if (currentStep > 0) {
@@ -60,27 +54,64 @@ const ViewCreateRequest = () => {
     }
   }, [currentStep]);
 
+  const updateData = useCallback(
+    (step: keyof IFormData, data: Step1Data | Step2Data | Step3Data) => {
+      setFormData((prevData) => ({
+        ...prevData,
+        [step]: data,
+      }));
+    },
+    []
+  );
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
-        return <CaseInformationForm data={formData.step1} />;
+        return (
+          <CaseInformationForm
+            data={formData.step1}
+            updateData={(data) => updateData("step1", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
       case 1:
-        return <ApplicantDataForm data={formData.step2} />;
+        return (
+          <ApplicantDataForm
+            data={formData.step2}
+            updateData={(data) => updateData("step2", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
       case 2:
-        return <PersonDataForm data={formData.step3} />;
+        return (
+          <PersonDataForm
+            data={formData.step3}
+            updateData={(data) => updateData("step3", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+
       case 3:
-        return <InclusionZoneForm data={formData.step3} />;
+        return (
+          <InclusionZoneForm
+            data={formData.step3}
+            updateData={(data) => updateData("step4", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+
       case 4:
-        return <ExclusionZoneForm data={formData.step5} />;
+        return (
+          <ExclusionZoneForm
+            data={formData.step5}
+            updateData={(data) => updateData("step5", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
       default:
         return null;
     }
   };
-
-  // No renderizar nada hasta que se confirme que estamos en el cliente
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <div

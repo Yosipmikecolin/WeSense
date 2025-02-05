@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import classes from "./Map.module.css";
@@ -52,7 +52,10 @@ const MapWithLeaflet = ({ latitude, longitude }: MapProps) => {
   }, [latitude, longitude]);
 
   return (
-    <div ref={mapContainerRef} style={{ height: "200px", width: "100%" }} />
+    <div
+      ref={mapContainerRef}
+      style={{ height: "200px", width: "100%", borderRadius: 5 }}
+    />
   );
 };
 

@@ -7,10 +7,13 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Map from "@/components/map/Map";
 import Image from "next/image";
 import Foto1 from "/public/foto-1.jpg";
 import Foto2 from "/public/foto-2.jpg";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("@/components/map/Map"), {
+  ssr: false,
+});
 
 interface Props {
   request?: {
@@ -92,10 +95,12 @@ const DetailsModal = ({ request, open, onClose }: Props) => {
                 <Label className="text-sm font-bold mb-2 block">
                   Ubicación
                 </Label>
-                <Map
-                  latitude={-33.46651382914682}
-                  longitude={-70.66412385948745}
-                />
+                <div className="animate-pulse bg-gray-200 rounded-md h-[200px] w-full">
+                  <Map
+                    latitude={-33.46651382914682}
+                    longitude={-70.66412385948745}
+                  />
+                </div>
               </div>
 
               <div>

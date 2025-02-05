@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Dialog,
@@ -19,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PhotoUpload from "./PhotoUpload";
-import Map from "@/components/map/Map";
+//import Map from "@/components/map/Map";
 import {
   Tooltip,
   TooltipContent,
@@ -33,6 +31,10 @@ import Foto1 from "/public/foto-1.jpg";
 import Foto2 from "/public/foto-2.jpg";
 import Foto3 from "/public/foto-3.jpg";
 import Foto4 from "/public/foto-4.jpg";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("@/components/map/Map"), {
+  ssr: false,
+});
 
 interface AddressModalProps {
   isOpen: boolean;
@@ -146,7 +148,12 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
                 <MapPinned size={18} />
               </Button>
             </div>
-            <Map latitude={-33.46651382914682} longitude={-70.66412385948745} />
+            <div className="animate-pulse bg-gray-200 rounded-md h-[200px] w-full">
+              <Map
+                latitude={-33.46651382914682}
+                longitude={-70.66412385948745}
+              />
+            </div>
           </div>
 
           <div className="flex justify-between items-center gap-2 mb-2">
