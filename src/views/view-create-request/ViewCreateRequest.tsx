@@ -33,9 +33,7 @@ const ViewCreateRequest = () => {
     "Zona de Inclusión de la persona condenada",
     "Zona de Exclusión para la persona condenada",
   ];
-  const [completeForm, setCompleteForm] = useState<boolean>(false);
-  console.log("completeForm",completeForm)
-  const [formData, setFormData] = useState<IFormData>({
+  const [formData, _setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,
     step3: {} as Step3Data,
@@ -54,60 +52,20 @@ const ViewCreateRequest = () => {
     }
   }, [currentStep]);
 
-  const updateData = useCallback(
-    (step: keyof IFormData, data: Step1Data | Step2Data | Step3Data) => {
-      setFormData((prevData) => ({
-        ...prevData,
-        [step]: data,
-      }));
-    },
-    []
-  );
-
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
-        return (
-          <CaseInformationForm
-            data={formData.step1}
-            updateData={(data) => updateData("step1", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
+        return <CaseInformationForm data={formData.step1} />;
       case 1:
-        return (
-          <ApplicantDataForm
-            data={formData.step2}
-            updateData={(data) => updateData("step2", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
+        return <ApplicantDataForm data={formData.step2} />;
       case 2:
-        return (
-          <PersonDataForm
-            data={formData.step3}
-            updateData={(data) => updateData("step3", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
+        return <PersonDataForm data={formData.step3} />;
 
       case 3:
-        return (
-          <InclusionZoneForm
-            data={formData.step3}
-            updateData={(data) => updateData("step4", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
+        return <InclusionZoneForm data={formData.step3} />;
 
       case 4:
-        return (
-          <ExclusionZoneForm
-            data={formData.step5}
-            updateData={(data) => updateData("step5", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
+        return <ExclusionZoneForm data={formData.step5} />;
       default:
         return null;
     }

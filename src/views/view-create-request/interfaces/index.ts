@@ -46,9 +46,7 @@ export interface Step3Data {
 }
 
 export interface StepProps {
-  data: Step1Data | Step2Data | Step3Data;
-  updateData: (data: Step1Data | Step2Data | Step3Data) => void;
-  setCompleteForm: (complete: boolean) => void;
+  data?: Step1Data | Step2Data | Step3Data;
 }
 
 export interface TimelineProps {
