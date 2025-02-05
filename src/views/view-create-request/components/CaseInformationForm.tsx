@@ -7,20 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Step3Data, StepProps } from "../interfaces";
-import { useState } from "react";
+import { StepProps } from "../interfaces";
 
-const CaseInformationForm = ({ data, updateData }: StepProps) => {
-  const [values, setValues] = useState<Step3Data>(data as Step3Data);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setValues((prev) => ({ ...prev, [name]: value }));
-    updateData({ ...values, [name]: value });
-  };
-
+const CaseInformationForm = ({}: StepProps) => {
   return (
     <div className="space-y-4">
       <div>
@@ -39,7 +28,7 @@ const CaseInformationForm = ({ data, updateData }: StepProps) => {
       </div>
       <div>
         <Label htmlFor="region">Región</Label>
-        <Input id="d" name="region" onChange={handleChange} />
+        <Input id="d" name="region" />
       </div>
       <div>
         <Label htmlFor="tribunalJuzgado">Tribunal/Juzgado</Label>
