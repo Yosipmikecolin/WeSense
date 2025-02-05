@@ -116,7 +116,7 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
                 placeholder="Latitud"
                 value={coordinates.lat}
                 onChange={(e) => {
-                  let value = e.target.value;
+                  const value = e.target.value;
                   if (!/^-?\d*\.?\d*$/.test(value)) return;
                   if (value.length <= 30) {
                     setCoordinates((prev) => ({
@@ -131,7 +131,7 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
                 placeholder="Longitud"
                 value={coordinates.lng}
                 onChange={(e) => {
-                  let value = e.target.value;
+                  const value = e.target.value;
                   if (!/^-?\d*\.?\d*$/.test(value)) return;
                   if (value.length <= 30) {
                     setCoordinates((prev) => ({

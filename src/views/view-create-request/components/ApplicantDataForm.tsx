@@ -2,16 +2,13 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Step1Data, StepProps } from "../interfaces";
 
-const ApplicantDataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
+const ApplicantDataForm = ({
+  data,
+  setCompleteForm,
+  updateData,
+}: StepProps) => {
   const [formData, setFormData] = useState<Step1Data>(data as Step1Data);
 
   useEffect(() => {

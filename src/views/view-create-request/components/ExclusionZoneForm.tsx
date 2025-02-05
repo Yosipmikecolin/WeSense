@@ -3,11 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { StepProps } from "../interfaces";
 
-const ExclusionZoneForm = ({
-  data,
-  updateData,
-  setCompleteForm,
-}: StepProps) => {
+const ExclusionZoneForm = ({}: StepProps) => {
   return (
     <div className="space-y-4">
       <div>

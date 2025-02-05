@@ -10,7 +10,7 @@ import {
 import { Step3Data, StepProps } from "../interfaces";
 import { useState } from "react";
 
-const CaseInformationForm = ({ data, updateData, setCompleteForm }: StepProps) => {
+const CaseInformationForm = ({ data, updateData }: StepProps) => {
   const [values, setValues] = useState<Step3Data>(data as Step3Data);
 
   const handleChange = (
