@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   Card,
   CardContent,
