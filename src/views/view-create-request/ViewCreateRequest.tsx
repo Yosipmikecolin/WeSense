@@ -34,6 +34,7 @@ const ViewCreateRequest = () => {
     "Zona de Exclusión para la persona condenada",
   ];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
+  console.log("completeForm",completeForm)
   const [formData, setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,

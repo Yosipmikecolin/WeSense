@@ -17,7 +17,7 @@ type ToasterToast = ToastProps & {
   description?: React.ReactNode
   action?: ToastActionElement
 }
-// @ts-ignore
+// @ts-expect-error
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
