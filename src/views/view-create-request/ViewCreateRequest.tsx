@@ -26,22 +26,6 @@ import classes from "./ViewCreateRequest.module.css";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null; // Esto asegurará que el componente solo se renderice en el cliente
-  }
-  const steps = [
-    "Información de la causa",
-    "Datos Solicitante ",
-    "Datos de la persona condenada",
-    "Zona de Inclusión de la persona condenada",
-    "Zona de Exclusión para la persona condenada",
-  ];
   const [formData, _setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,
@@ -49,11 +33,20 @@ const ViewCreateRequest = () => {
     step4: {} as Step3Data,
     step5: {} as Step3Data,
   });
+
+  const steps = [
+    "Información de la causa",
+    "Datos Solicitante",
+    "Datos de la persona condenada",
+    "Zona de Inclusión de la persona condenada",
+    "Zona de Exclusión para la persona condenada",
+  ];
+
   const nextStep = useCallback(() => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
-  }, [currentStep]);
+  }, [currentStep, steps.length]);
 
   const previousStep = useCallback(() => {
     if (currentStep > 0) {
@@ -69,10 +62,8 @@ const ViewCreateRequest = () => {
         return <ApplicantDataForm data={formData.step2} />;
       case 2:
         return <PersonDataForm data={formData.step3} />;
-
       case 3:
         return <InclusionZoneForm data={formData.step3} />;
-
       case 4:
         return <ExclusionZoneForm data={formData.step5} />;
       default:
