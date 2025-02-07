@@ -15,7 +15,7 @@ const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
 
-interface Props {
+interface DetailsModalProps {
   request?: {
     requester_type: string;
     requester_name: string;
@@ -28,7 +28,7 @@ interface Props {
   onClose: VoidFunction;
 }
 
-const DetailsModal = ({ request, open, onClose }: Props) => {
+const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">

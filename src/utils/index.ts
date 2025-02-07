@@ -511,7 +511,8 @@ export const requests = [
     request_date: "2023-10-01",
     response_date: "----",
     status: "Sin respuesta",
-    confirmation: false,
+    confirmation: "false",
+    hour: "5 horas y 20 minutos",
   },
   {
     requester_type: "Tribunal",
@@ -519,9 +520,10 @@ export const requests = [
     identification_number: "987654321",
     situation_type: "Sujeción a control",
     request_date: "2023-10-02",
-    response_date: "2023-10-03",
+    response_date: "----",
     status: "Negativo",
-    confirmation: false,
+    confirmation: "return",
+    hour: "6 horas y 12 minutos",
   },
   {
     requester_type: "Abogado",
@@ -531,7 +533,8 @@ export const requests = [
     request_date: "2023-10-03",
     response_date: "2023-10-04",
     status: "No recomendable",
-    confirmation: true,
+    confirmation: "true",
+    hour: "8 horas y 30 minutos",
   },
   {
     requester_type: "Juez",
@@ -541,7 +544,8 @@ export const requests = [
     request_date: "2023-10-04",
     response_date: "----",
     status: "Sin respuesta",
-    confirmation: false,
+    confirmation: "false",
+    hour: "9 horas y 30 minutos",
   },
   {
     requester_type: "Tribunal",
@@ -549,9 +553,10 @@ export const requests = [
     identification_number: "789123456",
     situation_type: "Accidente de tránsito",
     request_date: "2023-10-05",
-    response_date: "2023-10-05",
+    response_date: "----",
     status: "Positivo",
-    confirmation: false,
+    confirmation: "return",
+    hour: "10 horas",
   },
   {
     requester_type: "Abogado",
@@ -561,7 +566,8 @@ export const requests = [
     request_date: "2023-10-06",
     response_date: "2023-10-07",
     status: "Negativo",
-    confirmation: false,
+    confirmation: "false",
+    hour: "4 horas",
   },
   {
     requester_type: "Juez",
@@ -571,7 +577,8 @@ export const requests = [
     request_date: "2023-10-07",
     response_date: "2023-10-08",
     status: "No recomendable",
-    confirmation: false,
+    confirmation: "true",
+    hour: "5 horas",
   },
   {
     requester_type: "Tribunal",
@@ -581,7 +588,8 @@ export const requests = [
     request_date: "2023-10-08",
     response_date: "----",
     status: "Sin respuesta",
-    confirmation: false,
+    confirmation: "false",
+    hour: "5 horas",
   },
   {
     requester_type: "Abogado",
@@ -591,7 +599,8 @@ export const requests = [
     request_date: "2023-10-09",
     response_date: "2023-10-10",
     status: "Positivo",
-    confirmation: true,
+    confirmation: "true",
+    hour: "6 horas y 10 minutos",
   },
   {
     requester_type: "Juez",
@@ -601,7 +610,8 @@ export const requests = [
     request_date: "2023-10-10",
     response_date: "2023-10-11",
     status: "Negativo",
-    confirmation: false,
+    confirmation: "false",
+    hour: "3 horas",
   },
   {
     requester_type: "Tribunal",
@@ -611,7 +621,8 @@ export const requests = [
     request_date: "2023-10-11",
     response_date: "2023-10-12",
     status: "No recomendable",
-    confirmation: true,
+    confirmation: "false",
+    hour: "7 horas 10 minutos",
   },
   {
     requester_type: "Abogado",
@@ -621,7 +632,8 @@ export const requests = [
     request_date: "2023-10-12",
     response_date: "----",
     status: "Sin respuesta",
-    confirmation: false,
+    confirmation: "false",
+    hour: "9 horas 25 minutos",
   },
   {
     requester_type: "Juez",
@@ -631,7 +643,8 @@ export const requests = [
     request_date: "2023-10-13",
     response_date: "2023-10-14",
     status: "Positivo",
-    confirmation: true,
+    confirmation: "true",
+    hour: "10 horas",
   },
   {
     requester_type: "Tribunal",
@@ -641,7 +654,8 @@ export const requests = [
     request_date: "2023-10-14",
     response_date: "2023-10-15",
     status: "Negativo",
-    confirmation: false,
+    confirmation: "true",
+    hour: "11 horas",
   },
   {
     requester_type: "Abogado",
@@ -649,9 +663,10 @@ export const requests = [
     identification_number: "789123456",
     situation_type: "Condena",
     request_date: "2023-10-15",
-    response_date: "2023-10-16",
+    response_date: "----",
     status: "No recomendable",
-    confirmation: true,
+    confirmation: "return",
+    hour: "4 horas",
   },
 ];
 
