@@ -7,6 +7,7 @@ import ViewCreateUser from "./view-create-user/ViewCreateUser";
 import ViewCreateRequest from "./view-create-request/ViewCreateRequest";
 import ViewRequests from "./view-requests/ViewRequests";
 import ViewWorkload from "./view-workload/ViewWorkload";
+import ViewProcessManagement from "./view-process-management/ViewProcessManagement";
 
 export {
   ViewCarries,
@@ -18,4 +19,5 @@ export {
   ViewCreateRequest,
   ViewRequests,
   ViewWorkload,
+  ViewProcessManagement,
 };
