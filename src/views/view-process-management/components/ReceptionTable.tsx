@@ -7,22 +7,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const data = [
-  {
-    id: 1,
-    numeroExpediente: "123/2023",
-    fechaRecepcion: "2023-05-15",
-    tipoDocumento: "Sentencia",
-    contenidoDocumento: "Resumen del contenido...",
-  },
-];
+import { data1 } from "../data";
+import { Pagination } from "@/components";
 
 const ReceptionTable = () => {
   return (
     <Table>
       <TableCaption>
-        Lista de Recepciones de Sentencias y Resoluciones Judiciales
+        <Pagination />
       </TableCaption>
       <TableHeader>
         <TableRow>
@@ -33,7 +25,7 @@ const ReceptionTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
+        {data1.map((item) => (
           <TableRow key={item.id}>
             <TableCell>{item.numeroExpediente}</TableCell>
             <TableCell>{item.fechaRecepcion}</TableCell>

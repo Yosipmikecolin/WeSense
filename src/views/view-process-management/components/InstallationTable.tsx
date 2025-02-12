@@ -7,22 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const data = [
-  {
-    id: 1,
-    estadoDispositivo: "Nuevo",
-    lugarInstalacion: "Domicilio del usuario",
-    tipoDispositivo: "Tobillera",
-    numeroSerie: "BRZ-12345",
-    fechaInstalacion: "2023-05-20",
-  },
-];
+import { data2 } from "../data";
+import { Pagination } from "@/components";
 
 const InstallationTable = () => {
   return (
     <Table>
-      <TableCaption>Lista de Instalaciones de Dispositivos</TableCaption>
+      <TableCaption>
+        <Pagination />
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Estado del Dispositivo</TableHead>
@@ -33,7 +26,7 @@ const InstallationTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
+        {data2.map((item) => (
           <TableRow key={item.id}>
             <TableCell>{item.estadoDispositivo}</TableCell>
             <TableCell>{item.lugarInstalacion}</TableCell>

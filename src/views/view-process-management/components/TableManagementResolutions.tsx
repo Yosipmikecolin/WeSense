@@ -7,22 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const data = [
-  {
-    id: 1,
-    numeroResolucion: "RES-2023-001",
-    fechaEmision: "2023-05-22",
-    tipoResolucion: "Modificación de condiciones",
-    contenidoResolucion: "Resumen del contenido...",
-    estadoImplementacion: "En Proceso",
-  },
-];
+import { data3 } from "../data";
+import { Pagination } from "@/components";
 
 const TableManagementResolutions = () => {
   return (
     <Table>
-      <TableCaption>Lista de Resoluciones Judiciales</TableCaption>
+      <TableCaption>
+        <Pagination />
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Número de Resolución</TableHead>
@@ -33,7 +26,7 @@ const TableManagementResolutions = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
+        {data3.map((item) => (
           <TableRow key={item.id}>
             <TableCell>{item.numeroResolucion}</TableCell>
             <TableCell>{item.fechaEmision}</TableCell>

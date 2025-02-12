@@ -7,23 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const data = [
-  {
-    id: 1,
-    idTicket: "TIC-2023-001",
-    fechaApertura: "2023-05-24",
-    tipoProblema: "Problema de Hardware",
-    descripcionProblema: "El dispositivo no enciende",
-    accionesTomadas: "Se realizó un diagnóstico remoto",
-    estadoTicket: "En Proceso",
-  },
-];
+import { data5 } from "../data";
+import { Pagination } from "@/components";
 
 const TechnicalSupportTable = () => {
   return (
     <Table>
-      <TableCaption>Lista de Tickets de Soporte Técnico</TableCaption>
+      <TableCaption>
+        <Pagination />
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>ID de Ticket</TableHead>
@@ -35,7 +27,7 @@ const TechnicalSupportTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
+        {data5.map((item) => (
           <TableRow key={item.id}>
             <TableCell>{item.idTicket}</TableCell>
             <TableCell>{item.fechaApertura}</TableCell>
