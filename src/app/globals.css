@@ -23,6 +23,12 @@
   border: 3px solid #f0f0f0;
 }
 
+@media (max-height: 800px) {
+  .modal {
+    height: 500px;
+  }
+}
+
 @layer base {
   :root {
     --radius: 0.5rem;

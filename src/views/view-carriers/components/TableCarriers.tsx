@@ -26,21 +26,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
+import { Carrier } from "@/interfaces";
 
 const TableCarriers = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCarrier, setSelectedCarrier] = useState<{
-    id: number;
-    fullName: string;
-    socialName: string;
-    nationality: string;
-    countryCode: string;
-    maritalStatus: string;
-    gender: string;
-    run: string;
-    phone: string;
-  }>();
+  const [selectedCarrier, setSelectedCarrier] = useState<Carrier>();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nombre social" },

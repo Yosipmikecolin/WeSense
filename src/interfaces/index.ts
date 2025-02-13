@@ -1,0 +1,34 @@
+export interface Carrier {
+  id: number;
+  fullName: string;
+  socialName: string;
+  nationality: string;
+  countryCode: string;
+  maritalStatus: string;
+  gender: string;
+  run: string;
+  phone: string;
+  typeCurrent: string;
+  birthDate: string;
+  penaltyType: string;
+  appealsCourt: string;
+  courtRegion: string;
+  court: string;
+  ruc: string;
+  rit: string;
+  rol: string;
+  crs: string;
+  inclusionExclusionAreas: string;
+  measureDuration: string;
+  controlSchedule: string;
+  effectiveControlPeriod: string;
+  feasibilityRequests: string;
+  sentence: string;
+  installationProgramming: string;
+  installationsPerformed: string;
+  modificationResolutions: string;
+  technicalSupports: string;
+  nonComplianceReports: string;
+  controlDays: string;
+  uninstallations: string;
+}
