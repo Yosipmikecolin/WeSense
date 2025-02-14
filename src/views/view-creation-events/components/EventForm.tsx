@@ -42,7 +42,7 @@ export default function EventForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Creación de Eventos e Incidencias</CardTitle>
+        <CardTitle className="text-2xl">Creación de eventos e incidencias</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

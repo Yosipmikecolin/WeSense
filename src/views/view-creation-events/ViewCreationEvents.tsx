@@ -6,7 +6,7 @@ const ViewCreationEvents = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8">
-        Sistema de gestión de incidencias
+        Sistema de gestión de eventos e incidencias
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,2fr] gap-8">
         <div className="space-y-8">
