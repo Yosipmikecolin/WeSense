@@ -17,7 +17,7 @@ const Dashboard = ({ menuItems }: DashboardProps) => {
   const [view, setView] = useState(menuItems[0].label);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <Sidebar menuItems={menuItems} view={view} setView={setView} />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header />

@@ -1,12 +1,10 @@
 import { Dashboard } from "@/components";
-import { ViewProcessManagement, ViewRequests } from "@/views";
 import {
-  BookText,
-  CalendarPlus,
-  ChartColumnIncreasing,
-  Files,
-  RefreshCcwDot,
-} from "lucide-react";
+  ViewCreationEvents,
+  ViewProcessManagement,
+  ViewRequests,
+} from "@/views";
+import { BookText, CalendarPlus, Files, RefreshCcwDot } from "lucide-react";
 
 const Awardee = () => {
   const menuItems = [
@@ -23,12 +21,7 @@ const Awardee = () => {
     {
       icon: <CalendarPlus size={17} />,
       label: "Creación de eventos",
-      content: <div>En desarrollo</div>,
-    },
-    {
-      icon: <ChartColumnIncreasing size={17} />,
-      label: "Estadísticas",
-      content: <div>En desarrollo</div>,
+      content: <ViewCreationEvents />,
     },
     {
       icon: <BookText size={17} />,

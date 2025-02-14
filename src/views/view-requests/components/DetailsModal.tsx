@@ -11,86 +11,165 @@ import Image from "next/image";
 import Foto1 from "/public/foto-1.jpg";
 import Foto2 from "/public/foto-2.jpg";
 import dynamic from "next/dynamic";
+import { Request } from "@/interfaces";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
 
 interface DetailsModalProps {
-  request?: {
-    requester_type: string;
-    requester_name: string;
-    identification_number: string;
-    situation_type: string;
-    request_date: string;
-    status: string;
-  };
+  request?: Request;
   open: boolean;
   onClose: VoidFunction;
 }
 
+const fieldLabels = {
+  requester_type: "Tipo de solicitante",
+  requester_name: "Nombre del solicitante",
+  identification_number: "Número de identificación",
+  situation_type: "Tipo de situación",
+  request_date: "Fecha de solicitud",
+  response_date: "Fecha de respuesta",
+  status: "Estado",
+  confirmation: "Confirmación",
+  hour: "Hora",
+  requesterType: "Tipo de solicitante",
+  region: "Región",
+  tribunalCourt: "Tribunal o corte",
+  crime: "Delito",
+  lastName: "Apellido",
+  maternalLastName: "Apellido materno",
+  firstName: "Primer nombre",
+  isForeigner: "Es extranjero",
+  street: "Calle",
+  number: "Número",
+  blockApartmentHouse: "Bloque/Departamento/Casa",
+  commune: "Comuna",
+  highwayRouteKilometer: "Autopista/Ruta/Kilómetro",
+  populationCondominiumVilla: "Población/Condominio/Villa",
+  postalCode: "Código postal",
+  geographicCoordinates: "Coordenadas geográficas",
+  radius: "Radio",
+  complianceSchedule: "Horario de cumplimiento",
+  sectorCharacteristics: "Características del sector",
+  victimLastName: "Apellido de la víctima",
+  victimMaternalLastName: "Apellido materno de la víctima",
+  victimFirstName: "Primer nombre de la víctima",
+  victimRut: "RUT de la víctima",
+  victimEmail: "Correo de la víctima",
+  victimPhone: "Teléfono de la víctima",
+  victimWorkPhone: "Teléfono del trabajo de la víctima",
+};
+
 const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
+  const groupedFields: Record<string, (keyof Request)[]> = {
+    "Información de la causa": [
+      "requesterType",
+      "region",
+      "tribunalCourt",
+      "identification_number",
+      "situation_type",
+      "request_date",
+      "crime",
+      "status",
+    ],
+    "Datos del solicitante": [
+      "lastName",
+      "maternalLastName",
+      "firstName",
+      "identification_number",
+    ],
+    "Datos de la persona": [
+      "victimLastName",
+      "victimMaternalLastName",
+      "victimFirstName",
+      "request_date",
+      "isForeigner",
+      "identification_number",
+    ],
+    "Zona de Inclusión": [
+      "street",
+      "number",
+      "blockApartmentHouse",
+      "commune",
+      "region",
+      "highwayRouteKilometer",
+      "populationCondominiumVilla",
+      "postalCode",
+      "geographicCoordinates",
+      "radius",
+      "complianceSchedule",
+      "sectorCharacteristics",
+    ],
+    "Zona de Exclusión": [
+      "street",
+      "number",
+      "blockApartmentHouse",
+      "commune",
+      "region",
+      "highwayRouteKilometer",
+      "populationCondominiumVilla",
+      "postalCode",
+      "geographicCoordinates",
+      "radius",
+      "complianceSchedule",
+      "sectorCharacteristics",
+    ],
+  };
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="modal sm:max-w-[550px] max-h-[800px] overflow-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">
             Detalles de la factibilidad técnica
           </DialogTitle>
         </DialogHeader>
         <DialogClose />
-        <Tabs defaultValue="account" className="w-full">
+        <Tabs defaultValue="application-information" className="w-full">
           <TabsList className="grid w-full grid-cols-2 gap-2">
-            <TabsTrigger value="account">
+            <TabsTrigger value="application-information">
               Información de la solicitud
             </TabsTrigger>
-            <TabsTrigger value="password">
+            <TabsTrigger value="awardee-response">
               Respuesta del adjudicatario
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
+          <TabsContent value="application-information">
             <div className="grid gap-4 py-4">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center pb-4 border-b">
-                  <span className="text-sm text-gray-500">
-                    Nombre del solicitante
-                  </span>
-                  <span className="font-medium">{request?.requester_name}</span>
-                </div>
-                <div className="flex justify-between items-center pb-4 border-b">
-                  <span className="text-sm text-gray-500">
-                    Numero de identifiación del solicitante
-                  </span>
-                  <span className="font-mono">
-                    {request?.identification_number}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center pb-4 border-b">
-                  <span className="text-sm text-gray-500">
-                    Tipo de solicitante
-                  </span>
-                  <span className="font-medium">{request?.requester_type}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">
-                    Fecha de solicitud
-                  </span>
-                  <span className="font-medium">{request?.request_date}</span>
-                </div>
-              </div>
+              {request &&
+                Object.entries(groupedFields).map(([sectionTitle, fields]) => (
+                  <div key={sectionTitle} className="space-y-4">
+                    <h3 className="text-lg font-bold border-b pb-2">
+                      {sectionTitle}
+                    </h3>
+                    {fields.map((key) =>
+                      request[key] ? (
+                        <div
+                          key={key}
+                          className="flex justify-between items-center pb-2 border-b"
+                        >
+                          <span className="text-sm text-gray-500">
+                            {fieldLabels[key] || key.replace(/_/g, " ")}
+                          </span>
+                          <span className="font-medium">
+                            {String(request[key])}
+                          </span>
+                        </div>
+                      ) : null
+                    )}
+                  </div>
+                ))}
             </div>
           </TabsContent>
-          <TabsContent value="password">
+          <TabsContent value="awardee-response">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border p-4 rounded-md">
               <div>
                 <Label className="text-sm font-bold">Estado</Label>
                 <span className="block text-gray-700">Positivo</span>
               </div>
-
               <div>
                 <Label className="text-sm font-bold">Cobertura mínima</Label>
                 <span className="block text-gray-700">100</span>
               </div>
-
               <div className="sm:col-span-3">
                 <Label className="text-sm font-bold mb-2 block">
                   Ubicación
@@ -102,14 +181,12 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                   />
                 </div>
               </div>
-
               <div>
                 <Label className="text-sm font-bold">
                   Indicación de aspectos
                 </Label>
                 <span className="block text-gray-700">Geográficos</span>
               </div>
-
               <div className="sm:col-span-2">
                 <Label className="text-sm font-bold">
                   Pruebas fotográficas

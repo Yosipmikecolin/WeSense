@@ -53,6 +53,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Request } from "@/interfaces";
 
 const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -66,17 +67,7 @@ const TableRequests = () => {
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
   const [viewButton, setViewButton] = useState("");
   const [stateFilter, setStateFilter] = useState("");
-  const [selectedRequest, setSelectedRequest] = useState<{
-    requester_type: string;
-    requester_name: string;
-    identification_number: string;
-    situation_type: string;
-    request_date: string;
-    response_date: string;
-    status: string;
-    confirmation: string;
-    hour: string;
-  }>();
+  const [selectedRequest, setSelectedRequest] = useState<Request>();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
@@ -96,19 +87,7 @@ const TableRequests = () => {
     window.open(gmailUrl, "_blank");
   };
 
-  const filterForRol = (
-    requests: {
-      requester_type: string;
-      requester_name: string;
-      identification_number: string;
-      situation_type: string;
-      request_date: string;
-      response_date: string;
-      status: string;
-      confirmation: string;
-      hour: string;
-    }[]
-  ) => {
+  const filterForRol = (requests: Request[]) => {
     if (viewButton === "administrator@gmail.com") {
       return requests.filter((i) => i.status.includes(stateFilter));
     } else {
