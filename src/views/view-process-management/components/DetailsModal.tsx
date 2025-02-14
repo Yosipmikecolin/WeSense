@@ -6,9 +6,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+interface Data {
+  [key: string]: string | number | boolean | null;
+}
+
 interface Props {
   title: string;
-  data?: Record<string, any>;
+  data?: Data;
   open: boolean;
   onClose: VoidFunction;
   fields: { key: string; label: string }[];
