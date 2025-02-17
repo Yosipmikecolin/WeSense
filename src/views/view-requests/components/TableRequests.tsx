@@ -126,41 +126,41 @@ const TableRequests = () => {
           <TableUI>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   TIPO DE REQUIRENTE
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   NOMBRE DEL REQUIRENTE
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   NUMERO DE IDENTIFICACIÓN
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   RESPUESTA
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   TIPO DE SITUACIÓN
                 </TableHead>
-                <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                <TableHead className="text-xs font-bold text-gray-600 ">
                   FECHA DE EMISIÓN
                 </TableHead>
 
                 {viewButton === "awardee@gmail.com" && (
-                  <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                  <TableHead className="text-xs font-bold text-gray-600 ">
                     FECHA DE DEVOLUCIÓN
                   </TableHead>
                 )}
                 {viewButton === "awardee@gmail.com" && (
-                  <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                  <TableHead className="text-xs font-bold text-gray-600 ">
                     TIEMPO PARA RESPONDER
                   </TableHead>
                 )}
                 {viewButton === "administrator@gmail.com" && (
-                  <TableHead className="text-xs font-bold uppercase text-gray-600 ">
+                  <TableHead className="text-xs font-bold text-gray-600 ">
                     FECHA DE RESPUESTA
                   </TableHead>
                 )}
-                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                <TableHead className="text-xs font-bold text-gray-600">
                   <Popover>
                     <PopoverTrigger className="flex gap-2">
                       ESTADO <Info size={15} />

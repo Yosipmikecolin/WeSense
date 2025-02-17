@@ -4,7 +4,7 @@ export default function Statistics() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Estadísticas de Incidencias</CardTitle>
+        <CardTitle className="text-2xl">Estadísticas de incidencias</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

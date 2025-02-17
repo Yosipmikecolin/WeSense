@@ -2,6 +2,7 @@ import { Dashboard } from "@/components";
 import {
   ViewCreationEvents,
   ViewProcessManagement,
+  ViewReport,
   ViewRequests,
 } from "@/views";
 import { BookText, CalendarPlus, Files, RefreshCcwDot } from "lucide-react";
@@ -26,7 +27,7 @@ const Awardee = () => {
     {
       icon: <BookText size={17} />,
       label: "Reportes",
-      content: <div>En desarrollo</div>,
+      content: <ViewReport />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

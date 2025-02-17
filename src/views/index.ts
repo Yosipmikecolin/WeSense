@@ -9,6 +9,7 @@ import ViewRequests from "./view-requests/ViewRequests";
 import ViewWorkload from "./view-workload/ViewWorkload";
 import ViewProcessManagement from "./view-process-management/ViewProcessManagement";
 import ViewCreationEvents from "./view-creation-events/ViewCreationEvents";
+import ViewReport from "./view-report/ViewReport";
 
 export {
   ViewCarries,
@@ -22,4 +23,5 @@ export {
   ViewWorkload,
   ViewProcessManagement,
   ViewCreationEvents,
+  ViewReport,
 };
