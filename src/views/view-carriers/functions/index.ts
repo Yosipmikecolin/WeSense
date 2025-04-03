@@ -75,6 +75,16 @@ export const generatePDF = (selectedCarrier: Carrier) => {
   doc.save(`detalles_${nameFile}.pdf`);
 };
 
+interface Field {
+  key: keyof Carrier; // Unión de todas las claves: "fullName" | "socialName" | "nationality" | etc.
+  label: string;
+}
+
+interface Section {
+  title: string;
+  fields: Field[];
+}
+
 export const generateWord = (selectedCarrier: Carrier) => {
   const sections = carrierFields.map((section) => {
     const tableRows = section.fields.map((field) => {
@@ -100,7 +110,9 @@ export const generateWord = (selectedCarrier: Carrier) => {
               new Paragraph({
                 children: [
                   new TextRun({
-                    text: selectedCarrier[field.key] || "-",
+                    text:
+                      selectedCarrier[field.key as keyof Carrier]?.toString() ??
+                      "-",
                     font: "Arial",
                     size: 24,
                   }),
