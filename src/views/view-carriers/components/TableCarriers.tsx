@@ -100,7 +100,7 @@ const TableCarriers = () => {
                   <TableCell>{carrier.fullName}</TableCell>
                   <TableCell>{carrier.socialName}</TableCell>
                   <TableCell>
-                    <div className="flex justify-between items-center gap-1 max-w-[150px]">
+                    <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
                         {carrier.nationality}
                       </span>

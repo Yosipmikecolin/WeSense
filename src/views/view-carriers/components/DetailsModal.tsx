@@ -10,6 +10,8 @@ import Flag from "react-world-flags";
 import { Download } from "lucide-react";
 import { generatePDF, generateWord } from "../functions";
 import { Carrier } from "@/interfaces";
+import { carrierFields } from "@/constants/carrierFields";
+import React from "react";
 
 interface Props {
   carrier?: Carrier;
@@ -28,22 +30,35 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 mt-3">
-          <table className="w-full text-left border-collapse border border-gray-200">
-            <tbody>
+          <table className="w-full text-left border-collapse">
+            <tbody className="flex gap-5 flex-col">
               {carrier &&
-                Object.entries(carrier).map(([key, value]) => (
-                  <tr key={key} className="border-b border-gray-200">
-                    <td className="font-semibold p-2 capitalize">
-                      {key.replace(/([A-Z])/g, " $1").trim()}:
-                    </td>
-                    <td className="p-2">
-                      {key === "countryCode" ? (
-                        <Flag code={value as string} width={20} />
-                      ) : (
-                        (value as string)
+                carrierFields.map(({ title, fields }) => (
+                  <div key={title}>
+                    <div className="border rounded-sm">
+                      <div className="bg-gray-100 font-bold p-2 text-lg border-gray-300">
+                        {title}
+                      </div>
+
+                      {fields.map(({ key, label }) =>
+                        carrier[key as keyof Carrier] ? (
+                          <tr key={key} className="rounded-sm border-gray-200">
+                            <td className="font-semibold p-2">{label}:</td>
+                            <td className="p-2">
+                              {key === "nationality" ? (
+                                <div className="flex items-center gap-3">
+                                  {carrier[key]}
+                                  <Flag code={carrier.countryCode} width={20} />
+                                </div>
+                              ) : (
+                                (carrier[key as keyof Carrier] as string)
+                              )}
+                            </td>
+                          </tr>
+                        ) : null
                       )}
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 ))}
             </tbody>
           </table>
