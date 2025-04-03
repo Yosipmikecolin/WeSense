@@ -9,7 +9,6 @@ const ProfileRequirers = () => {
       label: "Crear solicitud",
       content: <ViewCreateRequest />,
     },
-
     {
       icon: <Files size={17} />,
       label: "Solicitudes",

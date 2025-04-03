@@ -132,15 +132,6 @@ const TableWorkload = () => {
                             <span>Editar</span>
                           </div>
                         </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Trash />
-                            </Button>
-                            <span>Eliminar</span>
-                          </div>
-                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

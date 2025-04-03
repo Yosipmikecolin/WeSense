@@ -6,6 +6,7 @@ export const carrierFields = [
       { key: "socialName", label: "Nombre Social" },
       { key: "nationality", label: "Nacionalidad" },
       { key: "maritalStatus", label: "Estado Civil" },
+      { key: "typeCurrent", label: "Tipo de portador" },
       { key: "gender", label: "Género" },
       { key: "run", label: "RUN" },
       { key: "phone", label: "Teléfono" },

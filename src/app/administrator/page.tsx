@@ -1,6 +1,7 @@
 import { Dashboard } from "@/components";
 import {
   BriefcaseBusiness,
+  FileInput,
   Files,
   Link,
   Unlink,
@@ -12,6 +13,7 @@ import {
 import {
   ViewCarries,
   ViewCreateCarrier,
+  ViewCreateRequest,
   ViewCreateRequester,
   ViewCreateUser,
   ViewRequester,
@@ -56,6 +58,11 @@ const Admin = () => {
       icon: <Files size={17} />,
       label: "Solicitudes",
       content: <ViewRequests />,
+    },
+    {
+      icon: <FileInput size={17} />,
+      label: "Crear solicitud",
+      content: <ViewCreateRequest />,
     },
     {
       icon: <BriefcaseBusiness size={17} />,

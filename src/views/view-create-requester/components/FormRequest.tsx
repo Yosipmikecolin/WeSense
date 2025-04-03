@@ -49,15 +49,17 @@ const FormRequest = () => {
               <Input id="phone" placeholder="3001234567" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="userType">Tipo de Usuario</Label>
+              <Label htmlFor="userType">Tipo de usuario</Label>
               <Select>
                 <SelectTrigger id="userType">
                   <SelectValue placeholder="Seleccione el tipo de usuario" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="abogado">Abogado</SelectItem>
-                  <SelectItem value="juez">Juez</SelectItem>
-                  <SelectItem value="fiscal">Fiscal</SelectItem>
+                  <SelectItem value="defensores">Defensores</SelectItem>
+                  <SelectItem value="abogados">
+                    Abogados particulares
+                  </SelectItem>
+                  <SelectItem value="otros">Otros</SelectItem>
                 </SelectContent>
               </Select>
             </div>

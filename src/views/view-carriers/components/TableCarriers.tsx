@@ -69,22 +69,17 @@ const TableCarriers = () => {
                 <TableHead className="text-xs font-bold text-gray-600">
                   NOMBRE COMPLETO
                 </TableHead>
-
                 <TableHead className="text-xs font-bold text-gray-600">
                   NOMBRE SOCIAL
                 </TableHead>
-
                 <TableHead className="text-xs font-bold text-gray-600">
                   NACIONALIDAD
-                </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600">
-                  ESTADO CIVIL
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
                   GÉNERO
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  RUN
+                  TIPO DE PORTADOR
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
                   TELÉFONO
@@ -107,9 +102,8 @@ const TableCarriers = () => {
                       <Flag code={carrier.countryCode} width={20} />
                     </div>
                   </TableCell>
-                  <TableCell>{carrier.maritalStatus}</TableCell>
                   <TableCell>{carrier.gender}</TableCell>
-                  <TableCell>{carrier.run}</TableCell>
+                  <TableCell>{carrier.typeCurrent}</TableCell>
                   <TableCell>{carrier.phone}</TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
