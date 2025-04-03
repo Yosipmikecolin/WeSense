@@ -11,7 +11,6 @@ import { Download } from "lucide-react";
 import { generatePDF, generateWord } from "../functions";
 import { Carrier } from "@/interfaces";
 import { carrierFields } from "@/constants/carrierFields";
-import React from "react";
 
 interface Props {
   carrier?: Carrier;
@@ -30,21 +29,26 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 mt-3">
-          <table className="w-full text-left border-collapse">
-            <tbody className="flex gap-5 flex-col">
+          <div className="w-full text-left border-collapse">
+            <div className="flex gap-5 flex-col">
               {carrier &&
                 carrierFields.map(({ title, fields }) => (
                   <div key={title}>
                     <div className="border rounded-sm">
-                      <div className="bg-gray-100 font-bold p-2 text-lg border-gray-300">
+                      <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300">
                         {title}
                       </div>
 
                       {fields.map(({ key, label }) =>
                         carrier[key as keyof Carrier] ? (
-                          <tr key={key} className="rounded-sm border-gray-200">
-                            <td className="font-semibold p-2">{label}:</td>
-                            <td className="p-2">
+                          <div
+                            key={key}
+                            className="p-2 border-t border-b-0 flex items-center justify-between"
+                          >
+                            <div className="font-semibold p-1 flex">
+                              {label}:
+                            </div>
+                            <div className="text-end">
                               {key === "nationality" ? (
                                 <div className="flex items-center gap-3">
                                   {carrier[key]}
@@ -53,30 +57,30 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                               ) : (
                                 (carrier[key as keyof Carrier] as string)
                               )}
-                            </td>
-                          </tr>
+                            </div>
+                          </div>
                         ) : null
                       )}
                     </div>
                   </div>
                 ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
           <div className="flex gap-2 mt-4">
             <Button
               variant="outline"
               onClick={() => carrier && generatePDF(carrier)}
-              className="bg-red-500 text-white hover:bg-red-600 hover:text-white w-full flex justify-between"
+              className="bg-red-600 text-white hover:bg-red-500 hover:text-white flex"
             >
-              Descargar PDF
+              PDF
               <Download />
             </Button>
             <Button
               variant="outline"
               onClick={() => carrier && generateWord(carrier)}
-              className="bg-blue-500 hover:bg-blue-600 hover:text-white text-white w-full flex justify-between"
+              className="bg-blue-600 text-white hover:bg-blue-500 hover:text-white flex"
             >
-              Descargar Word
+              WORD
               <Download />
             </Button>
           </div>

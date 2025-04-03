@@ -1,5 +1,4 @@
 export interface Carrier {
-  id: number;
   fullName: string;
   socialName: string;
   nationality: string;
@@ -31,6 +30,7 @@ export interface Carrier {
   nonComplianceReports: string;
   controlDays: string;
   uninstallations: string;
+  [key: string]: string | undefined;
 }
 
 export interface Request {
