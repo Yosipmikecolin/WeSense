@@ -10,9 +10,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Step1Data, StepProps } from "../interfaces";
+import { Switch } from "@/components/ui/switch";
+import { Popover } from "@radix-ui/react-popover";
+import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 const DataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
   const [formData, setFormData] = useState<Step1Data>(data as Step1Data);
+  const [date, setDate] = useState<Date>();
 
   useEffect(() => {
     const isComplete = Object.values(formData).every((value) => value !== "");
@@ -51,6 +61,14 @@ const DataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
         />
       </div>
       <div>
+        <Label htmlFor="apellidoPaterno">Apellido Paterno</Label>
+        <Input id="apellidoPaterno" name="apellidoPaterno" />
+      </div>
+      <div>
+        <Label htmlFor="apellidoMaterno">Apellido Materno</Label>
+        <Input id="apellidoMaterno" name="apellidoMaterno" />
+      </div>
+      <div>
         <Label htmlFor="run">RUN</Label>
         <Input
           id="run"
@@ -76,7 +94,6 @@ const DataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
           </SelectContent>
         </Select>
       </div>
-
       <div>
         <Label htmlFor="sexo">Género</Label>
         <Select
@@ -93,14 +110,49 @@ const DataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
         </Select>
       </div>
       <div>
+        <Label htmlFor="sexo">Sexo</Label>
+        <Select name="sexo">
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione el sexo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="masculino">Masculino</SelectItem>
+            <SelectItem value="femenino">Femenino</SelectItem>
+            <SelectItem value="otro">Otro</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
         <Label htmlFor="fechaNacimiento">Fecha de Nacimiento</Label>
-        <Input
-          id="fechaNacimiento"
-          name="fechaNacimiento"
-          type="date"
-          value={formData.fechaNacimiento || ""}
-          onChange={handleChange}
-        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon />
+              {date ? (
+                format(date, "PPP", { locale: es })
+              ) : (
+                <span>Seleccionar fecha</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              classNames={{
+                day_selected: "bg-green-500 text-white hover:bg-green-500",
+              }}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
       </div>
       <div>
         <Label htmlFor="estadoCivil">Estado Civil</Label>
@@ -137,6 +189,11 @@ const DataForm = ({ data, setCompleteForm, updateData }: StepProps) => {
           value={formData.telefono || ""}
           onChange={handleChange}
         />
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Switch id="extranjero" name="extranjero" />
+        <Label htmlFor="extranjero">¿Es extranjero?</Label>
       </div>
     </div>
   );

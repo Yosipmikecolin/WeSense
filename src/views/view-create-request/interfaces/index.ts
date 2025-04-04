@@ -1,9 +1,6 @@
 export interface FormData {
   step1: Step1Data;
   step2: Step2Data;
-  step3: Step3Data;
-  step4: Step3Data;
-  step5: Step3Data;
 }
 
 export interface Step1Data {

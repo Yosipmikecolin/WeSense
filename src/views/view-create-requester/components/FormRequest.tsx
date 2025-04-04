@@ -16,11 +16,13 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
+import { es } from "date-fns/locale";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 const FormRequest = () => {
   const [date, setDate] = useState<Date>();
@@ -34,19 +36,27 @@ const FormRequest = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="fullName">Nombre Completo</Label>
-              <Input id="fullName" placeholder="José Alfredo" />
+              <Input id="fullName" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Correo Electrónico</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="jose.alfredo@gmail.com"
-              />
+              <Input id="email" type="email" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Apellido paterno</Label>
+              <Input id="fullName" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Apellido Materno</Label>
+              <Input id="email" type="text" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">RUN</Label>
+              <Input id="email" type="text" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Teléfono</Label>
-              <Input id="phone" placeholder="3001234567" />
+              <Input id="phone" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="userType">Tipo de usuario</Label>
@@ -65,25 +75,25 @@ const FormRequest = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="institution">Institución</Label>
-              <Input id="institution" placeholder="Tribunal Superior" />
+              <Input id="institution" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="identificationNumber">
                 Número de Identificación
               </Label>
-              <Input id="identificationNumber" placeholder="AB1234567" />
+              <Input id="identificationNumber" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="region">Región</Label>
-              <Input id="region" placeholder="Bogotá" />
+              <Input id="region" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="address">Dirección</Label>
-              <Input id="address" placeholder="Calle 123 #45-67" />
+              <Input id="address" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="accessAreas">Áreas de Acceso</Label>
-              <Input id="accessAreas" placeholder="Legal" />
+              <Input id="accessAreas" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="registrationDate">Fecha de Registro</Label>
@@ -91,23 +101,28 @@ const FormRequest = () => {
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
-                    className={`w-full justify-start text-left font-normal ${
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
                       !date && "text-muted-foreground"
-                    }`}
+                    )}
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon />
                     {date ? (
-                      format(date, "PPP")
+                      format(date, "PPP", { locale: es })
                     ) : (
-                      <span>Seleccione una fecha</span>
+                      <span>Seleccionar fecha</span>
                     )}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
+                <PopoverContent className="w-full p-0" align="center">
                   <Calendar
                     mode="single"
                     selected={date}
                     onSelect={setDate}
+                    classNames={{
+                      day_selected:
+                        "bg-green-500 text-white hover:bg-green-500",
+                    }}
                     initialFocus
                   />
                 </PopoverContent>
@@ -138,10 +153,7 @@ const FormRequest = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="observations">Observaciones</Label>
-            <Textarea
-              id="observations"
-              placeholder="Usuario activo desde enero"
-            />
+            <Textarea id="observations" />
           </div>
           <Button variant={"primary"} type="submit">
             Crear requirente

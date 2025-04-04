@@ -132,9 +132,7 @@ const TableRequests = () => {
                 <TableHead className="text-xs font-bold text-gray-600">
                   NOMBRE DEL REQUIRENTE
                 </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600">
-                  NUMERO DE IDENTIFICACIÓN
-                </TableHead>
+
                 <TableHead className="text-xs font-bold text-gray-600">
                   RESPUESTA
                 </TableHead>
@@ -200,7 +198,7 @@ const TableRequests = () => {
                     </PopoverContent>
                   </Popover>
                 </TableHead>
-                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end items-center">
+                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
                 </TableHead>
               </TableRow>
@@ -210,7 +208,6 @@ const TableRequests = () => {
                 <TableRow key={index}>
                   <TableCell>{request.requester_type}</TableCell>
                   <TableCell>{request.requester_name}</TableCell>
-                  <TableCell>{request.identification_number}</TableCell>
                   <TableCell className="text-xs ">
                     <div className="w-[110px]">
                       {request.status === "Positivo" && (
@@ -239,11 +236,11 @@ const TableRequests = () => {
                   </TableCell>
                   <TableCell>{request.situation_type}</TableCell>
                   <TableCell>{request.request_date}</TableCell>
-                  <TableCell>
+                  {/*     <TableCell>
                     {request.confirmation !== "return"
                       ? "No aplica"
                       : request.request_date}
-                  </TableCell>
+                  </TableCell> */}
 
                   {viewButton === "awardee@gmail.com" && (
                     <TableCell>{request.hour}</TableCell>
@@ -251,7 +248,7 @@ const TableRequests = () => {
                   {viewButton === "administrator@gmail.com" && (
                     <TableCell>{request.response_date}</TableCell>
                   )}
-                  <TableCell>
+                  <TableCell className="w-10">
                     {request.confirmation === "true" && (
                       <CircleCheck size={17} color="#16a34a" />
                     )}

@@ -30,7 +30,7 @@ const REQUESTER_TYPES = [
   { id: "Otro", name: "Otro" },
 ];
 
-const CaseInformationForm = ({}: StepProps) => {
+const ApplicantForm = ({}: StepProps) => {
   const [requesterType, setRequesterType] = useState<string>("");
   const [date, setDate] = useState<Date>();
   const [selectedRequester, setSelectedRequester] = useState<string>("");
@@ -100,7 +100,7 @@ const CaseInformationForm = ({}: StepProps) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-5">
         <div className="space-y-2 w-full">
-          <Label htmlFor="requesterType">Tipo de solicitante</Label>
+          <Label htmlFor="requesterType">Tipo de Solicitante</Label>
           <Select value={requesterType} onValueChange={setRequesterType}>
             <SelectTrigger id="requesterType" className="w-full">
               <SelectValue placeholder="Seleccione un tipo de requiriente" />
@@ -116,7 +116,7 @@ const CaseInformationForm = ({}: StepProps) => {
         </div>
 
         <div className="space-y-2 w-full">
-          <Label htmlFor="requesterType">Fecha de la solicitud</Label>
+          <Label htmlFor="requesterType">Fecha de la Solicitud</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -228,4 +228,4 @@ const CaseInformationForm = ({}: StepProps) => {
   );
 };
 
-export default CaseInformationForm;
+export default ApplicantForm;

@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import DataForm from "./components/DataForm";
 import CauseForm from "./components/CauseForm";
 import MonitoringForm from "./components/MonitoringForm";
-import Timeline from "./components/Timeline";
+import Timeline from "../../components/timeline/Timeline";
 import {
   FormData as IFormData,
   Step1Data,
@@ -21,28 +21,32 @@ import {
   Step3Data,
 } from "./interfaces";
 import classes from "./ViewCreateCarrier.module.css";
+import InclusionZoneForm from "./components/InclusionZoneForm";
+import ExclusionZoneForm from "./components/ExclusionZoneForm";
 
 const ViewCreateCarrier = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const steps = ["Datos", "Causa", "Monitoreo"];
+  const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>({
     step1: {} as Step1Data,
     step2: {} as Step2Data,
     step3: {} as Step3Data,
+    step4: {} as Step3Data,
+    step5: {} as Step3Data,
   });
 
-  const nextStep = useCallback(() => {
+  const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
-  }, [currentStep]);
+  };
 
-  const previousStep = useCallback(() => {
+  const handlePrevious = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  }, [currentStep]);
+  };
 
   const updateData = useCallback(
     (step: keyof IFormData, data: Step1Data | Step2Data | Step3Data) => {
@@ -80,6 +84,24 @@ const ViewCreateCarrier = () => {
             setCompleteForm={setCompleteForm}
           />
         );
+
+      case 3:
+        return (
+          <InclusionZoneForm
+            data={formData.step3}
+            updateData={(data) => updateData("step4", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+
+      case 4:
+        return (
+          <ExclusionZoneForm
+            data={formData.step5}
+            updateData={(data) => updateData("step5", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
       default:
         return null;
     }
@@ -92,21 +114,21 @@ const ViewCreateCarrier = () => {
     >
       <Card className="w-full max-w-3xl mx-auto p-5">
         <CardHeader className="relative overflow-hidden">
-          <CardTitle className="text-3xl mb-3">Crear portador</CardTitle>
+          <CardTitle className="text-3xl mb-2">Crear portador</CardTitle>
           <Timeline steps={steps} currentStep={currentStep} />
         </CardHeader>
         <CardContent>{renderCurrentStep()}</CardContent>
         <CardFooter className="flex justify-between">
           <Button
             variant={"primary"}
-            onClick={previousStep}
+            onClick={handlePrevious}
             disabled={currentStep === 0}
           >
             Atras
           </Button>
           <Button
             variant={"primary"}
-            onClick={nextStep}
+            onClick={handleNext}
             disabled={currentStep === steps.length - 1 || !completeForm}
           >
             Siguiente
