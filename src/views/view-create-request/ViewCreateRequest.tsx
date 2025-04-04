@@ -4,6 +4,7 @@ import React, { useState, useCallback } from "react";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -35,11 +36,11 @@ const ViewCreateRequest = () => {
     step5: {} as Step3Data,
   });
   const steps = [
-    "Información de la causa",
-    "Datos Solicitante ",
-    "Datos de la persona condenada",
-    "Zona de Inclusión de la persona condenada",
-    "Zona de Exclusión para la persona condenada",
+    "Requirente",
+    "Solicitante ",
+    "Condenado/a",
+    "Inclusión",
+    "Exclusión",
   ];
 
   const nextStep = useCallback(() => {
@@ -118,13 +119,17 @@ const ViewCreateRequest = () => {
       className={classes.container}
       style={{ height: currentStep === 3 || currentStep === 4 ? "auto" : "" }}
     >
-      <Card className="w-full max-w-3xl mx-auto p-5">
-        <CardHeader className="relative overflow-hidden mb-5">
-          <CardTitle className="text-3xl mb-3">
+      <Card className="w-full max-w-3xl mx-auto">
+        <CardHeader className="bg-gradient-to-r from-slate-100 to-slate-50 rounded-t-lg">
+          <CardTitle className="text-2xl">Formulario de Solicitud</CardTitle>
+          <CardDescription>
             Crear solicitud de factibilidad técnica
-          </CardTitle>
-          <Timeline steps={steps} currentStep={currentStep} />
+          </CardDescription>
         </CardHeader>
+        <div className="py-5 px-10">
+          <Timeline steps={steps} currentStep={currentStep} />
+        </div>
+
         <CardContent>{renderCurrentStep()}</CardContent>
         <CardFooter className="flex justify-between">
           <Button
