@@ -32,16 +32,18 @@ import Foto2 from "/public/foto-2.jpg";
 import Foto3 from "/public/foto-3.jpg";
 import Foto4 from "/public/foto-4.jpg";
 import dynamic from "next/dynamic";
+import { Request } from "@/interfaces";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
 
 interface AddressModalProps {
+  request?: Request;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
+const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
   const [status, setStatus] = useState<string>("");
   const [coordinates, setCoordinates] = useState({ lat: "", lng: "" });
 
@@ -52,6 +54,7 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
     console.log({ status, coordinates, fotos, cobertura });
     onClose();
   };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
@@ -155,6 +158,13 @@ const AddressModal = ({ isOpen, onClose }: AddressModalProps) => {
               />
             </div>
           </div>
+
+          {request?.confirmation === "return" && (
+            <div>
+              <Label htmlFor="note">Observación respuesta de devolución</Label>
+              <Textarea id="note" name="note" required />
+            </div>
+          )}
 
           <div className="flex justify-between items-center gap-2 mb-2">
             <div className="flex flex-col gap-2 w-full">

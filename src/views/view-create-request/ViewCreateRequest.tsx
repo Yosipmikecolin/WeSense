@@ -19,7 +19,7 @@ import {
 import classes from "./ViewCreateRequest.module.css";
 import Timeline from "@/components/timeline/Timeline";
 import BearerForm from "./components/BearerForm";
-import ApplicantForm from "./components/applicantForm";
+import ApplicantForm from "./components/ApplicantForm";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);

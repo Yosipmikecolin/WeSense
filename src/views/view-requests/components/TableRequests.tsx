@@ -178,9 +178,6 @@ const TableRequests = () => {
                             <RotateCw size={17} color="#FF9D23" />
                             Retornado
                           </li>
-                          <li className="flex items-center gap-2">
-                            <CircleCheck size={17} color="#16a34a" /> Confirmado
-                          </li>
                         </ul>
                       ) : (
                         <ul>
@@ -193,18 +190,26 @@ const TableRequests = () => {
                             <RotateCw size={17} color="#FF9D23" />
                             Solicitud retornada
                           </li>
+                          <li className="flex items-center gap-2">
+                            <CircleCheck size={17} color="#16a34a" /> Confirmado
+                          </li>
                         </ul>
                       )}
                     </PopoverContent>
                   </Popover>
                 </TableHead>
-                <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
+                <TableHead className="mr-10 mt-6 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {filterForRol(requests).map((request, index) => (
+              {(viewButton === "administrator@gmail.com"
+                ? filterForRol(requests).filter(
+                    (a) => a.confirmation !== "true"
+                  )
+                : filterForRol(requests)
+              ).map((request, index) => (
                 <TableRow key={index}>
                   <TableCell>{request.requester_type}</TableCell>
                   <TableCell>{request.requester_name}</TableCell>
@@ -236,14 +241,26 @@ const TableRequests = () => {
                   </TableCell>
                   <TableCell>{request.situation_type}</TableCell>
                   <TableCell>{request.request_date}</TableCell>
-                  {/*     <TableCell>
-                    {request.confirmation !== "return"
-                      ? "No aplica"
-                      : request.request_date}
-                  </TableCell> */}
 
                   {viewButton === "awardee@gmail.com" && (
-                    <TableCell>{request.hour}</TableCell>
+                    <TableCell>
+                      {request.confirmation !== "return"
+                        ? "No aplica"
+                        : request.request_date}
+                    </TableCell>
+                  )}
+
+                  {viewButton === "awardee@gmail.com" && (
+                    <TableCell
+                      className={
+                        request.hour === "13 horas y 15 minutos" ||
+                        request.hour === "26 horas 25 minutos"
+                          ? "text-red-500"
+                          : "text-black"
+                      }
+                    >
+                      {request.hour}
+                    </TableCell>
                   )}
                   {viewButton === "administrator@gmail.com" && (
                     <TableCell>{request.response_date}</TableCell>
@@ -299,18 +316,37 @@ const TableRequests = () => {
                           </div>
                         </DropdownMenuItem>
                         {viewButton === "awardee@gmail.com" &&
-                          request.confirmation !== "true" && (
-                            <DropdownMenuItem
-                              onClick={() => setIsModalOpen(true)}
+                        request.confirmation === "return" ? (
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setIsModalOpen(true);
+                            }}
+                          >
+                            <div
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={() => setSelectedRequest(request)}
                             >
-                              <div className="flex items-center gap-2 cursor-pointer">
-                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                  <FilePen />
-                                </Button>
-                                <span>Gestionar</span>
-                              </div>
-                            </DropdownMenuItem>
-                          )}
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FilePen />
+                              </Button>
+                              Gestionar devolución
+                            </div>
+                          </DropdownMenuItem>
+                        ) : (
+                          <DropdownMenuItem
+                            onClick={() => setIsModalOpen(true)}
+                          >
+                            <div
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={() => setSelectedRequest(undefined)}
+                            >
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FilePen />
+                              </Button>
+                              Gestionar
+                            </div>
+                          </DropdownMenuItem>
+                        )}
                         {viewButton === "administrator@gmail.com" &&
                           request.status !== "Sin respuesta" &&
                           request.confirmation === "false" && (
@@ -459,10 +495,13 @@ const TableRequests = () => {
         request={selectedRequest}
         onClose={() => setIsModalOpenDetails(false)}
       />
+
       <AddressModal
+        request={selectedRequest}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
       <ReturnDetailsModal
         open={isModalReturnOpenDetails}
         onClose={() => setIsModaReturnlOpenDetails(false)}
