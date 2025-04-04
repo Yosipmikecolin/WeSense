@@ -9,116 +9,30 @@ import {
 } from "@/components/ui/select";
 import { StepProps } from "../interfaces";
 import { useEffect, useState } from "react";
+
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { requesters } from "@/utils";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 // Mock data for demonstration
 const REQUESTER_TYPES = [
-  { id: "juez", name: "Juez" },
-  { id: "abogado", name: "Abogado" },
-  { id: "particular", name: "Particular" },
+  { id: "Juez", name: "Juez" },
+  { id: "Abogado", name: "Abogado" },
+  { id: "Tribunal", name: "Tribunal" },
 ];
-
-const MOCK_USERS = {
-  juez: [
-    {
-      id: "j1",
-      name: "Carmen Rodríguez",
-      region: "Metropolitana",
-      tribunal: "1° Juzgado Civil de Santiago",
-      ruc: "C-1234-2023",
-      rit: "J-567-2023",
-      rol: "JZ-001",
-    },
-    {
-      id: "j2",
-      name: "Miguel Ángel Pérez",
-      region: "Valparaíso",
-      tribunal: "Juzgado de Garantía de Valparaíso",
-      ruc: "C-5678-2023",
-      rit: "J-890-2023",
-      rol: "JZ-002",
-    },
-    {
-      id: "j3",
-      name: "Ana María González",
-      region: "Biobío",
-      tribunal: "Tribunal de Familia de Concepción",
-      ruc: "C-9012-2023",
-      rit: "J-123-2023",
-      rol: "JZ-003",
-    },
-  ],
-  abogado: [
-    {
-      id: "a1",
-      name: "Francisco Martínez",
-      region: "Metropolitana",
-      tribunal: "Corte de Apelaciones",
-      ruc: "A-2345-2023",
-      rit: "A-678-2023",
-      rol: "AB-001",
-    },
-    {
-      id: "a2",
-      name: "Valentina Soto",
-      region: "Antofagasta",
-      tribunal: "2° Juzgado de Letras",
-      ruc: "A-6789-2023",
-      rit: "A-901-2023",
-      rol: "AB-002",
-    },
-    {
-      id: "a3",
-      name: "Roberto Muñoz",
-      region: "Los Lagos",
-      tribunal: "Juzgado de Letras y Garantía",
-      ruc: "A-0123-2023",
-      rit: "A-234-2023",
-      rol: "AB-003",
-    },
-  ],
-  particular: [
-    {
-      id: "p1",
-      name: "Claudia Vega",
-      region: "Metropolitana",
-      tribunal: "No aplica",
-      ruc: "P-3456-2023",
-      rit: "P-789-2023",
-      rol: "PT-001",
-    },
-    {
-      id: "p2",
-      name: "Jorge Díaz",
-      region: "O'Higgins",
-      tribunal: "No aplica",
-      ruc: "P-7890-2023",
-      rit: "P-012-2023",
-      rol: "PT-002",
-    },
-    {
-      id: "p3",
-      name: "Patricia Fuentes",
-      region: "Maule",
-      tribunal: "No aplica",
-      ruc: "P-1234-2023",
-      rit: "P-345-2023",
-      rol: "PT-003",
-    },
-  ],
-};
 
 const CaseInformationForm = ({}: StepProps) => {
   const [requesterType, setRequesterType] = useState<string>("");
+  const [date, setDate] = useState<Date>();
   const [selectedRequester, setSelectedRequester] = useState<string>("");
   const [formData, setFormData] = useState({
     region: "",
@@ -128,9 +42,24 @@ const CaseInformationForm = ({}: StepProps) => {
     rol: "",
   });
   const [loading, setLoading] = useState(false);
-  const [availableRequesters, setAvailableRequesters] = useState<any[]>([]);
+  const [availableRequesters, setAvailableRequesters] = useState<
+    {
+      fullName: string;
+      email: string;
+      phone: string;
+      userType: string;
+      institution: string;
+      identificationNumber: string;
+      region: string;
+      address: string;
+      accessAreas: string;
+      registrationDate: string;
+      identityVerification: string;
+      securityQuestion: string;
+      observations: string;
+    }[]
+  >([]);
 
-  // Simulate loading data when requester type changes
   useEffect(() => {
     if (requesterType) {
       setLoading(true);
@@ -145,9 +74,8 @@ const CaseInformationForm = ({}: StepProps) => {
 
       // Simulate API call delay
       setTimeout(() => {
-        setAvailableRequesters(
-          MOCK_USERS[requesterType as keyof typeof MOCK_USERS] || []
-        );
+        const data = requesters.filter((i) => i.userType === requesterType);
+        setAvailableRequesters(data);
         setLoading(false);
       }, 600);
     } else {
@@ -155,48 +83,78 @@ const CaseInformationForm = ({}: StepProps) => {
     }
   }, [requesterType]);
 
-  // Update form data when a specific requester is selected
-  useEffect(() => {
-    if (selectedRequester && requesterType) {
-      const requesterData = MOCK_USERS[
-        requesterType as keyof typeof MOCK_USERS
-      ].find((user) => user.id === selectedRequester);
-
-      if (requesterData) {
-        setFormData({
-          region: requesterData.region,
-          tribunal: requesterData.tribunal,
-          ruc: requesterData.ruc,
-          rit: requesterData.rit,
-          rol: requesterData.rol,
-        });
-      }
+  const selectReqii = (value: string) => {
+    setSelectedRequester(value);
+    const selectRequirent = requesters.find((i) => i.fullName === value);
+    if (selectRequirent) {
+      setFormData({
+        region: selectRequirent.region,
+        tribunal: selectRequirent.institution,
+        ruc: selectRequirent.ruc,
+        rit: selectRequirent.identificationNumber,
+        rol: selectRequirent.userType,
+      });
     }
-  }, [selectedRequester, requesterType]);
-
+  };
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="requesterType">Tipo de Requiriente</Label>
-        <Select value={requesterType} onValueChange={setRequesterType}>
-          <SelectTrigger id="requesterType" className="w-full">
-            <SelectValue placeholder="Seleccione un tipo de requiriente" />
-          </SelectTrigger>
-          <SelectContent>
-            {REQUESTER_TYPES.map((type) => (
-              <SelectItem key={type.id} value={type.id}>
-                {type.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex items-center justify-between gap-5">
+        <div className="space-y-2 w-full">
+          <Label htmlFor="requesterType">Tipo de Requiriente</Label>
+          <Select value={requesterType} onValueChange={setRequesterType}>
+            <SelectTrigger id="requesterType" className="w-full">
+              <SelectValue placeholder="Seleccione un tipo de requiriente" />
+            </SelectTrigger>
+            <SelectContent>
+              {REQUESTER_TYPES.map((type) => (
+                <SelectItem key={type.id} value={type.id}>
+                  {type.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2 w-full">
+          <Label htmlFor="requesterType">Fecha de la solicitud</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon />
+                {date ? (
+                  format(date, "PPP", { locale: es })
+                ) : (
+                  <span>Seleccionar fecha</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0" align="center">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                classNames={{
+                  day_selected:
+                    "bg-green-500 text-white hover:bg-green-500 hover:text-white",
+                }}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="requester">Requiriente</Label>
         <Select
           value={selectedRequester}
-          onValueChange={setSelectedRequester}
+          onValueChange={selectReqii}
           disabled={!requesterType || loading}
         >
           <SelectTrigger id="requester" className="w-full">
@@ -210,9 +168,9 @@ const CaseInformationForm = ({}: StepProps) => {
             )}
           </SelectTrigger>
           <SelectContent>
-            {availableRequesters.map((requester) => (
-              <SelectItem key={requester.id} value={requester.id}>
-                {requester.name}
+            {availableRequesters.map((requester, index) => (
+              <SelectItem key={index} value={requester.fullName}>
+                {requester.fullName}
               </SelectItem>
             ))}
           </SelectContent>

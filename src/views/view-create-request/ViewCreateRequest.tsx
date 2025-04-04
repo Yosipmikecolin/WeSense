@@ -119,12 +119,11 @@ const ViewCreateRequest = () => {
       className={classes.container}
       style={{ height: currentStep === 3 || currentStep === 4 ? "auto" : "" }}
     >
-      <Card className="w-full max-w-3xl mx-auto">
-        <CardHeader className="bg-gradient-to-r from-slate-100 to-slate-50 rounded-t-lg">
-          <CardTitle className="text-2xl">Formulario de Solicitud</CardTitle>
-          <CardDescription>
+      <Card className="w-full max-w-3xl mx-auto p-5">
+        <CardHeader>
+          <CardTitle className="text-3xl">
             Crear solicitud de factibilidad técnica
-          </CardDescription>
+          </CardTitle>
         </CardHeader>
         <div className="py-5 px-10">
           <Timeline steps={steps} currentStep={currentStep} />

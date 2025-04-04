@@ -678,6 +678,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Cómo se llama tu madre?",
     observations: "Usuario activo desde enero",
+    ruc: "5837488234",
   },
   {
     fullName: "María Fernanda",
@@ -693,6 +694,7 @@ export const requesters = [
     identityVerification: "Tarjeta profesional",
     securityQuestion: "¿Cuál es tu color favorito?",
     observations: "Tiene permisos administrativos",
+    ruc: "7583478234",
   },
   {
     fullName: "Carlos Rodríguez",
@@ -708,6 +710,7 @@ export const requesters = [
     identityVerification: "Pasaporte",
     securityQuestion: "¿En qué ciudad naciste?",
     observations: "Usuario con restricciones de acceso",
+    ruc: "45783653",
   },
   {
     fullName: "Luisa Pérez",
@@ -723,6 +726,7 @@ export const requesters = [
     identityVerification: "Cédula",
     securityQuestion: "¿Cómo se llamaba tu primer colegio?",
     observations: "Tiene múltiples solicitudes activas",
+    ruc: "56984737",
   },
   {
     fullName: "Andrés Mejía",
@@ -738,6 +742,7 @@ export const requesters = [
     identityVerification: "Licencia profesional",
     securityQuestion: "¿Cuál es tu película favorita?",
     observations: "Usuario de alta prioridad",
+    ruc: "89362543",
   },
   {
     fullName: "Camila Ortiz",
@@ -753,6 +758,7 @@ export const requesters = [
     identityVerification: "Certificación técnica",
     securityQuestion: "¿Cuál es tu lugar favorito?",
     observations: "Certificada en sistemas de seguridad",
+    ruc: "12381832",
   },
   {
     fullName: "Ricardo López",
@@ -768,6 +774,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Qué marca fue tu primer auto?",
     observations: "Requiere renovación anual de acceso",
+    ruc: "39458345",
   },
   {
     fullName: "Tatiana Ramírez",
@@ -783,6 +790,7 @@ export const requesters = [
     identityVerification: "Tarjeta profesional",
     securityQuestion: "¿Qué sabor de helado prefieres?",
     observations: "Reportes trimestrales requeridos",
+    ruc: "57467364",
   },
   {
     fullName: "Paola Gómez",
@@ -798,6 +806,7 @@ export const requesters = [
     identityVerification: "Cédula",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
+    ruc: "12837467",
   },
   {
     fullName: "Martha Gómez",
@@ -813,6 +822,7 @@ export const requesters = [
     identityVerification: "Cédula",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
+    ruc: "58342642",
   },
 
   {
@@ -829,6 +839,7 @@ export const requesters = [
     identityVerification: "Cédula",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
+    ruc: "67477233",
   },
   {
     fullName: "Stive Leguizamon",
@@ -844,6 +855,7 @@ export const requesters = [
     identityVerification: "Cédula",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
+    ruc: "467834672",
   },
 ];
 
