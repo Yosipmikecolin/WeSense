@@ -17,7 +17,6 @@ import {
   Ellipsis,
   Eye,
   Gavel,
-  Landmark,
   Pencil,
   Trash,
   UserCheck,
@@ -121,20 +120,17 @@ const TableRequester = () => {
                   <TableCell>{requester.email}</TableCell>
                   <TableCell>
                     <div className="w-28 flex items-center justify-between gap-2 bg-green-400 text-white py-1 px-2 font-bold rounded-md">
-                      {requester.userType}
-                      {requester.userType === "Tribunal" && (
-                        <Landmark size={15} />
-                      )}
+                      {requester.userType === "Abogado particular"
+                        ? "Abogado"
+                        : requester.userType}
 
-                      {requester.userType === "Juez" && <Gavel size={15} />}
+                      {requester.userType === "Defensor" && <Gavel size={15} />}
 
-                      {requester.userType === "Abogado" && (
+                      {requester.userType === "Abogado particular" && (
                         <BriefcaseBusiness size={15} />
                       )}
 
-                      {requester.userType === "Personal de Instalación" && (
-                        <UserCheck size={15} />
-                      )}
+                      {requester.userType === "Otro" && <UserCheck size={15} />}
                     </div>
                   </TableCell>
                   <TableCell>{requester.institution}</TableCell>

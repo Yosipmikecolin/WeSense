@@ -25,9 +25,9 @@ import { cn } from "@/lib/utils";
 
 // Mock data for demonstration
 const REQUESTER_TYPES = [
-  { id: "Juez", name: "Juez" },
-  { id: "Abogado", name: "Abogado" },
-  { id: "Tribunal", name: "Tribunal" },
+  { id: "Defensor", name: "Defensor" },
+  { id: "Abogado particular", name: "Abogado particular" },
+  { id: "Otro", name: "Otro" },
 ];
 
 const CaseInformationForm = ({}: StepProps) => {
@@ -100,7 +100,7 @@ const CaseInformationForm = ({}: StepProps) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-5">
         <div className="space-y-2 w-full">
-          <Label htmlFor="requesterType">Tipo de Requiriente</Label>
+          <Label htmlFor="requesterType">Tipo de solicitante</Label>
           <Select value={requesterType} onValueChange={setRequesterType}>
             <SelectTrigger id="requesterType" className="w-full">
               <SelectValue placeholder="Seleccione un tipo de requiriente" />

@@ -211,29 +211,31 @@ const TableRequests = () => {
                   <TableCell>{request.requester_type}</TableCell>
                   <TableCell>{request.requester_name}</TableCell>
                   <TableCell>{request.identification_number}</TableCell>
-                  <TableCell className="text-xs">
-                    {request.status === "Positivo" && (
-                      <span className="bg-green-400 text-white p-1 rounded-md">
-                        {request.status}
-                      </span>
-                    )}
-                    {request.status === "Sin respuesta" && (
-                      <span className="bg-gray-400 text-white p-1 rounded-md">
-                        {request.status}
-                      </span>
-                    )}
-                    {request.status === "Negativo" && (
-                      <span className="bg-red-400 text-white p-1 rounded-md">
-                        {request.status}
-                      </span>
-                    )}
-                    {request.status === "No recomendable" && (
-                      <div className="flex items-center gap-2">
-                        <span className="bg-orange-400 text-white p-1 rounded-md">
+                  <TableCell className="text-xs ">
+                    <div className="w-[110px]">
+                      {request.status === "Positivo" && (
+                        <span className="bg-green-400 text-white p-1 rounded-md">
                           {request.status}
                         </span>
-                      </div>
-                    )}
+                      )}
+                      {request.status === "Sin respuesta" && (
+                        <span className="bg-gray-400 text-white p-1 rounded-md">
+                          {request.status}
+                        </span>
+                      )}
+                      {request.status === "Negativo" && (
+                        <span className="bg-red-400 text-white p-1 rounded-md">
+                          {request.status}
+                        </span>
+                      )}
+                      {request.status === "No recomendable" && (
+                        <div className="flex items-center gap-2">
+                          <span className="bg-orange-400 text-white p-1 rounded-md">
+                            {request.status}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>{request.situation_type}</TableCell>
                   <TableCell>{request.request_date}</TableCell>

@@ -17,6 +17,7 @@ export const carrierFields = [
     title: "Causa",
     fields: [
       { key: "penaltyType", label: "Tipo de Pena" },
+      { key: "crime", label: "Delito" },
       { key: "appealsCourt", label: "Corte de Apelaciones" },
       { key: "courtRegion", label: "Región Judicial" },
       { key: "court", label: "Tribunal" },
