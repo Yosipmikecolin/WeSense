@@ -55,6 +55,16 @@ const Login = () => {
         });
         navigation.push("/awardee");
       }, 500);
+    } else if (username === "contract@gmail.com" && password === "12345") {
+      setLoading(true);
+      localStorage.setItem("email", "contract@gmail.com");
+      setTimeout(() => {
+        toast({
+          title: "Acceso adjudicatorio",
+          description: "contract@gmail.com",
+        });
+        navigation.push("/contract");
+      }, 500);
     } else {
       toast({
         title: "Error",
