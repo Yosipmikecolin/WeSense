@@ -194,7 +194,7 @@ export default function MaintenanceView() {
                   <Label htmlFor="date">Fecha y hora</Label>
                   <DateTimePicker
                     date={newMaintenance.dateTime}
-                    setDate={(date: any) =>
+                    setDate={(date) =>
                       setNewMaintenance({ ...newMaintenance, dateTime: date })
                     }
                   />
