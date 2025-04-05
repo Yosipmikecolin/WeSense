@@ -10,6 +10,8 @@ import ViewWorkload from "./view-workload/ViewWorkload";
 import ViewProcessManagement from "./view-process-management/ViewProcessManagement";
 import ViewCreationEvents from "./view-creation-events/ViewCreationEvents";
 import ViewReport from "./view-report/ViewReport";
+import ViewCreateObligations from "./view-create-obligations/ViewCreateObligations";
+import ViewObligations from "./view-obligations/viewObligations";
 
 export {
   ViewCarries,
@@ -23,5 +25,7 @@ export {
   ViewWorkload,
   ViewProcessManagement,
   ViewCreationEvents,
+  ViewCreateObligations,
+  ViewObligations,
   ViewReport,
 };

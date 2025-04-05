@@ -1497,3 +1497,96 @@ export const workLoad = [
   },
   { id: 15, name: "Isabel Vega", openCases: 3, closedCases: 10, laborLoad: 58 },
 ];
+
+export const obligations = [
+  {
+    contractualObligation: "Pago de renta mensual",
+    fileName: "Contrato_001.pdf",
+    status: "Activo",
+    observations: "Sin retrasos en pagos",
+  },
+  {
+    contractualObligation: "Entrega de informe trimestral",
+    fileName: "Informe_Q1_2025.docx",
+    status: "Pendiente",
+    observations: "Fecha límite: 15 de abril",
+  },
+  {
+    contractualObligation: "Mantenimiento de equipos",
+    fileName: "Plan_Mantenimiento_2025.xlsx",
+    status: "En progreso",
+    observations: "Revisión programada para mayo",
+  },
+  {
+    contractualObligation: "Capacitación anual de personal",
+    fileName: "Capacitacion_2025.pdf",
+    status: "Completado",
+    observations: "Finalizó el 20 de marzo",
+  },
+  {
+    contractualObligation: "Renovación de licencia",
+    fileName: "Licencia_2025.txt",
+    status: "Pendiente",
+    observations: "Vence el 30 de junio",
+  },
+  {
+    contractualObligation: "Auditoría interna",
+    fileName: "Auditoria_001.pdf",
+    status: "En progreso",
+    observations: "Inicio el 1 de abril",
+  },
+  {
+    contractualObligation: "Pago a proveedores",
+    fileName: "Factura_032.pdf",
+    status: "Activo",
+    observations: "Monto: $15,000 MXN",
+  },
+  {
+    contractualObligation: "Entrega de productos",
+    fileName: "Orden_Entrega_005.docx",
+    status: "Completado",
+    observations: "Entregado el 2 de abril",
+  },
+  {
+    contractualObligation: "Revisión de contratos",
+    fileName: "Contrato_Revision_2025.pdf",
+    status: "Pendiente",
+    observations: "Programada para mayo",
+  },
+  {
+    contractualObligation: "Actualización de software",
+    fileName: "Update_Log.txt",
+    status: "En progreso",
+    observations: "Versión 2.1 en pruebas",
+  },
+  {
+    contractualObligation: "Reporte de ventas",
+    fileName: "Ventas_Marzo_2025.xlsx",
+    status: "Completado",
+    observations: "Enviado el 31 de marzo",
+  },
+  {
+    contractualObligation: "Seguro de activos",
+    fileName: "Poliza_2025.pdf",
+    status: "Activo",
+    observations: "Vigente hasta diciembre",
+  },
+  {
+    contractualObligation: "Evaluación de desempeño",
+    fileName: "Evaluacion_001.docx",
+    status: "Pendiente",
+    observations: "Programada para abril",
+  },
+  {
+    contractualObligation: "Cumplimiento normativo",
+    fileName: "Normas_2025.pdf",
+    status: "En progreso",
+    observations: "Revisión en curso",
+  },
+  {
+    contractualObligation: "Pago de impuestos",
+    fileName: "Declaracion_2025.pdf",
+    status: "Pendiente",
+    observations: "Fecha límite: 30 de abril",
+  },
+];

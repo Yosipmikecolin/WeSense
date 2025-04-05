@@ -1,19 +1,19 @@
 import { Dashboard } from "@/components";
-import { ViewRequests } from "@/views";
-import { BookText, CalendarPlus, Files, RefreshCcwDot } from "lucide-react";
+import { ViewCreateObligations, ViewObligations } from "@/views";
+import { FilePlus, FileSearch2 } from "lucide-react";
 
 const Contract = () => {
   const menuItems = [
     {
-      icon: <Files size={17} />,
-      label: "Crear contrato",
-      content: <ViewRequests />,
+      icon: <FilePlus size={17} />,
+      label: "Crear obligación",
+      content: <ViewCreateObligations />,
     },
 
     {
-      icon: <Files size={17} />,
-      label: "Gestionar contrato",
-      content: <ViewRequests />,
+      icon: <FileSearch2 size={17} />,
+      label: "Obligaciones",
+      content: <ViewObligations />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
