@@ -45,9 +45,9 @@ interface SatellitePhoneTest {
 }
 
 const filters = [
-  { id: 1, name: "Obligación" },
-  { id: 2, name: "Nombre" },
-  { id: 3, name: "Estado" },
+  { id: 1, name: "Fecha" },
+  { id: 2, name: "Motivo" },
+  { id: 3, name: "Ciudad" },
 ];
 
 export default function SatellitePhoneTestView() {
@@ -176,6 +176,16 @@ export default function SatellitePhoneTestView() {
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
+                  <Label htmlFor="testReason">Persona encargada</Label>
+                  <Input
+                    id="testReason"
+                    onChange={(e) =>
+                      setNewTest({ ...newTest, testReason: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className="grid gap-2">
                   <Label htmlFor="startDate">
                     Fecha de inicio de la prueba
                   </Label>
@@ -206,11 +216,22 @@ export default function SatellitePhoneTestView() {
                     />
                   </div>
                 </div>
+
                 <div className="grid gap-2">
-                  <Label htmlFor="testReason">Motivo de la prueba</Label>
+                  <Label htmlFor="testReason">Latitud</Label>
                   <Input
+                    type="number"
                     id="testReason"
-                    value={newTest.testReason || ""}
+                    onChange={(e) =>
+                      setNewTest({ ...newTest, testReason: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="testReason">Longitud</Label>
+                  <Input
+                    type="number"
+                    id="testReason"
                     onChange={(e) =>
                       setNewTest({ ...newTest, testReason: e.target.value })
                     }

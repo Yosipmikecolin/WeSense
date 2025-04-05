@@ -6,7 +6,9 @@ import {
 } from "@/views";
 import MaintenanceView from "@/views/Maintenance";
 import ReporteVisitaForm from "@/views/ReporteVisitaForm";
+import DeviceStockView from "@/views/device-stock-view/device-stock-view";
 import SatellitePhoneTestView from "@/views/evidence/satellite-phone-test-view";
+import BillingHistoryView from "@/views/tracking-history/billing-history-view";
 import TrainingView from "@/views/training/training-view";
 import { FilePlus, FileSearch2 } from "lucide-react";
 
@@ -42,11 +44,20 @@ const Contract = () => {
       label: "Capacitaciones",
       content: <TrainingView />,
     },
-
     {
       icon: <FileSearch2 size={17} />,
       label: "Pruebas telefonicas",
       content: <SatellitePhoneTestView />,
+    },
+    {
+      icon: <FileSearch2 size={17} />,
+      label: "Stock dispositivos",
+      content: <DeviceStockView />,
+    },
+    {
+      icon: <FileSearch2 size={17} />,
+      label: "Facturación",
+      content: <BillingHistoryView />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

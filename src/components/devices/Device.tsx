@@ -94,7 +94,7 @@ export default function DeviceForm() {
                 checked={selectedDevices.adaptadorOBC}
                 onCheckedChange={() => handleCheckboxChange("adaptadorOBC")}
               />
-              <Label htmlFor="adaptadorOBC">Adaptador OBC</Label>
+              <Label htmlFor="adaptadorOBC">Adaptador OBD</Label>
             </div>
             {selectedDevices.adaptadorOBC && (
               <div className="ml-6">

@@ -59,9 +59,9 @@ interface Maintenance {
 }
 
 const filters = [
-  { id: 1, name: "Obligación" },
-  { id: 2, name: "Nombre" },
-  { id: 3, name: "Estado" },
+  { id: 1, name: "Fecha" },
+  { id: 2, name: "Tipo" },
+  { id: 3, name: "Central" },
 ];
 
 export default function MaintenanceView() {
