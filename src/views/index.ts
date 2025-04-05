@@ -12,6 +12,7 @@ import ViewCreationEvents from "./view-creation-events/ViewCreationEvents";
 import ViewReport from "./view-report/ViewReport";
 import ViewCreateObligations from "./view-create-obligations/ViewCreateObligations";
 import ViewObligations from "./view-obligations/viewObligations";
+import MantencionForm from "./view-create-mantencion/MantencionForm";
 
 export {
   ViewCarries,
@@ -28,4 +29,5 @@ export {
   ViewCreateObligations,
   ViewObligations,
   ViewReport,
+  MantencionForm
 };

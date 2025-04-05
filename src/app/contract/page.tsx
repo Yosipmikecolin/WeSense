@@ -1,5 +1,13 @@
 import { Dashboard } from "@/components";
-import { ViewCreateObligations, ViewObligations } from "@/views";
+import {
+  MantencionForm,
+  ViewCreateObligations,
+  ViewObligations,
+} from "@/views";
+import MaintenanceView from "@/views/Maintenance";
+import ReporteVisitaForm from "@/views/ReporteVisitaForm";
+import SatellitePhoneTestView from "@/views/evidence/satellite-phone-test-view";
+import TrainingView from "@/views/training/training-view";
 import { FilePlus, FileSearch2 } from "lucide-react";
 
 const Contract = () => {
@@ -9,11 +17,36 @@ const Contract = () => {
       label: "Crear obligación",
       content: <ViewCreateObligations />,
     },
-
     {
       icon: <FileSearch2 size={17} />,
       label: "Obligaciones",
       content: <ViewObligations />,
+    },
+    {
+      icon: <FilePlus size={17} />,
+      label: "Programación",
+      content: <MantencionForm />,
+    },
+    {
+      icon: <FileSearch2 size={17} />,
+      label: "Reportes",
+      content: <ReporteVisitaForm />,
+    },
+    {
+      icon: <FileSearch2 size={17} />,
+      label: "Mantenimientos",
+      content: <MaintenanceView />,
+    },
+    {
+      icon: <FileSearch2 size={17} />,
+      label: "Capacitaciones",
+      content: <TrainingView />,
+    },
+
+    {
+      icon: <FileSearch2 size={17} />,
+      label: "Pruebas telefonicas",
+      content: <SatellitePhoneTestView />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
