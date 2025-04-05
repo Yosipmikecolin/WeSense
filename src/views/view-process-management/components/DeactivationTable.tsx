@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
+import { Ellipsis, Eye, Pencil, SendHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -98,6 +98,15 @@ const DeactivationTable = () => {
                               <Trash />
                             </Button>
                             <span>Eliminar</span>
+                          </div>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                              <SendHorizontal />
+                            </Button>
+                            <span>Informar y enviar al tribunal</span>
                           </div>
                         </DropdownMenuItem>
                       </DropdownMenuContent>

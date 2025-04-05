@@ -51,7 +51,7 @@ const AlarmManagementTable = () => {
                   ACCIÓN TOMADA
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  Estado de Resolución
+                  ESTADO DE RESOLUCIÓN
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600 text-right">
                   ACCIONES

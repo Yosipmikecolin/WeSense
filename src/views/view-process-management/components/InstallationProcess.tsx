@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import DeviceForm from "@/components/devices/Device";
 
 const InstallationProcess = () => {
   const [formData, setFormData] = useState({
@@ -70,21 +71,7 @@ const InstallationProcess = () => {
         />
       </div>
 
-      <div>
-        <Label htmlFor="deviceType">Tipo de dispositivo</Label>
-        <Select
-          onValueChange={(value) => handleSelectChange("deviceType", value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Seleccione el tipo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ankle_bracelet">Tobillera</SelectItem>
-            <SelectItem value="wristband">Pulsera</SelectItem>
-            <SelectItem value="other">Otro</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <DeviceForm />
 
       <div>
         <Label htmlFor="serialNumber">Número de serie</Label>

@@ -72,15 +72,17 @@ const ProcessManagementAlarms = () => {
           onValueChange={(value) => handleSelectChange("alarmType", value)}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select alarm type" />
+            <SelectValue placeholder="Selecciona el tipo de alarma" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="restricted_zone">
-              Entering a Restricted Zone
+              Entrada a una Zona Restringida
             </SelectItem>
-            <SelectItem value="tampering">Device Tampering</SelectItem>
-            <SelectItem value="low_battery">Low Battery</SelectItem>
-            <SelectItem value="signal_loss">Signal Loss</SelectItem>
+            <SelectItem value="tampering">
+              Manipulación del Dispositivo
+            </SelectItem>
+            <SelectItem value="low_battery">Batería Baja</SelectItem>
+            <SelectItem value="signal_loss">Pérdida de Señal</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -120,9 +122,9 @@ const ProcessManagementAlarms = () => {
             <SelectValue placeholder="Seleccione el estado" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="resolved">Resolved</SelectItem>
+            <SelectItem value="pending">Pendiente</SelectItem>
+            <SelectItem value="in_progress">En proceso</SelectItem>
+            <SelectItem value="resolved">Resuelta</SelectItem>
           </SelectContent>
         </Select>
       </div>

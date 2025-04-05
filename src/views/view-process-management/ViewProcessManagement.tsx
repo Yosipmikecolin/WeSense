@@ -23,9 +23,17 @@ import TableManagementResolutions from "./components/TableManagementResolutions"
 import AlarmManagementTable from "./components/AlarmManagementTable";
 import TechnicalSupportTable from "./components/TechnicalSupportTable";
 import DeactivationTable from "./components/DeactivationTable";
+import { Input } from "@/components/ui/input";
+import { DropdownFilter } from "@/components";
 
 const ViewProcessManagement = () => {
   const [dialogContent, setDialogContent] = useState<ReactNode | null>(null);
+  const [idFilter, setIdFilter] = useState(1);
+  const filters = [
+    { id: 1, name: "Numero" },
+    { id: 2, name: "Tipo" },
+    { id: 3, name: "Fecha" },
+  ];
 
   const openDialog = (content: ReactNode) => {
     setDialogContent(content);
@@ -39,10 +47,25 @@ const ViewProcessManagement = () => {
       <Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="mt-5">
-            <Button variant="outline">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Nuevo Proceso
-            </Button>
+            <div className="flex items-center justify-between">
+              <Button variant="outline">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Nuevo Proceso
+              </Button>
+              <div className="flex gap-2">
+                <Input
+                  maxLength={30}
+                  placeholder={`Buscar por ${filters
+                    .find((i) => i.id === idFilter)
+                    ?.name.toLowerCase()}`}
+                />
+                <DropdownFilter
+                  filters={filters}
+                  idFilter={idFilter}
+                  setIdFilter={setIdFilter}
+                />
+              </div>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DialogTrigger asChild>
