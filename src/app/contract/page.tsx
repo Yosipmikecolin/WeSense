@@ -10,7 +10,17 @@ import DeviceStockView from "@/views/device-stock-view/device-stock-view";
 import SatellitePhoneTestView from "@/views/evidence/satellite-phone-test-view";
 import BillingHistoryView from "@/views/tracking-history/billing-history-view";
 import TrainingView from "@/views/training/training-view";
-import { FilePlus, FileSearch2 } from "lucide-react";
+import {
+  FilePlus,
+  FileSearch2,
+  FilePen,
+  FileSpreadsheet,
+  UserRoundCheck,
+  PhoneCall,
+  CircleDot,
+  FilePlus2,
+  Drill,
+} from "lucide-react";
 
 const Contract = () => {
   const menuItems = [
@@ -25,37 +35,37 @@ const Contract = () => {
       content: <ViewObligations />,
     },
     {
-      icon: <FilePlus size={17} />,
+      icon: <FilePen size={17} />,
       label: "Programación",
       content: <MantencionForm />,
     },
     {
-      icon: <FileSearch2 size={17} />,
+      icon: <FileSpreadsheet size={17} />,
       label: "Reportes",
       content: <ReporteVisitaForm />,
     },
     {
-      icon: <FileSearch2 size={17} />,
+      icon: <Drill size={17} />,
       label: "Mantenimientos",
       content: <MaintenanceView />,
     },
     {
-      icon: <FileSearch2 size={17} />,
+      icon: <UserRoundCheck size={17} />,
       label: "Capacitaciones",
       content: <TrainingView />,
     },
     {
-      icon: <FileSearch2 size={17} />,
+      icon: <PhoneCall size={17} />,
       label: "Pruebas telefonicas",
       content: <SatellitePhoneTestView />,
     },
     {
-      icon: <FileSearch2 size={17} />,
+      icon: <CircleDot size={17} />,
       label: "Stock dispositivos",
       content: <DeviceStockView />,
     },
     {
-      icon: <FileSearch2 size={17} />,
+      icon: <FilePlus2 size={17} />,
       label: "Facturación",
       content: <BillingHistoryView />,
     },
