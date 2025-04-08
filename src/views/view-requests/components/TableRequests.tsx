@@ -90,6 +90,11 @@ const TableRequests = () => {
   const filterForRol = (requests: Request[]) => {
     if (viewButton === "administrator@gmail.com") {
       return requests.filter((i) => i.status.includes(stateFilter));
+    } else if (viewButton === "requiring@gmail.com") {
+      return requests.filter(
+        (i) =>
+          i.status.includes("Sin respuesta") || i.confirmation.includes("true")
+      );
     } else {
       return requests
         .filter((a) => a.confirmation !== "true" && a.response_date === "----")
@@ -164,28 +169,43 @@ const TableRequests = () => {
                       ESTADO <Info size={15} />
                     </PopoverTrigger>
                     <PopoverContent>
-                      {viewButton === "administrator@gmail.com" ? (
-                        <ul>
-                          <li className="flex items-center gap-2">
-                            <CircleSlash size={17} color="#B7B7B7" />
-                            Sin repuesta
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <CircleMinus size={17} color="#577BC1" />
-                            Sin confirmar los datos
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <RotateCw size={17} color="#FF9D23" />
-                            Retornado
-                          </li>
-                        </ul>
+                      {viewButton === "administrator@gmail.com" ||
+                      viewButton === "requiring@gmail.com" ? (
+                        <div>
+                          {viewButton === "requiring@gmail.com" ? (
+                            <ul>
+                              <li className="flex items-center gap-2">
+                                <CircleSlash size={17} color="#B7B7B7" />
+                                Sin repuesta
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CircleCheck size={17} color="#16a34a" />{" "}
+                                Confirmado
+                              </li>
+                            </ul>
+                          ) : (
+                            <ul>
+                              <li className="flex items-center gap-2">
+                                <CircleSlash size={17} color="#B7B7B7" />
+                                Sin repuesta
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CircleMinus size={17} color="#577BC1" />
+                                Sin confirmar los datos
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <RotateCw size={17} color="#FF9D23" />
+                                Retornado
+                              </li>
+                            </ul>
+                          )}
+                        </div>
                       ) : (
                         <ul>
                           <li className="flex items-center gap-2">
                             <CircleSlash size={17} color="#B7B7B7" />
                             No se ha dado una respuesta
                           </li>
-
                           <li className="flex items-center gap-2">
                             <RotateCw size={17} color="#FF9D23" />
                             Solicitud retornada
@@ -316,37 +336,36 @@ const TableRequests = () => {
                           </div>
                         </DropdownMenuItem>
                         {viewButton === "awardee@gmail.com" &&
-                        request.confirmation === "return" ? (
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setIsModalOpen(true);
-                            }}
-                          >
-                            <div
-                              className="flex items-center gap-2 cursor-pointer"
-                              onClick={() => setSelectedRequest(request)}
+                          (request.confirmation === "return" ? (
+                            <DropdownMenuItem
+                              onClick={() => setIsModalOpen(true)}
                             >
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FilePen />
-                              </Button>
-                              Gestionar devolución
-                            </div>
-                          </DropdownMenuItem>
-                        ) : (
-                          <DropdownMenuItem
-                            onClick={() => setIsModalOpen(true)}
-                          >
-                            <div
-                              className="flex items-center gap-2 cursor-pointer"
-                              onClick={() => setSelectedRequest(undefined)}
+                              <div
+                                className="flex items-center gap-2 cursor-pointer"
+                                onClick={() => setSelectedRequest(request)}
+                              >
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FilePen />
+                                </Button>
+                                Gestionar devolución
+                              </div>
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => setIsModalOpen(true)}
                             >
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FilePen />
-                              </Button>
-                              Gestionar
-                            </div>
-                          </DropdownMenuItem>
-                        )}
+                              <div
+                                className="flex items-center gap-2 cursor-pointer"
+                                onClick={() => setSelectedRequest(undefined)}
+                              >
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FilePen />
+                                </Button>
+                                Gestionar
+                              </div>
+                            </DropdownMenuItem>
+                          ))}
+
                         {viewButton === "administrator@gmail.com" &&
                           request.status !== "Sin respuesta" &&
                           request.confirmation === "false" && (
@@ -456,7 +475,7 @@ const TableRequests = () => {
                             </DropdownMenuSub>
                           )}
 
-                        {viewButton === "requiring@gmail.com" && (
+                        {/*                {viewButton === "requiring@gmail.com" && (
                           <DropdownMenuItem>
                             <div className="flex items-center gap-2 cursor-pointer">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
@@ -465,7 +484,7 @@ const TableRequests = () => {
                               <span>Editar</span>
                             </div>
                           </DropdownMenuItem>
-                        )}
+                        )} */}
                         {viewButton === "requiring@gmail.com" && (
                           <DropdownMenuItem>
                             <div className="flex items-center gap-2 cursor-pointer">
