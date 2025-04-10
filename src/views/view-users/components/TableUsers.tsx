@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { users } from "@/utils";
 import { Circle, Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
@@ -23,17 +22,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
+import UpdatedUserModal from "./UpdatedUserModal";
+import { getUsers, User } from "@/db/user";
+import DeleteModal from "@/components/DeleteModal";
 
 const TableUsers = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [user, setUser] = useState<{
-    id: number;
-    name: string;
-    nit: string;
-    perfil: string;
-    status: string;
-  }>();
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [usersDB, setUsersDB] = useState<User[]>([]);
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getUsers();
+      setUsersDB(result);
+    };
+
+    fetchData();
+  }, []);
+
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nit" },
@@ -92,14 +101,14 @@ const TableUsers = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {users.map((user) => (
+              {usersDB.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.nit}</TableCell>
                   <TableCell>
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
-                        user.perfil === "Requiriente"
+                        user.perfil === "Requirente"
                           ? "bg-orange-400 text-white p-1 rounded-md"
                           : user.perfil === "Coordinador"
                           ? "bg-blue-400 text-white p-1 rounded-md"
@@ -138,12 +147,13 @@ const TableUsers = () => {
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
+                          className="cursor-pointer"
                           onClick={() => {
                             setIsModalOpen(true);
                             setUser(user);
                           }}
                         >
-                          <div className="flex items-center gap-2 cursor-pointer">
+                          <div className="flex items-center gap-2">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Eye />
                             </Button>
@@ -151,8 +161,14 @@ const TableUsers = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem>
-                          <div className="flex items-center gap-2 cursor-pointer">
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setIsModalOpen2(true);
+                            setUser(user);
+                          }}
+                        >
+                          <div className="flex items-center gap-2">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
                             </Button>
@@ -160,7 +176,12 @@ const TableUsers = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setIsModalOpen3(true);
+                            setUser(user);
+                          }}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -175,6 +196,11 @@ const TableUsers = () => {
               ))}
             </TableBody>
           </TableUI>
+          {!usersDB.length && (
+            <div className="w-full h-[500px] bg-r flex justify-center items-center">
+              <div className="loader-spiner" />
+            </div>
+          )}
         </CardContent>
       </Card>
       <Pagination />
@@ -182,6 +208,21 @@ const TableUsers = () => {
         open={isModalOpen}
         user={user}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <UpdatedUserModal
+        open={isModalOpen2}
+        user={user}
+        onClose={() => setIsModalOpen2(false)}
+        setUsersDB={setUsersDB}
+      />
+
+      <DeleteModal
+        name="usuario"
+        id={user?.id}
+        open={isModalOpen3}
+        onClose={() => setIsModalOpen3(false)}
+        setUsersDB={setUsersDB}
       />
     </div>
   );

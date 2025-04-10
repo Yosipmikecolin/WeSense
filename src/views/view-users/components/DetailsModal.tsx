@@ -5,15 +5,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { User } from "@/db/user";
+import { Circle } from "lucide-react";
 
 interface Props {
-  user?: {
-    id: number;
-    name: string;
-    nit: string;
-    perfil: string;
-    status: string;
-  };
+  user?: User
   open: boolean;
   onClose: VoidFunction;
 }
@@ -44,7 +40,21 @@ const DetailsModal = ({ user, open, onClose }: Props) => {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Estado</span>
-              <span className="font-medium">{user?.status}</span>
+              <span
+                className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
+                  user?.status === "Activo"
+                    ? "bg-green-400 text-white"
+                    : "bg-gray-100 text-gray-800"
+                }`}
+              >
+                {user?.status === "Activo" ? (
+                  "● Activo"
+                ) : (
+                  <div className="flex items-center gap-1">
+                    <Circle size={7} /> Inactivo
+                  </div>
+                )}
+              </span>
             </div>
           </div>
         </div>

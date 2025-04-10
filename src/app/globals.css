@@ -44,6 +44,24 @@
   animation: spin-loader-button 1s linear infinite;
 }
 
+.loader-button-2 {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #be3d2a;
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  animation: spin-loader-button 1s linear infinite;
+}
+
+.loader-spiner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #50e97e;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin-loader-button 500ms linear infinite;
+}
+
 @keyframes spin-loader-button {
   0% {
     transform: rotate(0deg);

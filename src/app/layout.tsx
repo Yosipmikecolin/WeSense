@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import Layout from "@/layout/Layout";
 
 const interLight = Inter({
   subsets: ["latin"],
@@ -31,7 +32,7 @@ export default function RootLayout({
         className={`${interLight.variable} ${interBold.variable} antialiased`}
       >
         <Toaster />
-        {children}
+        <Layout>{children}</Layout>
       </body>
     </html>
   );

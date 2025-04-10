@@ -1,9 +1,15 @@
-"use client";
-
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { getDate } from "@/functions";
+import toast from "react-hot-toast";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -12,11 +18,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import toast from "react-hot-toast";
-import { generateUUID, getDate } from "@/functions";
-import { addUser } from "@/db/user";
+import { addUser, getUsers, User } from "@/db/user";
 
-const FormUser = () => {
+interface Props {
+  user?: User;
+  open: boolean;
+  onClose: VoidFunction;
+  setUsersDB: Dispatch<SetStateAction<User[]>>;
+}
+
+const UpdatedUserModal = ({ user, open, onClose, setUsersDB }: Props) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,6 +39,12 @@ const FormUser = () => {
     phone: "",
   });
 
+  useEffect(() => {
+    if (user) {
+      setFormData(user);
+    }
+  }, [user]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -38,20 +55,23 @@ const FormUser = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
     setLoading(true);
+    e.preventDefault();
     if (Object.values(formData).some((value) => value === "")) {
       setError(true);
     } else {
       await addUser({
-        id: generateUUID(),
+        id: user?.id || "",
         ...formData,
         creation_date: getDate(),
       });
+      const result = await getUsers();
       setTimeout(() => {
-        toast.success("Usuario creado exitosamente");
+        toast.success("Usuario actualizado");
+        setUsersDB(result);
         setError(false);
         setLoading(false);
+        onClose();
         setFormData({
           name: "",
           nit: "",
@@ -65,11 +85,14 @@ const FormUser = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto p-5">
-      <CardHeader>
-        <CardTitle className="text-3xl">Registro de usuario</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogClose />
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold">
+            Editar usuario
+          </DialogTitle>
+        </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="fullName">Nombre Completo</Label>
@@ -159,9 +182,9 @@ const FormUser = () => {
             {loading ? <div className="loader-button" /> : "Crear usuario"}
           </Button>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default FormUser;
+export default UpdatedUserModal;
