@@ -19,22 +19,19 @@ import {
   Step1Data,
   Step2Data,
   Step3Data,
+  Step4Data,
+  Step5Data,
 } from "./interfaces";
 import classes from "./ViewCreateCarrier.module.css";
 import InclusionZoneForm from "./components/InclusionZoneForm";
 import ExclusionZoneForm from "./components/ExclusionZoneForm";
+import { initialFormData } from "./data/initialFormData";
 
 const ViewCreateCarrier = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>({
-    step1: {} as Step1Data,
-    step2: {} as Step2Data,
-    step3: {} as Step3Data,
-    step4: {} as Step3Data,
-    step5: {} as Step3Data,
-  });
+  const [formData, setFormData] = useState<IFormData>(initialFormData);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -49,7 +46,10 @@ const ViewCreateCarrier = () => {
   };
 
   const updateData = useCallback(
-    (step: keyof IFormData, data: Step1Data | Step2Data | Step3Data) => {
+    (
+      step: keyof IFormData,
+      data: Step1Data | Step2Data | Step3Data | Step4Data | Step5Data
+    ) => {
       setFormData((prevData) => ({
         ...prevData,
         [step]: data,
@@ -58,47 +58,52 @@ const ViewCreateCarrier = () => {
     []
   );
 
+  const isStep5Complete = () => {
+    const step5 = formData.step5;
+    return Object.values(step5).every((value) =>
+      typeof value === "boolean" ? true : value.toString().trim() !== ""
+    );
+  };
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
         return (
           <DataForm
-            data={formData.step1}
-            updateData={(data) => updateData("step1", data)}
+            formData={formData.step1}
+            setFormData={(data) => updateData("step1", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 1:
         return (
           <CauseForm
-            data={formData.step2}
-            updateData={(data) => updateData("step2", data)}
+            formData={formData.step2}
+            setFormData={(data) => updateData("step2", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 2:
         return (
           <MonitoringForm
-            data={formData.step3}
-            updateData={(data) => updateData("step3", data)}
+            formData={formData.step3}
+            setFormData={(data) => updateData("step3", data)}
             setCompleteForm={setCompleteForm}
           />
         );
-
       case 3:
         return (
           <InclusionZoneForm
-            data={formData.step3}
-            updateData={(data) => updateData("step4", data)}
+            formData={formData.step4}
+            setFormData={(data) => updateData("step4", data)}
             setCompleteForm={setCompleteForm}
           />
         );
-
       case 4:
         return (
           <ExclusionZoneForm
-            data={formData.step5}
-            updateData={(data) => updateData("step5", data)}
+            formData={formData.step5}
+            setFormData={(data) => updateData("step5", data)}
             setCompleteForm={setCompleteForm}
           />
         );
@@ -131,7 +136,7 @@ const ViewCreateCarrier = () => {
             onClick={handleNext}
             disabled={currentStep === steps.length - 1 || !completeForm}
           >
-            Siguiente
+            {currentStep === steps.length - 1 ? "Crear portador" : "Siguiente"}
           </Button>
         </CardFooter>
       </Card>

@@ -1,61 +1,129 @@
+import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { StepProps } from "../interfaces";
+import { StepProps5 } from "../interfaces";
 
-const ExclusionZoneForm = ({}: StepProps) => {
+const ExclusionZoneForm = ({
+  formData,
+  setFormData,
+  setCompleteForm,
+}: StepProps5) => {
+
+  
+  useEffect(() => {
+    const isComplete = Object.values(formData).every((value) => value !== "");
+    setCompleteForm(isComplete);
+  }, [formData, setCompleteForm]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const updatedData = { ...formData, [name]: value };
+    setFormData(updatedData);
+  };
+
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="calle">Calle</Label>
-        <Input id="calle" name="calle" />
+        <Label htmlFor="street">Calle</Label>
+        <Input
+          id="street"
+          name="street"
+          value={formData.street}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="numero">Número</Label>
-        <Input id="numero" name="numero" />
+        <Label htmlFor="number">Número</Label>
+        <Input
+          id="number"
+          name="number"
+          value={formData.number}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="blockDptoCasa">Block/Dpto/Casa</Label>
-        <Input id="blockDptoCasa" name="blockDptoCasa" />
+        <Label htmlFor="additionalInformation">Block/Dpto/Casa</Label>
+        <Input
+          id="additionalInformation"
+          name="additionalInformation"
+          value={formData.additionalInformation}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="comuna">Comuna</Label>
-        <Input id="comuna" name="comuna" />
+        <Label htmlFor="commune">Comuna</Label>
+        <Input
+          id="commune"
+          name="commune"
+          value={formData.commune}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <Label htmlFor="region">Región</Label>
-        <Input id="region" name="region" />
+        <Input
+          id="region"
+          name="region"
+          value={formData.region}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="carreteraRutaKilometro">Carretera/Ruta/Kilómetro</Label>
-        <Input id="carreteraRutaKilometro" name="carreteraRutaKilometro" />
+        <Label htmlFor="road">Carretera/Ruta/Kilómetro</Label>
+        <Input
+          id="road"
+          name="road"
+          value={formData.road}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="poblacionCondominioVilla">
-          Población/Condominio/Villa
-        </Label>
-        <Input id="poblacionCondominioVilla" name="poblacionCondominioVilla" />
+        <Label htmlFor="population">Población/Condominio/Villa</Label>
+        <Input
+          id="population"
+          name="population"
+          value={formData.population}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="codigoPostal">Código Postal</Label>
-        <Input id="codigoPostal" name="codigoPostal" />
+        <Label htmlFor="zipCode">Código Postal</Label>
+        <Input
+          id="zipCode"
+          name="zipCode"
+          value={formData.zipCode}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="coordenadasGeograficas">Coordenadas Geográficas</Label>
-        <Input id="coordenadasGeograficas" name="coordenadasGeograficas" />
+        <Label htmlFor="geographicCoordinates">Coordenadas Geográficas</Label>
+        <Input
+          id="geographicCoordinates"
+          name="geographicCoordinates"
+          value={formData.geographicCoordinates}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <Label htmlFor="radio">Radio</Label>
-        <Input id="radio" name="radio" />
+        <Input
+          id="radio"
+          name="radio"
+          value={formData.radio}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="caracteristicasSector">
-          Características del sector
-        </Label>
+        <Label htmlFor="characteristics">Características del sector</Label>
         <Textarea
-          id="caracteristicasSector"
-          name="caracteristicasSector"
+          id="characteristics"
+          name="characteristics"
           placeholder="Describa las características del sector"
+          value={formData.characteristics}
+          onChange={handleChange}
         />
       </div>
 
@@ -64,32 +132,70 @@ const ExclusionZoneForm = ({}: StepProps) => {
         <h2 className="text-lg font-semibold">Datos Víctima(s)</h2>
       </div>
       <div>
-        <Label htmlFor="apellidoPaterno">Apellido Paterno</Label>
-        <Input id="apellidoPaterno" name="apellidoPaterno" />
+        <Label htmlFor="paternalSurname">Apellido Paterno</Label>
+        <Input
+          id="paternalSurname"
+          name="paternalSurname"
+          value={formData.paternalSurname}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="apellidoMaterno">Apellido Materno</Label>
-        <Input id="apellidoMaterno" name="apellidoMaterno" />
+        <Label htmlFor="motherSurname">Apellido Materno</Label>
+        <Input
+          id="motherSurname"
+          name="motherSurname"
+          value={formData.motherSurname}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="nombres">Nombres</Label>
-        <Input id="nombres" name="nombres" />
+        <Label htmlFor="names">Nombres</Label>
+        <Input
+          id="names"
+          name="names"
+          value={formData.names}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <Label htmlFor="rut">Rut</Label>
-        <Input id="rut" name="rut" />
+        <Input
+          id="rut"
+          name="rut"
+          value={formData.rut}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="emailVictima">Email Víctima</Label>
-        <Input id="emailVictima" name="emailVictima" type="email" />
+        <Label htmlFor="victimEmail">Email Víctima</Label>
+        <Input
+          id="victimEmail"
+          name="victimEmail"
+          type="email"
+          value={formData.victimEmail}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="telefonoParticular">Teléfono Particular</Label>
-        <Input id="telefonoParticular" name="telefonoParticular" type="tel" />
+        <Label htmlFor="homeTelephone">Teléfono Particular</Label>
+        <Input
+          id="homeTelephone"
+          name="homeTelephone"
+          type="tel"
+          value={formData.homeTelephone}
+          onChange={handleChange}
+        />
       </div>
       <div>
-        <Label htmlFor="telefonoTrabajo">Teléfono Lugar de Trabajo</Label>
-        <Input id="telefonoTrabajo" name="telefonoTrabajo" type="tel" />
+        <Label htmlFor="workplaceTelephone">Teléfono Lugar de Trabajo</Label>
+        <Input
+          id="workplaceTelephone"
+          name="workplaceTelephone"
+          type="tel"
+          value={formData.workplaceTelephone}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );

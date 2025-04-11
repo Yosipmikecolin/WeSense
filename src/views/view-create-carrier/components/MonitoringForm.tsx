@@ -1,23 +1,26 @@
-import { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Step3Data, StepProps } from "../interfaces";
+import { StepProps3 } from "../interfaces";
 
-const MonitoringForm = ({ data, updateData, setCompleteForm }: StepProps) => {
-  const [formData, setFormData] = useState<Step3Data>(data as Step3Data);
-
+const MonitoringForm = ({
+  formData,
+  setFormData,
+  setCompleteForm,
+}: StepProps3) => {
   useEffect(() => {
     const isComplete = Object.values(formData).every((value) => value !== "");
     setCompleteForm(isComplete);
-  }, [formData, setFormData]);
+  }, [formData, setCompleteForm]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    updateData({ ...formData, [name]: value });
+    const updated = { ...formData, [name]: value };
+    setFormData(updated);
   };
 
   return (
@@ -27,142 +30,151 @@ const MonitoringForm = ({ data, updateData, setCompleteForm }: StepProps) => {
         <Input
           id="crs"
           name="crs"
-          value={formData.crs || ""}
+          value={formData.crs}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="areas">Área o áreas de inclusión y exclusión</Label>
+        <Label htmlFor="areas">Área de inclusión y exclusión</Label>
         <Textarea
           id="areas"
           name="areas"
-          value={formData.areas || ""}
+          value={formData.areas}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="duracionMedida">
+        <Label htmlFor="durationMeasurement">
           Duración de la medida o pena, abonos y periodo de control
         </Label>
         <Input
-          id="duracionMedida"
-          name="duracionMedida"
-          value={formData.duracionMedida || ""}
+          id="durationMeasurement"
+          name="durationMeasurement"
+          value={formData.durationMeasurement}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="horarioControl">Horario de control</Label>
+        <Label htmlFor="controlSchedule">Horario de control</Label>
         <Input
-          id="horarioControl"
-          name="horarioControl"
-          value={formData.horarioControl || ""}
+          id="controlSchedule"
+          name="controlSchedule"
+          value={formData.controlSchedule}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="periodoEfectivo">Periodo efectivo de control</Label>
+        <Label htmlFor="effectivePeriod">Periodo efectivo de control</Label>
         <Input
-          id="periodoEfectivo"
-          name="periodoEfectivo"
-          value={formData.periodoEfectivo || ""}
+          id="effectivePeriod"
+          name="effectivePeriod"
+          value={formData.effectivePeriod}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="solicitudesFactibilidad">
+        <Label htmlFor="requestsFeasibility">
           Solicitudes de Factibilidad Técnica
         </Label>
         <Textarea
-          id="solicitudesFactibilidad"
-          name="solicitudesFactibilidad"
-          value={formData.solicitudesFactibilidad || ""}
+          id="requestsFeasibility"
+          name="requestsFeasibility"
+          value={formData.requestsFeasibility}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="sentencia">
+        <Label htmlFor="judgment">
           Sentencia ingresada o resolución judicial
         </Label>
         <Textarea
-          id="sentencia"
-          name="sentencia"
-          value={formData.sentencia || ""}
+          id="judgment"
+          name="judgment"
+          value={formData.judgment}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="programacionesInstalacion">
+        <Label htmlFor="programmingInstallation">
           Programaciones de Instalación
         </Label>
         <Input
-          id="programacionesInstalacion"
-          name="programacionesInstalacion"
-          value={formData.programacionesInstalacion || ""}
+          id="programmingInstallation"
+          name="programmingInstallation"
+          value={formData.programmingInstallation}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="instalacionesRealizadas">
-          Instalaciones realizadas
-        </Label>
+        <Label htmlFor="installationsDone">Instalaciones realizadas</Label>
         <Input
-          id="instalacionesRealizadas"
-          name="instalacionesRealizadas"
-          value={formData.instalacionesRealizadas || ""}
+          id="installationsDone"
+          name="installationsDone"
+          value={formData.installationsDone}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="resolucionesModificacion">
+        <Label htmlFor="modificationResolution">
           Resoluciones judiciales que modifican medida de control
         </Label>
         <Textarea
-          id="resolucionesModificacion"
-          name="resolucionesModificacion"
-          value={formData.resolucionesModificacion || ""}
+          id="modificationResolution"
+          name="modificationResolution"
+          value={formData.modificationResolution}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="soportesTecnicos">Soportes Técnicos Realizados</Label>
+        <Label htmlFor="technicalSupports">Soportes Técnicos Realizados</Label>
         <Input
-          id="soportesTecnicos"
-          name="soportesTecnicos"
-          value={formData.soportesTecnicos || ""}
+          id="technicalSupports"
+          name="technicalSupports"
+          value={formData.technicalSupports}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="informesIncumplimiento">
-          Informes de incumplimiento
-        </Label>
+        <Label htmlFor="nonReports">Informes de incumplimiento</Label>
         <Textarea
-          id="informesIncumplimiento"
-          name="informesIncumplimiento"
-          value={formData.informesIncumplimiento || ""}
+          id="nonReports"
+          name="nonReports"
+          value={formData.nonReports}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="diasControl">
+        <Label htmlFor="daysControl">
           Días efectivos de control y los días que se Incumplió el control
         </Label>
         <Input
-          id="diasControl"
-          name="diasControl"
-          value={formData.diasControl || ""}
+          id="daysControl"
+          name="daysControl"
+          value={formData.daysControl}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="desinstalaciones">
+        <Label htmlFor="uninstallations">
           Desinstalaciones realizadas - indicando motivo de la desinstalación
         </Label>
         <Textarea
-          id="desinstalaciones"
-          name="desinstalaciones"
-          value={formData.desinstalaciones || ""}
+          id="uninstallations"
+          name="uninstallations"
+          value={formData.uninstallations}
           onChange={handleChange}
         />
       </div>

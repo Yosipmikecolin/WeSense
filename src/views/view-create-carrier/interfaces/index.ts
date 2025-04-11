@@ -1,58 +1,121 @@
 export interface FormData {
-    step1: Step1Data;
-    step2: Step2Data;
-    step3: Step3Data;
-    step4: Step3Data;
-    step5: Step3Data;
-  }
-  
-  export interface Step1Data {
-    nombreCompleto: string;
-    nombreSocial: string;
-    run: string;
-    sexo: string;
-    genero: string;
-    fechaNacimiento: string;
-    estadoCivil: string;
-    nacionalidad: string;
-    telefono: string;
-  }
-  
-  export interface Step2Data {
-    tipoPena: string;
-    corteApelaciones: string;
-    regionTribunal: string;
-    tribunal: string;
-    ruc: string;
-    rit: string;
-    rol: string;
-  }
-  
-  export interface Step3Data {
-    crs: string;
-    areas: string;
-    duracionMedida: string;
-    horarioControl: string;
-    periodoEfectivo: string;
-    solicitudesFactibilidad: string;
-    sentencia: string;
-    programacionesInstalacion: string;
-    instalacionesRealizadas: string;
-    resolucionesModificacion: string;
-    soportesTecnicos: string;
-    informesIncumplimiento: string;
-    diasControl: string;
-    desinstalaciones: string;
-  }
-  
-  export interface StepProps {
-    data: Step1Data | Step2Data | Step3Data;
-    updateData: (data: Step1Data | Step2Data | Step3Data) => void;
-    setCompleteForm: (complete: boolean) => void;
-  }
-  
-  export interface TimelineProps {
-    steps: string[];
-    currentStep: number;
-  }
-  
+  step1: Step1Data;
+  step2: Step2Data;
+  step3: Step3Data;
+  step4: Step4Data;
+  step5: Step5Data;
+}
+
+export interface Step1Data {
+  fullname: string;
+  socialName: string;
+  paternalSurname: string;
+  motherSurname: string;
+  type_current: string;
+  gender: string;
+  dateBirth: string;
+  maritalStatus: string;
+  nationality: string;
+  run: string;
+  phone: string;
+  foreigner: boolean;
+}
+
+export interface Step2Data {
+  penatype: string;
+  crime: string;
+  courtAppeals: string;
+  courtRegion: string;
+  court: string;
+  ruc: string;
+  rit: string;
+  rol: string;
+}
+
+export interface Step3Data {
+  crs: string;
+  areas: string;
+  durationMeasurement: string;
+  controlSchedule: string;
+  effectivePeriod: string;
+  requestsFeasibility: string;
+  judgment: string;
+  programmingInstallation: string;
+  installationsDone: string;
+  modificationResolution: string;
+  technicalSupports: string;
+  nonReports: string;
+  daysControl: string;
+  uninstallations: string;
+}
+
+export interface Step4Data {
+  street: string;
+  number: string;
+  additionalInformation: string;
+  commune: string;
+  region: string;
+  road: string;
+  population: string;
+  zipCode: string;
+  geographicCoordinates: string;
+  radio: string;
+  complianceSchedule: string;
+  characteristics: string;
+}
+
+export interface Step5Data {
+  street: string;
+  number: string;
+  additionalInformation: string;
+  commune: string;
+  region: string;
+  road: string;
+  population: string;
+  zipCode: string;
+  geographicCoordinates: string;
+  radio: string;
+  characteristics: string;
+  paternalSurname: string;
+  motherSurname: string;
+  names: string;
+  rut: string;
+  victimEmail: string;
+  homeTelephone: string;
+  workplaceTelephone: string;
+}
+
+export interface StepProps1 {
+  formData: Step1Data;
+  setFormData: (data: Step1Data) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
+
+export interface StepProps2 {
+  formData: Step2Data;
+  setFormData: (data: Step2Data) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
+
+export interface StepProps3 {
+  formData: Step3Data;
+  setFormData: (data: Step3Data) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
+
+export interface StepProps4 {
+  formData: Step4Data;
+  setFormData: (data: Step4Data) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
+
+export interface StepProps5 {
+  formData: Step5Data;
+  setFormData: (data: Step5Data) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
+
+export interface TimelineProps {
+  steps: string[];
+  currentStep: number;
+}

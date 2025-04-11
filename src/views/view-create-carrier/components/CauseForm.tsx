@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -9,11 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Step2Data, StepProps } from "../interfaces";
+import { StepProps2 } from "../interfaces";
 
-const CauseForm = ({ data, updateData, setCompleteForm }: StepProps) => {
-  const [formData, setFormData] = useState<Step2Data>(data as Step2Data);
-
+const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
   useEffect(() => {
     const isComplete = Object.values(formData).every((value) => value !== "");
     setCompleteForm(isComplete);
@@ -21,40 +19,52 @@ const CauseForm = ({ data, updateData, setCompleteForm }: StepProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    updateData({ ...formData, [name]: value });
+    const updated = { ...formData, [name]: value };
+    setFormData(updated);
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    updateData({ ...formData, [name]: value });
+    const updated = { ...formData, [name]: value };
+    setFormData(updated);
   };
 
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="tipoPena">Tipo de pena o Medida sujeta a control</Label>
+        <Label htmlFor="penatype">Tipo de pena o Medida sujeta a control</Label>
         <Input
-          id="tipoPena"
-          name="tipoPena"
-          value={formData.tipoPena || ""}
+          id="penatype"
+          name="penatype"
+          value={formData.penatype}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="corteApelaciones">Corte de Apelaciones</Label>
+        <Label htmlFor="crime">Delito</Label>
         <Input
-          id="corteApelaciones"
-          name="corteApelaciones"
-          value={formData.corteApelaciones || ""}
+          id="crime"
+          name="crime"
+          value={formData.crime}
           onChange={handleChange}
         />
       </div>
+
       <div>
-        <Label htmlFor="regionTribunal">Región del Tribunal</Label>
+        <Label htmlFor="courtAppeals">Corte de Apelaciones</Label>
+        <Input
+          id="courtAppeals"
+          name="courtAppeals"
+          value={formData.courtAppeals}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="courtRegion">Región del Tribunal</Label>
         <Select
-          name="regionTribunal"
-          onValueChange={(value) => handleSelectChange("regionTribunal", value)}
+          value={formData.courtRegion}
+          onValueChange={(value) => handleSelectChange("courtRegion", value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Seleccione región" />
@@ -63,43 +73,46 @@ const CauseForm = ({ data, updateData, setCompleteForm }: StepProps) => {
             <SelectItem value="metropolitana">Metropolitana</SelectItem>
             <SelectItem value="valparaiso">Valparaíso</SelectItem>
             <SelectItem value="biobio">Biobío</SelectItem>
-            {/* Agregar más regiones según sea necesario */}
           </SelectContent>
         </Select>
       </div>
+
       <div>
-        <Label htmlFor="tribunal">Tribunal</Label>
+        <Label htmlFor="court">Tribunal</Label>
         <Input
-          id="tribunal"
-          name="tribunal"
-          value={formData.tribunal || ""}
+          id="court"
+          name="court"
+          value={formData.court}
           onChange={handleChange}
         />
       </div>
+
       <div>
         <Label htmlFor="ruc">RUC</Label>
         <Input
           id="ruc"
           name="ruc"
-          value={formData.ruc || ""}
+          value={formData.ruc}
           onChange={handleChange}
         />
       </div>
+
       <div>
         <Label htmlFor="rit">RIT</Label>
         <Input
           id="rit"
           name="rit"
-          value={formData.rit || ""}
+          value={formData.rit}
           onChange={handleChange}
         />
       </div>
+
       <div>
         <Label htmlFor="rol">ROL</Label>
         <Input
           id="rol"
           name="rol"
-          value={formData.rol || ""}
+          value={formData.rol}
           onChange={handleChange}
         />
       </div>
