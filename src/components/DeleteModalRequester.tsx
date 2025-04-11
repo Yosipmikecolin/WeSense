@@ -6,28 +6,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteUser, getUsers, User } from "@/db/user";
+import { deleteRequest, getRequest, Request } from "@/db/request";
 import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
   id?: string;
   open: boolean;
-  name: string;
-  setUsersDB: Dispatch<SetStateAction<User[]>>;
+  setRequestDB: Dispatch<SetStateAction<Request[]>>;
   onClose: VoidFunction;
 }
 
-const DeleteModal = ({ id, open, name, onClose, setUsersDB }: Props) => {
+const DeleteModalRequester = ({ id, open, onClose, setRequestDB }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
-    await deleteUser(id || "");
-    const result = await getUsers();
+    await deleteRequest(id || "");
+    const result = await getRequest();
     setTimeout(() => {
       toast.success("Eliminado exitosamente");
-      setUsersDB(result);
+      setRequestDB(result);
       setLoading(false);
       onClose();
     }, 500);
@@ -38,12 +37,12 @@ const DeleteModal = ({ id, open, name, onClose, setUsersDB }: Props) => {
         <DialogClose />
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-center">
-            Eliminar {name}
+            Eliminar requirente
           </DialogTitle>
         </DialogHeader>
         <div>
           <p className="text-sm text-center">
-            Estas seguro que deseas eliminar el {name}
+            Estas seguro que deseas eliminar el requirente
           </p>
           <br />
           <Button
@@ -54,7 +53,11 @@ const DeleteModal = ({ id, open, name, onClose, setUsersDB }: Props) => {
             disabled={loading}
             onClick={handleSubmit}
           >
-            {loading ? <div className="loader-button-2" /> : "Eliminar usuario"}
+            {loading ? (
+              <div className="loader-button-2" />
+            ) : (
+              "Eliminar requirente"
+            )}
           </Button>
         </div>
       </DialogContent>
@@ -62,4 +65,4 @@ const DeleteModal = ({ id, open, name, onClose, setUsersDB }: Props) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteModalRequester;

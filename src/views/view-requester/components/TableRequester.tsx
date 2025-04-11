@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -11,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { requesters } from "@/utils";
 import {
   BriefcaseBusiness,
   Ellipsis,
@@ -32,25 +31,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
+import { getRequest, Request } from "@/db/request";
+import DeleteModalRequester from "@/components/DeleteModalRequester";
+import UpdatedRequesterModal from "./UpdatedRequesterModal";
 
 const TableRequester = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRequester, setSelectedRequester] = useState<{
-    fullName: string;
-    email: string;
-    phone: string;
-    userType: string;
-    institution: string;
-    identificationNumber: string;
-    region: string;
-    address: string;
-    accessAreas: string;
-    registrationDate: string;
-    identityVerification: string;
-    securityQuestion: string;
-    observations: string;
-  }>();
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [requestDB, setRequestDB] = useState<Request[]>([]);
+  const [selectedRequester, setSelectedRequester] = useState<Request>();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Email" },
@@ -60,6 +51,18 @@ const TableRequester = () => {
     { id: 6, name: "Dirección" },
     { id: 7, name: "Identificación" },
   ];
+
+  useEffect(() => {
+    const fetchData = () => {
+      setTimeout(async () => {
+        const result = await getRequest();
+        setRequestDB(result);
+      }, 600);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -114,7 +117,7 @@ const TableRequester = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requesters.map((requester, index) => (
+              {requestDB.map((requester, index) => (
                 <TableRow key={index}>
                   <TableCell>{requester.fullName}</TableCell>
                   <TableCell>{requester.email}</TableCell>
@@ -160,7 +163,12 @@ const TableRequester = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedRequester(requester);
+                            setIsModalOpen2(true);
+                          }}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -169,7 +177,12 @@ const TableRequester = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedRequester(requester);
+                            setIsModalOpen3(true);
+                          }}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -184,6 +197,11 @@ const TableRequester = () => {
               ))}
             </TableBody>
           </TableUI>
+          {!requestDB.length && (
+            <div className="w-full h-[500px] bg-r flex justify-center items-center">
+              <div className="loader-spiner" />
+            </div>
+          )}
         </CardContent>
       </Card>
       <Pagination />
@@ -191,6 +209,19 @@ const TableRequester = () => {
         open={isModalOpen}
         requester={selectedRequester}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <UpdatedRequesterModal
+        setDB={setRequestDB}
+        open={isModalOpen2}
+        requester={selectedRequester}
+        onClose={() => setIsModalOpen2(false)}
+      />
+      <DeleteModalRequester
+        id={selectedRequester?.id}
+        open={isModalOpen3}
+        onClose={() => setIsModalOpen3(false)}
+        setRequestDB={setRequestDB}
       />
     </div>
   );

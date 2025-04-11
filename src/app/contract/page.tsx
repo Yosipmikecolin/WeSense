@@ -1,15 +1,12 @@
 import { Dashboard } from "@/components";
-import {
-  MantencionForm,
-  ViewCreateObligations,
-  ViewObligations,
-} from "@/views";
+import { ViewCreateObligations, ViewObligations } from "@/views";
 import MaintenanceView from "@/views/Maintenance";
 import ReporteVisitaForm from "@/views/ReporteVisitaForm";
-import DeviceStockView from "@/views/device-stock-view/device-stock-view";
 import SatellitePhoneTestView from "@/views/evidence/satellite-phone-test-view";
 import BillingHistoryView from "@/views/tracking-history/billing-history-view";
 import TrainingView from "@/views/training/training-view";
+import ViewMantencionForm from "@/views/view-create-mantencion/view-create-form";
+import ViewDeviceStock from "@/views/view-device-stock/view-device-stock";
 import {
   FilePlus,
   FileSearch2,
@@ -37,7 +34,7 @@ const Contract = () => {
     {
       icon: <FilePen size={17} />,
       label: "Programación",
-      content: <MantencionForm />,
+      content: <ViewMantencionForm />,
     },
     {
       icon: <FileSpreadsheet size={17} />,
@@ -62,7 +59,7 @@ const Contract = () => {
     {
       icon: <CircleDot size={17} />,
       label: "Stock dispositivos",
-      content: <DeviceStockView />,
+      content: <ViewDeviceStock />,
     },
     {
       icon: <FilePlus2 size={17} />,

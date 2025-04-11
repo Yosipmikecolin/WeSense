@@ -11,10 +11,10 @@ export interface User {
   creation_date: string;
 }
 
-export const addUser = async (usuario: User) => {
+export const addUser = async (user: User) => {
   const db = await initDB();
   const tx = db.transaction("users", "readwrite");
-  await tx.store.put(usuario);
+  await tx.store.put(user);
   await tx.done;
 };
 

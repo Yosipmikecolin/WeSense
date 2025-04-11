@@ -1,7 +1,11 @@
-"use client";
-
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -23,14 +27,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addRequest } from "@/db/request";
-import { generateUUID, getDate } from "@/functions";
+import { addRequest, getRequest, Request } from "@/db/request";
+import { getDate } from "@/functions";
 import toast from "react-hot-toast";
 
-const FormRequest = () => {
+interface Props {
+  requester?: Request;
+  open: boolean;
+  onClose: VoidFunction;
+  setDB: Dispatch<SetStateAction<Request[]>>;
+}
+
+const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
+  const [error, setError] = useState(false);
   const [date, setDate] = useState<Date>();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     lastName: "",
@@ -48,6 +59,13 @@ const FormRequest = () => {
     securityQuestion: "",
     observations: "",
   });
+
+  useEffect(() => {
+    if (requester) {
+      setFormData(requester);
+    }
+  }, [requester]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -65,20 +83,23 @@ const FormRequest = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
-    if (Object.values(formData).some((value) => value === "") || !date) {
+    if (Object.values(formData).some((value) => value === "")) {
       setError(true);
     } else {
-      setLoading(true);
       await addRequest({
-        registrationDate: getDate(),
-        id: generateUUID(),
+        id: requester?.id || "",
         ...formData,
+        registrationDate: getDate(),
       });
+      const result = await getRequest();
       setTimeout(() => {
-        toast.success("Requirente creado exitosamente");
+        toast.success("Usuario actualizado");
+        setDB(result);
         setError(false);
         setLoading(false);
+        onClose();
         setFormData({
           fullName: "",
           lastName: "",
@@ -101,11 +122,13 @@ const FormRequest = () => {
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto p-5">
-      <CardHeader>
-        <CardTitle className="text-3xl mb-3">Crear requirente</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogClose />
+        <DialogHeader>
+          <DialogTitle className="mb-2">Detalles del requirente</DialogTitle>
+          <hr />
+        </DialogHeader>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -169,6 +192,7 @@ const FormRequest = () => {
             <div className="space-y-2">
               <Label htmlFor="userType">Tipo de usuario</Label>
               <Select
+                value={formData.userType}
                 onValueChange={(value) => handleSelectChange("userType", value)}
               >
                 <SelectTrigger id="userType">
@@ -176,7 +200,9 @@ const FormRequest = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Defensor">Defensor</SelectItem>
-                  <SelectItem value="Abogado">Abogado</SelectItem>
+                  <SelectItem value="Abogado particular">
+                    Abogado particular
+                  </SelectItem>
                   <SelectItem value="Otro">Otro</SelectItem>
                 </SelectContent>
               </Select>
@@ -266,6 +292,7 @@ const FormRequest = () => {
                 Verificación de Identidad
               </Label>
               <Select
+                value={formData.identityVerification}
                 onValueChange={(value) =>
                   handleSelectChange("identityVerification", value)
                 }
@@ -274,9 +301,22 @@ const FormRequest = () => {
                   <SelectValue placeholder="Seleccione el tipo de documento" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="cedula">Cédula de ciudadanía</SelectItem>
-                  <SelectItem value="pasaporte">Pasaporte</SelectItem>
-                  <SelectItem value="tarjeta">Tarjeta de identidad</SelectItem>
+                  <SelectItem value="Cédula de ciudadanía">
+                    Cédula de ciudadanía
+                  </SelectItem>
+                  <SelectItem value="Pasaporte">Pasaporte</SelectItem>
+                  <SelectItem value="Tarjeta de identidad">
+                    Tarjeta de identidad
+                  </SelectItem>
+                  <SelectItem value="Licencia profesional">
+                    Licencia profesional
+                  </SelectItem>
+                  <SelectItem value="Certificación técnica">
+                    Certificación técnica
+                  </SelectItem>
+                  <SelectItem value="Tarjeta profesional">
+                    Tarjeta profesional
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -310,12 +350,16 @@ const FormRequest = () => {
             type="submit"
             disabled={loading}
           >
-            {loading ? <div className="loader-button" /> : "Crear requirente"}
+            {loading ? (
+              <div className="loader-button" />
+            ) : (
+              "Actualizar requirente"
+            )}
           </Button>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default FormRequest;
+export default UpdatedRequesterModal;

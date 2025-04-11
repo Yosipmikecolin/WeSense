@@ -45,7 +45,7 @@ interface DeviceStock {
 
 const filters = [{ id: 1, name: "Región" }];
 
-export default function DeviceStockView() {
+export default function ViewDeviceStock() {
   const [idFilter, setIdFilter] = useState(1);
   const [stocks, setStocks] = useState<DeviceStock[]>(() => {
     // Generate sample stock records for different regions

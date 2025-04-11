@@ -8,6 +8,10 @@ export const initDB = () => {
       if (!db.objectStoreNames.contains("users")) {
         db.createObjectStore("users", { keyPath: "id" });
       }
+
+      if (!db.objectStoreNames.contains("request")) {
+        db.createObjectStore("request", { keyPath: "id" });
+      }
     },
   });
 

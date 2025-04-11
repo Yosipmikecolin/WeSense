@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const MantencionForm: React.FC = () => {
+const ViewMantencionForm: React.FC = () => {
   const [form, setForm] = useState({
     crs: "",
     ubicacion: "",
@@ -58,10 +58,7 @@ const MantencionForm: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="overflow-auto">
-          <form
-            onSubmit={handleSubmit}
-            className="max-w-6xl mx-auto h-[600px]"
-          >
+          <form onSubmit={handleSubmit} className="max-w-6xl mx-auto h-[600px]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Columna izquierda */}
               <div className="space-y-6">
@@ -244,7 +241,7 @@ const MantencionForm: React.FC = () => {
             <div className="mt-6">
               <Button type="submit">Guardar mantención</Button>
             </div>
-            <br/>
+            <br />
           </form>
         </CardContent>
       </Card>
@@ -252,4 +249,4 @@ const MantencionForm: React.FC = () => {
   );
 };
 
-export default MantencionForm;
+export default ViewMantencionForm;

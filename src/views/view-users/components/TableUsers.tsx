@@ -24,7 +24,7 @@ import {
 import DetailsModal from "./DetailsModal";
 import UpdatedUserModal from "./UpdatedUserModal";
 import { getUsers, User } from "@/db/user";
-import DeleteModal from "@/components/DeleteModal";
+import DeleteModalUser from "@/components/DeleteModalUser";
 
 const TableUsers = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -35,9 +35,11 @@ const TableUsers = () => {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getUsers();
-      setUsersDB(result);
+    const fetchData = () => {
+      setTimeout(async () => {
+        const result = await getUsers();
+        setUsersDB(result);
+      }, 600);
     };
 
     fetchData();
@@ -217,8 +219,7 @@ const TableUsers = () => {
         setUsersDB={setUsersDB}
       />
 
-      <DeleteModal
-        name="usuario"
+      <DeleteModalUser
         id={user?.id}
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}

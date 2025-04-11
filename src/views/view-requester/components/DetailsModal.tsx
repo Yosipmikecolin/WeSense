@@ -5,23 +5,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Request } from "@/db/request";
+import { BriefcaseBusiness, Gavel, UserCheck } from "lucide-react";
 
 interface Props {
-  requester?: {
-    fullName: string;
-    email: string;
-    phone: string;
-    userType: string;
-    institution: string;
-    identificationNumber: string;
-    region: string;
-    address: string;
-    accessAreas: string;
-    registrationDate: string;
-    identityVerification: string;
-    securityQuestion: string;
-    observations: string;
-  };
+  requester?: Request;
   open: boolean;
   onClose: VoidFunction;
 }
@@ -42,7 +30,19 @@ const DetailsModal = ({ requester, open, onClose }: Props) => {
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
             <span className="font-semibold">Tipo:</span>
-            <span>{requester?.userType}</span>
+            <div className="w-28 flex items-center justify-between gap-2 bg-green-400 text-white py-1 px-2 font-bold rounded-md">
+              {requester?.userType === "Abogado particular"
+                ? "Abogado"
+                : requester?.userType}
+
+              {requester?.userType === "Defensor" && <Gavel size={15} />}
+
+              {requester?.userType === "Abogado particular" && (
+                <BriefcaseBusiness size={15} />
+              )}
+
+              {requester?.userType === "Otro" && <UserCheck size={15} />}
+            </div>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
             <span className="font-semibold">Telefono:</span>

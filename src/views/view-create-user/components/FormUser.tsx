@@ -39,10 +39,10 @@ const FormUser = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     if (Object.values(formData).some((value) => value === "")) {
       setError(true);
     } else {
+      setLoading(true);
       await addUser({
         id: generateUUID(),
         ...formData,
