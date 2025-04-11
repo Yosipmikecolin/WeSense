@@ -38,7 +38,14 @@ const TableUsers = () => {
     const fetchData = () => {
       setTimeout(async () => {
         const result = await getUsers();
-        setUsersDB(result);
+        setUsersDB(
+          result.sort((a, b) => {
+            return (
+              new Date(a.creation_date).getTime() -
+              new Date(b.creation_date).getTime()
+            );
+          })
+        );
       }, 600);
     };
 

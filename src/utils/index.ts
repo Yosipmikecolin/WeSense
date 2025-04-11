@@ -696,7 +696,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Cómo se llama tu madre?",
     observations: "Usuario activo desde enero",
-    run: "5837488234",
+    ruc: "5837488234",
   },
   {
     id: "2",
@@ -715,7 +715,7 @@ export const requesters = [
     identityVerification: "Tarjeta profesional",
     securityQuestion: "¿Cuál es tu color favorito?",
     observations: "Tiene permisos administrativos",
-    run: "7583478234",
+    ruc: "7583478234",
   },
   {
     id: "3",
@@ -734,7 +734,7 @@ export const requesters = [
     identityVerification: "Pasaporte",
     securityQuestion: "¿En qué ciudad naciste?",
     observations: "Usuario con restricciones de acceso",
-    run: "45783653",
+    ruc: "45783653",
   },
   {
     id: "4",
@@ -753,7 +753,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Cómo se llamaba tu primer colegio?",
     observations: "Tiene múltiples solicitudes activas",
-    run: "56984737",
+    ruc: "56984737",
   },
   {
     id: "5",
@@ -772,7 +772,7 @@ export const requesters = [
     identityVerification: "Licencia profesional",
     securityQuestion: "¿Cuál es tu película favorita?",
     observations: "Usuario de alta prioridad",
-    run: "89362543",
+    ruc: "89362543",
   },
   {
     id: "6",
@@ -791,7 +791,7 @@ export const requesters = [
     identityVerification: "Certificación técnica",
     securityQuestion: "¿Cuál es tu lugar favorito?",
     observations: "Certificada en sistemas de seguridad",
-    run: "12381832",
+    ruc: "12381832",
   },
   {
     id: "7",
@@ -810,7 +810,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Qué marca fue tu primer auto?",
     observations: "Requiere renovación anual de acceso",
-    run: "39458345",
+    ruc: "39458345",
   },
   {
     id: "8",
@@ -829,7 +829,7 @@ export const requesters = [
     identityVerification: "Tarjeta profesional",
     securityQuestion: "¿Qué sabor de helado prefieres?",
     observations: "Reportes trimestrales requeridos",
-    run: "57467364",
+    ruc: "57467364",
   },
   {
     id: "9",
@@ -848,7 +848,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
-    run: "12837467",
+    ruc: "12837467",
   },
   {
     id: "10",
@@ -867,7 +867,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
-    run: "58342642",
+    ruc: "58342642",
   },
   {
     id: "11",
@@ -886,7 +886,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
-    run: "67477233",
+    ruc: "67477233",
   },
   {
     id: "12",
@@ -905,7 +905,7 @@ export const requesters = [
     identityVerification: "Cédula de ciudadanía",
     securityQuestion: "¿Qué nombre tenía tu primera mascota?",
     observations: "Tiene acceso a casos especiales",
-    run: "467834672",
+    ruc: "467834672",
   },
 ];
 export const requests = [

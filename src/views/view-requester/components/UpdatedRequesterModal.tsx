@@ -47,7 +47,7 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
     lastName: "",
     middleName: "",
     email: "",
-    run: "",
+    ruc: "",
     phone: "",
     userType: "",
     institution: "",
@@ -91,12 +91,19 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
       await addRequest({
         id: requester?.id || "",
         ...formData,
-        registrationDate: getDate(),
+        registrationDate: requester?.registrationDate || "",
       });
       const result = await getRequest();
       setTimeout(() => {
         toast.success("Usuario actualizado");
-        setDB(result);
+        setDB(
+          result.sort((a, b) => {
+            return (
+              new Date(a.registrationDate).getTime() -
+              new Date(b.registrationDate).getTime()
+            );
+          })
+        );
         setError(false);
         setLoading(false);
         onClose();
@@ -105,7 +112,7 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
           lastName: "",
           middleName: "",
           email: "",
-          run: "",
+          ruc: "",
           phone: "",
           userType: "",
           institution: "",
@@ -170,11 +177,11 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="run">RUN</Label>
+              <Label htmlFor="ruc">RUC</Label>
               <Input
-                id="run"
+                id="ruc"
                 type="number"
-                value={formData.run}
+                value={formData.ruc}
                 onChange={handleChange}
                 placeholder="34234"
               />
@@ -222,6 +229,7 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
               </Label>
               <Input
                 id="identificationNumber"
+                type="number"
                 value={formData.identificationNumber}
                 onChange={handleChange}
                 placeholder="3782901"

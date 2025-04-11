@@ -6,11 +6,10 @@ export interface Request {
   lastName: string;
   middleName: string;
   email: string;
-  run: string;
+  ruc: string;
   phone: string;
   userType: string;
   institution: string;
-
   identificationNumber: string;
   region: string;
   address: string;

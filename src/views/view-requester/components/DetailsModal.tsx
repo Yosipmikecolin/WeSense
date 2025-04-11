@@ -20,7 +20,9 @@ const DetailsModal = ({ requester, open, onClose }: Props) => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogClose />
         <DialogHeader>
-          <DialogTitle className="mb-2">Detalles del requirente</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">
+            Detalles del requirente
+          </DialogTitle>
           <hr />
         </DialogHeader>
         <div className="grid gap-4 mt-3">
@@ -63,6 +65,10 @@ const DetailsModal = ({ requester, open, onClose }: Props) => {
           <div className="grid grid-cols-2 items-center gap-4">
             <span className="font-semibold">Número de identificación:</span>
             <span>{requester?.identificationNumber}</span>
+          </div>
+          <div className="grid grid-cols-2 items-center gap-4">
+            <span className="font-semibold">RUC:</span>
+            <span>{requester?.ruc}</span>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
             <span className="font-semibold">Ciudad:</span>

@@ -26,7 +26,12 @@ const DeleteModalRequester = ({ id, open, onClose, setRequestDB }: Props) => {
     const result = await getRequest();
     setTimeout(() => {
       toast.success("Eliminado exitosamente");
-      setRequestDB(result);
+      setRequestDB(result.sort((a, b) => {
+        return (
+          new Date(a.registrationDate).getTime() -
+          new Date(b.registrationDate).getTime()
+        );
+      }));
       setLoading(false);
       onClose();
     }, 500);

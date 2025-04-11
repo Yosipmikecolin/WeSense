@@ -26,7 +26,14 @@ const DeleteModalUser = ({ id, open, onClose, setUsersDB }: Props) => {
     const result = await getUsers();
     setTimeout(() => {
       toast.success("Eliminado exitosamente");
-      setUsersDB(result);
+      setUsersDB(
+        result.sort((a, b) => {
+          return (
+            new Date(a.creation_date).getTime() -
+            new Date(b.creation_date).getTime()
+          );
+        })
+      );
       setLoading(false);
       onClose();
     }, 500);

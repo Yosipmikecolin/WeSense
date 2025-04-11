@@ -9,7 +9,7 @@ import { User } from "@/db/user";
 import { Circle } from "lucide-react";
 
 interface Props {
-  user?: User
+  user?: User;
   open: boolean;
   onClose: VoidFunction;
 }
@@ -24,17 +24,18 @@ const DetailsModal = ({ user, open, onClose }: Props) => {
             Detalles de usuario
           </DialogTitle>
         </DialogHeader>
+        <hr />
         <div className="grid gap-4 py-4">
           <div className="space-y-4">
-            <div className="flex justify-between items-center pb-4 border-b">
+            <div className="flex justify-between items-center pb-4">
               <span className="text-sm text-gray-500">Nombre</span>
               <span className="font-medium">{user?.name}</span>
             </div>
-            <div className="flex justify-between items-center pb-4 border-b">
+            <div className="flex justify-between items-center pb-4">
               <span className="text-sm text-gray-500">NIT</span>
               <span className="font-mono">{user?.nit}</span>
             </div>
-            <div className="flex justify-between items-center pb-4 border-b">
+            <div className="flex justify-between items-center pb-4">
               <span className="text-sm text-gray-500">Perfil</span>
               <span className="font-medium">{user?.perfil}</span>
             </div>

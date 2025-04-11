@@ -56,7 +56,14 @@ const TableRequester = () => {
     const fetchData = () => {
       setTimeout(async () => {
         const result = await getRequest();
-        setRequestDB(result);
+        setRequestDB(
+          result.sort((a, b) => {
+            return (
+              new Date(a.registrationDate).getTime() -
+              new Date(b.registrationDate).getTime()
+            );
+          })
+        );
       }, 600);
     };
 

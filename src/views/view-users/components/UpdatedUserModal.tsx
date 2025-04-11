@@ -63,12 +63,19 @@ const UpdatedUserModal = ({ user, open, onClose, setUsersDB }: Props) => {
       await addUser({
         id: user?.id || "",
         ...formData,
-        creation_date: getDate(),
+        creation_date: user?.creation_date || "",
       });
       const result = await getUsers();
       setTimeout(() => {
         toast.success("Usuario actualizado");
-        setUsersDB(result);
+        setUsersDB(
+          result.sort((a, b) => {
+            return (
+              new Date(a.creation_date).getTime() -
+              new Date(b.creation_date).getTime()
+            );
+          })
+        );
         setError(false);
         setLoading(false);
         onClose();
