@@ -70,9 +70,12 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
             <SelectValue placeholder="Seleccione región" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="metropolitana">Metropolitana</SelectItem>
-            <SelectItem value="valparaiso">Valparaíso</SelectItem>
-            <SelectItem value="biobio">Biobío</SelectItem>
+            <SelectItem value="Metropolitana">Metropolitana</SelectItem>
+            <SelectItem value="Valparaíso">Valparaíso</SelectItem>
+            <SelectItem value="Biobío">Biobío</SelectItem>
+            <SelectItem value="Villanueva">Villanueva</SelectItem>
+            <SelectItem value="Armenia">Armenia</SelectItem>
+            <SelectItem value="Santander">Santander</SelectItem>
           </SelectContent>
         </Select>
       </div>

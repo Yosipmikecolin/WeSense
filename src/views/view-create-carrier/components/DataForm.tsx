@@ -120,6 +120,30 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             <SelectItem value="Personas sujeta a control">
               Personas sujeta a control
             </SelectItem>
+            <SelectItem value="Persona en libertad condicional">
+              Persona en libertad condicional
+            </SelectItem>
+            <SelectItem value="Persona con arresto domiciliario">
+              Persona con arresto domiciliario
+            </SelectItem>
+            <SelectItem value="Persona con suspensión condicional de la pena">
+              Persona con suspensión condicional de la pena
+            </SelectItem>
+            <SelectItem value="Persona con libertad vigilada">
+              Persona con libertad vigilada
+            </SelectItem>
+            <SelectItem value="Persona con régimen de semi-libertad">
+              Persona con régimen de semi-libertad
+            </SelectItem>
+            <SelectItem value="Persona con monitorización electrónica">
+              Persona con monitorización electrónica
+            </SelectItem>
+            <SelectItem value="Persona con régimen de salidas controladas">
+              Persona con régimen de salidas controladas
+            </SelectItem>
+            <SelectItem value="Persona con permiso de trabajo externo">
+              Persona con permiso de trabajo externo
+            </SelectItem>
             <SelectItem value="Víctima">Víctima</SelectItem>
           </SelectContent>
         </Select>
@@ -182,10 +206,11 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             <SelectValue placeholder="Seleccione estado civil" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="soltero">Soltero/a</SelectItem>
-            <SelectItem value="casado">Casado/a</SelectItem>
-            <SelectItem value="divorciado">Divorciado/a</SelectItem>
-            <SelectItem value="viudo">Viudo/a</SelectItem>
+            <SelectItem value="Soltero/a">Soltero/a</SelectItem>
+            <SelectItem value="Casado/a">Casado/a</SelectItem>
+            <SelectItem value="Divorciado/a">Divorciado/a</SelectItem>
+            <SelectItem value="Viudo/a">Viudo/a</SelectItem>
+            <SelectItem value="Unión libre">Unión libre</SelectItem>
           </SelectContent>
         </Select>
       </div>

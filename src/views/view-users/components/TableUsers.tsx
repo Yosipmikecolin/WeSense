@@ -218,14 +218,12 @@ const TableUsers = () => {
         user={user}
         onClose={() => setIsModalOpen(false)}
       />
-
       <UpdatedUserModal
         open={isModalOpen2}
         user={user}
         onClose={() => setIsModalOpen2(false)}
         setUsersDB={setUsersDB}
       />
-
       <DeleteModalUser
         id={user?.id}
         open={isModalOpen3}

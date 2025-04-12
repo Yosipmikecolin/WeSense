@@ -1,4 +1,4 @@
-export interface Carrier {
+/* export interface Carrier {
   id: number;
   fullName: string;
   socialName: string;
@@ -31,7 +31,7 @@ export interface Carrier {
   nonComplianceReports: string;
   controlDays: string;
   uninstallations: string;
-}
+} */
 
 export interface Request {
   requester_type: string;

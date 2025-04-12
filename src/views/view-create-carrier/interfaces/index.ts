@@ -1,4 +1,5 @@
-export interface FormData {
+export interface FormDataCarrier {
+  id: string;
   step1: Step1Data;
   step2: Step2Data;
   step3: Step3Data;

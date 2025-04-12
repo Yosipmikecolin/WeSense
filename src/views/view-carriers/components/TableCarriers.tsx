@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Flag from "react-world-flags";
@@ -13,7 +13,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { carriers } from "@/utils";
 import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
@@ -26,12 +25,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
-import { Carrier } from "@/interfaces";
+import { getCarrier } from "@/db/carrier";
+import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import { getCountryCode } from "@/functions";
+import UpdatedCarrierModal from "./UpdatedCarrierModal ";
+import DeleteModalCarrier from "@/components/DeleteModalCarrier";
 
 const TableCarriers = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCarrier, setSelectedCarrier] = useState<Carrier>();
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [selectedCarrier, setSelectedCarrier] = useState<FormDataCarrier>();
+  const [carrierDB, setCarrierDB] = useState<FormDataCarrier[]>([]);
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nombre social" },
@@ -41,6 +47,18 @@ const TableCarriers = () => {
     { id: 6, name: "Run" },
     { id: 7, name: "Teléfono" },
   ];
+
+  useEffect(() => {
+    const fetchData = () => {
+      setTimeout(async () => {
+        const result = await getCarrier();
+        setCarrierDB(result);
+      }, 600);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -70,7 +88,7 @@ const TableCarriers = () => {
                   NOMBRE COMPLETO
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  NOMBRE SOCIAL
+                  ESTADO CIVIL
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
                   NACIONALIDAD
@@ -90,21 +108,24 @@ const TableCarriers = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {carriers.map((carrier) => (
+              {carrierDB.map((carrier) => (
                 <TableRow key={carrier.id}>
-                  <TableCell>{carrier.fullName}</TableCell>
-                  <TableCell>{carrier.socialName}</TableCell>
+                  <TableCell>{carrier.step1.fullname}</TableCell>
+                  <TableCell>{carrier.step1.maritalStatus}</TableCell>
                   <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
-                        {carrier.nationality}
+                        {carrier.step1.nationality}
                       </span>
-                      <Flag code={carrier.countryCode} width={20} />
+                      <Flag
+                        width={20}
+                        code={getCountryCode(carrier?.step1.nationality || "")}
+                      />
                     </div>
                   </TableCell>
-                  <TableCell>{carrier.gender}</TableCell>
-                  <TableCell>{carrier.typeCurrent}</TableCell>
-                  <TableCell>{carrier.phone}</TableCell>
+                  <TableCell>{carrier.step1.gender}</TableCell>
+                  <TableCell>{carrier.step1.type_current}</TableCell>
+                  <TableCell>{carrier.step1.phone}</TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
@@ -127,7 +148,12 @@ const TableCarriers = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedCarrier(carrier);
+                            setIsModalOpen2(true);
+                          }}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -136,7 +162,12 @@ const TableCarriers = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedCarrier(carrier);
+                            setIsModalOpen3(true);
+                          }}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -151,6 +182,11 @@ const TableCarriers = () => {
               ))}
             </TableBody>
           </TableUI>
+          {!carrierDB.length && (
+            <div className="w-full h-[500px] bg-r flex justify-center items-center">
+              <div className="loader-spiner" />
+            </div>
+          )}
         </CardContent>
       </Card>
       <Pagination />
@@ -158,6 +194,18 @@ const TableCarriers = () => {
         open={isModalOpen}
         carrier={selectedCarrier}
         onClose={() => setIsModalOpen(false)}
+      />
+      <UpdatedCarrierModal
+        open={isModalOpen2}
+        carrier={selectedCarrier}
+        onClose={() => setIsModalOpen2(false)}
+        setCarrierDB={setCarrierDB}
+      />
+      <DeleteModalCarrier
+        id={selectedCarrier?.id}
+        open={isModalOpen3}
+        onClose={() => setIsModalOpen3(false)}
+        setCarrierDB={setCarrierDB}
       />
     </div>
   );

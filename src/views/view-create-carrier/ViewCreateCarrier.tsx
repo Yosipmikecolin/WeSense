@@ -15,7 +15,7 @@ import CauseForm from "./components/CauseForm";
 import MonitoringForm from "./components/MonitoringForm";
 import Timeline from "../../components/timeline/Timeline";
 import {
-  FormData as IFormData,
+  FormDataCarrier,
   Step1Data,
   Step2Data,
   Step3Data,
@@ -26,12 +26,16 @@ import classes from "./ViewCreateCarrier.module.css";
 import InclusionZoneForm from "./components/InclusionZoneForm";
 import ExclusionZoneForm from "./components/ExclusionZoneForm";
 import { initialFormData } from "./data/initialFormData";
+import toast from "react-hot-toast";
+import { addCarrier } from "@/db/carrier";
+import { generateUUID } from "@/functions";
 
 const ViewCreateCarrier = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialFormData);
+  const [formData, setFormData] = useState<FormDataCarrier>(initialFormData);
+  const [loading, setLoading] = useState(false);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -47,7 +51,7 @@ const ViewCreateCarrier = () => {
 
   const updateData = useCallback(
     (
-      step: keyof IFormData,
+      step: keyof FormDataCarrier,
       data: Step1Data | Step2Data | Step3Data | Step4Data | Step5Data
     ) => {
       setFormData((prevData) => ({
@@ -112,6 +116,20 @@ const ViewCreateCarrier = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    await addCarrier({
+      ...formData,
+      id: generateUUID(),
+    });
+    setTimeout(() => {
+      setCurrentStep(0);
+      toast.success("Portador creado exitosamente");
+      setLoading(false);
+      setFormData(initialFormData);
+    }, 500);
+  };
+
   return (
     <div
       className={classes.container}
@@ -133,10 +151,31 @@ const ViewCreateCarrier = () => {
           </Button>
           <Button
             variant={"primary"}
-            onClick={handleNext}
-            disabled={currentStep === steps.length - 1 || !completeForm}
+            onClick={() => {
+              if (currentStep === steps.length - 1) {
+                handleSubmit();
+              } else {
+                handleNext();
+              }
+            }}
+            disabled={
+              (currentStep < steps.length - 1 && !completeForm) ||
+              (currentStep === steps.length - 1 && !isStep5Complete()) ||
+              loading
+            }
           >
-            {currentStep === steps.length - 1 ? "Crear portador" : "Siguiente"}
+            {currentStep === steps.length - 1 ? (
+              loading ? (
+                <div className="flex items-center gap-3">
+                  <span>Editando</span>
+                  <div className="loader-button" />
+                </div>
+              ) : (
+                "Crear portador"
+              )
+            ) : (
+              "Siguiente"
+            )}
           </Button>
         </CardFooter>
       </Card>

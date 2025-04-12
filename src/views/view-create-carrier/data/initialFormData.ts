@@ -1,6 +1,7 @@
 import { FormData } from "../interfaces";
 
 export const initialFormData: FormData = {
+  id: "",
   step1: {
     fullname: "",
     socialName: "",

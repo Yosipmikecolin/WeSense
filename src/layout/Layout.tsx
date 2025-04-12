@@ -2,9 +2,10 @@
 
 import { Toaster } from "react-hot-toast";
 import { ReactNode, useEffect } from "react";
-import { users, requesters } from "@/utils";
+import { users, requesters, carriers } from "@/utils";
 import { addUser } from "@/db/user";
 import { addRequest } from "@/db/request";
+import { addCarrier } from "@/db/carrier";
 
 interface Props {
   children: ReactNode;
@@ -24,8 +25,15 @@ const Layout = ({ children }: Props) => {
       }
     };
 
+    const insertCarrier = async () => {
+      for (const carrier of carriers) {
+        await addCarrier(carrier);
+      }
+    };
+
     insertUsers();
     insertRequest();
+    insertCarrier();
   }, []);
 
   return (
