@@ -1,5 +1,4 @@
-import { carrierFields } from "@/constants/carrierFields";
-import { Carrier } from "@/interfaces";
+import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
 import {
   Document,
   Packer,
@@ -14,7 +13,7 @@ import {
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 
-export const generatePDF = (selectedCarrier: Carrier) => {
+export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   const doc = new jsPDF();
 
   // 🎨 Encabezado
@@ -22,27 +21,136 @@ export const generatePDF = (selectedCarrier: Carrier) => {
   doc.rect(0, 0, 210, 20, "F");
   doc.setFontSize(20);
   doc.setTextColor(255, 255, 255);
-  doc.text(`Portador ${selectedCarrier.fullName}`, 105, 12, {
+  doc.text(`Portador ${selectedCarrier.step1.fullname}`, 105, 12, {
     align: "center",
   });
 
-  // 🗂️ Secciones de datos
+  // 🗂️ Definición de secciones y sus campos
+  const sections: {
+    title: string;
+    data: Record<string, any>;
+    fields: { key: string; label: string }[];
+  }[] = [
+    {
+      title: "Datos Personales",
+      data: selectedCarrier.step1,
+      fields: [
+        { key: "fullname", label: "Nombre Completo" },
+        { key: "socialName", label: "Nombre Social" },
+        { key: "paternalSurname", label: "Apellido Paterno" },
+        { key: "motherSurname", label: "Apellido Materno" },
+        { key: "type_current", label: "Tipo Actual" },
+        { key: "gender", label: "Género" },
+        { key: "dateBirth", label: "Fecha de Nacimiento" },
+        { key: "maritalStatus", label: "Estado Civil" },
+        { key: "nationality", label: "Nacionalidad" },
+        { key: "run", label: "RUN" },
+        { key: "phone", label: "Teléfono" },
+        { key: "foreigner", label: "Extranjero" },
+      ],
+    },
+    {
+      title: "Causa",
+      data: selectedCarrier.step2,
+      fields: [
+        { key: "penatype", label: "Tipo de Pena" },
+        { key: "crime", label: "Delito" },
+        { key: "courtAppeals", label: "Corte de Apelaciones" },
+        { key: "courtRegion", label: "Región del Tribunal" },
+        { key: "court", label: "Tribunal" },
+        { key: "ruc", label: "RUC" },
+        { key: "rit", label: "RIT" },
+        { key: "rol", label: "ROL" },
+      ],
+    },
+    {
+      title: "Monitoreo",
+      data: selectedCarrier.step3,
+      fields: [
+        { key: "crs", label: "CRS" },
+        { key: "areas", label: "Áreas" },
+        { key: "durationMeasurement", label: "Medida de Duración" },
+        { key: "controlSchedule", label: "Horario de Control" },
+        { key: "effectivePeriod", label: "Período Efectivo" },
+        { key: "requestsFeasibility", label: "Solicitudes de Viabilidad" },
+        { key: "judgment", label: "Juicio" },
+        {
+          key: "programmingInstallation",
+          label: "Programación de Instalación",
+        },
+        { key: "installationsDone", label: "Instalaciones Realizadas" },
+        { key: "modificationResolution", label: "Resolución de Modificación" },
+        { key: "technicalSupports", label: "Soportes Técnicos" },
+        { key: "nonReports", label: "Reportes No Realizados" },
+        { key: "daysControl", label: "Días de Control" },
+        { key: "uninstallations", label: "Desinstalaciones" },
+      ],
+    },
+    {
+      title: "Área de inclusión",
+      data: selectedCarrier.step4,
+      fields: [
+        { key: "street", label: "Calle" },
+        { key: "number", label: "Número" },
+        { key: "additionalInformation", label: "Información Adicional" },
+        { key: "commune", label: "Comuna" },
+        { key: "region", label: "Región" },
+        { key: "road", label: "Camino" },
+        { key: "population", label: "Población" },
+        { key: "zipCode", label: "Código Postal" },
+        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+        { key: "radio", label: "Radio" },
+        { key: "complianceSchedule", label: "Horario de Cumplimiento" },
+        { key: "characteristics", label: "Características" },
+      ],
+    },
+    {
+      title: "Área de exclusión",
+      data: selectedCarrier.step5,
+      fields: [
+        { key: "street", label: "Calle" },
+        { key: "number", label: "Número" },
+        { key: "additionalInformation", label: "Información Adicional" },
+        { key: "commune", label: "Comuna" },
+        { key: "region", label: "Región" },
+        { key: "road", label: "Camino" },
+        { key: "population", label: "Población" },
+        { key: "zipCode", label: "Código Postal" },
+        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+        { key: "radio", label: "Radio" },
+        { key: "characteristics", label: "Características" },
+        { key: "paternalSurname", label: "Apellido Paterno" },
+        { key: "motherSurname", label: "Apellido Materno" },
+        { key: "names", label: "Nombres" },
+        { key: "rut", label: "RUT" },
+        { key: "victimEmail", label: "Correo de la Víctima" },
+        { key: "homeTelephone", label: "Teléfono Domicilio" },
+        { key: "workplaceTelephone", label: "Teléfono Trabajo" },
+      ],
+    },
+  ];
 
-  let y = 30; // Posición inicial en el documento
+  // 🗂️ Generación de secciones
+  let y = 30;
 
-  carrierFields.forEach(({ title, fields }) => {
-    // 📌 Agregar título de la sección
+  sections.forEach(({ title, data, fields }, sectionIndex) => {
+    // Título de la sección
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
     doc.setTextColor(34, 197, 94);
     doc.text(title, 15, y);
     y += 8;
 
-    // 📌 Agregar campos de la sección
     fields.forEach(({ key, label }, index) => {
-      const value = selectedCarrier[key as keyof Carrier] || "N/A";
+      // Salto de página si es necesario
+      if (y > 260) {
+        doc.addPage();
+        y = 20;
+      }
 
-      // Fondo alternado en filas
+      const value = data?.[key] ?? "N/A";
+
+      // Fondo alternado
       if (index % 2 === 0) {
         doc.setFillColor(240, 253, 244);
         doc.rect(10, y - 6, 190, 8, "F");
@@ -58,10 +166,17 @@ export const generatePDF = (selectedCarrier: Carrier) => {
       doc.setFont("helvetica", "normal");
       doc.text(value.toString(), 80, y);
 
-      y += 10; // Espaciado entre filas
+      y += 10;
     });
 
-    y += 5; // Espaciado extra entre secciones
+    // Espacio entre secciones
+    y += 10;
+
+    // Salto de página si es necesario después de la sección
+    if (y > 260 && sectionIndex < sections.length - 1) {
+      doc.addPage();
+      y = 20;
+    }
   });
 
   // 🎨 Footer
@@ -71,12 +186,16 @@ export const generatePDF = (selectedCarrier: Carrier) => {
   doc.setTextColor(255, 255, 255);
   doc.text("Generado con SGAMGC", 105, 289, { align: "center" });
 
-  const nameFile = selectedCarrier.fullName.split(" ").join("_").toLowerCase();
+  // Guardar el archivo
+  const nameFile = selectedCarrier.step1.fullname
+    .split(" ")
+    .join("_")
+    .toLowerCase();
   doc.save(`detalles_${nameFile}.pdf`);
 };
 
 interface Field {
-  key: keyof Carrier; // Unión de todas las claves: "fullName" | "socialName" | "nationality" | etc.
+  key: keyof FormDataCarrier; // Unión de todas las claves: "fullName" | "socialName" | "nationality" | etc.
   label: string;
 }
 
@@ -85,9 +204,112 @@ interface Section {
   fields: Field[];
 }
 
-export const generateWord = (selectedCarrier: Carrier) => {
-  const sections = carrierFields.map((section) => {
-    const tableRows = section.fields.map((field) => {
+export const generateWord = (selectedCarrier: FormDataCarrier) => {
+  // 🗂️ Definición de secciones y sus campos
+  const sections = [
+    {
+      title: "Información Personal",
+      data: selectedCarrier.step1,
+      fields: [
+        { key: "fullname", label: "Nombre Completo" },
+        { key: "socialName", label: "Nombre Social" },
+        { key: "paternalSurname", label: "Apellido Paterno" },
+        { key: "motherSurname", label: "Apellido Materno" },
+        { key: "type_current", label: "Tipo Actual" },
+        { key: "gender", label: "Género" },
+        { key: "dateBirth", label: "Fecha de Nacimiento" },
+        { key: "maritalStatus", label: "Estado Civil" },
+        { key: "nationality", label: "Nacionalidad" },
+        { key: "run", label: "RUN" },
+        { key: "phone", label: "Teléfono" },
+        { key: "foreigner", label: "Extranjero" },
+      ],
+    },
+    {
+      title: "Causa",
+      data: selectedCarrier.step2,
+      fields: [
+        { key: "penatype", label: "Tipo de Pena" },
+        { key: "crime", label: "Delito" },
+        { key: "courtAppeals", label: "Corte de Apelaciones" },
+        { key: "courtRegion", label: "Región del Tribunal" },
+        { key: "court", label: "Tribunal" },
+        { key: "ruc", label: "RUC" },
+        { key: "rit", label: "RIT" },
+        { key: "rol", label: "ROL" },
+      ],
+    },
+    {
+      title: "Monitoreo",
+      data: selectedCarrier.step3,
+      fields: [
+        { key: "crs", label: "CRS" },
+        { key: "areas", label: "Áreas" },
+        { key: "durationMeasurement", label: "Medida de Duración" },
+        { key: "controlSchedule", label: "Horario de Control" },
+        { key: "effectivePeriod", label: "Período Efectivo" },
+        { key: "requestsFeasibility", label: "Solicitudes de Viabilidad" },
+        { key: "judgment", label: "Juicio" },
+        {
+          key: "programmingInstallation",
+          label: "Programación de Instalación",
+        },
+        { key: "installationsDone", label: "Instalaciones Realizadas" },
+        { key: "modificationResolution", label: "Resolución de Modificación" },
+        { key: "technicalSupports", label: "Soportes Técnicos" },
+        { key: "nonReports", label: "Reportes No Realizados" },
+        { key: "daysControl", label: "Días de Control" },
+        { key: "uninstallations", label: "Desinstalaciones" },
+      ],
+    },
+    {
+      title: "Área de inclusión",
+      data: selectedCarrier.step4,
+      fields: [
+        { key: "street", label: "Calle" },
+        { key: "number", label: "Número" },
+        { key: "additionalInformation", label: "Información Adicional" },
+        { key: "commune", label: "Comuna" },
+        { key: "region", label: "Región" },
+        { key: "road", label: "Camino" },
+        { key: "population", label: "Población" },
+        { key: "zipCode", label: "Código Postal" },
+        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+        { key: "radio", label: "Radio" },
+        { key: "complianceSchedule", label: "Horario de Cumplimiento" },
+        { key: "characteristics", label: "Características" },
+      ],
+    },
+    {
+      title: "Área de exclusión y Información de Víctima ",
+      data: selectedCarrier.step5,
+      fields: [
+        { key: "street", label: "Calle" },
+        { key: "number", label: "Número" },
+        { key: "additionalInformation", label: "Información Adicional" },
+        { key: "commune", label: "Comuna" },
+        { key: "region", label: "Región" },
+        { key: "road", label: "Camino" },
+        { key: "population", label: "Población" },
+        { key: "zipCode", label: "Código Postal" },
+        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+        { key: "radio", label: "Radio" },
+        { key: "characteristics", label: "Características" },
+        { key: "paternalSurname", label: "Apellido Paterno" },
+        { key: "motherSurname", label: "Apellido Materno" },
+        { key: "names", label: "Nombres" },
+        { key: "rut", label: "RUT" },
+        { key: "victimEmail", label: "Correo de la Víctima" },
+        { key: "homeTelephone", label: "Teléfono Domicilio" },
+        { key: "workplaceTelephone", label: "Teléfono Trabajo" },
+      ],
+    },
+  ];
+
+  // 🗂️ Generación de secciones
+  const sectionElements = sections.map((section) => {
+    // Crear filas de la tabla para los campos
+    const tableRows = section.fields.map((field, index) => {
       return new TableRow({
         children: [
           new TableCell({
@@ -103,7 +325,7 @@ export const generateWord = (selectedCarrier: Carrier) => {
                 ],
               }),
             ],
-            shading: { fill: "F0FDF4" },
+            shading: { fill: index % 2 === 0 ? "F0FDF4" : "FFFFFF" }, // Fondo alternado
           }),
           new TableCell({
             children: [
@@ -111,7 +333,7 @@ export const generateWord = (selectedCarrier: Carrier) => {
                 children: [
                   new TextRun({
                     text:
-                      selectedCarrier[field.key as keyof Carrier]?.toString() ??
+                      section.data[field.key as keyof typeof section.data] ??
                       "-",
                     font: "Arial",
                     size: 24,
@@ -124,24 +346,19 @@ export const generateWord = (selectedCarrier: Carrier) => {
       });
     });
 
-    // Add extra spacing or a page break before "CAUSA" and "MONITOREO" sections
-    const isCauseOrMonitoring =
-      section.title === "Datos Personales" ||
-      section.title === "Causa" ||
-      section.title === "Monitoreo";
-    const spacingBefore = isCauseOrMonitoring ? { before: 100 } : {}; // 600 twips = 0.5 inches of spacing
-    // Alternatively, you can use a page break instead of spacing:
-    // const pageBreakBefore = isCauseOrMonitoring ? [new Paragraph({ children: [], pageBreakBefore: true })] : [];
+    // Espaciado adicional antes de ciertas secciones
+    const isMajorSection = [
+      "Información Personal (Paso 1)",
+      "Información Legal (Paso 2)",
+      "Control y Seguimiento (Paso 3)",
+    ].includes(section.title);
+    const spacingBefore = isMajorSection ? { before: 600 } : { before: 200 };
 
     return [
-      ...(isCauseOrMonitoring
-        ? [
-            new Paragraph({
-              children: [],
-              spacing: { before: 100 }, // Adds spacing before the title
-            }),
-          ]
-        : []),
+      new Paragraph({
+        children: [],
+        spacing: spacingBefore,
+      }),
       new Paragraph({
         children: [
           new TextRun({
@@ -154,7 +371,7 @@ export const generateWord = (selectedCarrier: Carrier) => {
         ],
         shading: { fill: "22C55E" },
         alignment: AlignmentType.CENTER,
-        spacing: { after: 200, ...spacingBefore },
+        spacing: { after: 200 },
       }),
       new Table({
         rows: [
@@ -201,6 +418,7 @@ export const generateWord = (selectedCarrier: Carrier) => {
     ];
   });
 
+  // 📄 Crear el documento
   const doc = new Document({
     sections: [
       {
@@ -209,7 +427,7 @@ export const generateWord = (selectedCarrier: Carrier) => {
           new Paragraph({
             children: [
               new TextRun({
-                text: `Portador ${selectedCarrier.fullName}`,
+                text: `Portador ${selectedCarrier.step1.fullname}`,
                 bold: true,
                 font: "Arial",
                 size: 36,
@@ -220,7 +438,7 @@ export const generateWord = (selectedCarrier: Carrier) => {
             shading: { fill: "22C55E" },
             spacing: { after: 300 },
           }),
-          ...sections.flat(),
+          ...sectionElements.flat(),
           new Paragraph({
             children: [
               new TextRun({
@@ -239,8 +457,9 @@ export const generateWord = (selectedCarrier: Carrier) => {
     ],
   });
 
+  // 💾 Guardar el archivo
   Packer.toBlob(doc).then((blob) => {
-    const nameFile = selectedCarrier.fullName
+    const nameFile = selectedCarrier.step1.fullname
       .split(" ")
       .join("_")
       .toLowerCase();
