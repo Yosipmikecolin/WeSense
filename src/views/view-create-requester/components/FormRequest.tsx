@@ -23,7 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addRequest } from "@/db/request";
+import { addRequester } from "@/db/requester";
 import { generateUUID, getDate } from "@/functions";
 import toast from "react-hot-toast";
 
@@ -70,7 +70,7 @@ const FormRequest = () => {
       setError(true);
     } else {
       setLoading(true);
-      await addRequest({
+      await addRequester({
         registrationDate: getDate(),
         id: generateUUID(),
         ...formData,

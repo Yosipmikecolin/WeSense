@@ -110,7 +110,7 @@ const TableCarriers = () => {
             <TableBody className="mt-5">
               {carrierDB.map((carrier) => (
                 <TableRow key={carrier.id}>
-                  <TableCell>{carrier.step1.fullname}</TableCell>
+                  <TableCell>{carrier.step1.fullName}</TableCell>
                   <TableCell>{carrier.step1.maritalStatus}</TableCell>
                   <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">

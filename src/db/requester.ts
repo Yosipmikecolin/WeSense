@@ -1,6 +1,6 @@
 import { initDB } from "./db";
 
-export interface Request {
+export interface Requester {
   id: string;
   fullName: string;
   lastName: string;
@@ -20,25 +20,25 @@ export interface Request {
   observations: string;
 }
 
-export const addRequest = async (request: Request) => {
+export const addRequester = async (request: Requester) => {
   const db = await initDB();
-  const tx = db.transaction("request", "readwrite");
+  const tx = db.transaction("requester", "readwrite");
   await tx.store.put(request);
   await tx.done;
 };
 
-export const getRequest = async (): Promise<Request[]> => {
+export const getRequester = async (): Promise<Requester[]> => {
   const db = await initDB();
-  const tx = db.transaction("request", "readonly");
-  const store = tx.objectStore("request");
+  const tx = db.transaction("requester", "readonly");
+  const store = tx.objectStore("requester");
   const allUsers = await store.getAll();
   await tx.done;
   return allUsers;
 };
 
-export const deleteRequest = async (id: string) => {
+export const deleteRequester = async (id: string) => {
   const db = await initDB();
-  const tx = db.transaction("request", "readwrite");
+  const tx = db.transaction("requester", "readwrite");
   await tx.store.delete(id);
   await tx.done;
 };

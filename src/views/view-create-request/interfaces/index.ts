@@ -1,54 +1,50 @@
-export interface FormData {
-  step1: Step1Data;
-  step2: Step2Data;
-}
-
-export interface Step1Data {
-  nombreCompleto: string;
-  nombreSocial: string;
-  run: string;
-  sexo: string;
-  genero: string;
-  fechaNacimiento: string;
-  estadoCivil: string;
-  nacionalidad: string;
-  telefono: string;
-}
-
-export interface Step2Data {
-  tipoPena: string;
-  corteApelaciones: string;
-  regionTribunal: string;
-  tribunal: string;
-  ruc: string;
-  rit: string;
-  rol: string;
-}
-
-export interface Step3Data {
-  crs: string;
-  areas: string;
-  duracionMedida: string;
-  horarioControl: string;
-  periodoEfectivo: string;
-  solicitudesFactibilidad: string;
-  sentencia: string;
-  programacionesInstalacion: string;
-  instalacionesRealizadas: string;
-  resolucionesModificacion: string;
-  soportesTecnicos: string;
-  informesIncumplimiento: string;
-  diasControl: string;
-  desinstalaciones: string;
-}
-
-export interface StepProps {
-  data: Step1Data | Step2Data | Step3Data;
-  updateData: (data: Step1Data | Step2Data | Step3Data) => void;
-  setCompleteForm: (complete: boolean) => void;
-}
+import { Request } from "@/db/requester";
+import {
+  FormDataCarrier,
+  Step1Data,
+  Step2Data,
+  Step3Data,
+  Step4Data,
+  Step5Data,
+} from "@/views/view-create-carrier/interfaces";
 
 export interface TimelineProps {
   steps: string[];
   currentStep: number;
+}
+
+export interface FormDataRequest {
+  requester: {
+    id: string;
+    fullName: string;
+    lastName: string;
+    middleName: string;
+    email: string;
+    ruc: string;
+    phone: string;
+    userType: string;
+    institution: string;
+    identificationNumber: string;
+    region: string;
+    address: string;
+    accessAreas: string;
+    identityVerification: string;
+    securityQuestion: string;
+    registrationDate: string;
+    observations: string;
+  };
+  carrier: {
+    id: string;
+    step1: Step1Data;
+    step2: Step2Data;
+    step3: Step3Data;
+    step4: Step4Data;
+    step5: Step5Data;
+  };
+}
+
+export interface StepProps1 {
+  formData: Step1Data;
+  setFormData: (data: Step1Data) => void;
+  setCompleteForm: (complete: boolean) => void;
 }

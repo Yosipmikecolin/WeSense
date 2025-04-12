@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Request } from "@/db/request";
+import { Request } from "@/db/requester";
 import { BriefcaseBusiness, Gavel, UserCheck } from "lucide-react";
 
 interface Props {
@@ -55,7 +55,7 @@ const DetailsModal = ({ requester, open, onClose }: Props) => {
             <span>{requester?.registrationDate}</span>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <span className="font-semibold">Institucion:</span>
+            <span className="font-semibold">Institución:</span>
             <span>{requester?.institution}</span>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">

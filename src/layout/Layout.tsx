@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { ReactNode, useEffect } from "react";
 import { users, requesters, carriers } from "@/utils";
 import { addUser } from "@/db/user";
-import { addRequest } from "@/db/request";
+import { addRequester } from "@/db/requester";
 import { addCarrier } from "@/db/carrier";
 
 interface Props {
@@ -20,8 +20,8 @@ const Layout = ({ children }: Props) => {
     };
 
     const insertRequest = async () => {
-      for (const request of requesters) {
-        await addRequest(request);
+      for (const requester of requesters) {
+        await addRequester(requester);
       }
     };
 

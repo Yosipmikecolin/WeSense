@@ -71,7 +71,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
         <Label htmlFor="fullname">Nombre Completo</Label>
         <Input
           name="fullname"
-          value={formData.fullname}
+          value={formData.fullName}
           onChange={handleChange}
         />
       </div>

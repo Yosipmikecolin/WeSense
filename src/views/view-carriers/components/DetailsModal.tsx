@@ -37,7 +37,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nombre Completo:</div>
-                  <div className="text-end">{carrier?.step1.fullname}</div>
+                  <div className="text-end">{carrier?.step1.fullName}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nombre Social:</div>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { StepProps } from "../interfaces";
 import {
   Select,
   SelectContent,
@@ -11,81 +10,65 @@ import {
 } from "@/components/ui/select";
 
 import { Loader2 } from "lucide-react";
-import { carriers, requesters } from "@/utils";
+import { getCarrier } from "@/db/carrier";
+import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import { initialFormData } from "@/views/view-create-carrier/data/initialFormData";
 
-const REQUESTER_TYPES = [
-  { id: "Homicidio", name: "Homicidio" },
-  { id: "Femicidio", name: "Femicidio" },
-  { id: "Parricidio", name: "Parricidio" },
-  {
-    id: "Robo con violencia o intimidación",
-    name: "Robo con violencia o intimidación",
-  },
-  { id: "Hurto", name: "Hurto" },
-  { id: "Tráfico de drogas", name: "Tráfico de drogas" },
-  { id: "Estafa", name: "Estafa" },
-];
+interface Props {
+  formData: FormDataCarrier;
+  setFormData: (data: FormDataCarrier) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
 
-const BearerForm = ({}: StepProps) => {
+const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
   const [requesterType, setRequesterType] = useState<string>("");
-  const [selectedRequester, setSelectedRequester] = useState<string>("");
-  const [availableRequesters, setAvailableRequesters] = useState<
-    {
-      fullName: string;
-      nationality: string;
-      maritalStatus: string;
-      gender: string;
-      penaltyType: string;
-      court: string;
-    }[]
-  >([]);
+  const [selectedCarrier, setSelectedCarrier] = useState<string>("");
+  const [carriers, setCarriers] = useState<FormDataCarrier[]>([]);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    nationality: "",
-    maritalStatus: "",
-    gender: "",
-    penaltyType: "",
-    court: "",
-  });
+
+  useEffect(() => {
+    const isComplete = Object.values(formData).every((value) => value !== "");
+    setCompleteForm(isComplete);
+  }, [formData, setCompleteForm]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getCarrier();
+      setCarriers(result);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (requesterType) {
       setLoading(true);
-      setSelectedRequester("");
-      setFormData({
-        fullName: "",
-        nationality: "",
-        maritalStatus: "",
-        gender: "",
-        penaltyType: "",
-        court: "",
-      });
+      setSelectedCarrier("");
+      setFormData(initialFormData);
 
-      // Simulate API call delay
-      setTimeout(() => {
-        const data = carriers.filter((i) => i.crime === requesterType);
-        setAvailableRequesters(data);
+      setTimeout(async () => {
         setLoading(false);
       }, 600);
-    } else {
-      setAvailableRequesters([]);
     }
   }, [requesterType]);
 
-  const selectReqii = (value: string) => {
-    setSelectedRequester(value);
-    const selectRequirent = carriers.find((i) => i.fullName === value);
+  const selectCarrier = (value: string) => {
+    setSelectedCarrier(value);
+    const selectRequirent = carriers.find(
+      (i) => i.step1.fullName === value && i.step2.crime === requesterType
+    );
     if (selectRequirent) {
-      setFormData({
-        fullName: selectRequirent.fullName,
-        nationality: selectRequirent.nationality,
-        maritalStatus: selectRequirent.maritalStatus,
-        gender: selectRequirent.gender,
-        penaltyType: selectRequirent.penaltyType,
-        court: selectRequirent.court,
-      });
+      setFormData(selectRequirent);
     }
+  };
+
+  const uniqueArray = (carriers: FormDataCarrier[]) => {
+    const seen = new Set();
+    return carriers.filter((item) => {
+      if (seen.has(item.step2.crime)) return false;
+      seen.add(item.step2.crime);
+      return true;
+    });
   };
 
   return (
@@ -98,9 +81,9 @@ const BearerForm = ({}: StepProps) => {
               <SelectValue placeholder="Seleccione un tipo de delito" />
             </SelectTrigger>
             <SelectContent>
-              {REQUESTER_TYPES.map((type) => (
-                <SelectItem key={type.id} value={type.id}>
-                  {type.name}
+              {uniqueArray(carriers).map((type) => (
+                <SelectItem key={type.id} value={type.step2.crime}>
+                  {type.step2.crime}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -111,8 +94,8 @@ const BearerForm = ({}: StepProps) => {
       <div className="space-y-2">
         <Label htmlFor="requester">Portador</Label>
         <Select
-          value={selectedRequester}
-          onValueChange={selectReqii}
+          value={selectedCarrier}
+          onValueChange={selectCarrier}
           disabled={!requesterType || loading}
         >
           <SelectTrigger id="requester" className="w-full">
@@ -126,11 +109,13 @@ const BearerForm = ({}: StepProps) => {
             )}
           </SelectTrigger>
           <SelectContent>
-            {availableRequesters.map((requester, index) => (
-              <SelectItem key={index} value={requester.fullName}>
-                {requester.fullName}
-              </SelectItem>
-            ))}
+            {carriers
+              .filter((i) => i.step2.crime === requesterType)
+              .map((carrier, index) => (
+                <SelectItem key={index} value={carrier.step1.fullName}>
+                  {carrier.step1.fullName}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -140,7 +125,7 @@ const BearerForm = ({}: StepProps) => {
           <Label htmlFor="region">Nombre completo</Label>
           <Input
             id="region"
-            value={formData.fullName}
+            value={formData.step1.fullName}
             readOnly
             className="bg-gray-50"
           />
@@ -149,7 +134,7 @@ const BearerForm = ({}: StepProps) => {
           <Label htmlFor="tribunal">Nacionalidad</Label>
           <Input
             id="tribunal"
-            value={formData.nationality}
+            value={formData.step1.nationality}
             readOnly
             className="bg-gray-50"
           />
@@ -158,7 +143,7 @@ const BearerForm = ({}: StepProps) => {
           <Label htmlFor="ruc">Estado Civil</Label>
           <Input
             id="ruc"
-            value={formData.maritalStatus}
+            value={formData.step1.maritalStatus}
             readOnly
             className="bg-gray-50"
           />
@@ -167,7 +152,7 @@ const BearerForm = ({}: StepProps) => {
           <Label htmlFor="rit">Género</Label>
           <Input
             id="rit"
-            value={formData.gender}
+            value={formData.step1.gender}
             readOnly
             className="bg-gray-50"
           />
@@ -176,7 +161,7 @@ const BearerForm = ({}: StepProps) => {
           <Label htmlFor="rol">Tipo de pena</Label>
           <Input
             id="rol"
-            value={formData.penaltyType}
+            value={formData.step1.type_current}
             readOnly
             className="bg-gray-50"
           />

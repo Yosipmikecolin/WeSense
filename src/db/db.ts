@@ -16,6 +16,10 @@ export const initDB = () => {
       if (!db.objectStoreNames.contains("carrier")) {
         db.createObjectStore("carrier", { keyPath: "id" });
       }
+
+      if (!db.objectStoreNames.contains("requester")) {
+        db.createObjectStore("requester", { keyPath: "id" });
+      }
     },
   });
 

@@ -8,7 +8,7 @@ export interface FormDataCarrier {
 }
 
 export interface Step1Data {
-  fullname: string;
+  fullName: string;
   socialName: string;
   paternalSurname: string;
   motherSurname: string;

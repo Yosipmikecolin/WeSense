@@ -62,13 +62,6 @@ const ViewCreateCarrier = () => {
     []
   );
 
-  const isStep5Complete = () => {
-    const step5 = formData.step5;
-    return Object.values(step5).every((value) =>
-      typeof value === "boolean" ? true : value.toString().trim() !== ""
-    );
-  };
-
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
@@ -158,11 +151,7 @@ const ViewCreateCarrier = () => {
                 handleNext();
               }
             }}
-            disabled={
-              (currentStep < steps.length - 1 && !completeForm) ||
-              (currentStep === steps.length - 1 && !isStep5Complete()) ||
-              loading
-            }
+            disabled={!completeForm}
           >
             {currentStep === steps.length - 1 ? (
               loading ? (

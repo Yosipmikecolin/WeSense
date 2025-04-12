@@ -1,9 +1,9 @@
-import { FormData } from "../interfaces";
+import { FormDataCarrier } from "../interfaces";
 
-export const initialFormData: FormData = {
+export const initialFormData: FormDataCarrier = {
   id: "",
   step1: {
-    fullname: "",
+    fullName: "",
     socialName: "",
     paternalSurname: "",
     motherSurname: "",

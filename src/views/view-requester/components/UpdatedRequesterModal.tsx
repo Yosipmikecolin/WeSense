@@ -27,15 +27,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addRequest, getRequest, Request } from "@/db/request";
-import { getDate } from "@/functions";
+import { addRequester, getRequester, Requester } from "@/db/requester";
 import toast from "react-hot-toast";
 
 interface Props {
-  requester?: Request;
+  requester?: Requester;
   open: boolean;
   onClose: VoidFunction;
-  setDB: Dispatch<SetStateAction<Request[]>>;
+  setDB: Dispatch<SetStateAction<Requester[]>>;
 }
 
 const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
@@ -88,12 +87,12 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
     if (Object.values(formData).some((value) => value === "")) {
       setError(true);
     } else {
-      await addRequest({
+      await addRequester({
         id: requester?.id || "",
         ...formData,
         registrationDate: requester?.registrationDate || "",
       });
-      const result = await getRequest();
+      const result = await getRequester();
       setTimeout(() => {
         toast.success("Usuario actualizado");
         setDB(

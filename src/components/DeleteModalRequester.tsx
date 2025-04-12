@@ -6,14 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteRequest, getRequest, Request } from "@/db/request";
+import { deleteRequester, getRequester, Requester } from "@/db/requester";
 import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
   id?: string;
   open: boolean;
-  setRequestDB: Dispatch<SetStateAction<Request[]>>;
+  setRequestDB: Dispatch<SetStateAction<Requester[]>>;
   onClose: VoidFunction;
 }
 
@@ -22,16 +22,18 @@ const DeleteModalRequester = ({ id, open, onClose, setRequestDB }: Props) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    await deleteRequest(id || "");
-    const result = await getRequest();
+    await deleteRequester(id || "");
+    const result = await getRequester();
     setTimeout(() => {
       toast.success("Eliminado exitosamente");
-      setRequestDB(result.sort((a, b) => {
-        return (
-          new Date(a.registrationDate).getTime() -
-          new Date(b.registrationDate).getTime()
-        );
-      }));
+      setRequestDB(
+        result.sort((a, b) => {
+          return (
+            new Date(a.registrationDate).getTime() -
+            new Date(b.registrationDate).getTime()
+          );
+        })
+      );
       setLoading(false);
       onClose();
     }, 500);

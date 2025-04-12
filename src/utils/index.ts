@@ -154,7 +154,7 @@ export const carriers = [
   {
     id: "1",
     step1: {
-      fullname: "Ana María Gómez Pérez",
+      fullName: "Ana María Gómez Pérez",
       socialName: "Anita",
       paternalSurname: "Gómez",
       motherSurname: "Pérez",
@@ -231,7 +231,7 @@ export const carriers = [
   {
     id: "2",
     step1: {
-      fullname: "Pedro Luis Rodríguez Castro",
+      fullName: "Pedro Luis Rodríguez Castro",
       socialName: "Pedrito",
       paternalSurname: "Rodríguez",
       motherSurname: "Castro",
@@ -308,7 +308,7 @@ export const carriers = [
   {
     id: "3",
     step1: {
-      fullname: "Sofía Elena Vargas López",
+      fullName: "Sofía Elena Vargas López",
       socialName: "Sofi",
       paternalSurname: "Vargas",
       motherSurname: "López",
@@ -385,7 +385,7 @@ export const carriers = [
   {
     id: "4",
     step1: {
-      fullname: "Ricardo Andrés Díaz Rojas",
+      fullName: "Ricardo Andrés Díaz Rojas",
       socialName: "Richi",
       paternalSurname: "Díaz",
       motherSurname: "Rojas",
@@ -462,7 +462,7 @@ export const carriers = [
   {
     id: "5",
     step1: {
-      fullname: "Juan Carlos Méndez Rojas",
+      fullName: "Juan Carlos Méndez Rojas",
       socialName: "Juanquis",
       paternalSurname: "Méndez",
       motherSurname: "Rojas",
@@ -539,7 +539,7 @@ export const carriers = [
   {
     id: "6",
     step1: {
-      fullname: "Laura Beatriz Sánchez Vega",
+      fullName: "Laura Beatriz Sánchez Vega",
       socialName: "Lau",
       paternalSurname: "Sánchez",
       motherSurname: "Vega",
@@ -616,7 +616,7 @@ export const carriers = [
   {
     id: "7",
     step1: {
-      fullname: "Pedro Antonio Ramírez Castillo",
+      fullName: "Pedro Antonio Ramírez Castillo",
       socialName: "",
       paternalSurname: "Ramírez",
       motherSurname: "Castillo",
@@ -693,7 +693,7 @@ export const carriers = [
   {
     id: "8",
     step1: {
-      fullname: "Diego Alejandro Torres Mendoza",
+      fullName: "Diego Alejandro Torres Mendoza",
       socialName: "Diegito",
       paternalSurname: "Torres",
       motherSurname: "Mendoza",
@@ -770,7 +770,7 @@ export const carriers = [
   {
     id: "9",
     step1: {
-      fullname: "Valentina Sofía Ríos Contreras",
+      fullName: "Valentina Sofía Ríos Contreras",
       socialName: "Vale",
       paternalSurname: "Ríos",
       motherSurname: "Contreras",
@@ -847,7 +847,7 @@ export const carriers = [
   {
     id: "10",
     step1: {
-      fullname: "Ricardo Andrés Flores Guzmán",
+      fullName: "Ricardo Andrés Flores Guzmán",
       socialName: "",
       paternalSurname: "Flores",
       motherSurname: "Guzmán",

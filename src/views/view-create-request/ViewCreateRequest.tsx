@@ -9,26 +9,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  FormData as IFormData,
-  Step1Data,
-  Step2Data,
-  Step3Data,
-} from "./interfaces";
+import { FormDataRequest } from "./interfaces";
 
 import classes from "./ViewCreateRequest.module.css";
 import Timeline from "@/components/timeline/Timeline";
 import BearerForm from "./components/BearerForm";
 import ApplicantForm from "./components/ApplicantForm";
+import { Requester } from "@/db/requester";
+import { FormDataCarrier } from "../view-create-carrier/interfaces";
+import { initialFormData } from "../view-create-carrier/data/initialFormData";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [_completeForm, setCompleteForm] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>({
-    step1: {} as Step1Data,
-    step2: {} as Step2Data,
-  });
+  const [completeForm, setCompleteForm] = useState<boolean>(false);
   const steps = ["Requirente", "Portador"];
+  const [formData, setFormData] = useState<FormDataRequest>({
+    requester: {
+      id: "",
+      fullName: "",
+      lastName: "",
+      middleName: "",
+      email: "",
+      ruc: "",
+      phone: "",
+      userType: "",
+      institution: "",
+      identificationNumber: "",
+      region: "",
+      address: "",
+      accessAreas: "",
+      identityVerification: "",
+      securityQuestion: "",
+      registrationDate: "",
+      observations: "",
+    },
+    carrier: initialFormData,
+  });
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -42,7 +58,7 @@ const ViewCreateRequest = () => {
     }
   };
   const updateData = useCallback(
-    (step: keyof IFormData, data: Step1Data | Step2Data | Step3Data) => {
+    (step: keyof FormDataRequest, data: Requester | FormDataCarrier) => {
       setFormData((prevData) => ({
         ...prevData,
         [step]: data,
@@ -56,16 +72,16 @@ const ViewCreateRequest = () => {
       case 0:
         return (
           <ApplicantForm
-            data={formData.step1}
-            updateData={(data) => updateData("step1", data)}
+            formData={formData.requester}
+            setFormData={(data) => updateData("requester", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 1:
         return (
           <BearerForm
-            data={formData.step2}
-            updateData={(data) => updateData("step2", data)}
+            formData={formData.carrier}
+            setFormData={(data) => updateData("carrier", data)}
             setCompleteForm={setCompleteForm}
           />
         );
@@ -75,6 +91,9 @@ const ViewCreateRequest = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    console.log("formData", formData);
+  };
   return (
     <div
       className={classes.container}
@@ -94,16 +113,22 @@ const ViewCreateRequest = () => {
           <Button
             variant={"primary"}
             onClick={handlePrevious}
-            disabled={currentStep === 0}
+            disabled={currentStep < steps.length - 1}
           >
             Atras
           </Button>
           <Button
             variant={"primary"}
-            onClick={handleNext}
-            disabled={currentStep === steps.length - 1}
+            onClick={() => {
+              if (currentStep === steps.length - 1) {
+                handleSubmit();
+              } else {
+                handleNext();
+              }
+            }}
+            disabled={!completeForm}
           >
-            Siguiente
+            {currentStep === steps.length - 1 ? "Crear solicitud" : "Siguiente"}
           </Button>
         </CardFooter>
       </Card>

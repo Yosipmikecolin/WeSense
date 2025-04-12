@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
-import { getRequest, Request } from "@/db/request";
+import { getRequester, Requester } from "@/db/requester";
 import DeleteModalRequester from "@/components/DeleteModalRequester";
 import UpdatedRequesterModal from "./UpdatedRequesterModal";
 
@@ -40,8 +40,8 @@ const TableRequester = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [requestDB, setRequestDB] = useState<Request[]>([]);
-  const [selectedRequester, setSelectedRequester] = useState<Request>();
+  const [requestDB, setRequestDB] = useState<Requester[]>([]);
+  const [selectedRequester, setSelectedRequester] = useState<Requester>();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Email" },
@@ -55,7 +55,7 @@ const TableRequester = () => {
   useEffect(() => {
     const fetchData = () => {
       setTimeout(async () => {
-        const result = await getRequest();
+        const result = await getRequester();
         setRequestDB(
           result.sort((a, b) => {
             return (

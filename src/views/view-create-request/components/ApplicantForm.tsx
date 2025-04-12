@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { CalendarIcon, Loader2 } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -7,11 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StepProps } from "../interfaces";
-import { useEffect, useState } from "react";
-
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { requesters } from "@/utils";
 import {
   Popover,
   PopoverContent,
@@ -22,79 +20,82 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { getRequester, Requester } from "@/db/requester";
 
-// Mock data for demonstration
-const REQUESTER_TYPES = [
-  { id: "Defensor", name: "Defensor" },
-  { id: "Abogado particular", name: "Abogado particular" },
-  { id: "Otro", name: "Otro" },
-];
+interface Props {
+  formData: Requester;
+  setFormData: (data: Requester) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
 
-const ApplicantForm = ({}: StepProps) => {
+const ApplicantForm = ({ formData, setFormData, setCompleteForm }: Props) => {
   const [requesterType, setRequesterType] = useState<string>("");
   const [date, setDate] = useState<Date>();
   const [selectedRequester, setSelectedRequester] = useState<string>("");
-  const [formData, setFormData] = useState({
-    region: "",
-    tribunal: "",
-    ruc: "",
-    rit: "",
-    rol: "",
-  });
+  const [requesters, setRequesters] = useState<Requester[]>([]);
   const [loading, setLoading] = useState(false);
-  const [availableRequesters, setAvailableRequesters] = useState<
-    {
-      fullName: string;
-      email: string;
-      phone: string;
-      userType: string;
-      institution: string;
-      identificationNumber: string;
-      region: string;
-      address: string;
-      accessAreas: string;
-      registrationDate: string;
-      identityVerification: string;
-      securityQuestion: string;
-      observations: string;
-    }[]
-  >([]);
+
+  useEffect(() => {
+    const isComplete = Object.values(formData).every(
+      (value) => value !== "" && date
+    );
+    setCompleteForm(isComplete);
+  }, [formData, setCompleteForm, date]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getRequester();
+      setRequesters(result);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (requesterType) {
       setLoading(true);
       setSelectedRequester("");
       setFormData({
-        region: "",
-        tribunal: "",
+        id: "",
+        fullName: "",
+        lastName: "",
+        middleName: "",
+        email: "",
         ruc: "",
-        rit: "",
-        rol: "",
+        phone: "",
+        userType: "",
+        institution: "",
+        identificationNumber: "",
+        region: "",
+        address: "",
+        accessAreas: "",
+        identityVerification: "",
+        securityQuestion: "",
+        registrationDate: "",
+        observations: "",
       });
 
-      // Simulate API call delay
-      setTimeout(() => {
-        const data = requesters.filter((i) => i.userType === requesterType);
-        setAvailableRequesters(data);
+      setTimeout(async () => {
         setLoading(false);
       }, 600);
-    } else {
-      setAvailableRequesters([]);
     }
   }, [requesterType]);
 
-  const selectReqii = (value: string) => {
+  const selectApplicant = (value: string) => {
     setSelectedRequester(value);
     const selectRequirent = requesters.find((i) => i.fullName === value);
     if (selectRequirent) {
-      setFormData({
-        region: selectRequirent.region,
-        tribunal: selectRequirent.institution,
-        ruc: selectRequirent.ruc,
-        rit: selectRequirent.identificationNumber,
-        rol: selectRequirent.userType,
-      });
+      setFormData(selectRequirent);
     }
+  };
+
+  const uniqueByUserType = (requesters: Requester[]) => {
+    const seen = new Set();
+    return requesters.filter((item) => {
+      if (seen.has(item.userType)) return false;
+      seen.add(item.userType);
+      return true;
+    });
   };
   return (
     <div className="space-y-4">
@@ -106,9 +107,9 @@ const ApplicantForm = ({}: StepProps) => {
               <SelectValue placeholder="Seleccione un tipo de requiriente" />
             </SelectTrigger>
             <SelectContent>
-              {REQUESTER_TYPES.map((type) => (
-                <SelectItem key={type.id} value={type.id}>
-                  {type.name}
+              {uniqueByUserType(requesters).map((type) => (
+                <SelectItem key={type.id} value={type.userType}>
+                  {type.userType}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -154,7 +155,7 @@ const ApplicantForm = ({}: StepProps) => {
         <Label htmlFor="requester">Requiriente</Label>
         <Select
           value={selectedRequester}
-          onValueChange={selectReqii}
+          onValueChange={selectApplicant}
           disabled={!requesterType || loading}
         >
           <SelectTrigger id="requester" className="w-full">
@@ -167,12 +168,15 @@ const ApplicantForm = ({}: StepProps) => {
               <SelectValue placeholder="Seleccione un requiriente" />
             )}
           </SelectTrigger>
+
           <SelectContent>
-            {availableRequesters.map((requester, index) => (
-              <SelectItem key={index} value={requester.fullName}>
-                {requester.fullName}
-              </SelectItem>
-            ))}
+            {requesters
+              .filter((i) => i.userType === requesterType)
+              .map((requester, index) => (
+                <SelectItem key={index} value={requester.fullName}>
+                  {requester.fullName}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -188,37 +192,37 @@ const ApplicantForm = ({}: StepProps) => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="tribunal">Tribunal/Juzgado</Label>
+          <Label htmlFor="tribunal">Institución</Label>
           <Input
             id="tribunal"
-            value={formData.tribunal}
+            value={formData.institution}
             readOnly
             className="bg-gray-50"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="ruc">RUC</Label>
+          <Label htmlFor="ruc">Telefono movil</Label>
           <Input
             id="ruc"
+            value={formData.phone}
+            readOnly
+            className="bg-gray-50"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="rit">RUC</Label>
+          <Input
+            id="rit"
             value={formData.ruc}
             readOnly
             className="bg-gray-50"
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="rit">RIT</Label>
-          <Input
-            id="rit"
-            value={formData.rit}
-            readOnly
-            className="bg-gray-50"
-          />
-        </div>
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="rol">Rol</Label>
+          <Label htmlFor="rol">Email</Label>
           <Input
             id="rol"
-            value={formData.rol}
+            value={formData.email}
             readOnly
             className="bg-gray-50"
           />
