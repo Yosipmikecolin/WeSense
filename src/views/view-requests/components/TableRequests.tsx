@@ -54,6 +54,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Request } from "@/interfaces";
+import { getRequest } from "@/db/requests";
 
 const TableRequests = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -81,6 +82,19 @@ const TableRequests = () => {
       setViewButton(email);
     }
   }, []);
+
+
+  useEffect(() => {
+    const fetchData = () => {
+      setTimeout(async () => {
+        const result = await getRequest();
+        console.log("result",result)
+      }, 600);
+    };
+
+    fetchData();
+  }, []);
+
 
   const handleClick = () => {
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;

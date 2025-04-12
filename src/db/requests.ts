@@ -1,27 +1,17 @@
-/* import { initDB } from "./db";
+import { FormDataRequest } from "@/views/view-create-request/interfaces";
+import { initDB } from "./db";
 
-export interface User {
-  id: string;
-  name: string;
-  nit: string;
-  perfil: string;
-  status: string;
-  email: string;
-  phone: string;
-  creation_date: string;
-}
-
-export const addRequest = async (user: User) => {
+export const addRequest = async (user: FormDataRequest) => {
   const db = await initDB();
-  const tx = db.transaction("requests", "readwrite");
+  const tx = db.transaction("request", "readwrite");
   await tx.store.put(user);
   await tx.done;
 };
 
-export const getRequest = async (): Promise<User[]> => {
+export const getRequest = async (): Promise<FormDataRequest[]> => {
   const db = await initDB();
-  const tx = db.transaction("requests", "readonly");
-  const store = tx.objectStore("requests");
+  const tx = db.transaction("request", "readonly");
+  const store = tx.objectStore("request");
   const allUsers = await store.getAll();
   await tx.done;
   return allUsers;
@@ -29,8 +19,7 @@ export const getRequest = async (): Promise<User[]> => {
 
 export const deleteRequest = async (id: string) => {
   const db = await initDB();
-  const tx = db.transaction("users", "readwrite");
+  const tx = db.transaction("request", "readwrite");
   await tx.store.delete(id);
   await tx.done;
 };
- */

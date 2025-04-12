@@ -23,12 +23,18 @@ import { cn } from "@/lib/utils";
 import { getRequester, Requester } from "@/db/requester";
 
 interface Props {
+  setDate: (date?: Date) => void;
   formData: Requester;
   setFormData: (data: Requester) => void;
   setCompleteForm: (complete: boolean) => void;
 }
 
-const ApplicantForm = ({ formData, setFormData, setCompleteForm }: Props) => {
+const ApplicantForm = ({
+  formData,
+  setFormData,
+  setDate: setDateForm,
+  setCompleteForm,
+}: Props) => {
   const [requesterType, setRequesterType] = useState<string>("");
   const [date, setDate] = useState<Date>();
   const [selectedRequester, setSelectedRequester] = useState<string>("");
@@ -97,6 +103,11 @@ const ApplicantForm = ({ formData, setFormData, setCompleteForm }: Props) => {
       return true;
     });
   };
+
+  useEffect(() => {
+    setDateForm(date);
+  }, [date]);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-5">

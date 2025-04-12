@@ -18,12 +18,18 @@ import ApplicantForm from "./components/ApplicantForm";
 import { Requester } from "@/db/requester";
 import { FormDataCarrier } from "../view-create-carrier/interfaces";
 import { initialFormData } from "../view-create-carrier/data/initialFormData";
+import toast from "react-hot-toast";
+import { generateUUID } from "@/functions";
+import { addRequest } from "@/db/requests";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const steps = ["Requirente", "Portador"];
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormDataRequest>({
+    id: "",
+    applicationDate: undefined,
     requester: {
       id: "",
       fullName: "",
@@ -57,6 +63,10 @@ const ViewCreateRequest = () => {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  const setDate = (date?: Date) => {
+    setFormData({ ...formData, applicationDate: date });
+  };
   const updateData = useCallback(
     (step: keyof FormDataRequest, data: Requester | FormDataCarrier) => {
       setFormData((prevData) => ({
@@ -66,12 +76,12 @@ const ViewCreateRequest = () => {
     },
     []
   );
-
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
         return (
           <ApplicantForm
+            setDate={setDate}
             formData={formData.requester}
             setFormData={(data) => updateData("requester", data)}
             setCompleteForm={setCompleteForm}
@@ -92,8 +102,41 @@ const ViewCreateRequest = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("formData", formData);
+    setLoading(true);
+    await addRequest({
+      ...formData,
+      id: generateUUID(),
+    });
+    setTimeout(() => {
+      toast.success("Usuario creado exitosamente");
+      setLoading(false);
+      setCurrentStep(0);
+      setFormData({
+        id: "",
+        requester: {
+          id: "",
+          fullName: "",
+          lastName: "",
+          middleName: "",
+          email: "",
+          ruc: "",
+          phone: "",
+          userType: "",
+          institution: "",
+          identificationNumber: "",
+          region: "",
+          address: "",
+          accessAreas: "",
+          identityVerification: "",
+          securityQuestion: "",
+          registrationDate: "",
+          observations: "",
+        },
+        carrier: initialFormData,
+      });
+    }, 500);
   };
+
   return (
     <div
       className={classes.container}
@@ -128,7 +171,15 @@ const ViewCreateRequest = () => {
             }}
             disabled={!completeForm}
           >
-            {currentStep === steps.length - 1 ? "Crear solicitud" : "Siguiente"}
+            {currentStep === steps.length - 1 ? (
+              loading ? (
+                <div className="loader-button" />
+              ) : (
+                "Crear solicitud"
+              )
+            ) : (
+              "Siguiente"
+            )}
           </Button>
         </CardFooter>
       </Card>

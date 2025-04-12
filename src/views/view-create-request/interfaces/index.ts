@@ -1,6 +1,4 @@
-import { Request } from "@/db/requester";
 import {
-  FormDataCarrier,
   Step1Data,
   Step2Data,
   Step3Data,
@@ -14,8 +12,11 @@ export interface TimelineProps {
 }
 
 export interface FormDataRequest {
+  id: string;
+  applicationDate?: Date;
   requester: {
     id: string;
+    applicationDate?: Date;
     fullName: string;
     lastName: string;
     middleName: string;

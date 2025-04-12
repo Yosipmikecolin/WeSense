@@ -156,7 +156,6 @@ const ViewCreateCarrier = () => {
             {currentStep === steps.length - 1 ? (
               loading ? (
                 <div className="flex items-center gap-3">
-                  <span>Editando</span>
                   <div className="loader-button" />
                 </div>
               ) : (
