@@ -1,3 +1,4 @@
+import { deleteRequester } from "@/api/request";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,37 +7,33 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteRequester, getRequester, Requester } from "@/db/requester";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
   id?: string;
   open: boolean;
-  setRequestDB: Dispatch<SetStateAction<Requester[]>>;
+  refetch: VoidFunction;
   onClose: VoidFunction;
 }
 
-const DeleteModalRequester = ({ id, open, onClose, setRequestDB }: Props) => {
+const DeleteModalRequester = ({ id, open, onClose, refetch }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    setLoading(true);
-    await deleteRequester(id || "");
-    const result = await getRequester();
-    setTimeout(() => {
-      toast.success("Eliminado exitosamente");
-      setRequestDB(
-        result.sort((a, b) => {
-          return (
-            new Date(a.registrationDate).getTime() -
-            new Date(b.registrationDate).getTime()
-          );
-        })
-      );
-      setLoading(false);
-      onClose();
-    }, 500);
+    if (id) {
+      try {
+        setLoading(true);
+        await deleteRequester(id);
+        refetch();
+        toast.success("Eliminado exitosamente");
+        onClose();
+      } catch (error) {
+        toast.error("Error al eliminar el requirente");
+      } finally {
+        setLoading(false);
+      }
+    }
   };
   return (
     <Dialog open={open} onOpenChange={onClose}>

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -27,21 +27,28 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addRequester, getRequester, Requester } from "@/db/requester";
+import { Requester } from "@/db/requester";
 import toast from "react-hot-toast";
+import { updatedRequester } from "@/api/request";
 
 interface Props {
   requester?: Requester;
   open: boolean;
   onClose: VoidFunction;
-  setDB: Dispatch<SetStateAction<Requester[]>>;
+  refetch: VoidFunction;
 }
 
-const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
+const UpdatedRequesterModal = ({
+  requester,
+  open,
+  onClose,
+  refetch,
+}: Props) => {
   const [error, setError] = useState(false);
   const [date, setDate] = useState<Date>();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    _id: "",
     fullName: "",
     lastName: "",
     middleName: "",
@@ -82,31 +89,22 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    setLoading(true);
     e.preventDefault();
     if (Object.values(formData).some((value) => value === "")) {
       setError(true);
     } else {
-      await addRequester({
-        id: requester?.id || "",
-        ...formData,
-        registrationDate: requester?.registrationDate || "",
-      });
-      const result = await getRequester();
-      setTimeout(() => {
-        toast.success("Usuario actualizado");
-        setDB(
-          result.sort((a, b) => {
-            return (
-              new Date(a.registrationDate).getTime() -
-              new Date(b.registrationDate).getTime()
-            );
-          })
-        );
+      setLoading(true);
+      try {
+        await updatedRequester({
+          ...formData,
+          registrationDate: requester?.registrationDate || "",
+        });
+        refetch();
+        toast.success("Requirente actualizado");
         setError(false);
-        setLoading(false);
         onClose();
         setFormData({
+          _id: "",
           fullName: "",
           lastName: "",
           middleName: "",
@@ -123,7 +121,11 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
           securityQuestion: "",
           observations: "",
         });
-      }, 500);
+      } catch (error) {
+        toast.success("Error al actualizar el requirente");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -358,7 +360,10 @@ const UpdatedRequesterModal = ({ requester, open, onClose, setDB }: Props) => {
             disabled={loading}
           >
             {loading ? (
-              <div className="loader-button" />
+              <div className="flex items-center gap-3">
+                <span>Actualizando requirente</span>
+                <div className="loader-button" />
+              </div>
             ) : (
               "Actualizar requirente"
             )}

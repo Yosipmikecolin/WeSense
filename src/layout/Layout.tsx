@@ -1,9 +1,7 @@
 "use client";
 
 import { Toaster } from "react-hot-toast";
-import { ReactNode, useEffect } from "react";
-import { requesters, carriers } from "@/utils";
-import { addRequester } from "@/db/requester";
+import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface Props {
@@ -12,15 +10,6 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   const queryClient = new QueryClient();
-  useEffect(() => {
-    const insertRequest = async () => {
-      for (const requester of requesters) {
-        await addRequester(requester);
-      }
-    };
-
-    insertRequest();
-  }, []);
 
   return (
     <div>

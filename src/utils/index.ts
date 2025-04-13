@@ -1,4 +1,4 @@
- export const users = [
+export const users = [
   {
     name: "Yosip Mike Colin",
     nit: "83749234",
@@ -134,7 +134,7 @@
     creation_date: "2023-05-09",
     phone: "300 567 8901",
   },
-]; 
+];
 export const carriers = [
   {
     personalData: {
@@ -900,7 +900,6 @@ export const carriers = [
 
 export const requesters = [
   {
-    id: "1",
     fullName: "José Alfredo",
     lastName: "Alfredo",
     middleName: "Gutierrez",
@@ -919,7 +918,6 @@ export const requesters = [
     ruc: "5837488234",
   },
   {
-    id: "2",
     fullName: "María Fernanda",
     lastName: "López",
     middleName: "González",
@@ -938,7 +936,6 @@ export const requesters = [
     ruc: "7583478234",
   },
   {
-    id: "3",
     fullName: "Carlos Rodríguez",
     lastName: "Rodríguez",
     middleName: "Andrés",
@@ -957,7 +954,6 @@ export const requesters = [
     ruc: "45783653",
   },
   {
-    id: "4",
     fullName: "Luisa Pérez",
     lastName: "Pérez",
     middleName: "María",
@@ -976,7 +972,6 @@ export const requesters = [
     ruc: "56984737",
   },
   {
-    id: "5",
     fullName: "Andrés Mejía",
     lastName: "Mejía",
     middleName: "Felipe",
@@ -995,7 +990,6 @@ export const requesters = [
     ruc: "89362543",
   },
   {
-    id: "6",
     fullName: "Camila Ortiz",
     lastName: "Ortiz",
     middleName: "Sofía",
@@ -1014,7 +1008,6 @@ export const requesters = [
     ruc: "12381832",
   },
   {
-    id: "7",
     fullName: "Ricardo López",
     lastName: "López",
     middleName: "Javier",
@@ -1033,7 +1026,6 @@ export const requesters = [
     ruc: "39458345",
   },
   {
-    id: "8",
     fullName: "Tatiana Ramírez",
     lastName: "Ramírez",
     middleName: "Valentina",
@@ -1052,7 +1044,6 @@ export const requesters = [
     ruc: "57467364",
   },
   {
-    id: "9",
     fullName: "Paola Gómez",
     lastName: "Gómez",
     middleName: "Alejandra",
@@ -1071,7 +1062,6 @@ export const requesters = [
     ruc: "12837467",
   },
   {
-    id: "10",
     fullName: "Martha Gómez",
     lastName: "Gómez",
     middleName: "Lucía",
@@ -1090,7 +1080,6 @@ export const requesters = [
     ruc: "58342642",
   },
   {
-    id: "11",
     fullName: "Andres Parrado",
     lastName: "Parrado",
     middleName: "Eduardo",
@@ -1109,7 +1098,6 @@ export const requesters = [
     ruc: "67477233",
   },
   {
-    id: "12",
     fullName: "Stive Leguizamon",
     lastName: "Leguizamón",
     middleName: "Manuel",

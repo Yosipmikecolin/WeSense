@@ -23,9 +23,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addRequester } from "@/db/requester";
 import { generateUUID, getDate } from "@/functions";
 import toast from "react-hot-toast";
+import { addRequester } from "@/api/request";
 
 const FormRequest = () => {
   const [date, setDate] = useState<Date>();
@@ -70,15 +70,13 @@ const FormRequest = () => {
       setError(true);
     } else {
       setLoading(true);
-      await addRequester({
-        registrationDate: getDate(),
-        id: generateUUID(),
-        ...formData,
-      });
-      setTimeout(() => {
+      try {
+        await addRequester({
+          registrationDate: getDate(),
+          ...formData,
+        });
         toast.success("Requirente creado exitosamente");
         setError(false);
-        setLoading(false);
         setFormData({
           fullName: "",
           lastName: "",
@@ -96,7 +94,11 @@ const FormRequest = () => {
           securityQuestion: "",
           observations: "",
         });
-      }, 500);
+      } catch (error) {
+        toast.success("Error al crear el requirente");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -311,7 +313,14 @@ const FormRequest = () => {
             type="submit"
             disabled={loading}
           >
-            {loading ? <div className="loader-button" /> : "Crear requirente"}
+            {loading ? (
+              <div className="flex items-center gap-3">
+                <span>Creando requirente</span>
+                <div className="loader-button" />
+              </div>
+            ) : (
+              "Crear requirente"
+            )}
           </Button>
         </form>
       </CardContent>

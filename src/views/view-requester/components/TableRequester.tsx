@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -31,17 +31,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
-import { getRequester, Requester } from "@/db/requester";
+import { Requester } from "@/db/requester";
 import DeleteModalRequester from "@/components/DeleteModalRequester";
 import UpdatedRequesterModal from "./UpdatedRequesterModal";
+import { useQueryRequesters } from "@/api/queries";
 
 const TableRequester = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [requestDB, setRequestDB] = useState<Requester[]>([]);
   const [selectedRequester, setSelectedRequester] = useState<Requester>();
+  const { data: requesters, isLoading, refetch } = useQueryRequesters();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Email" },
@@ -51,25 +52,7 @@ const TableRequester = () => {
     { id: 6, name: "Dirección" },
     { id: 7, name: "Identificación" },
   ];
-
-  useEffect(() => {
-    const fetchData = () => {
-      setTimeout(async () => {
-        const result = await getRequester();
-        setRequestDB(
-          result.sort((a, b) => {
-            return (
-              new Date(a.registrationDate).getTime() -
-              new Date(b.registrationDate).getTime()
-            );
-          })
-        );
-      }, 600);
-    };
-
-    fetchData();
-  }, []);
-
+  console.log("requesters", requesters);
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -124,7 +107,7 @@ const TableRequester = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requestDB.map((requester, index) => (
+              {requesters?.map((requester, index) => (
                 <TableRow key={index}>
                   <TableCell>{requester.fullName}</TableCell>
                   <TableCell>{requester.email}</TableCell>
@@ -204,7 +187,7 @@ const TableRequester = () => {
               ))}
             </TableBody>
           </TableUI>
-          {!requestDB.length && (
+          {isLoading && (
             <div className="w-full h-[500px] bg-r flex justify-center items-center">
               <div className="loader-spiner" />
             </div>
@@ -219,16 +202,17 @@ const TableRequester = () => {
       />
 
       <UpdatedRequesterModal
-        setDB={setRequestDB}
+        refetch={refetch}
         open={isModalOpen2}
         requester={selectedRequester}
         onClose={() => setIsModalOpen2(false)}
       />
+
       <DeleteModalRequester
-        id={selectedRequester?.id}
+        id={selectedRequester?._id}
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}
-        setRequestDB={setRequestDB}
+        refetch={refetch}
       />
     </div>
   );

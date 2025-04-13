@@ -1,7 +1,4 @@
-import { initDB } from "./db";
-
-export interface Requester {
-  id: string;
+interface RequesterBase {
   fullName: string;
   lastName: string;
   middleName: string;
@@ -20,7 +17,13 @@ export interface Requester {
   observations: string;
 }
 
-export const addRequester = async (request: Requester) => {
+export interface Requester extends RequesterBase {
+  _id: string;
+}
+
+export type RequesterPost = RequesterBase;
+
+/* export const addRequester = async (request: Requester) => {
   const db = await initDB();
   const tx = db.transaction("requester", "readwrite");
   await tx.store.put(request);
@@ -42,3 +45,4 @@ export const deleteRequester = async (id: string) => {
   await tx.store.delete(id);
   await tx.done;
 };
+ */

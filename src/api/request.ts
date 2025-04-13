@@ -4,6 +4,7 @@ import {
   FormDataCarrier,
   FormDataCarrierPost,
 } from "@/views/view-create-carrier/interfaces";
+import { Requester, RequesterPost } from "@/db/requester";
 
 //* USERS
 
@@ -39,4 +40,22 @@ export const updatedCarrier = async (carrier: FormDataCarrier) => {
 
 export const deleteCarrier = async (id: string) => {
   return (await axiosConfig.delete(`/carriers/${id}`)).data;
+};
+
+//* REQUIRENTES
+
+export const getRequesters = async () => {
+  return (await axiosConfig.get<Requester[]>("/requesters")).data;
+};
+
+export const addRequester = async (requester: RequesterPost) => {
+  return await axiosConfig.post("/requesters/", requester);
+};
+
+export const updatedRequester = async (requester: Requester) => {
+  return await axiosConfig.put(`/requesters/${requester._id}`, requester);
+};
+
+export const deleteRequester = async (id: string) => {
+  return (await axiosConfig.delete(`/requesters/${id}`)).data;
 };
