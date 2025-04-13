@@ -67,40 +67,40 @@ const ViewCreateCarrier = () => {
       case 0:
         return (
           <DataForm
-            formData={formData.step1}
-            setFormData={(data) => updateData("step1", data)}
+            formData={formData.personalData}
+            setFormData={(data) => updateData("personalData", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 1:
         return (
           <CauseForm
-            formData={formData.step2}
-            setFormData={(data) => updateData("step2", data)}
+            formData={formData.cause}
+            setFormData={(data) => updateData("cause", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 2:
         return (
           <MonitoringForm
-            formData={formData.step3}
-            setFormData={(data) => updateData("step3", data)}
+            formData={formData.monitoring}
+            setFormData={(data) => updateData("monitoring", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 3:
         return (
           <InclusionZoneForm
-            formData={formData.step4}
-            setFormData={(data) => updateData("step4", data)}
+            formData={formData.inclusionArea}
+            setFormData={(data) => updateData("inclusionArea", data)}
             setCompleteForm={setCompleteForm}
           />
         );
       case 4:
         return (
           <ExclusionZoneForm
-            formData={formData.step5}
-            setFormData={(data) => updateData("step5", data)}
+            formData={formData.exclusionArea}
+            setFormData={(data) => updateData("exclusionArea", data)}
             setCompleteForm={setCompleteForm}
           />
         );

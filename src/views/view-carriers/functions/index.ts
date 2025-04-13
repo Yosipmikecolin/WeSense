@@ -21,7 +21,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   doc.rect(0, 0, 210, 20, "F");
   doc.setFontSize(20);
   doc.setTextColor(255, 255, 255);
-  doc.text(`Portador ${selectedCarrier.step1.fullname}`, 105, 12, {
+  doc.text(`Portador ${selectedCarrier.personalData.fullName}`, 105, 12, {
     align: "center",
   });
 
@@ -33,7 +33,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   }[] = [
     {
       title: "Datos Personales",
-      data: selectedCarrier.step1,
+      data: selectedCarrier.personalData,
       fields: [
         { key: "fullname", label: "Nombre Completo" },
         { key: "socialName", label: "Nombre Social" },
@@ -51,7 +51,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Causa",
-      data: selectedCarrier.step2,
+      data: selectedCarrier.cause,
       fields: [
         { key: "penatype", label: "Tipo de Pena" },
         { key: "crime", label: "Delito" },
@@ -65,7 +65,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Monitoreo",
-      data: selectedCarrier.step3,
+      data: selectedCarrier.monitoring,
       fields: [
         { key: "crs", label: "CRS" },
         { key: "areas", label: "Áreas" },
@@ -88,7 +88,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Área de inclusión",
-      data: selectedCarrier.step4,
+      data: selectedCarrier.inclusionArea,
       fields: [
         { key: "street", label: "Calle" },
         { key: "number", label: "Número" },
@@ -106,7 +106,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Área de exclusión",
-      data: selectedCarrier.step5,
+      data: selectedCarrier.exclusionArea,
       fields: [
         { key: "street", label: "Calle" },
         { key: "number", label: "Número" },
@@ -187,7 +187,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   doc.text("Generado con SGAMGC", 105, 289, { align: "center" });
 
   // Guardar el archivo
-  const nameFile = selectedCarrier.step1.fullname
+  const nameFile = selectedCarrier.personalData.fullName
     .split(" ")
     .join("_")
     .toLowerCase();
@@ -209,7 +209,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
   const sections = [
     {
       title: "Información Personal",
-      data: selectedCarrier.step1,
+      data: selectedCarrier.personalData,
       fields: [
         { key: "fullname", label: "Nombre Completo" },
         { key: "socialName", label: "Nombre Social" },
@@ -227,7 +227,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Causa",
-      data: selectedCarrier.step2,
+      data: selectedCarrier.cause,
       fields: [
         { key: "penatype", label: "Tipo de Pena" },
         { key: "crime", label: "Delito" },
@@ -241,7 +241,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Monitoreo",
-      data: selectedCarrier.step3,
+      data: selectedCarrier.monitoring,
       fields: [
         { key: "crs", label: "CRS" },
         { key: "areas", label: "Áreas" },
@@ -264,7 +264,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Área de inclusión",
-      data: selectedCarrier.step4,
+      data: selectedCarrier.inclusionArea,
       fields: [
         { key: "street", label: "Calle" },
         { key: "number", label: "Número" },
@@ -282,7 +282,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
     },
     {
       title: "Área de exclusión y Información de Víctima ",
-      data: selectedCarrier.step5,
+      data: selectedCarrier.exclusionArea,
       fields: [
         { key: "street", label: "Calle" },
         { key: "number", label: "Número" },
@@ -427,7 +427,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
           new Paragraph({
             children: [
               new TextRun({
-                text: `Portador ${selectedCarrier.step1.fullname}`,
+                text: `Portador ${selectedCarrier.personalData.fullName}`,
                 bold: true,
                 font: "Arial",
                 size: 36,
@@ -459,7 +459,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
 
   // 💾 Guardar el archivo
   Packer.toBlob(doc).then((blob) => {
-    const nameFile = selectedCarrier.step1.fullname
+    const nameFile = selectedCarrier.personalData.fullName
       .split(" ")
       .join("_")
       .toLowerCase();

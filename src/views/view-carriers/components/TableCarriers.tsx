@@ -110,22 +110,22 @@ const TableCarriers = () => {
             <TableBody className="mt-5">
               {carrierDB.map((carrier) => (
                 <TableRow key={carrier.id}>
-                  <TableCell>{carrier.step1.fullName}</TableCell>
-                  <TableCell>{carrier.step1.maritalStatus}</TableCell>
+                  <TableCell>{carrier.personalData.fullName}</TableCell>
+                  <TableCell>{carrier.personalData.maritalStatus}</TableCell>
                   <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
-                        {carrier.step1.nationality}
+                        {carrier.personalData.nationality}
                       </span>
                       <Flag
                         width={20}
-                        code={getCountryCode(carrier?.step1.nationality || "")}
+                        code={getCountryCode(carrier?.personalData.nationality || "")}
                       />
                     </div>
                   </TableCell>
-                  <TableCell>{carrier.step1.gender}</TableCell>
-                  <TableCell>{carrier.step1.type_current}</TableCell>
-                  <TableCell>{carrier.step1.phone}</TableCell>
+                  <TableCell>{carrier.personalData.gender}</TableCell>
+                  <TableCell>{carrier.personalData.type_current}</TableCell>
+                  <TableCell>{carrier.personalData.phone}</TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>

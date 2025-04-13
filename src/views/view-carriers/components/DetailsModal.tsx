@@ -37,28 +37,28 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nombre Completo:</div>
-                  <div className="text-end">{carrier?.step1.fullName}</div>
+                  <div className="text-end">{carrier?.personalData.fullName}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nombre Social:</div>
                   <div className="text-end">
-                    {carrier?.step1.socialName || "No registra"}
+                    {carrier?.personalData.socialName || "No registra"}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nacionalidad:</div>
                   <div className="text-end flex items-center gap-2">
-                    {carrier?.step1.nationality}
+                    {carrier?.personalData.nationality}
                     <Flag
                       width={20}
-                      code={getCountryCode(carrier?.step1.nationality || "")}
+                      code={getCountryCode(carrier?.personalData.nationality || "")}
                     />
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">¿Es estranjero?:</div>
                   <div className="text-end">
-                    {carrier?.step1.foreigner ? "Si" : "No"}
+                    {carrier?.personalData.foreigner ? "Si" : "No"}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -66,46 +66,46 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Apellido paterno:
                   </div>
                   <div className="text-end">
-                    {carrier?.step1.paternalSurname}
+                    {carrier?.personalData.paternalSurname}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Apellido materno:
                   </div>
-                  <div className="text-end">{carrier?.step1.motherSurname}</div>
+                  <div className="text-end">{carrier?.personalData.motherSurname}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Estado Civil:</div>
-                  <div className="text-end">{carrier?.step1.maritalStatus}</div>
+                  <div className="text-end">{carrier?.personalData.maritalStatus}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Tipo de portador:
                   </div>
-                  <div className="text-end">{carrier?.step1.type_current}</div>
+                  <div className="text-end">{carrier?.personalData.type_current}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Género:</div>
-                  <div className="text-end">{carrier?.step1.gender}</div>
+                  <div className="text-end">{carrier?.personalData.gender}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">RUN:</div>
-                  <div className="text-end">{carrier?.step1.run}</div>
+                  <div className="text-end">{carrier?.personalData.run}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Teléfono:</div>
-                  <div className="text-end">{carrier?.step1.phone}</div>
+                  <div className="text-end">{carrier?.personalData.phone}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Fecha de Nacimiento: :
                   </div>
-                  <div className="text-end">{carrier?.step1.dateBirth}</div>
+                  <div className="text-end">{carrier?.personalData.dateBirth}</div>
                 </div>
               </div>
 
@@ -115,38 +115,38 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Tipo de Pena:</div>
-                  <div className="text-end">{carrier?.step2.penatype}</div>
+                  <div className="text-end">{carrier?.cause.penatype}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Delito:</div>
-                  <div className="text-end">{carrier?.step2.crime}</div>
+                  <div className="text-end">{carrier?.cause.crime}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Corte de Apelaciones:
                   </div>
-                  <div className="text-end">{carrier?.step2.courtAppeals}</div>
+                  <div className="text-end">{carrier?.cause.courtAppeals}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Región Judicial:</div>
-                  <div className="text-end">{carrier?.step2.courtRegion}</div>
+                  <div className="text-end">{carrier?.cause.courtRegion}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Tribunal:</div>
-                  <div className="text-end">{carrier?.step2.court}</div>
+                  <div className="text-end">{carrier?.cause.court}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">RUC:</div>
-                  <div className="text-end">{carrier?.step2.ruc}</div>
+                  <div className="text-end">{carrier?.cause.ruc}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">RIT:</div>
-                  <div className="text-end">{carrier?.step2.rit}</div>
+                  <div className="text-end">{carrier?.cause.rit}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">ROL:</div>
-                  <div className="text-end">{carrier?.step2.rol}</div>
+                  <div className="text-end">{carrier?.cause.rol}</div>
                 </div>
               </div>
 
@@ -156,20 +156,20 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">CRS:</div>
-                  <div className="text-end">{carrier?.step3.crs}</div>
+                  <div className="text-end">{carrier?.monitoring.crs}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Área de inclusión y exclusión:
                   </div>
-                  <div className="text-end">{carrier?.step3.areas}</div>
+                  <div className="text-end">{carrier?.monitoring.areas}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Duración de la medida:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.durationMeasurement}
+                    {carrier?.monitoring.durationMeasurement}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -177,7 +177,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Horario de control:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.controlSchedule}
+                    {carrier?.monitoring.controlSchedule}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -185,7 +185,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Periodo efectivo de control:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.effectivePeriod}
+                    {carrier?.monitoring.effectivePeriod}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -193,19 +193,19 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Solicitudes de Factibilidad Técnica:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.requestsFeasibility}
+                    {carrier?.monitoring.requestsFeasibility}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Sentencia:</div>
-                  <div className="text-end">{carrier?.step3.judgment}</div>
+                  <div className="text-end">{carrier?.monitoring.judgment}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Programaciones de Instalación:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.programmingInstallation}
+                    {carrier?.monitoring.programmingInstallation}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -213,7 +213,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Instalaciones realizadas:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.installationsDone}
+                    {carrier?.monitoring.installationsDone}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -221,7 +221,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Resoluciones judiciales:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.modificationResolution}
+                    {carrier?.monitoring.modificationResolution}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -229,21 +229,21 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Soportes Técnicos Realizados:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.technicalSupports}
+                    {carrier?.monitoring.technicalSupports}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Informes de incumplimiento:
                   </div>
-                  <div className="text-end">{carrier?.step3.nonReports}</div>
+                  <div className="text-end">{carrier?.monitoring.nonReports}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Días efectivos de control:
                   </div>
-                  <div className="text-end">{carrier?.step3.daysControl}</div>
+                  <div className="text-end">{carrier?.monitoring.daysControl}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -251,7 +251,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Desinstalaciones realizadas:
                   </div>
                   <div className="text-end">
-                    {carrier?.step3.uninstallations}
+                    {carrier?.monitoring.uninstallations}
                   </div>
                 </div>
               </div>
@@ -262,60 +262,60 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Calle:</div>
-                  <div className="text-end">{carrier?.step4.street}</div>
+                  <div className="text-end">{carrier?.inclusionArea.street}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Número:</div>
-                  <div className="text-end">{carrier?.step4.number}</div>
+                  <div className="text-end">{carrier?.inclusionArea.number}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Block/Dpto/Casa:</div>
                   <div className="text-end">
-                    {carrier?.step4.additionalInformation}
+                    {carrier?.inclusionArea.additionalInformation}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
-                  <div className="font-semibold p-1 flex">Comuna:</div>
-                  <div className="text-end">{carrier?.step4.commune}</div>
+                  <div className="font-semibold p-1 inclusionArea">Comuna:</div>
+                  <div className="text-end">{carrier?.inclusionArea.commune}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Región:</div>
-                  <div className="text-end">{carrier?.step4.region}</div>
+                  <div className="text-end">{carrier?.inclusionArea.region}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Carretera/Ruta/Kilómetro
                   </div>
-                  <div className="text-end">{carrier?.step4.road}</div>
+                  <div className="text-end">{carrier?.inclusionArea.road}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Población/Condominio/Villa:
                   </div>
-                  <div className="text-end">{carrier?.step4.population}</div>
+                  <div className="text-end">{carrier?.inclusionArea.population}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Código Postal:</div>
-                  <div className="text-end">{carrier?.step4.zipCode}</div>
+                  <div className="text-end">{carrier?.inclusionArea.zipCode}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Coordenadas Geográficas:
                   </div>
                   <div className="text-end">
-                    {carrier?.step4.geographicCoordinates}
+                    {carrier?.inclusionArea.geographicCoordinates}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Radio:</div>
-                  <div className="text-end">{carrier?.step4.radio}</div>
+                  <div className="text-end">{carrier?.inclusionArea.radio}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Horario de Cumplimiento:
                   </div>
                   <div className="text-end">
-                    {carrier?.step4.complianceSchedule}
+                    {carrier?.inclusionArea.complianceSchedule}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -323,7 +323,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Características del sector:
                   </div>
                   <div className="text-end">
-                    {carrier?.step4.characteristics}
+                    {carrier?.inclusionArea.characteristics}
                   </div>
                 </div>
               </div>
@@ -333,53 +333,53 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Calle:</div>
-                  <div className="text-end">{carrier?.step5.street}</div>
+                  <div className="text-end">{carrier?.exclusionArea.street}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Número:</div>
-                  <div className="text-end">{carrier?.step5.number}</div>
+                  <div className="text-end">{carrier?.exclusionArea.number}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Block/Dpto/Casa:</div>
                   <div className="text-end">
-                    {carrier?.step5.additionalInformation}
+                    {carrier?.exclusionArea.additionalInformation}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Comuna:</div>
-                  <div className="text-end">{carrier?.step5.commune}</div>
+                  <div className="text-end">{carrier?.exclusionArea.commune}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Región:</div>
-                  <div className="text-end">{carrier?.step5.region}</div>
+                  <div className="text-end">{carrier?.exclusionArea.region}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Carretera/Ruta/Kilómetro
                   </div>
-                  <div className="text-end">{carrier?.step5.road}</div>
+                  <div className="text-end">{carrier?.exclusionArea.road}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Población/Condominio/Villa:
                   </div>
-                  <div className="text-end">{carrier?.step5.population}</div>
+                  <div className="text-end">{carrier?.exclusionArea.population}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Código Postal:</div>
-                  <div className="text-end">{carrier?.step5.zipCode}</div>
+                  <div className="text-end">{carrier?.exclusionArea.zipCode}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Coordenadas Geográficas:
                   </div>
                   <div className="text-end">
-                    {carrier?.step5.geographicCoordinates}
+                    {carrier?.exclusionArea.geographicCoordinates}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Radio:</div>
-                  <div className="text-end">{carrier?.step5.radio}</div>
+                  <div className="text-end">{carrier?.exclusionArea.radio}</div>
                 </div>
 
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
@@ -387,7 +387,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Características del sector:
                   </div>
                   <div className="text-end">
-                    {carrier?.step5.characteristics}
+                    {carrier?.exclusionArea.characteristics}
                   </div>
                 </div>
               </div>
@@ -400,43 +400,43 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Apellido Paterno:
                   </div>
                   <div className="text-end">
-                    {carrier?.step5.paternalSurname}
+                    {carrier?.exclusionArea.paternalSurname}
                   </div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Apellido Materno:
                   </div>
-                  <div className="text-end">{carrier?.step5.motherSurname}</div>
+                  <div className="text-end">{carrier?.exclusionArea.motherSurname}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nombres:</div>
-                  <div className="text-end">{carrier?.step5.names}</div>
+                  <div className="text-end">{carrier?.exclusionArea.names}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">RUT:</div>
-                  <div className="text-end">{carrier?.step5.rut}</div>
+                  <div className="text-end">{carrier?.exclusionArea.rut}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Región:</div>
-                  <div className="text-end">{carrier?.step5.region}</div>
+                  <div className="text-end">{carrier?.exclusionArea.region}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Email Víctima</div>
-                  <div className="text-end">{carrier?.step5.victimEmail}</div>
+                  <div className="text-end">{carrier?.exclusionArea.victimEmail}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Teléfono Particular:
                   </div>
-                  <div className="text-end">{carrier?.step5.homeTelephone}</div>
+                  <div className="text-end">{carrier?.exclusionArea.homeTelephone}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">
                     Teléfono Lugar de Trabajo:
                   </div>
                   <div className="text-end">
-                    {carrier?.step5.workplaceTelephone}
+                    {carrier?.exclusionArea.workplaceTelephone}
                   </div>
                 </div>
               </div>

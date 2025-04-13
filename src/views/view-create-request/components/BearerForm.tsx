@@ -55,7 +55,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
   const selectCarrier = (value: string) => {
     setSelectedCarrier(value);
     const selectRequirent = carriers.find(
-      (i) => i.step1.fullName === value && i.step2.crime === requesterType
+      (i) => i.personalData.fullName === value && i.cause.crime === requesterType
     );
     if (selectRequirent) {
       setFormData(selectRequirent);
@@ -65,8 +65,8 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
   const uniqueArray = (carriers: FormDataCarrier[]) => {
     const seen = new Set();
     return carriers.filter((item) => {
-      if (seen.has(item.step2.crime)) return false;
-      seen.add(item.step2.crime);
+      if (seen.has(item.cause.crime)) return false;
+      seen.add(item.cause.crime);
       return true;
     });
   };
@@ -82,8 +82,8 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
             </SelectTrigger>
             <SelectContent>
               {uniqueArray(carriers).map((type) => (
-                <SelectItem key={type.id} value={type.step2.crime}>
-                  {type.step2.crime}
+                <SelectItem key={type.id} value={type.cause.crime}>
+                  {type.cause.crime}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -110,10 +110,10 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
           </SelectTrigger>
           <SelectContent>
             {carriers
-              .filter((i) => i.step2.crime === requesterType)
+              .filter((i) => i.cause.crime === requesterType)
               .map((carrier, index) => (
-                <SelectItem key={index} value={carrier.step1.fullName}>
-                  {carrier.step1.fullName}
+                <SelectItem key={index} value={carrier.personalData.fullName}>
+                  {carrier.personalData.fullName}
                 </SelectItem>
               ))}
           </SelectContent>
@@ -125,7 +125,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
           <Label htmlFor="region">Nombre completo</Label>
           <Input
             id="region"
-            value={formData.step1.fullName}
+            value={formData.personalData.fullName}
             readOnly
             className="bg-gray-50"
           />
@@ -134,7 +134,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
           <Label htmlFor="tribunal">Nacionalidad</Label>
           <Input
             id="tribunal"
-            value={formData.step1.nationality}
+            value={formData.personalData.nationality}
             readOnly
             className="bg-gray-50"
           />
@@ -143,7 +143,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
           <Label htmlFor="ruc">Estado Civil</Label>
           <Input
             id="ruc"
-            value={formData.step1.maritalStatus}
+            value={formData.personalData.maritalStatus}
             readOnly
             className="bg-gray-50"
           />
@@ -152,7 +152,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
           <Label htmlFor="rit">Género</Label>
           <Input
             id="rit"
-            value={formData.step1.gender}
+            value={formData.personalData.gender}
             readOnly
             className="bg-gray-50"
           />
@@ -161,7 +161,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
           <Label htmlFor="rol">Tipo de pena</Label>
           <Input
             id="rol"
-            value={formData.step1.type_current}
+            value={formData.personalData.type_current}
             readOnly
             className="bg-gray-50"
           />

@@ -1,10 +1,10 @@
 export interface FormDataCarrier {
   id: string;
-  step1: Step1Data;
-  step2: Step2Data;
-  step3: Step3Data;
-  step4: Step4Data;
-  step5: Step5Data;
+  personalData: Step1Data;
+  cause: Step2Data;
+  monitoring: Step3Data;
+  inclusionArea: Step4Data;
+  exclusionArea: Step5Data;
 }
 
 export interface Step1Data {

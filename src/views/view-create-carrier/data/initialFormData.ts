@@ -2,7 +2,7 @@ import { FormDataCarrier } from "../interfaces";
 
 export const initialFormData: FormDataCarrier = {
   id: "",
-  step1: {
+  personalData: {
     fullName: "",
     socialName: "",
     paternalSurname: "",
@@ -16,7 +16,7 @@ export const initialFormData: FormDataCarrier = {
     phone: "",
     foreigner: false,
   },
-  step2: {
+  cause: {
     penatype: "",
     crime: "",
     courtAppeals: "",
@@ -26,7 +26,7 @@ export const initialFormData: FormDataCarrier = {
     rit: "",
     rol: "",
   },
-  step3: {
+  monitoring: {
     crs: "",
     areas: "",
     durationMeasurement: "",
@@ -42,7 +42,7 @@ export const initialFormData: FormDataCarrier = {
     daysControl: "",
     uninstallations: "",
   },
-  step4: {
+  inclusionArea: {
     street: "",
     number: "",
     additionalInformation: "",
@@ -56,7 +56,7 @@ export const initialFormData: FormDataCarrier = {
     complianceSchedule: "",
     characteristics: "",
   },
-  step5: {
+  exclusionArea: {
     street: "",
     number: "",
     additionalInformation: "",

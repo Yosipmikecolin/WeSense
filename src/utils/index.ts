@@ -153,7 +153,7 @@ export const users = [
 export const carriers = [
   {
     id: "1",
-    step1: {
+    personalData: {
       fullName: "Ana María Gómez Pérez",
       socialName: "Anita",
       paternalSurname: "Gómez",
@@ -167,7 +167,7 @@ export const carriers = [
       phone: "+57 311 987 6543",
       foreigner: false,
     },
-    step2: {
+    cause: {
       penatype: "Libertad condicional",
       crime: "Hurto agravado",
       courtAppeals: "Sin apelaciones",
@@ -177,7 +177,7 @@ export const carriers = [
       rit: "123456789",
       rol: "ROL98765",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Centro",
       areas: "Zona Residencial",
       durationMeasurement: "3 años",
@@ -193,7 +193,7 @@ export const carriers = [
       daysControl: "0",
       uninstallations: "No aplica",
     },
-    step4: {
+    inclusionArea: {
       street: "Calle Falsa",
       number: "123",
       additionalInformation: "Apartamento 4B",
@@ -207,7 +207,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento semanal",
       characteristics: "Residencia unifamiliar",
     },
-    step5: {
+    exclusionArea: {
       street: "Avenida Siempre Viva",
       number: "742",
       additionalInformation: "Casa amarilla",
@@ -230,7 +230,7 @@ export const carriers = [
   },
   {
     id: "2",
-    step1: {
+    personalData: {
       fullName: "Pedro Luis Rodríguez Castro",
       socialName: "Pedrito",
       paternalSurname: "Rodríguez",
@@ -244,7 +244,7 @@ export const carriers = [
       phone: "+57 320 112 2334",
       foreigner: true,
     },
-    step2: {
+    cause: {
       penatype: "Arresto domiciliario",
       crime: "Lesiones personales",
       courtAppeals: "Apelación en curso",
@@ -254,7 +254,7 @@ export const carriers = [
       rit: "234567890",
       rol: "ROL09876",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Occidente",
       areas: "Periferia",
       durationMeasurement: "1 año",
@@ -270,7 +270,7 @@ export const carriers = [
       daysControl: "150",
       uninstallations: "No aplica",
     },
-    step4: {
+    inclusionArea: {
       street: "Carrera Inexistente",
       number: "S/N",
       additionalInformation: "Finca La Esperanza",
@@ -284,7 +284,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento mensual",
       characteristics: "Finca con amplias zonas verdes",
     },
-    step5: {
+    exclusionArea: {
       street: "Diagonal Olvidada",
       number: "55-55",
       additionalInformation: "Local comercial",
@@ -307,7 +307,7 @@ export const carriers = [
   },
   {
     id: "3",
-    step1: {
+    personalData: {
       fullName: "Sofía Elena Vargas López",
       socialName: "Sofi",
       paternalSurname: "Vargas",
@@ -321,7 +321,7 @@ export const carriers = [
       phone: "+57 315 223 3445",
       foreigner: false,
     },
-    step2: {
+    cause: {
       penatype: "Medida de protección",
       crime: "Violencia intrafamiliar",
       courtAppeals: "Sin apelaciones pendientes",
@@ -331,7 +331,7 @@ export const carriers = [
       rit: "012345678",
       rol: "ROL34567",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Sur",
       areas: "Zona escolar",
       durationMeasurement: "6 meses",
@@ -347,7 +347,7 @@ export const carriers = [
       daysControl: "0",
       uninstallations: "No aplica",
     },
-    step4: {
+    inclusionArea: {
       street: "Transversal Imaginaria",
       number: "456",
       additionalInformation: "Cerca al parque",
@@ -361,7 +361,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento diario",
       characteristics: "Casa de dos pisos",
     },
-    step5: {
+    exclusionArea: {
       street: "Calle del Recuerdo",
       number: "987",
       additionalInformation: "Edificio azul",
@@ -384,7 +384,7 @@ export const carriers = [
   },
   {
     id: "4",
-    step1: {
+    personalData: {
       fullName: "Ricardo Andrés Díaz Rojas",
       socialName: "Richi",
       paternalSurname: "Díaz",
@@ -398,7 +398,7 @@ export const carriers = [
       phone: "+57 318 334 4556",
       foreigner: true,
     },
-    step2: {
+    cause: {
       penatype: "Suspensión condicional",
       crime: "Conducción bajo los efectos del alcohol",
       courtAppeals: "Recurso de casación",
@@ -408,7 +408,7 @@ export const carriers = [
       rit: "987654320",
       rol: "ROL45678",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Oriente",
       areas: "Vía pública",
       durationMeasurement: "2 años",
@@ -424,7 +424,7 @@ export const carriers = [
       daysControl: "450",
       uninstallations: "No aplica",
     },
-    step4: {
+    inclusionArea: {
       street: "Avenida del Futuro",
       number: "678",
       additionalInformation: "Local 1A",
@@ -438,7 +438,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento semanal",
       characteristics: "Edificio comercial",
     },
-    step5: {
+    exclusionArea: {
       street: "Carrera Soñada",
       number: "101",
       additionalInformation: "Oficina 202",
@@ -461,7 +461,7 @@ export const carriers = [
   },
   {
     id: "5",
-    step1: {
+    personalData: {
       fullName: "Juan Carlos Méndez Rojas",
       socialName: "Juanquis",
       paternalSurname: "Méndez",
@@ -475,7 +475,7 @@ export const carriers = [
       phone: "+56 9 8765 4321",
       foreigner: false,
     },
-    step2: {
+    cause: {
       penatype: "Arresto domiciliario total",
       crime: "Fraude financiero",
       courtAppeals: "Corte de Apelaciones de Santiago",
@@ -485,7 +485,7 @@ export const carriers = [
       rit: "888999000",
       rol: "ROL54321",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Norte",
       areas: "Zona Comercial",
       durationMeasurement: "18 meses",
@@ -501,7 +501,7 @@ export const carriers = [
       daysControl: "45",
       uninstallations: "No",
     },
-    step4: {
+    inclusionArea: {
       street: "Av. Libertador Bernardo O'Higgins",
       number: "2200",
       additionalInformation: "Departamento 1202",
@@ -515,7 +515,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento diario",
       characteristics: "Edificio residencial",
     },
-    step5: {
+    exclusionArea: {
       street: "Calle Los Placeres",
       number: "350",
       additionalInformation: "Oficina 502",
@@ -538,7 +538,7 @@ export const carriers = [
   },
   {
     id: "6",
-    step1: {
+    personalData: {
       fullName: "Laura Beatriz Sánchez Vega",
       socialName: "Lau",
       paternalSurname: "Sánchez",
@@ -552,7 +552,7 @@ export const carriers = [
       phone: "+54 9 11 7654 3210",
       foreigner: true,
     },
-    step2: {
+    cause: {
       penatype: "Libertad vigilada",
       crime: "Estafa",
       courtAppeals: "Cámara Nacional de Apelaciones",
@@ -562,7 +562,7 @@ export const carriers = [
       rit: "444555666",
       rol: "ROL12345",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Sur",
       areas: "Zona Mixta",
       durationMeasurement: "2 años",
@@ -578,7 +578,7 @@ export const carriers = [
       daysControl: "120",
       uninstallations: "Sí",
     },
-    step4: {
+    inclusionArea: {
       street: "Calle Florida",
       number: "800",
       additionalInformation: "Piso 3",
@@ -592,7 +592,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento quincenal",
       characteristics: "Edificio histórico",
     },
-    step5: {
+    exclusionArea: {
       street: "Av. Corrientes",
       number: "3200",
       additionalInformation: "Local 42",
@@ -615,7 +615,7 @@ export const carriers = [
   },
   {
     id: "7",
-    step1: {
+    personalData: {
       fullName: "Pedro Antonio Ramírez Castillo",
       socialName: "",
       paternalSurname: "Ramírez",
@@ -629,7 +629,7 @@ export const carriers = [
       phone: "+51 987 654 321",
       foreigner: true,
     },
-    step2: {
+    cause: {
       penatype: "Semi-libertad",
       crime: "Robo con violencia",
       courtAppeals: "Corte Superior de Justicia de Lima",
@@ -639,7 +639,7 @@ export const carriers = [
       rit: "111000222",
       rol: "ROL67890",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Este",
       areas: "Zona Industrial",
       durationMeasurement: "5 años",
@@ -655,7 +655,7 @@ export const carriers = [
       daysControl: "200",
       uninstallations: "No aplica",
     },
-    step4: {
+    inclusionArea: {
       street: "Jr. de la Unión",
       number: "1500",
       additionalInformation: "Casa verde",
@@ -669,7 +669,7 @@ export const carriers = [
       complianceSchedule: "Cumplimiento mensual",
       characteristics: "Vivienda unifamiliar",
     },
-    step5: {
+    exclusionArea: {
       street: "Av. Arequipa",
       number: "2500",
       additionalInformation: "Oficina 301",
@@ -692,7 +692,7 @@ export const carriers = [
   },
   {
     id: "8",
-    step1: {
+    personalData: {
       fullName: "Diego Alejandro Torres Mendoza",
       socialName: "Diegito",
       paternalSurname: "Torres",
@@ -706,7 +706,7 @@ export const carriers = [
       phone: "+593 99 123 4567",
       foreigner: false,
     },
-    step2: {
+    cause: {
       penatype: "Prisión domiciliaria electrónica",
       crime: "Evasión tributaria",
       courtAppeals: "Corte Provincial de Justicia",
@@ -716,7 +716,7 @@ export const carriers = [
       rit: "778899001",
       rol: "ROL11223",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Occidental",
       areas: "Zona Rural",
       durationMeasurement: "4 años",
@@ -732,7 +732,7 @@ export const carriers = [
       daysControl: "320",
       uninstallations: "No",
     },
-    step4: {
+    inclusionArea: {
       street: "Calle de los Almendros",
       number: "45",
       additionalInformation: "Casa al fondo",
@@ -746,7 +746,7 @@ export const carriers = [
       complianceSchedule: "Control permanente",
       characteristics: "Hacienda agrícola",
     },
-    step5: {
+    exclusionArea: {
       street: "Av. Amazonas",
       number: "1234",
       additionalInformation: "Edificio Financiero, piso 8",
@@ -769,7 +769,7 @@ export const carriers = [
   },
   {
     id: "9",
-    step1: {
+    personalData: {
       fullName: "Valentina Sofía Ríos Contreras",
       socialName: "Vale",
       paternalSurname: "Ríos",
@@ -783,7 +783,7 @@ export const carriers = [
       phone: "+598 98 765 432",
       foreigner: true,
     },
-    step2: {
+    cause: {
       penatype: "Salidas terapéuticas",
       crime: "Posesión de sustancias",
       courtAppeals: "Tribunal de Apelaciones",
@@ -793,7 +793,7 @@ export const carriers = [
       rit: "889900112",
       rol: "ROL44556",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Oriental",
       areas: "Zona Hospitalaria",
       durationMeasurement: "1 año",
@@ -809,7 +809,7 @@ export const carriers = [
       daysControl: "90",
       uninstallations: "No aplica",
     },
-    step4: {
+    inclusionArea: {
       street: "Bulevar Artigas",
       number: "2020",
       additionalInformation: "Departamento 501",
@@ -823,7 +823,7 @@ export const carriers = [
       complianceSchedule: "Control semanal",
       characteristics: "Edificio frente al mar",
     },
-    step5: {
+    exclusionArea: {
       street: "Av. 18 de Julio",
       number: "1452",
       additionalInformation: "Clínica San José, pabellón B",
@@ -846,7 +846,7 @@ export const carriers = [
   },
   {
     id: "10",
-    step1: {
+    personalData: {
       fullName: "Ricardo Andrés Flores Guzmán",
       socialName: "",
       paternalSurname: "Flores",
@@ -860,7 +860,7 @@ export const carriers = [
       phone: "+595 981 234 567",
       foreigner: false,
     },
-    step2: {
+    cause: {
       penatype: "Régimen abierto",
       crime: "Abuso de confianza",
       courtAppeals: "Cámara de Apelaciones",
@@ -870,7 +870,7 @@ export const carriers = [
       rit: "112233445",
       rol: "ROL77889",
     },
-    step3: {
+    monitoring: {
       crs: "CRS Central",
       areas: "Zona Laboral",
       durationMeasurement: "2 años",
@@ -886,7 +886,7 @@ export const carriers = [
       daysControl: "150",
       uninstallations: "No",
     },
-    step4: {
+    inclusionArea: {
       street: "Calle Palma",
       number: "123",
       additionalInformation: "Edificio comercial",
@@ -900,7 +900,7 @@ export const carriers = [
       complianceSchedule: "Control bisemanal",
       characteristics: "Local en planta baja",
     },
-    step5: {
+    exclusionArea: {
       street: "Av. Mariscal López",
       number: "3456",
       additionalInformation: "Oficina 203",
