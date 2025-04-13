@@ -1,3 +1,4 @@
+import { deleteUser } from "@/api/request";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,37 +7,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteUser, getUsers, User } from "@/db/user";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
   id?: string;
   open: boolean;
-  setUsersDB: Dispatch<SetStateAction<User[]>>;
+  refetch: VoidFunction;
   onClose: VoidFunction;
 }
 
-const DeleteModalUser = ({ id, open, onClose, setUsersDB }: Props) => {
+const DeleteModalUser = ({ id, open, onClose, refetch }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
     await deleteUser(id || "");
-    const result = await getUsers();
-    setTimeout(() => {
-      toast.success("Eliminado exitosamente");
-      setUsersDB(
-        result.sort((a, b) => {
-          return (
-            new Date(a.creation_date).getTime() -
-            new Date(b.creation_date).getTime()
-          );
-        })
-      );
-      setLoading(false);
-      onClose();
-    }, 500);
+    toast.success("Eliminado exitosamente");
+    refetch();
+    setLoading(false);
+    onClose();
   };
   return (
     <Dialog open={open} onOpenChange={onClose}>

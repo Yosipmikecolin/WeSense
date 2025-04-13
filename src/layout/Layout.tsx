@@ -2,23 +2,18 @@
 
 import { Toaster } from "react-hot-toast";
 import { ReactNode, useEffect } from "react";
-import { users, requesters, carriers } from "@/utils";
-import { addUser } from "@/db/user";
+import { requesters, carriers } from "@/utils";
 import { addRequester } from "@/db/requester";
 import { addCarrier } from "@/db/carrier";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface Props {
   children: ReactNode;
 }
 
 const Layout = ({ children }: Props) => {
+  const queryClient = new QueryClient();
   useEffect(() => {
-    const insertUsers = async () => {
-      for (const user of users) {
-        await addUser(user);
-      }
-    };
-
     const insertRequest = async () => {
       for (const requester of requesters) {
         await addRequester(requester);
@@ -31,7 +26,6 @@ const Layout = ({ children }: Props) => {
       }
     };
 
-    insertUsers();
     insertRequest();
     insertCarrier();
   }, []);
@@ -39,7 +33,7 @@ const Layout = ({ children }: Props) => {
   return (
     <div>
       <Toaster />
-      {children}
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </div>
   );
 };

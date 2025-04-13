@@ -1,7 +1,5 @@
-import { initDB } from "./db";
-
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   nit: string;
   perfil: string;
@@ -11,7 +9,17 @@ export interface User {
   creation_date: string;
 }
 
-export const addUser = async (user: User) => {
+export interface UserPost {
+  name: string;
+  nit: string;
+  perfil: string;
+  status: string;
+  email: string;
+  phone: string;
+  creation_date: string;
+}
+
+/* export const addUser = async (user: User) => {
   const db = await initDB();
   const tx = db.transaction("users", "readwrite");
   await tx.store.put(user);
@@ -33,3 +41,4 @@ export const deleteUser = async (id: string) => {
   await tx.store.delete(id);
   await tx.done;
 };
+ */

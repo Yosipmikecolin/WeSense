@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -23,34 +23,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
 import UpdatedUserModal from "./UpdatedUserModal";
-import { getUsers, User } from "@/db/user";
 import DeleteModalUser from "@/components/DeleteModalUser";
+import { useQueryUsers } from "@/api/queries";
+import { User } from "@/db/user";
 
 const TableUsers = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [usersDB, setUsersDB] = useState<User[]>([]);
   const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    const fetchData = () => {
-      setTimeout(async () => {
-        const result = await getUsers();
-        setUsersDB(
-          result.sort((a, b) => {
-            return (
-              new Date(a.creation_date).getTime() -
-              new Date(b.creation_date).getTime()
-            );
-          })
-        );
-      }, 600);
-    };
-
-    fetchData();
-  }, []);
+  const { data: users, isLoading, refetch } = useQueryUsers();
 
   const filters = [
     { id: 1, name: "Nombre" },
@@ -110,8 +93,8 @@ const TableUsers = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {usersDB.map((user) => (
-                <TableRow key={user.id}>
+              {users?.map((user) => (
+                <TableRow key={user._id}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.nit}</TableCell>
                   <TableCell>
@@ -205,7 +188,7 @@ const TableUsers = () => {
               ))}
             </TableBody>
           </TableUI>
-          {!usersDB.length && (
+          {isLoading && (
             <div className="w-full h-[500px] bg-r flex justify-center items-center">
               <div className="loader-spiner" />
             </div>
@@ -218,17 +201,19 @@ const TableUsers = () => {
         user={user}
         onClose={() => setIsModalOpen(false)}
       />
+
       <UpdatedUserModal
         open={isModalOpen2}
         user={user}
         onClose={() => setIsModalOpen2(false)}
-        setUsersDB={setUsersDB}
+        refetch={refetch}
       />
+
       <DeleteModalUser
-        id={user?.id}
+        id={user?._id}
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}
-        setUsersDB={setUsersDB}
+        refetch={refetch}
       />
     </div>
   );

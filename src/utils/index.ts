@@ -1,6 +1,5 @@
-export const users = [
+const users = [
   {
-    id: "1",
     name: "Yosip Mike Colin",
     nit: "83749234",
     perfil: "Requiriente",
@@ -10,7 +9,6 @@ export const users = [
     phone: "310 123 4567",
   },
   {
-    id: "2",
     name: "Andres Alfonso",
     nit: "5937450378",
     perfil: "Coordinador",
@@ -20,7 +18,6 @@ export const users = [
     phone: "320 234 5678",
   },
   {
-    id: "3",
     name: "Maria Salazar",
     nit: "5905645028",
     perfil: "Administrador",
@@ -30,7 +27,6 @@ export const users = [
     phone: "300 345 6789",
   },
   {
-    id: "4",
     name: "Luciana Gómez",
     nit: "4538294850",
     perfil: "Requiriente",
@@ -40,7 +36,6 @@ export const users = [
     phone: "315 456 7890",
   },
   {
-    id: "5",
     name: "Carlos Pérez",
     nit: "5893247324",
     perfil: "Administrador",
@@ -50,7 +45,6 @@ export const users = [
     phone: "318 567 8901",
   },
   {
-    id: "6",
     name: "Laura Martínez",
     nit: "4823952345",
     perfil: "Requiriente",
@@ -60,7 +54,6 @@ export const users = [
     phone: "311 678 9012",
   },
   {
-    id: "7",
     name: "Jorge Fernández",
     nit: "7583940238",
     perfil: "Coordinador",
@@ -70,7 +63,6 @@ export const users = [
     phone: "313 789 0123",
   },
   {
-    id: "8",
     name: "Andrea Torres",
     nit: "9384752384",
     perfil: "Administrador",
@@ -80,7 +72,6 @@ export const users = [
     phone: "314 890 1234",
   },
   {
-    id: "9",
     name: "Camila Ruiz",
     nit: "8364928472",
     perfil: "Coordinador",
@@ -90,7 +81,6 @@ export const users = [
     phone: "317 901 2345",
   },
   {
-    id: "10",
     name: "Felipe Mejía",
     nit: "2394853205",
     perfil: "Coordinador",
@@ -100,7 +90,6 @@ export const users = [
     phone: "319 012 3456",
   },
   {
-    id: "11",
     name: "Paola Herrera",
     nit: "7382947583",
     perfil: "Requiriente",
@@ -110,7 +99,6 @@ export const users = [
     phone: "312 123 4567",
   },
   {
-    id: "12",
     name: "Sebastián Vega",
     nit: "5932840239",
     perfil: "Requiriente",
@@ -120,7 +108,6 @@ export const users = [
     phone: "316 234 5678",
   },
   {
-    id: "13",
     name: "Natalia Castro",
     nit: "8402938472",
     perfil: "Administrador",
@@ -130,7 +117,6 @@ export const users = [
     phone: "310 345 6789",
   },
   {
-    id: "14",
     name: "Fernando Morales",
     nit: "7562937482",
     perfil: "Coordinador",
@@ -140,7 +126,6 @@ export const users = [
     phone: "320 456 7890",
   },
   {
-    id: "15",
     name: "Sofia Rojas",
     nit: "2938745029",
     perfil: "Requiriente",

@@ -18,19 +18,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { addUser, getUsers, User } from "@/db/user";
+import { User } from "@/db/user";
+import { updatedUser } from "@/api/request";
 
 interface Props {
   user?: User;
   open: boolean;
   onClose: VoidFunction;
-  setUsersDB: Dispatch<SetStateAction<User[]>>;
+  refetch: VoidFunction;
 }
 
-const UpdatedUserModal = ({ user, open, onClose, setUsersDB }: Props) => {
+const UpdatedUserModal = ({ user, open, onClose, refetch }: Props) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    _id: "",
     name: "",
     nit: "",
     perfil: "",
@@ -57,29 +59,21 @@ const UpdatedUserModal = ({ user, open, onClose, setUsersDB }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
-    if (Object.values(formData).some((value) => value === "")) {
-      setError(true);
-    } else {
-      await addUser({
-        id: user?.id || "",
-        ...formData,
-        creation_date: user?.creation_date || "",
-      });
-      const result = await getUsers();
-      setTimeout(() => {
+    try {
+      if (Object.values(formData).some((value) => value === "")) {
+        setError(true);
+      } else {
+        await updatedUser({
+          ...formData,
+          creation_date: user?.creation_date || "",
+        });
         toast.success("Usuario actualizado");
-        setUsersDB(
-          result.sort((a, b) => {
-            return (
-              new Date(a.creation_date).getTime() -
-              new Date(b.creation_date).getTime()
-            );
-          })
-        );
+        refetch();
         setError(false);
-        setLoading(false);
+
         onClose();
         setFormData({
+          _id: "",
           name: "",
           nit: "",
           perfil: "",
@@ -87,7 +81,12 @@ const UpdatedUserModal = ({ user, open, onClose, setUsersDB }: Props) => {
           email: "",
           phone: "",
         });
-      }, 500);
+      }
+    } catch (error) {
+      console.log("error", error);
+      toast.error("Error al actualizar el usuario");
+    } finally {
+      setLoading(false);
     }
   };
 

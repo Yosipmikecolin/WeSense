@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { generateUUID, getDate } from "@/functions";
-import { addUser } from "@/db/user";
+import { addUser } from "@/api/request";
 
 const FormUser = () => {
   const [error, setError] = useState(false);
@@ -44,7 +44,6 @@ const FormUser = () => {
     } else {
       setLoading(true);
       await addUser({
-        id: generateUUID(),
         ...formData,
         creation_date: getDate(),
       });
