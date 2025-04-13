@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Flag from "react-world-flags";
+import axios from "axios";
 import {
   Table as TableUI,
   TableBody,
@@ -48,6 +49,19 @@ const TableCarriers = () => {
     { id: 6, name: "Run" },
     { id: 7, name: "Teléfono" },
   ];
+
+  const handleSubmitConsultar = async () => {
+    const response_read = await axios.get(
+      "/api/buddie?method=setup.wearer.grid",
+      {}
+    );
+    // setToken(response_read.data.csrf_token);
+    console.log("READ: ", response_read.data);
+  };
+
+  useEffect(() => {
+    handleSubmitConsultar();
+  }, []);
 
   return (
     <div>

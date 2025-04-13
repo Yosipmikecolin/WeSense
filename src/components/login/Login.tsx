@@ -18,58 +18,129 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const loginBuddie = async (username: string, password: string) => {
+    const _CAPTCHA = code;
+    setCode("");
+
+    const response_auth = await axios.post("/api/buddie", {
+      captchacode: _CAPTCHA,
+      method: "auth.requires_2fa",
+      username,
+      password,
+    });
+
+    const response_login = await axios.post("/api/buddie", {
+      captchacode: _CAPTCHA,
+      method: "auth.login",
+      username,
+      password,
+    });
+
+    const response_user = await axios.get(`/api/buddie?method=user.read`);
+    setToken(response_user.data.csrf_token);
+
+    // console.log("AUTH: ", response_auth.data);
+    console.log("LOGIN: ", response_login.data);
+    // console.log("USER: ", response_user.data);
+
+    if (!response_login.data.login) {
+      setUrlCaptcha("");
+      getCaptcha();
+      toast({
+        title: "Error",
+        description: "Captcha incorrecto",
+        variant: "default",
+      });
+      setLoading(false);
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (username === "administrator@gmail.com" && password === "12345") {
       setLoading(true);
-      localStorage.setItem("email", "administrator@gmail.com");
-      setTimeout(() => {
-        toast({
-          title: "Acceso administrador",
-          description: "administrator@gmail.com",
-        });
-        navigation.push("/administrator");
-      }, 500);
+      const is_valid = await loginBuddie(
+        "yosip.parrado@wesense.com.co",
+        "Yp2025$pY"
+      );
+      if (is_valid) {
+        localStorage.setItem("email", "administrator@gmail.com");
+        setTimeout(() => {
+          toast({
+            title: "Acceso administrador",
+            description: "administrator@gmail.com",
+          });
+          navigation.push("/administrator");
+        }, 500);
+      }
     } else if (username === "requiring@gmail.com" && password === "12345") {
       setLoading(true);
-      localStorage.setItem("email", "requiring@gmail.com");
-      setTimeout(() => {
-        toast({
-          title: "Acceso requirente",
-          description: "requiring@gmail.com",
-        });
-        navigation.push("/requiring");
-      }, 500);
+
+      const is_valid = await loginBuddie(
+        "yosip.parrado@wesense.com.co",
+        "Yp2025$pY"
+      );
+      if (is_valid) {
+        localStorage.setItem("email", "requiring@gmail.com");
+        setTimeout(() => {
+          toast({
+            title: "Acceso requirente",
+            description: "requiring@gmail.com",
+          });
+          navigation.push("/requiring");
+        }, 500);
+      }
     } else if (username === "coordinator@gmail.com" && password === "12345") {
       setLoading(true);
-      localStorage.setItem("email", "coordinator@gmail.com");
-      setTimeout(() => {
-        toast({
-          title: "Acceso coordinador",
-          description: "coordinator@gmail.com",
-        });
-        navigation.push("/coordinator");
-      }, 500);
+      const is_valid = await loginBuddie(
+        "yosip.parrado@wesense.com.co",
+        "Yp2025$pY"
+      );
+      if (is_valid) {
+        localStorage.setItem("email", "coordinator@gmail.com");
+        setTimeout(() => {
+          toast({
+            title: "Acceso coordinador",
+            description: "coordinator@gmail.com",
+          });
+          navigation.push("/coordinator");
+        }, 500);
+      }
     } else if (username === "awardee@gmail.com" && password === "12345") {
       setLoading(true);
-      localStorage.setItem("email", "awardee@gmail.com");
-      setTimeout(() => {
-        toast({
-          title: "Acceso adjudicatorio",
-          description: "awardee@gmail.com",
-        });
-        navigation.push("/awardee");
-      }, 500);
+      const is_valid = await loginBuddie(
+        "yosip.parrado@wesense.com.co",
+        "Yp2025$pY"
+      );
+      if (is_valid) {
+        localStorage.setItem("email", "awardee@gmail.com");
+        setTimeout(() => {
+          toast({
+            title: "Acceso adjudicatorio",
+            description: "awardee@gmail.com",
+          });
+          navigation.push("/awardee");
+        }, 500);
+      }
     } else if (username === "contract@gmail.com" && password === "12345") {
       setLoading(true);
-      localStorage.setItem("email", "contract@gmail.com");
-      setTimeout(() => {
-        toast({
-          title: "Acceso adjudicatorio",
-          description: "contract@gmail.com",
-        });
-        navigation.push("/contract");
-      }, 500);
+      const is_valid = await loginBuddie(
+        "yosip.parrado@wesense.com.co",
+        "Yp2025$pY"
+      );
+      if (is_valid) {
+        localStorage.setItem("email", "contract@gmail.com");
+        setTimeout(() => {
+          toast({
+            title: "Acceso adjudicatorio",
+            description: "contract@gmail.com",
+          });
+          navigation.push("/contract");
+        }, 500);
+      }
     } else {
       toast({
         title: "Error",
@@ -79,20 +150,17 @@ const Login = () => {
     }
   };
 
-  async function getCaptcha() {
+  const getCaptcha = async () => {
     const captchaRes = await axios.get(
       `/api/buddie?method=auth.get_captcha_details`
     );
-
-    console.log("IMA: ", captchaRes.data);
-
     setUrlCaptcha(captchaRes.data.image);
-  }
+  };
 
-  async function reloadCaptcha() {
+  const reloadCaptcha = () => {
     setUrlCaptcha("");
     getCaptcha();
-  }
+  };
 
   useEffect(() => {
     getCaptcha();
@@ -146,7 +214,12 @@ const Login = () => {
               {urlCaptcha ? (
                 <div className="flex flex-col text-center">
                   <img src={urlCaptcha} alt="Captcha" />
-                  <button className="mt-2 underline hover:text-green-500" onClick={reloadCaptcha}>Reload captcha</button>
+                  <button
+                    className="mt-2 underline hover:text-green-500"
+                    onClick={reloadCaptcha}
+                  >
+                    Reload captcha
+                  </button>
                 </div>
               ) : (
                 <p>Loading...</p>
