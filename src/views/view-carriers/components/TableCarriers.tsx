@@ -25,11 +25,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
-import { getCarrier } from "@/db/carrier";
+
 import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
 import { getCountryCode } from "@/functions";
 import UpdatedCarrierModal from "./UpdatedCarrierModal ";
 import DeleteModalCarrier from "@/components/DeleteModalCarrier";
+import { useQueryCarriers } from "@/api/queries";
 
 const TableCarriers = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -37,7 +38,7 @@ const TableCarriers = () => {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [selectedCarrier, setSelectedCarrier] = useState<FormDataCarrier>();
-  const [carrierDB, setCarrierDB] = useState<FormDataCarrier[]>([]);
+  const { data: carriers, refetch, isLoading } = useQueryCarriers();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nombre social" },
@@ -47,17 +48,6 @@ const TableCarriers = () => {
     { id: 6, name: "Run" },
     { id: 7, name: "Teléfono" },
   ];
-
-  useEffect(() => {
-    const fetchData = () => {
-      setTimeout(async () => {
-        const result = await getCarrier();
-        setCarrierDB(result);
-      }, 600);
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <div>
@@ -108,8 +98,8 @@ const TableCarriers = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {carrierDB.map((carrier) => (
-                <TableRow key={carrier.id}>
+              {carriers?.map((carrier) => (
+                <TableRow key={carrier._id}>
                   <TableCell>{carrier.personalData.fullName}</TableCell>
                   <TableCell>{carrier.personalData.maritalStatus}</TableCell>
                   <TableCell>
@@ -119,7 +109,9 @@ const TableCarriers = () => {
                       </span>
                       <Flag
                         width={20}
-                        code={getCountryCode(carrier?.personalData.nationality || "")}
+                        code={getCountryCode(
+                          carrier?.personalData.nationality || ""
+                        )}
                       />
                     </div>
                   </TableCell>
@@ -182,7 +174,7 @@ const TableCarriers = () => {
               ))}
             </TableBody>
           </TableUI>
-          {!carrierDB.length && (
+          {isLoading && (
             <div className="w-full h-[500px] bg-r flex justify-center items-center">
               <div className="loader-spiner" />
             </div>
@@ -195,17 +187,18 @@ const TableCarriers = () => {
         carrier={selectedCarrier}
         onClose={() => setIsModalOpen(false)}
       />
+
       <UpdatedCarrierModal
         open={isModalOpen2}
         carrier={selectedCarrier}
         onClose={() => setIsModalOpen2(false)}
-        setCarrierDB={setCarrierDB}
+        refetch={refetch}
       />
       <DeleteModalCarrier
-        id={selectedCarrier?.id}
+        id={selectedCarrier?._id}
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}
-        setCarrierDB={setCarrierDB}
+        refetch={refetch}
       />
     </div>
   );

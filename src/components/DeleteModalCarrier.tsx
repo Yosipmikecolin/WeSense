@@ -1,3 +1,4 @@
+import { deleteCarrier } from "@/api/request";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,32 +7,33 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteCarrier, getCarrier } from "@/db/carrier";
-import { deleteUser, getUsers, User } from "@/db/user";
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
   id?: string;
   open: boolean;
-  setCarrierDB: Dispatch<SetStateAction<FormDataCarrier[]>>;
+  refetch: VoidFunction;
   onClose: VoidFunction;
 }
 
-const DeleteModalCarrier = ({ id, open, onClose, setCarrierDB }: Props) => {
+const DeleteModalCarrier = ({ id, open, onClose, refetch }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    setLoading(true);
-    await deleteCarrier(id || "");
-    const result = await getCarrier();
-    setTimeout(() => {
-      toast.success("Eliminado exitosamente");
-      setCarrierDB(result);
-      setLoading(false);
-      onClose();
-    }, 500);
+    if (id) {
+      try {
+        setLoading(true);
+        await deleteCarrier(id);
+        toast.success("Eliminado exitosamente");
+        refetch();
+        onClose();
+      } catch (error) {
+        toast.error("Ocurrio un error");
+      } finally {
+        setLoading(false);
+      }
+    }
   };
   return (
     <Dialog open={open} onOpenChange={onClose}>

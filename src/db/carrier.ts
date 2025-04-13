@@ -1,4 +1,4 @@
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+/* import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
 import { initDB } from "./db";
 
 export const addCarrier = async (request: FormDataCarrier) => {
@@ -23,3 +23,4 @@ export const deleteCarrier = async (id: string) => {
   await tx.store.delete(id);
   await tx.done;
 };
+ */

@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import { ReactNode, useEffect } from "react";
 import { requesters, carriers } from "@/utils";
 import { addRequester } from "@/db/requester";
-import { addCarrier } from "@/db/carrier";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface Props {
@@ -20,14 +19,7 @@ const Layout = ({ children }: Props) => {
       }
     };
 
-    const insertCarrier = async () => {
-      for (const carrier of carriers) {
-        await addCarrier(carrier);
-      }
-    };
-
     insertRequest();
-    insertCarrier();
   }, []);
 
   return (

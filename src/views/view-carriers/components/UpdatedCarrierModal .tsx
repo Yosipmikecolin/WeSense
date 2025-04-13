@@ -36,22 +36,17 @@ import CauseForm from "@/views/view-create-carrier/components/CauseForm";
 import MonitoringForm from "@/views/view-create-carrier/components/MonitoringForm";
 import InclusionZoneForm from "@/views/view-create-carrier/components/InclusionZoneForm";
 import ExclusionZoneForm from "@/views/view-create-carrier/components/ExclusionZoneForm";
-import { addCarrier, getCarrier } from "@/db/carrier";
 import Timeline from "@/components/timeline/Timeline";
+import { updatedCarrier } from "@/api/request";
 
 interface Props {
   carrier?: FormDataCarrier;
   open: boolean;
   onClose: VoidFunction;
-  setCarrierDB: Dispatch<SetStateAction<FormDataCarrier[]>>;
+  refetch: VoidFunction;
 }
 
-const UpdatedCarrierModal = ({
-  carrier,
-  open,
-  onClose,
-  setCarrierDB,
-}: Props) => {
+const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormDataCarrier>(initialFormData);
   const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
@@ -144,16 +139,20 @@ const UpdatedCarrierModal = ({
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    await addCarrier(formData);
-    const result = await getCarrier();
-    setTimeout(() => {
-      setCurrentStep(0);
-      toast.success("Portador actualizado");
+    try {
+      setLoading(true);
+      if (carrier) {
+        await updatedCarrier(formData);
+        setCurrentStep(0);
+        refetch();
+        toast.success("Portador actualizado");
+        onClose();
+      }
+    } catch (error) {
+      toast.success("Error al actualizar el portador");
+    } finally {
       setLoading(false);
-      setCarrierDB(result);
-      onClose();
-    }, 500);
+    }
   };
 
   return (
@@ -195,11 +194,11 @@ const UpdatedCarrierModal = ({
                 {currentStep === steps.length - 1 ? (
                   loading ? (
                     <div className="flex items-center gap-3">
-                      <span>Editando</span>
+                      <span>Actualizando</span>
                       <div className="loader-button" />
                     </div>
                   ) : (
-                    "Editar portador"
+                    "Actualizar portador"
                   )
                 ) : (
                   "Siguiente"

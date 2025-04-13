@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+const user = "user-wesense";
+const password = "6xZohc0A8FhWGqKn";
+const MONGODB_URI = `mongodb+srv://${user}:${password}@cluster0.cdtmz.mongodb.net/wesense?retryWrites=true&w=majority&appName=Cluster0`;
+
 declare global {
   var mongoose: {
     conn: typeof import("mongoose") | null;
@@ -7,31 +11,31 @@ declare global {
   };
 }
 
-const user = "user-wesense";
-const password = "6xZohc0A8FhWGqKn";
-const MONGODB_URI = `mongodb+srv://${user}:${password}@cluster0.cdtmz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
 if (!MONGODB_URI) {
-  throw new Error("❌ No se ha definido la variable MONGODB_URI en .env.local");
+  throw new Error("❌ No se ha definido la variable MONGODB_URI");
 }
 
-// Evita múltiples conexiones en desarrollo
+// Agregamos el tipo global solo si estamos en desarrollo
 let cached = global.mongoose;
 
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-export async function connectDB() {
+export const connectDB = async () => {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
-      console.log("✅ Conectado a MongoDB");
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(MONGODB_URI, {
+        dbName: "wesense",
+      })
+      .then((mongoose) => {
+        console.log("📦 Conectado a MongoDB (wesense)");
+        return mongoose;
+      });
   }
 
   cached.conn = await cached.promise;
   return cached.conn;
-}
+};

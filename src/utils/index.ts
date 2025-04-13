@@ -1,4 +1,4 @@
-const users = [
+ export const users = [
   {
     name: "Yosip Mike Colin",
     nit: "83749234",
@@ -134,10 +134,9 @@ const users = [
     creation_date: "2023-05-09",
     phone: "300 567 8901",
   },
-];
+]; 
 export const carriers = [
   {
-    id: "1",
     personalData: {
       fullName: "Ana María Gómez Pérez",
       socialName: "Anita",
@@ -214,7 +213,6 @@ export const carriers = [
     },
   },
   {
-    id: "2",
     personalData: {
       fullName: "Pedro Luis Rodríguez Castro",
       socialName: "Pedrito",
@@ -291,7 +289,6 @@ export const carriers = [
     },
   },
   {
-    id: "3",
     personalData: {
       fullName: "Sofía Elena Vargas López",
       socialName: "Sofi",
@@ -368,7 +365,6 @@ export const carriers = [
     },
   },
   {
-    id: "4",
     personalData: {
       fullName: "Ricardo Andrés Díaz Rojas",
       socialName: "Richi",
@@ -445,7 +441,6 @@ export const carriers = [
     },
   },
   {
-    id: "5",
     personalData: {
       fullName: "Juan Carlos Méndez Rojas",
       socialName: "Juanquis",
@@ -522,7 +517,6 @@ export const carriers = [
     },
   },
   {
-    id: "6",
     personalData: {
       fullName: "Laura Beatriz Sánchez Vega",
       socialName: "Lau",
@@ -599,7 +593,6 @@ export const carriers = [
     },
   },
   {
-    id: "7",
     personalData: {
       fullName: "Pedro Antonio Ramírez Castillo",
       socialName: "",
@@ -676,7 +669,6 @@ export const carriers = [
     },
   },
   {
-    id: "8",
     personalData: {
       fullName: "Diego Alejandro Torres Mendoza",
       socialName: "Diegito",
@@ -753,7 +745,6 @@ export const carriers = [
     },
   },
   {
-    id: "9",
     personalData: {
       fullName: "Valentina Sofía Ríos Contreras",
       socialName: "Vale",
@@ -830,7 +821,6 @@ export const carriers = [
     },
   },
   {
-    id: "10",
     personalData: {
       fullName: "Ricardo Andrés Flores Guzmán",
       socialName: "",

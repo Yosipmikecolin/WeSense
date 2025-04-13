@@ -1,5 +1,5 @@
 export interface FormDataCarrier {
-  id: string;
+  _id: string;
   personalData: Step1Data;
   cause: Step2Data;
   monitoring: Step3Data;
