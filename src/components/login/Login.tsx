@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { toast } from "@/hooks/use-toast";
+import axios from "axios";
 
 const Login = () => {
+  const [code, setCode] = useState("");
+  const [token, setToken] = useState("");
+  const [urlCaptcha, setUrlCaptcha] = useState("");
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,6 +79,25 @@ const Login = () => {
     }
   };
 
+  async function getCaptcha() {
+    const captchaRes = await axios.get(
+      `/api/buddie?method=auth.get_captcha_details`
+    );
+
+    console.log("IMA: ", captchaRes.data);
+
+    setUrlCaptcha(captchaRes.data.image);
+  }
+
+  async function reloadCaptcha() {
+    setUrlCaptcha("");
+    getCaptcha();
+  }
+
+  useEffect(() => {
+    getCaptcha();
+  }, []);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-3">
       <Card className="w-full max-w-md">
@@ -114,6 +138,34 @@ const Login = () => {
                 placeholder="Ingrese su contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+              />
+            </div>
+            <div className="space-y-2">
+              {urlCaptcha ? (
+                <div className="flex flex-col text-center">
+                  <img src={urlCaptcha} alt="Captcha" />
+                  <button className="mt-2 underline hover:text-green-500" onClick={reloadCaptcha}>Reload captcha</button>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="code"
+                className="text-sm font-medium text-gray-700"
+              >
+                Captcha
+              </label>
+              <Input
+                id="code"
+                type="code"
+                placeholder="Ingrese el captcha"
+                value={code}
+                maxLength={5}
+                onChange={(e) => setCode(e.target.value)}
                 required
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
               />
