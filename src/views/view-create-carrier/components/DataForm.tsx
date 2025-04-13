@@ -101,7 +101,12 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
       </div>
       <div>
         <Label htmlFor="run">RUN</Label>
-        <Input name="run" value={formData.run || ""} onChange={handleChange} />
+        <Input
+          name="run"
+          type="number"
+          value={formData.run || ""}
+          onChange={handleChange}
+        />
       </div>
 
       <div>

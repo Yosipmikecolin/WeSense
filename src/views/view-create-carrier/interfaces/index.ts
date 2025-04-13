@@ -7,6 +7,14 @@ export interface FormDataCarrier {
   exclusionArea: Step5Data;
 }
 
+export interface FormDataCarrierPost {
+  personalData: Step1Data;
+  cause: Step2Data;
+  monitoring: Step3Data;
+  inclusionArea: Step4Data;
+  exclusionArea: Step5Data;
+}
+
 export interface Step1Data {
   fullName: string;
   socialName: string;

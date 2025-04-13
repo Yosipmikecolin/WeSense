@@ -95,6 +95,7 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
         <Input
           id="ruc"
           name="ruc"
+          type="number"
           value={formData.ruc}
           onChange={handleChange}
         />
@@ -105,6 +106,7 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
         <Input
           id="rit"
           name="rit"
+          type="number"
           value={formData.rit}
           onChange={handleChange}
         />

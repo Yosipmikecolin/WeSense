@@ -27,8 +27,7 @@ import InclusionZoneForm from "./components/InclusionZoneForm";
 import ExclusionZoneForm from "./components/ExclusionZoneForm";
 import { initialFormData } from "./data/initialFormData";
 import toast from "react-hot-toast";
-import { addCarrier } from "@/db/carrier";
-import { generateUUID } from "@/functions";
+import { addCarrier } from "@/api/request";
 
 const ViewCreateCarrier = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -110,17 +109,17 @@ const ViewCreateCarrier = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    await addCarrier({
-      ...formData,
-      id: generateUUID(),
-    });
-    setTimeout(() => {
+    try {
+      setLoading(true);
+      await addCarrier(formData);
       setCurrentStep(0);
       toast.success("Portador creado exitosamente");
-      setLoading(false);
       setFormData(initialFormData);
-    }, 500);
+    } catch (error) {
+      toast.error("Ocurrio un error al crear el portador");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -156,6 +155,7 @@ const ViewCreateCarrier = () => {
             {currentStep === steps.length - 1 ? (
               loading ? (
                 <div className="flex items-center gap-3">
+                  <span>Creando portador</span>
                   <div className="loader-button" />
                 </div>
               ) : (
