@@ -25,7 +25,7 @@ const eslintConfig = [
         "warn",
         {
           types: {
-            "{}": false, // permite usar "{}" o context sin tipo explícito
+            "{}": false, // Permite usar "{}" o context sin tipo explícito
           },
           extendDefaults: true,
         },
