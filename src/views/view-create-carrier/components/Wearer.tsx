@@ -93,20 +93,6 @@ const Wearer = ({ formData, setCompleteForm, setFormData }: StepProps6) => {
           onChange={handleChange}
         />
       </div>
-      <div>
-        <Label htmlFor="city">Ciudad</Label>
-        <Input name="city" value={formData.city} onChange={handleChange} />
-      </div>
-
-      <div>
-        <Label htmlFor="telephone">Número teléfono celular</Label>
-        <Input
-          name="telephone"
-          type="tel"
-          value={formData.telephone}
-          onChange={handleChange}
-        />
-      </div>
 
       {/* <div>
         <Label htmlFor="fullName">Nombre Completo</Label>

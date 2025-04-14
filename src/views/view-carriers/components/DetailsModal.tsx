@@ -9,11 +9,12 @@ import {
 import Flag from "react-world-flags";
 import { Download } from "lucide-react";
 import { generatePDF, generateWord } from "../functions";
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import { FormDataCarrier, FormDataWearer } from "@/views/view-create-carrier/interfaces";
 import { getCountryCode } from "@/functions";
 
 interface Props {
-  carrier?: FormDataCarrier;
+  carrier?: FormDataWearer;
+  // carrier?: FormDataCarrier;
   open: boolean;
   onClose: VoidFunction;
 }
@@ -36,10 +37,19 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                   Datos Personales
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
-                  <div className="font-semibold p-1 flex">Nombre Completo:</div>
-                  <div className="text-end">{carrier?.personalData.fullName}</div>
+                  <div className="font-semibold p-1 flex">Nombres:</div>
+                  <div className="text-end">{carrier?.wearer.first_name}</div>
                 </div>
                 <div className="p-2 border-t border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">Apellidos:</div>
+                  <div className="text-end">{carrier?.wearer.surname}</div>
+                </div>
+                <div className="p-2 border-t border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">Email:</div>
+                  <div className="text-end">{carrier?.wearer.email}</div>
+                </div>
+
+                {/* <div className="p-2 border-t border-b-0 flex items-center justify-between">
                   <div className="font-semibold p-1 flex">Nombre Social:</div>
                   <div className="text-end">
                     {carrier?.personalData.socialName || "No registra"}
@@ -106,10 +116,10 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     Fecha de Nacimiento: :
                   </div>
                   <div className="text-end">{carrier?.personalData.dateBirth}</div>
-                </div>
+                </div> */}
               </div>
 
-              <div className="border rounded-sm">
+              {/* <div className="border rounded-sm">
                 <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300">
                   Causa
                 </div>
@@ -148,9 +158,9 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                   <div className="font-semibold p-1 flex">ROL:</div>
                   <div className="text-end">{carrier?.cause.rol}</div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="border rounded-sm">
+              {/* <div className="border rounded-sm">
                 <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300">
                   Monitoreo
                 </div>
@@ -254,9 +264,9 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     {carrier?.monitoring.uninstallations}
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="border rounded-sm">
+              {/* <div className="border rounded-sm">
                 <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300">
                   Área de inclusión
                 </div>
@@ -326,8 +336,8 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     {carrier?.inclusionArea.characteristics}
                   </div>
                 </div>
-              </div>
-              <div className="border rounded-sm">
+              </div> */}
+              {/* <div className="border rounded-sm">
                 <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300">
                   Área de exclusión
                 </div>
@@ -390,8 +400,8 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     {carrier?.exclusionArea.characteristics}
                   </div>
                 </div>
-              </div>
-              <div className="border rounded-sm">
+              </div> */}
+              {/* <div className="border rounded-sm">
                 <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300">
                   Datos de la víctima
                 </div>
@@ -439,7 +449,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
                     {carrier?.exclusionArea.workplaceTelephone}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="flex gap-2 mt-4">

@@ -28,7 +28,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
 
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import {
+  FormDataCarrier,
+  FormDataWearer,
+} from "@/views/view-create-carrier/interfaces";
 import { getCountryCode } from "@/functions";
 import UpdatedCarrierModal from "./UpdatedCarrierModal ";
 import DeleteModalCarrier from "@/components/DeleteModalCarrier";
@@ -42,7 +45,7 @@ const TableCarriers = () => {
   const [wearers, setWearers] = useState<Wearer[]>([]);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [selectedCarrier, setSelectedCarrier] = useState<FormDataCarrier>();
+  const [selectedCarrier, setSelectedCarrier] = useState<FormDataWearer>();
   // const { data: carriers, refetch, isLoading } = useQueryCarriers();
   const filters = [
     { id: 1, name: "Nombre" },
@@ -98,9 +101,18 @@ const TableCarriers = () => {
             <TableHeader>
               <TableRow>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  NOMBRE COMPLETO
+                  NOMBRES
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
+                  APELLIDOS
+                </TableHead>
+                <TableHead className="text-xs font-bold text-gray-600">
+                  CORREO
+                </TableHead>
+                <TableHead className="text-xs font-bold text-gray-600">
+                  ACCIONES
+                </TableHead>
+                {/* <TableHead className="text-xs font-bold text-gray-600">
                   ESTADO CIVIL
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
@@ -117,7 +129,7 @@ const TableCarriers = () => {
                 </TableHead>
                 <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
-                </TableHead>
+                </TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
@@ -125,7 +137,7 @@ const TableCarriers = () => {
                 <TableRow key={carrier.id}>
                   <TableCell>{carrier.first_name}</TableCell>
                   <TableCell>{carrier.surname}</TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
                         {carrier.country_id}
@@ -135,10 +147,10 @@ const TableCarriers = () => {
                         code={getCountryCode(carrier?.country_id || "")}
                       />
                     </div>
-                  </TableCell>
-                  <TableCell>{carrier.gender}</TableCell>
+                  </TableCell> */}
+                  {/* <TableCell>{carrier.gender}</TableCell> */}
                   <TableCell>{carrier.email}</TableCell>
-                  <TableCell>{carrier.phone_type}</TableCell>
+                  {/* <TableCell>{carrier.phone_type}</TableCell> */}
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
@@ -150,7 +162,14 @@ const TableCarriers = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedCarrier(carrier);
+                            setSelectedCarrier({
+                              wearer: {
+                                id: carrier.id,
+                                first_name: carrier.first_name,
+                                surname: carrier.surname,
+                                email: carrier.email,
+                              },
+                            });
                             setIsModalOpen(true);
                           }}
                         >
@@ -163,7 +182,14 @@ const TableCarriers = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedCarrier(carrier);
+                            setSelectedCarrier({
+                              wearer: {
+                                id: carrier.id,
+                                first_name: carrier.first_name,
+                                surname: carrier.surname,
+                                email: carrier.email,
+                              },
+                            });
                             setIsModalOpen2(true);
                           }}
                         >
@@ -177,7 +203,14 @@ const TableCarriers = () => {
 
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedCarrier(carrier);
+                            setSelectedCarrier({
+                              wearer: {
+                                id: carrier.id,
+                                first_name: carrier.first_name,
+                                surname: carrier.surname,
+                                email: carrier.email,
+                              },
+                            });
                             setIsModalOpen3(true);
                           }}
                         >
@@ -209,18 +242,18 @@ const TableCarriers = () => {
         onClose={() => setIsModalOpen(false)}
       />
 
-      {/* <UpdatedCarrierModal
+      <UpdatedCarrierModal
         open={isModalOpen2}
         carrier={selectedCarrier}
         onClose={() => setIsModalOpen2(false)}
-        refetch={refetch}
+        // refetch={refetch}
       />
       <DeleteModalCarrier
-        id={selectedCarrier?._id}
+        id={selectedCarrier?.wearer.id}
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}
-        refetch={refetch}
-      /> */}
+        // refetch={refetch}
+      />
     </div>
   );
 };

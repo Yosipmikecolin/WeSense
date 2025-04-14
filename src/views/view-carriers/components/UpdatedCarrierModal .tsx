@@ -24,11 +24,13 @@ import toast from "react-hot-toast";
 
 import {
   FormDataCarrier,
+  FormDataWearer,
   Step1Data,
   Step2Data,
   Step3Data,
   Step4Data,
   Step5Data,
+  Step6Data,
 } from "@/views/view-create-carrier/interfaces";
 import { initialFormData } from "@/views/view-create-carrier/data/initialFormData";
 import DataForm from "@/views/view-create-carrier/components/DataForm";
@@ -38,18 +40,22 @@ import InclusionZoneForm from "@/views/view-create-carrier/components/InclusionZ
 import ExclusionZoneForm from "@/views/view-create-carrier/components/ExclusionZoneForm";
 import Timeline from "@/components/timeline/Timeline";
 import { updatedCarrier } from "@/api/request";
+import Wearer from "@/views/view-create-carrier/components/Wearer";
 
 interface Props {
-  carrier?: FormDataCarrier;
+  carrier?: FormDataWearer;
+  // carrier?: FormDataCarrier;
   open: boolean;
   onClose: VoidFunction;
-  refetch: VoidFunction;
+  refetch?: VoidFunction;
+  // refetch: VoidFunction;
 }
 
 const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<FormDataCarrier>(initialFormData);
-  const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
+  const [formData, setFormData] = useState<FormDataWearer>(initialFormData);
+  const steps = ["Wearer"];
+  // const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
@@ -74,7 +80,13 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
   const updateData = useCallback(
     (
       step: keyof FormDataCarrier,
-      data: Step1Data | Step2Data | Step3Data | Step4Data | Step5Data
+      data:
+        | Step1Data
+        | Step2Data
+        | Step3Data
+        | Step4Data
+        | Step5Data
+        | Step6Data
     ) => {
       setFormData((prevData) => ({
         ...prevData,
@@ -85,54 +97,61 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
   );
 
   const isStep5Complete = () => {
-    const step5 = formData.exclusionArea;
+    const step5 = formData.wearer;
+    // const step5 = formData.exclusionArea;
     return Object.values(step5).every((value) =>
       typeof value === "boolean" ? true : value.toString().trim() !== ""
     );
+    // return false;
   };
 
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
         return (
-          <DataForm
-            formData={formData.personalData}
-            setFormData={(data) => updateData("personalData", data)}
+          // <DataForm
+          //   formData={formData.personalData}
+          //   setFormData={(data) => updateData("personalData", data)}
+          //   setCompleteForm={setCompleteForm}
+          // />
+          <Wearer
+            formData={formData.wearer}
+            setFormData={(data) => updateData("wearer", data)}
             setCompleteForm={setCompleteForm}
           />
         );
-      case 1:
-        return (
-          <CauseForm
-            formData={formData.cause}
-            setFormData={(data) => updateData("cause", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
-      case 2:
-        return (
-          <MonitoringForm
-            formData={formData.monitoring}
-            setFormData={(data) => updateData("monitoring", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
-      case 3:
-        return (
-          <InclusionZoneForm
-            formData={formData.inclusionArea}
-            setFormData={(data) => updateData("inclusionArea", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
-      case 4:
-        return (
-          <ExclusionZoneForm
-            formData={formData.exclusionArea}
-            setFormData={(data) => updateData("exclusionArea", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
+      // case 1:
+      //   return (
+      //     <CauseForm
+      //       formData={formData.cause}
+      //       setFormData={(data) => updateData("cause", data)}
+      //       setCompleteForm={setCompleteForm}
+      //     />
+      //   );
+      // case 2:
+      //   return (
+      //     <MonitoringForm
+      //       formData={formData.monitoring}
+      //       setFormData={(data) => updateData("monitoring", data)}
+      //       setCompleteForm={setCompleteForm}
+      //     />
+      //   );
+      // case 3:
+      //   return (
+      //     <InclusionZoneForm
+      //       formData={formData.inclusionArea}
+      //       setFormData={(data) => updateData("inclusionArea", data)}
+      //       setCompleteForm={setCompleteForm}
+      //     />
+      //   );
+      // case 4:
+      //   return (
+      //     <ExclusionZoneForm
+      //       formData={formData.exclusionArea}
+      //       setFormData={(data) => updateData("exclusionArea", data)}
+      //       setCompleteForm={setCompleteForm}
+      //     />
+      //   );
       default:
         return null;
     }
@@ -142,9 +161,9 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
     try {
       setLoading(true);
       if (carrier) {
-        await updatedCarrier(formData);
+        // await updatedCarrier(formData);
         setCurrentStep(0);
-        refetch();
+        // refetch();
         toast.success("Portador actualizado");
         onClose();
       }

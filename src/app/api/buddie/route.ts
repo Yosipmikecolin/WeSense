@@ -14,74 +14,84 @@ const _CUSTOMER_ID = "331";
 
 export async function GET(request: Request) {
   try {
+    const cookieHeader = request.headers.get("cookie");
+    console.log("Cookies recibidas:", cookieHeader);
     const { searchParams } = new URL(request.url);
-
     const _METHOD = searchParams.get("method") || "";
 
     if (_METHOD === "auth.get_captcha_details") {
-      const captchaRes = await axiosConfigBuddie.get(`/api.php`, {
-        params: {
-          _dc: Date.now(),
-          path: "login",
-          request_type: "get",
-          return_type: "extjs",
-          method: _METHOD,
-        },
-      });
+      try {
+        const captchaRes = await axiosConfigBuddie.get(`/api.php`, {
+          params: {
+            _dc: Date.now(),
+            path: "login",
+            request_type: "get",
+            return_type: "extjs",
+            method: _METHOD,
+          },
+        });
 
-      const url_img = captchaRes.data.get_captcha_details.result;
+        const url_img = captchaRes.data.get_captcha_details.result;
 
-      const imageCaptcha = await axiosConfigBuddie.get(`/${url_img}`, {
-        responseType: "arraybuffer",
-      });
+        const imageCaptcha = await axiosConfigBuddie.get(`/${url_img}`, {
+          responseType: "arraybuffer",
+        });
 
-      const base64Image = Buffer.from(imageCaptcha.data, "binary").toString(
-        "base64"
-      );
-      const contentType = imageCaptcha.headers["content-type"];
+        const base64Image = Buffer.from(imageCaptcha.data, "binary").toString("base64");
+        const contentType = imageCaptcha.headers["content-type"];
 
-      return NextResponse.json({
-        image: `data:${contentType};base64,${base64Image}`,
-      });
+        return NextResponse.json({
+          image: `data:${contentType};base64,${base64Image}`,
+        });
+      } catch (error: any) {
+        const errorData = error.response?.data || { msg: "Error inesperado" };
+        return NextResponse.json({ ...errorData, error: true });
+      }
     }
 
     if (_METHOD === "user.read") {
-      const response = await axiosConfigBuddie.get(`/api.php`, {
-        params: {
-          _dc: Date.now(),
-          request_type: "get",
-          return_type: "extjs",
-          method: _METHOD,
-        },
-      });
+      try {
+        const response = await axiosConfigBuddie.get(`/api.php`, {
+          params: {
+            _dc: Date.now(),
+            request_type: "get",
+            return_type: "extjs",
+            method: _METHOD,
+          },
+        });
 
-      return NextResponse.json({
-        ...response.data,
-      });
+        return NextResponse.json(response.data);
+      } catch (error: any) {
+        const errorData = error.response?.data || { msg: "Error inesperado" };
+        return NextResponse.json({ ...errorData, error: true });
+      }
     }
 
     if (_METHOD === "setup.wearer.grid") {
-      const response = await axiosConfigBuddie.get(`/api.php`, {
-        params: {
-          _dc: Date.now(),
-          request_type: "get",
-          return_type: "extjs",
-          method: _METHOD,
-          inc_devices: "1",
-          inc_open_visits: "1",
-          responsible_officer_only: "0",
-          inc_categories: "1",
-          c: _CUSTOMER_ID,
-          page: "1",
-          start: "0",
-          limit: "50",
-          group: '{"property":"first_name","direction":"ASC"}',
-        },
-      });
+      try {
+        const response = await axiosConfigBuddie.get(`/api.php`, {
+          params: {
+            _dc: Date.now(),
+            request_type: "get",
+            return_type: "extjs",
+            method: _METHOD,
+            inc_devices: "1",
+            inc_open_visits: "1",
+            responsible_officer_only: "0",
+            inc_categories: "1",
+            c: _CUSTOMER_ID,
+            page: "1",
+            start: "0",
+            limit: "50",
+            group: '{"property":"first_name","direction":"ASC"}',
+          },
+        });
 
-      return NextResponse.json({
-        ...response.data,
-      });
+        return NextResponse.json({ ...response.data });
+      } catch (error: any) {
+        const errorData = error.response?.data || { msg: "Error inesperado" };
+        return NextResponse.json({ ...errorData, error: true });
+      }
     }
 
     if (_METHOD === "") {
@@ -111,112 +121,101 @@ export async function POST(request: Request) {
     const _CREATE_WEARER: WearerData = body.create_wearer || {};
     const _UPDATE_WEARER: WearerUpdateData = body.update_wearer || {};
 
+    const handleAxiosError = (error: any) => {
+      const errorData = error.response?.data || { msg: "Error inesperado" };
+      return NextResponse.json({ ...errorData, error: true });
+    };
+
     if (_METHOD === "auth.login") {
-      const loginFormData = {
-        username: _USERNAME,
-        password: _PASSWORD,
-        captchacode: _CAPTCHA_CODE,
-        remember: "false",
-        request_type: "post",
-        return_type: "extjs",
-        method: _METHOD,
-      };
-      const response = await axiosConfigBuddie.post(
-        `/api.php`,
-        qs.stringify(loginFormData)
-      );
-      return NextResponse.json({
-        ...response.data,
-      });
+      try {
+        const loginFormData = {
+          username: _USERNAME,
+          password: _PASSWORD,
+          captchacode: _CAPTCHA_CODE,
+          remember: "false",
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+        };
+        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(loginFormData));
+        return NextResponse.json({ ...response.data });
+      } catch (error: any) {
+        return handleAxiosError(error);
+      }
     }
 
     if (_METHOD === "auth.requires_2fa") {
-      const loginFormData = {
-        username: _USERNAME,
-        password: _PASSWORD,
-        captchacode: _CAPTCHA_CODE,
-        remember: "false",
-        request_type: "post",
-        return_type: "extjs",
-        method: _METHOD,
-      };
-      const response = await axiosConfigBuddie.post(
-        `/api.php`,
-        qs.stringify(loginFormData)
-      );
-      return NextResponse.json({
-        ...response.data,
-      });
+      try {
+        const loginFormData = {
+          username: _USERNAME,
+          password: _PASSWORD,
+          captchacode: _CAPTCHA_CODE,
+          remember: "false",
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+        };
+        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(loginFormData));
+        return NextResponse.json({ ...response.data });
+      } catch (error: any) {
+        return handleAxiosError(error);
+      }
     }
 
     if (_METHOD === "setup.wearer.create") {
-      const data: CreateWearerRequest = {
-        request_type: "post",
-        return_type: "extjs",
-        method: _METHOD,
-        c: _CUSTOMER_ID,
-        csrf_token: _TOKEN,
-        wearer: _CREATE_WEARER,
-      };
-
-      const response = await axiosConfigBuddie.post(
-        `/api.php`,
-        qs.stringify(data)
-      );
-      return NextResponse.json({
-        ...response.data,
-      });
+      try {
+        const data: CreateWearerRequest = {
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+          c: _CUSTOMER_ID,
+          csrf_token: _TOKEN,
+          wearer: _CREATE_WEARER,
+        };
+        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(data));
+        return NextResponse.json({ ...response.data });
+      } catch (error: any) {
+        return handleAxiosError(error);
+      }
     }
 
     if (_METHOD === "setup.wearer.update") {
-      const data: UpdateWearerRequest = {
-        wearer_id: _WEARER_ID,
-        last_edit_user: "-1",
-        last_edit_timestamp: "-1",
-        force: "0",
-        request_type: "post",
-        return_type: "extjs",
-        method: _METHOD,
-        c: _CUSTOMER_ID,
-        csrf_token: _TOKEN,
-        wearer: _UPDATE_WEARER,
-      };
-
-      const response = await axiosConfigBuddie.post(
-        `/api.php`,
-        qs.stringify(data)
-      );
-      return NextResponse.json({
-        ...response.data,
-      });
+      try {
+        const data: UpdateWearerRequest = {
+          wearer_id: _WEARER_ID,
+          last_edit_user: "-1",
+          last_edit_timestamp: "-1",
+          force: "0",
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+          c: _CUSTOMER_ID,
+          csrf_token: _TOKEN,
+          wearer: _UPDATE_WEARER,
+        };
+        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(data));
+        return NextResponse.json({ ...response.data });
+      } catch (error: any) {
+        return handleAxiosError(error);
+      }
     }
 
     if (_METHOD === "setup.wearer.delete") {
-      const data = {
-        id: _WEARER_ID,
-        deleteRecentLocations: true,
-        request_type: "post",
-        return_type: "extjs",
-        method: _METHOD,
-        c: _CUSTOMER_ID,
-        csrf_token: _TOKEN,
-      };
-
-      const response = await axiosConfigBuddie.post(
-        `/api.php`,
-        qs.stringify(data)
-      );
-      return NextResponse.json({
-        ...response.data,
-      });
-    }
-
-    if (_METHOD === "auth.logout") {
-      const data = {
-        request_type: "post",
-        return_type: "extjs",
-        method: _METHOD,
-      };
+      try {
+        const data = {
+          id: _WEARER_ID,
+          deleteRecentLocations: true,
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+          c: _CUSTOMER_ID,
+          csrf_token: _TOKEN,
+        };
+        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(data));
+        return NextResponse.json({ ...response.data });
+      } catch (error: any) {
+        return handleAxiosError(error);
+      }
     }
 
     if (_METHOD === "") {

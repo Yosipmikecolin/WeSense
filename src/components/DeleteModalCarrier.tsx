@@ -13,7 +13,8 @@ import toast from "react-hot-toast";
 interface Props {
   id?: string;
   open: boolean;
-  refetch: VoidFunction;
+  refetch?: VoidFunction;
+  // refetch: VoidFunction;
   onClose: VoidFunction;
 }
 
@@ -26,7 +27,7 @@ const DeleteModalCarrier = ({ id, open, onClose, refetch }: Props) => {
         setLoading(true);
         await deleteCarrier(id);
         toast.success("Eliminado exitosamente");
-        refetch();
+        // refetch();
         onClose();
       } catch (error) {
         toast.error("Ocurrio un error");

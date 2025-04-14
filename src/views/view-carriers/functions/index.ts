@@ -1,4 +1,7 @@
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import {
+  FormDataCarrier,
+  FormDataWearer,
+} from "@/views/view-create-carrier/interfaces";
 import {
   Document,
   Packer,
@@ -13,7 +16,7 @@ import {
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 
-export const generatePDF = (selectedCarrier: FormDataCarrier) => {
+export const generatePDF = (selectedCarrier: FormDataWearer) => {
   const doc = new jsPDF();
 
   // 🎨 Encabezado
@@ -21,7 +24,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   doc.rect(0, 0, 210, 20, "F");
   doc.setFontSize(20);
   doc.setTextColor(255, 255, 255);
-  doc.text(`Portador ${selectedCarrier.personalData.fullName}`, 105, 12, {
+  doc.text(`Portador ${selectedCarrier.wearer.first_name}`, 105, 12, {
     align: "center",
   });
 
@@ -33,101 +36,110 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   }[] = [
     {
       title: "Datos Personales",
-      data: selectedCarrier.personalData,
+      data: selectedCarrier.wearer,
       fields: [
-        { key: "fullname", label: "Nombre Completo" },
-        { key: "socialName", label: "Nombre Social" },
-        { key: "paternalSurname", label: "Apellido Paterno" },
-        { key: "motherSurname", label: "Apellido Materno" },
-        { key: "type_current", label: "Tipo Actual" },
-        { key: "gender", label: "Género" },
-        { key: "dateBirth", label: "Fecha de Nacimiento" },
-        { key: "maritalStatus", label: "Estado Civil" },
-        { key: "nationality", label: "Nacionalidad" },
-        { key: "run", label: "RUN" },
-        { key: "phone", label: "Teléfono" },
-        { key: "foreigner", label: "Extranjero" },
+        { key: "first_name", label: "Nombres" },
+        { key: "surname", label: "Apellidos" },
+        { key: "email", label: "Email" },
       ],
     },
-    {
-      title: "Causa",
-      data: selectedCarrier.cause,
-      fields: [
-        { key: "penatype", label: "Tipo de Pena" },
-        { key: "crime", label: "Delito" },
-        { key: "courtAppeals", label: "Corte de Apelaciones" },
-        { key: "courtRegion", label: "Región del Tribunal" },
-        { key: "court", label: "Tribunal" },
-        { key: "ruc", label: "RUC" },
-        { key: "rit", label: "RIT" },
-        { key: "rol", label: "ROL" },
-      ],
-    },
-    {
-      title: "Monitoreo",
-      data: selectedCarrier.monitoring,
-      fields: [
-        { key: "crs", label: "CRS" },
-        { key: "areas", label: "Áreas" },
-        { key: "durationMeasurement", label: "Medida de Duración" },
-        { key: "controlSchedule", label: "Horario de Control" },
-        { key: "effectivePeriod", label: "Período Efectivo" },
-        { key: "requestsFeasibility", label: "Solicitudes de Viabilidad" },
-        { key: "judgment", label: "Juicio" },
-        {
-          key: "programmingInstallation",
-          label: "Programación de Instalación",
-        },
-        { key: "installationsDone", label: "Instalaciones Realizadas" },
-        { key: "modificationResolution", label: "Resolución de Modificación" },
-        { key: "technicalSupports", label: "Soportes Técnicos" },
-        { key: "nonReports", label: "Reportes No Realizados" },
-        { key: "daysControl", label: "Días de Control" },
-        { key: "uninstallations", label: "Desinstalaciones" },
-      ],
-    },
-    {
-      title: "Área de inclusión",
-      data: selectedCarrier.inclusionArea,
-      fields: [
-        { key: "street", label: "Calle" },
-        { key: "number", label: "Número" },
-        { key: "additionalInformation", label: "Información Adicional" },
-        { key: "commune", label: "Comuna" },
-        { key: "region", label: "Región" },
-        { key: "road", label: "Camino" },
-        { key: "population", label: "Población" },
-        { key: "zipCode", label: "Código Postal" },
-        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
-        { key: "radio", label: "Radio" },
-        { key: "complianceSchedule", label: "Horario de Cumplimiento" },
-        { key: "characteristics", label: "Características" },
-      ],
-    },
-    {
-      title: "Área de exclusión",
-      data: selectedCarrier.exclusionArea,
-      fields: [
-        { key: "street", label: "Calle" },
-        { key: "number", label: "Número" },
-        { key: "additionalInformation", label: "Información Adicional" },
-        { key: "commune", label: "Comuna" },
-        { key: "region", label: "Región" },
-        { key: "road", label: "Camino" },
-        { key: "population", label: "Población" },
-        { key: "zipCode", label: "Código Postal" },
-        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
-        { key: "radio", label: "Radio" },
-        { key: "characteristics", label: "Características" },
-        { key: "paternalSurname", label: "Apellido Paterno" },
-        { key: "motherSurname", label: "Apellido Materno" },
-        { key: "names", label: "Nombres" },
-        { key: "rut", label: "RUT" },
-        { key: "victimEmail", label: "Correo de la Víctima" },
-        { key: "homeTelephone", label: "Teléfono Domicilio" },
-        { key: "workplaceTelephone", label: "Teléfono Trabajo" },
-      ],
-    },
+    // {
+    //   title: "Datos Personales",
+    //   data: selectedCarrier.personalData,
+    //   fields: [
+    //     { key: "fullname", label: "Nombre Completo" },
+    //     { key: "socialName", label: "Nombre Social" },
+    //     { key: "paternalSurname", label: "Apellido Paterno" },
+    //     { key: "motherSurname", label: "Apellido Materno" },
+    //     { key: "type_current", label: "Tipo Actual" },
+    //     { key: "gender", label: "Género" },
+    //     { key: "dateBirth", label: "Fecha de Nacimiento" },
+    //     { key: "maritalStatus", label: "Estado Civil" },
+    //     { key: "nationality", label: "Nacionalidad" },
+    //     { key: "run", label: "RUN" },
+    //     { key: "phone", label: "Teléfono" },
+    //     { key: "foreigner", label: "Extranjero" },
+    //   ],
+    // },
+    // {
+    //   title: "Causa",
+    //   data: selectedCarrier.cause,
+    //   fields: [
+    //     { key: "penatype", label: "Tipo de Pena" },
+    //     { key: "crime", label: "Delito" },
+    //     { key: "courtAppeals", label: "Corte de Apelaciones" },
+    //     { key: "courtRegion", label: "Región del Tribunal" },
+    //     { key: "court", label: "Tribunal" },
+    //     { key: "ruc", label: "RUC" },
+    //     { key: "rit", label: "RIT" },
+    //     { key: "rol", label: "ROL" },
+    //   ],
+    // },
+    // {
+    //   title: "Monitoreo",
+    //   data: selectedCarrier.monitoring,
+    //   fields: [
+    //     { key: "crs", label: "CRS" },
+    //     { key: "areas", label: "Áreas" },
+    //     { key: "durationMeasurement", label: "Medida de Duración" },
+    //     { key: "controlSchedule", label: "Horario de Control" },
+    //     { key: "effectivePeriod", label: "Período Efectivo" },
+    //     { key: "requestsFeasibility", label: "Solicitudes de Viabilidad" },
+    //     { key: "judgment", label: "Juicio" },
+    //     {
+    //       key: "programmingInstallation",
+    //       label: "Programación de Instalación",
+    //     },
+    //     { key: "installationsDone", label: "Instalaciones Realizadas" },
+    //     { key: "modificationResolution", label: "Resolución de Modificación" },
+    //     { key: "technicalSupports", label: "Soportes Técnicos" },
+    //     { key: "nonReports", label: "Reportes No Realizados" },
+    //     { key: "daysControl", label: "Días de Control" },
+    //     { key: "uninstallations", label: "Desinstalaciones" },
+    //   ],
+    // },
+    // {
+    //   title: "Área de inclusión",
+    //   data: selectedCarrier.inclusionArea,
+    //   fields: [
+    //     { key: "street", label: "Calle" },
+    //     { key: "number", label: "Número" },
+    //     { key: "additionalInformation", label: "Información Adicional" },
+    //     { key: "commune", label: "Comuna" },
+    //     { key: "region", label: "Región" },
+    //     { key: "road", label: "Camino" },
+    //     { key: "population", label: "Población" },
+    //     { key: "zipCode", label: "Código Postal" },
+    //     { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+    //     { key: "radio", label: "Radio" },
+    //     { key: "complianceSchedule", label: "Horario de Cumplimiento" },
+    //     { key: "characteristics", label: "Características" },
+    //   ],
+    // },
+    // {
+    //   title: "Área de exclusión",
+    //   data: selectedCarrier.exclusionArea,
+    //   fields: [
+    //     { key: "street", label: "Calle" },
+    //     { key: "number", label: "Número" },
+    //     { key: "additionalInformation", label: "Información Adicional" },
+    //     { key: "commune", label: "Comuna" },
+    //     { key: "region", label: "Región" },
+    //     { key: "road", label: "Camino" },
+    //     { key: "population", label: "Población" },
+    //     { key: "zipCode", label: "Código Postal" },
+    //     { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+    //     { key: "radio", label: "Radio" },
+    //     { key: "characteristics", label: "Características" },
+    //     { key: "paternalSurname", label: "Apellido Paterno" },
+    //     { key: "motherSurname", label: "Apellido Materno" },
+    //     { key: "names", label: "Nombres" },
+    //     { key: "rut", label: "RUT" },
+    //     { key: "victimEmail", label: "Correo de la Víctima" },
+    //     { key: "homeTelephone", label: "Teléfono Domicilio" },
+    //     { key: "workplaceTelephone", label: "Teléfono Trabajo" },
+    //   ],
+    // },
   ];
 
   // 🗂️ Generación de secciones
@@ -187,7 +199,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   doc.text("Generado con SGAMGC", 105, 289, { align: "center" });
 
   // Guardar el archivo
-  const nameFile = selectedCarrier.personalData.fullName
+  const nameFile = selectedCarrier.wearer.first_name
     .split(" ")
     .join("_")
     .toLowerCase();
@@ -204,106 +216,115 @@ interface Section {
   fields: Field[];
 }
 
-export const generateWord = (selectedCarrier: FormDataCarrier) => {
+export const generateWord = (selectedCarrier: FormDataWearer) => {
   // 🗂️ Definición de secciones y sus campos
   const sections = [
     {
       title: "Información Personal",
-      data: selectedCarrier.personalData,
+      data: selectedCarrier.wearer,
       fields: [
-        { key: "fullname", label: "Nombre Completo" },
-        { key: "socialName", label: "Nombre Social" },
-        { key: "paternalSurname", label: "Apellido Paterno" },
-        { key: "motherSurname", label: "Apellido Materno" },
-        { key: "type_current", label: "Tipo Actual" },
-        { key: "gender", label: "Género" },
-        { key: "dateBirth", label: "Fecha de Nacimiento" },
-        { key: "maritalStatus", label: "Estado Civil" },
-        { key: "nationality", label: "Nacionalidad" },
-        { key: "run", label: "RUN" },
-        { key: "phone", label: "Teléfono" },
-        { key: "foreigner", label: "Extranjero" },
+        { key: "first_name", label: "Nombres" },
+        { key: "surname", label: "Apellidos" },
+        { key: "email", label: "Email" },
       ],
     },
-    {
-      title: "Causa",
-      data: selectedCarrier.cause,
-      fields: [
-        { key: "penatype", label: "Tipo de Pena" },
-        { key: "crime", label: "Delito" },
-        { key: "courtAppeals", label: "Corte de Apelaciones" },
-        { key: "courtRegion", label: "Región del Tribunal" },
-        { key: "court", label: "Tribunal" },
-        { key: "ruc", label: "RUC" },
-        { key: "rit", label: "RIT" },
-        { key: "rol", label: "ROL" },
-      ],
-    },
-    {
-      title: "Monitoreo",
-      data: selectedCarrier.monitoring,
-      fields: [
-        { key: "crs", label: "CRS" },
-        { key: "areas", label: "Áreas" },
-        { key: "durationMeasurement", label: "Medida de Duración" },
-        { key: "controlSchedule", label: "Horario de Control" },
-        { key: "effectivePeriod", label: "Período Efectivo" },
-        { key: "requestsFeasibility", label: "Solicitudes de Viabilidad" },
-        { key: "judgment", label: "Juicio" },
-        {
-          key: "programmingInstallation",
-          label: "Programación de Instalación",
-        },
-        { key: "installationsDone", label: "Instalaciones Realizadas" },
-        { key: "modificationResolution", label: "Resolución de Modificación" },
-        { key: "technicalSupports", label: "Soportes Técnicos" },
-        { key: "nonReports", label: "Reportes No Realizados" },
-        { key: "daysControl", label: "Días de Control" },
-        { key: "uninstallations", label: "Desinstalaciones" },
-      ],
-    },
-    {
-      title: "Área de inclusión",
-      data: selectedCarrier.inclusionArea,
-      fields: [
-        { key: "street", label: "Calle" },
-        { key: "number", label: "Número" },
-        { key: "additionalInformation", label: "Información Adicional" },
-        { key: "commune", label: "Comuna" },
-        { key: "region", label: "Región" },
-        { key: "road", label: "Camino" },
-        { key: "population", label: "Población" },
-        { key: "zipCode", label: "Código Postal" },
-        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
-        { key: "radio", label: "Radio" },
-        { key: "complianceSchedule", label: "Horario de Cumplimiento" },
-        { key: "characteristics", label: "Características" },
-      ],
-    },
-    {
-      title: "Área de exclusión y Información de Víctima ",
-      data: selectedCarrier.exclusionArea,
-      fields: [
-        { key: "street", label: "Calle" },
-        { key: "number", label: "Número" },
-        { key: "additionalInformation", label: "Información Adicional" },
-        { key: "commune", label: "Comuna" },
-        { key: "region", label: "Región" },
-        { key: "road", label: "Camino" },
-        { key: "population", label: "Población" },
-        { key: "zipCode", label: "Código Postal" },
-        { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
-        { key: "radio", label: "Radio" },
-        { key: "characteristics", label: "Características" },
-        { key: "paternalSurname", label: "Apellido Paterno" },
-        { key: "motherSurname", label: "Apellido Materno" },
-        { key: "names", label: "Nombres" },
-        { key: "rut", label: "RUT" },
-        { key: "victimEmail", label: "Correo de la Víctima" },
-        { key: "homeTelephone", label: "Teléfono Domicilio" },
-        { key: "workplaceTelephone", label: "Teléfono Trabajo" },
-      ],
-    },
+    // {
+    //   title: "Información Personal",
+    //   data: selectedCarrier.personalData,
+    //   fields: [
+    //     { key: "fullname", label: "Nombre Completo" },
+    //     { key: "socialName", label: "Nombre Social" },
+    //     { key: "paternalSurname", label: "Apellido Paterno" },
+    //     { key: "motherSurname", label: "Apellido Materno" },
+    //     { key: "type_current", label: "Tipo Actual" },
+    //     { key: "gender", label: "Género" },
+    //     { key: "dateBirth", label: "Fecha de Nacimiento" },
+    //     { key: "maritalStatus", label: "Estado Civil" },
+    //     { key: "nationality", label: "Nacionalidad" },
+    //     { key: "run", label: "RUN" },
+    //     { key: "phone", label: "Teléfono" },
+    //     { key: "foreigner", label: "Extranjero" },
+    //   ],
+    // },
+    // {
+    //   title: "Causa",
+    //   data: selectedCarrier.cause,
+    //   fields: [
+    //     { key: "penatype", label: "Tipo de Pena" },
+    //     { key: "crime", label: "Delito" },
+    //     { key: "courtAppeals", label: "Corte de Apelaciones" },
+    //     { key: "courtRegion", label: "Región del Tribunal" },
+    //     { key: "court", label: "Tribunal" },
+    //     { key: "ruc", label: "RUC" },
+    //     { key: "rit", label: "RIT" },
+    //     { key: "rol", label: "ROL" },
+    //   ],
+    // },
+    // {
+    //   title: "Monitoreo",
+    //   data: selectedCarrier.monitoring,
+    //   fields: [
+    //     { key: "crs", label: "CRS" },
+    //     { key: "areas", label: "Áreas" },
+    //     { key: "durationMeasurement", label: "Medida de Duración" },
+    //     { key: "controlSchedule", label: "Horario de Control" },
+    //     { key: "effectivePeriod", label: "Período Efectivo" },
+    //     { key: "requestsFeasibility", label: "Solicitudes de Viabilidad" },
+    //     { key: "judgment", label: "Juicio" },
+    //     {
+    //       key: "programmingInstallation",
+    //       label: "Programación de Instalación",
+    //     },
+    //     { key: "installationsDone", label: "Instalaciones Realizadas" },
+    //     { key: "modificationResolution", label: "Resolución de Modificación" },
+    //     { key: "technicalSupports", label: "Soportes Técnicos" },
+    //     { key: "nonReports", label: "Reportes No Realizados" },
+    //     { key: "daysControl", label: "Días de Control" },
+    //     { key: "uninstallations", label: "Desinstalaciones" },
+    //   ],
+    // },
+    // {
+    //   title: "Área de inclusión",
+    //   data: selectedCarrier.inclusionArea,
+    //   fields: [
+    //     { key: "street", label: "Calle" },
+    //     { key: "number", label: "Número" },
+    //     { key: "additionalInformation", label: "Información Adicional" },
+    //     { key: "commune", label: "Comuna" },
+    //     { key: "region", label: "Región" },
+    //     { key: "road", label: "Camino" },
+    //     { key: "population", label: "Población" },
+    //     { key: "zipCode", label: "Código Postal" },
+    //     { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+    //     { key: "radio", label: "Radio" },
+    //     { key: "complianceSchedule", label: "Horario de Cumplimiento" },
+    //     { key: "characteristics", label: "Características" },
+    //   ],
+    // },
+    // {
+    //   title: "Área de exclusión y Información de Víctima ",
+    //   data: selectedCarrier.exclusionArea,
+    //   fields: [
+    //     { key: "street", label: "Calle" },
+    //     { key: "number", label: "Número" },
+    //     { key: "additionalInformation", label: "Información Adicional" },
+    //     { key: "commune", label: "Comuna" },
+    //     { key: "region", label: "Región" },
+    //     { key: "road", label: "Camino" },
+    //     { key: "population", label: "Población" },
+    //     { key: "zipCode", label: "Código Postal" },
+    //     { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
+    //     { key: "radio", label: "Radio" },
+    //     { key: "characteristics", label: "Características" },
+    //     { key: "paternalSurname", label: "Apellido Paterno" },
+    //     { key: "motherSurname", label: "Apellido Materno" },
+    //     { key: "names", label: "Nombres" },
+    //     { key: "rut", label: "RUT" },
+    //     { key: "victimEmail", label: "Correo de la Víctima" },
+    //     { key: "homeTelephone", label: "Teléfono Domicilio" },
+    //     { key: "workplaceTelephone", label: "Teléfono Trabajo" },
+    //   ],
+    // },
   ];
 
   // 🗂️ Generación de secciones
@@ -427,7 +448,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
           new Paragraph({
             children: [
               new TextRun({
-                text: `Portador ${selectedCarrier.personalData.fullName}`,
+                text: `Portador ${selectedCarrier.wearer.first_name}`,
                 bold: true,
                 font: "Arial",
                 size: 36,
@@ -459,7 +480,7 @@ export const generateWord = (selectedCarrier: FormDataCarrier) => {
 
   // 💾 Guardar el archivo
   Packer.toBlob(doc).then((blob) => {
-    const nameFile = selectedCarrier.personalData.fullName
+    const nameFile = selectedCarrier.wearer.first_name
       .split(" ")
       .join("_")
       .toLowerCase();
