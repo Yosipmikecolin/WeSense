@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Step1Schema = new mongoose.Schema({
+export const Step1Schema = new mongoose.Schema({
   fullName: String,
   socialName: String,
   paternalSurname: String,
@@ -15,7 +15,7 @@ const Step1Schema = new mongoose.Schema({
   foreigner: Boolean,
 });
 
-const Step2Schema = new mongoose.Schema({
+export const Step2Schema = new mongoose.Schema({
   penatype: String,
   crime: String,
   courtAppeals: String,
@@ -26,7 +26,7 @@ const Step2Schema = new mongoose.Schema({
   rol: String,
 });
 
-const Step3Schema = new mongoose.Schema({
+export const Step3Schema = new mongoose.Schema({
   crs: String,
   areas: String,
   durationMeasurement: String,
@@ -43,7 +43,7 @@ const Step3Schema = new mongoose.Schema({
   uninstallations: String,
 });
 
-const Step4Schema = new mongoose.Schema({
+export const Step4Schema = new mongoose.Schema({
   street: String,
   number: String,
   additionalInformation: String,
@@ -58,7 +58,7 @@ const Step4Schema = new mongoose.Schema({
   characteristics: String,
 });
 
-const Step5Schema = new mongoose.Schema({
+export const Step5Schema = new mongoose.Schema({
   street: String,
   number: String,
   additionalInformation: String,

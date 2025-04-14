@@ -1,4 +1,4 @@
-import { FormDataRequest } from "@/views/view-create-request/interfaces";
+/* import { FormDataRequest } from "@/views/view-create-request/interfaces";
 import { initDB } from "./db";
 
 export const addRequest = async (user: FormDataRequest) => {
@@ -23,3 +23,4 @@ export const deleteRequest = async (id: string) => {
   await tx.store.delete(id);
   await tx.done;
 };
+ */

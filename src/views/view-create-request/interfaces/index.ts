@@ -1,9 +1,7 @@
+import { Requester } from "@/db/requester";
 import {
+  FormDataCarrier,
   Step1Data,
-  Step2Data,
-  Step3Data,
-  Step4Data,
-  Step5Data,
 } from "@/views/view-create-carrier/interfaces";
 
 export interface TimelineProps {
@@ -12,37 +10,21 @@ export interface TimelineProps {
 }
 
 export interface FormDataRequest {
-  id: string;
-  applicationDate?: Date;
-  requester: {
-    id: string;
-    applicationDate?: Date;
-    fullName: string;
-    lastName: string;
-    middleName: string;
-    email: string;
-    ruc: string;
-    phone: string;
-    userType: string;
-    institution: string;
-    identificationNumber: string;
-    region: string;
-    address: string;
-    accessAreas: string;
-    identityVerification: string;
-    securityQuestion: string;
-    registrationDate: string;
-    observations: string;
-  };
-  carrier: {
-    id: string;
-    personalData: Step1Data;
-    cause: Step2Data;
-    monitoring: Step3Data;
-    inclusionArea: Step4Data;
-    exclusionArea: Step5Data;
-  };
+  answer: string;
+  issue_date: string;
+  response_date: string;
+  return_date: string;
+  time_respond: string;
+  status: string;
+  requester: Requester;
+  carrier: FormDataCarrier;
 }
+
+export interface RequestTable extends FormDataRequest {
+  _id: string;
+}
+
+export type RequestPost = FormDataRequest;
 
 export interface StepProps1 {
   formData: Step1Data;

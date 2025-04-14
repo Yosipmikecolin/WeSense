@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FormDataRequest } from "./interfaces";
+import { FormDataRequest, RequestPost } from "./interfaces";
 
 import classes from "./ViewCreateRequest.module.css";
 import Timeline from "@/components/timeline/Timeline";
@@ -19,19 +19,23 @@ import { Requester } from "@/db/requester";
 import { FormDataCarrier } from "../view-create-carrier/interfaces";
 import { initialFormData } from "../view-create-carrier/data/initialFormData";
 import toast from "react-hot-toast";
-import { generateUUID } from "@/functions";
-import { addRequest } from "@/db/requests";
+import { addRequest } from "@/api/request";
+import { getDate } from "@/functions";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const steps = ["Requirente", "Portador"];
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<FormDataRequest>({
-    id: "",
-    applicationDate: undefined,
+  const [formData, setFormData] = useState<RequestPost>({
+    answer: "no-answer",
+    issue_date: "",
+    response_date: "",
+    return_date: "",
+    time_respond: "",
+    status: "no-confirmed",
     requester: {
-      id: "",
+      _id: "",
       fullName: "",
       lastName: "",
       middleName: "",
@@ -65,7 +69,7 @@ const ViewCreateRequest = () => {
   };
 
   const setDate = (date?: Date) => {
-    setFormData({ ...formData, applicationDate: date });
+    setFormData({ ...formData, issue_date: getDate(date) });
   };
   const updateData = useCallback(
     (step: keyof FormDataRequest, data: Requester | FormDataCarrier) => {
@@ -103,18 +107,21 @@ const ViewCreateRequest = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    await addRequest({
-      ...formData,
-      id: generateUUID(),
-    });
-    setTimeout(() => {
-      toast.success("Usuario creado exitosamente");
+
+    try {
+      await addRequest(formData);
+      toast.success("Solicitud creada exitosamente");
       setLoading(false);
       setCurrentStep(0);
       setFormData({
-        id: "",
+        answer: "",
+        issue_date: "",
+        response_date: "",
+        return_date: "",
+        time_respond: "",
+        status: "",
         requester: {
-          id: "",
+          _id: "",
           fullName: "",
           lastName: "",
           middleName: "",
@@ -134,7 +141,10 @@ const ViewCreateRequest = () => {
         },
         carrier: initialFormData,
       });
-    }, 500);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,9 +1,9 @@
 "use client";
 
-import TableRequests from "./components/TableRequests";
+import { TableAdministrator } from "./components/tables/TableAdministrator";
 
 const ViewRequests = () => {
-  return <TableRequests />;
+  return <TableAdministrator />;
 };
 
 export default ViewRequests;

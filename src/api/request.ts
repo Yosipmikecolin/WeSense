@@ -5,6 +5,10 @@ import {
   FormDataCarrierPost,
 } from "@/views/view-create-carrier/interfaces";
 import { Requester, RequesterPost } from "@/db/requester";
+import {
+  RequestPost,
+  RequestTable,
+} from "@/views/view-create-request/interfaces";
 
 //* USERS
 
@@ -58,4 +62,14 @@ export const updatedRequester = async (requester: Requester) => {
 
 export const deleteRequester = async (id: string) => {
   return (await axiosConfig.delete(`/requesters/${id}`)).data;
+};
+
+//* SOLICITUDES
+
+export const getRequest = async () => {
+  return (await axiosConfig.get<RequestTable[]>("/requests")).data;
+};
+
+export const addRequest = async (request: RequestPost) => {
+  return await axiosConfig.post("/requests/", request);
 };

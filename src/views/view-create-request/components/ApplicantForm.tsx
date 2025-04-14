@@ -20,7 +20,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
-import { getRequester, Requester } from "@/db/requester";
+import { Requester } from "@/db/requester";
+import { getRequesters } from "@/api/request";
 
 interface Props {
   setDate: (date?: Date) => void;
@@ -50,7 +51,7 @@ const ApplicantForm = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getRequester();
+      const result = await getRequesters();
       setRequesters(result);
     };
 
@@ -62,7 +63,7 @@ const ApplicantForm = ({
       setLoading(true);
       setSelectedRequester("");
       setFormData({
-        id: "",
+        _id: "",
         fullName: "",
         lastName: "",
         middleName: "",
@@ -119,7 +120,7 @@ const ApplicantForm = ({
             </SelectTrigger>
             <SelectContent>
               {uniqueByUserType(requesters).map((type) => (
-                <SelectItem key={type.id} value={type.userType}>
+                <SelectItem key={type._id} value={type.userType}>
                   {type.userType}
                 </SelectItem>
               ))}
@@ -128,7 +129,7 @@ const ApplicantForm = ({
         </div>
 
         <div className="space-y-2 w-full">
-          <Label htmlFor="requesterType">Fecha de la Solicitud</Label>
+          <Label htmlFor="requesterType">Fecha de la Emisión</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button

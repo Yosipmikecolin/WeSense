@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/select";
 
 import { Loader2 } from "lucide-react";
-import { getCarrier } from "@/db/carrier";
 import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
 import { initialFormData } from "@/views/view-create-carrier/data/initialFormData";
+import { carriers } from "@/utils";
+import { generateUUID } from "@/functions";
 
 interface Props {
   formData: FormDataCarrier;
@@ -20,25 +21,58 @@ interface Props {
   setCompleteForm: (complete: boolean) => void;
 }
 
+const typeCrime = [
+  {
+    value: "Lesiones personales",
+    text: "Lesiones personales",
+  },
+  {
+    value: "Violencia intrafamiliar",
+    text: "Violencia intrafamiliar",
+  },
+  {
+    value: "Hurto agravado",
+    text: "Hurto agravado",
+  },
+  {
+    value: "Conducción bajo los efectos del alcohol",
+    text: "Conducción bajo los efectos del alcohol",
+  },
+  {
+    value: "Fraude financiero",
+    text: "Fraude financiero",
+  },
+  {
+    value: "Estafa",
+    text: "Estafa",
+  },
+  {
+    value: "Robo con violencia",
+    text: "Robo con violencia",
+  },
+  {
+    value: "Evasión tributaria",
+    text: "Evasión tributaria",
+  },
+  {
+    value: "Posesión de sustancias",
+    text: "Posesión de sustancias",
+  },
+  {
+    value: "Abuso de confianza",
+    text: "Abuso de confianza",
+  },
+];
+
 const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
   const [requesterType, setRequesterType] = useState<string>("");
   const [selectedCarrier, setSelectedCarrier] = useState<string>("");
-  const [carriers, setCarriers] = useState<FormDataCarrier[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const isComplete = Object.values(formData).every((value) => value !== "");
     setCompleteForm(isComplete);
   }, [formData, setCompleteForm]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getCarrier();
-      setCarriers(result);
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     if (requesterType) {
@@ -55,10 +89,11 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
   const selectCarrier = (value: string) => {
     setSelectedCarrier(value);
     const selectRequirent = carriers.find(
-      (i) => i.personalData.fullName === value && i.cause.crime === requesterType
+      (i) =>
+        i.personalData.fullName === value && i.cause.crime === requesterType
     );
     if (selectRequirent) {
-      setFormData(selectRequirent);
+      setFormData({ ...selectRequirent, _id: generateUUID() });
     }
   };
 
@@ -81,9 +116,9 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
               <SelectValue placeholder="Seleccione un tipo de delito" />
             </SelectTrigger>
             <SelectContent>
-              {uniqueArray(carriers).map((type) => (
-                <SelectItem key={type.id} value={type.cause.crime}>
-                  {type.cause.crime}
+              {typeCrime.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.text}
                 </SelectItem>
               ))}
             </SelectContent>
