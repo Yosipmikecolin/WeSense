@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { User } from "../../models/User";
+import { User } from "../../models/User"; // Asegúrate de que la ruta sea correcta
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+type Params = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(_req: NextRequest, { params }: Params) {
   await connectDB();
   const user = await User.findById(params.id);
   if (!user) {
@@ -11,7 +17,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   return NextResponse.json(user);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: Params) {
   await connectDB();
   const body = await req.json();
   const updatedUser = await User.findByIdAndUpdate(params.id, body, { new: true });
@@ -21,7 +27,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   return NextResponse.json(updatedUser);
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, { params }: Params) {
   await connectDB();
   const deletedUser = await User.findByIdAndDelete(params.id);
   if (!deletedUser) {
