@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const user = "user-wesense";
-const password = "6xZohc0A8FhWGqKn";
+const user = process.env.NEXT_PUBLIC_USER;
+const password = process.env.NEXT_PUBLIC_PASSWORD;
 const MONGODB_URI = `mongodb+srv://${user}:${password}@cluster0.cdtmz.mongodb.net/wesense?retryWrites=true&w=majority&appName=Cluster0`;
 
 declare global {
