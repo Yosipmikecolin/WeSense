@@ -37,6 +37,7 @@ import UpdatedCarrierModal from "./UpdatedCarrierModal ";
 import DeleteModalCarrier from "@/components/DeleteModalCarrier";
 import { useQueryCarriers } from "@/api/queries";
 import { Wearer } from "@/interfaces/interfaces.read";
+import { axiosConfigBuddie } from "@/api/config";
 
 const TableCarriers = () => {
   const { setToken } = useBuddieStore();
@@ -63,7 +64,7 @@ const TableCarriers = () => {
       {}
     );
     setToken(response_read.data.csrf_token);
-    console.log("RESPONSE: ", response_read);
+    console.log("RESPONSE: ", response_read.data);
     if (!response_read.data.error) {
       const wearers: Wearer[] = response_read.data.grid.rows;
       console.log("ALL: ", wearers);

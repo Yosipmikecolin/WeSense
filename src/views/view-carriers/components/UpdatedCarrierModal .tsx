@@ -41,6 +41,10 @@ import ExclusionZoneForm from "@/views/view-create-carrier/components/ExclusionZ
 import Timeline from "@/components/timeline/Timeline";
 import { updatedCarrier } from "@/api/request";
 import Wearer from "@/views/view-create-carrier/components/Wearer";
+import axios from "axios";
+import { WearerUpdateData } from "@/interfaces/interfaces.update";
+
+import { useBuddieStore } from "@/store/index";
 
 interface Props {
   carrier?: FormDataWearer;
@@ -52,6 +56,7 @@ interface Props {
 }
 
 const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
+  const { setToken, token } = useBuddieStore();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormDataWearer>(initialFormData);
   const steps = ["Wearer"];
@@ -161,6 +166,89 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
     try {
       setLoading(true);
       if (carrier) {
+        const wearer_id = carrier.wearer.id;
+        const update_wearer: WearerUpdateData = {
+          first_name: formData.wearer.first_name,
+          dob: "",
+          ethnicity_id: "",
+          risk_level_id: "0",
+          language_id: "0",
+          timezone_id: "74",
+          hair_colour_id: "",
+          eye_colour_id: "",
+          surname: formData.wearer.surname,
+          gender_id: "0",
+          phone_type: "mobile",
+          mobile: "322222222",
+          country_id: "185",
+          email: formData.wearer.email,
+          height: "",
+          weight: "",
+          group_id: "2108",
+          "buddicombobox-1607-inputEl": "",
+          device_profile_id: "179",
+          device_profile_sb_id: "-1",
+          wearer_type_id: "21",
+          ref: "111",
+          criminal_records_no: "",
+          vibrate_tag: "",
+          audible_vibrate: "-1",
+          rule_priority_id: "100",
+          clip_panic_number: "",
+          sb_outbound_number: "",
+          smartid_outbound_number: "",
+          view: "",
+          preset_id: "",
+          notes: "",
+          responsible_officer_id: "2452",
+          category: "",
+          employer_name: "",
+          employer_position: "",
+          employer_date_started: "",
+          employer_additional: "",
+          employer_address_line_1: "",
+          employer_address_line_2: "",
+          employer_address_city: "",
+          employer_address_county: "",
+          employer_address_postcode: "",
+          employer_telephone: "",
+          identifying_marks: "",
+          risk_assessment: "",
+          medical_conditions: "",
+          "buddicombobox-1797-inputEl": "",
+          ssid: "",
+          ssid_password: "",
+          interpretor_required: "0",
+          exclude_from_proximity: "0",
+          exclude_from_loitering: "0",
+          exclude_from_auto_day_report: "0",
+          filtertype: "ro_only",
+          filterstatus: "ALL",
+          startdate: "",
+          enddate: "",
+          filtersearch: "",
+          "datefield-2061-inputEl": "",
+          "datefield-2062-inputEl": "",
+          type_filter: "0",
+          status_filter: "0",
+          priority_filter: "0",
+          user_filter: "0",
+          date_filter: "",
+          requires_followup: "0",
+          start_tagging_time: "2025-04-13 00:15:00",
+          end_tagging_time: "2025-04-15 00:45:00",
+          categories: "none",
+          rule_template_ids: "none",
+        };
+        console.log("DATA: ", update_wearer)
+        const response_update = await axios.post("/api/buddie", {
+          method: "setup.wearer.update",
+          token,
+          wearer_id,
+          update_wearer,
+        });
+        console.log("UPDATE: ", response_update.data);
+        setToken(response_update.data.csrf_token);
         // await updatedCarrier(formData);
         setCurrentStep(0);
         // refetch();

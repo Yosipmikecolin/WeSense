@@ -46,7 +46,7 @@ const Login = () => {
     console.log("LOGIN: ", response_login.data);
     console.log("USER: ", response_user.data);
 
-    if (!response_login.data.login) {
+    if (response_auth.data.error) {
       setUrlCaptcha("");
       getCaptcha();
       toast({
@@ -57,6 +57,31 @@ const Login = () => {
       setLoading(false);
       return false;
     }
+
+    if (response_user.data.error) {
+      setUrlCaptcha("");
+      getCaptcha();
+      toast({
+        title: "Error",
+        description: "Tu sesión ha expirado",
+        variant: "default",
+      });
+      setLoading(false);
+      return false;
+    }
+
+    if (!response_login.data.login && !response_user.data.read) {
+      setUrlCaptcha("");
+      getCaptcha();
+      toast({
+        title: "Error",
+        description: "Captcha incorrecto",
+        variant: "default",
+      });
+      setLoading(false);
+      return false;
+    }
+
     return true;
   };
 
