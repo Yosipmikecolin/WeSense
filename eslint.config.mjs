@@ -21,6 +21,15 @@ const eslintConfig = [
           varsIgnorePattern: "^_", // Permite variables que comienzan con "_"
         },
       ],
+      "@typescript-eslint/ban-types": [
+        "warn",
+        {
+          types: {
+            "{}": false, // permite usar "{}" o context sin tipo explícito
+          },
+          extendDefaults: true,
+        },
+      ],
     },
   },
 ];
