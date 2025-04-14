@@ -12,7 +12,7 @@ export const axiosConfigBuddie = wrapper(
 );
 
 export const axiosConfig = axios.create({
-  baseURL: "https://we-sense-git-carriers-yosipmikecolins-projects.vercel.app/api",
+  baseURL: "https://wesense.netlify.app/api",
 });
 
 axiosConfig.interceptors.request.use(
