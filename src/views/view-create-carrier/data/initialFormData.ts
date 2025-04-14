@@ -76,4 +76,10 @@ export const initialFormData: FormDataCarrier = {
     homeTelephone: "",
     workplaceTelephone: "",
   },
+  wearer: {
+    id: "",
+    first_name: "",
+    surname: "",
+    email: "",
+  },
 };

@@ -1,5 +1,5 @@
 import { User, UserPost } from "@/db/user";
-import { axiosConfig } from "./config";
+import { axiosConfig, axiosConfigBuddie } from "./config";
 import {
   FormDataCarrier,
   FormDataCarrierPost,
@@ -9,6 +9,7 @@ import {
   RequestPost,
   RequestTable,
 } from "@/views/view-create-request/interfaces";
+import axios from "axios";
 
 //* USERS
 
@@ -72,4 +73,21 @@ export const getRequest = async () => {
 
 export const addRequest = async (request: RequestPost) => {
   return await axiosConfig.post("/requests/", request);
+};
+
+//* PORTADORES
+
+export const getCarriersAPI = async () => {
+  return (
+    await axios.get<{
+      grid: {
+        rows: {
+          id: string;
+          first_name: string;
+          surname: string;
+          email: string;
+        }[];
+      };
+    }>("/api/buddie?method=setup.wearer.grid")
+  ).data.grid.rows;
 };

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCarriers, getRequest, getRequesters, getUsers } from "./request";
+import { getCarriers, getCarriersAPI, getRequest, getRequesters, getUsers } from "./request";
 
 export const useQueryUsers = () => {
   return useQuery({
@@ -26,5 +26,13 @@ export const useQueryRequest = () => {
   return useQuery({
     queryKey: ["requests"],
     queryFn: () => getRequest(),
+  });
+};
+
+
+export const useQueryCarriersApi = () => {
+  return useQuery({
+    queryKey: ["carriers"],
+    queryFn: () => getCarriersAPI(),
   });
 };

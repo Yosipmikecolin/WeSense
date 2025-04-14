@@ -5,6 +5,16 @@ export interface FormDataCarrier {
   monitoring: Step3Data;
   inclusionArea: Step4Data;
   exclusionArea: Step5Data;
+  wearer: Step6Data;
+}
+export interface FormDataWearer {
+  // _id: string;
+  // personalData: Step1Data;
+  // cause: Step2Data;
+  // monitoring: Step3Data;
+  // inclusionArea: Step4Data;
+  // exclusionArea: Step5Data;
+  wearer: Step6Data;
 }
 
 export interface FormDataCarrierPost {
@@ -94,6 +104,13 @@ export interface Step5Data {
   workplaceTelephone: string;
 }
 
+export interface Step6Data {
+  id: string;
+  first_name: string;
+  surname: string;
+  email: string;
+}
+
 export interface StepProps1 {
   formData: Step1Data;
   setFormData: (data: Step1Data) => void;
@@ -121,6 +138,12 @@ export interface StepProps4 {
 export interface StepProps5 {
   formData: Step5Data;
   setFormData: (data: Step5Data) => void;
+  setCompleteForm: (complete: boolean) => void;
+}
+
+export interface StepProps6 {
+  formData: Step6Data;
+  setFormData: (data: Step6Data) => void;
   setCompleteForm: (complete: boolean) => void;
 }
 

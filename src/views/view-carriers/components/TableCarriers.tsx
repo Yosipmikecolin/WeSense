@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Flag from "react-world-flags";
+import axios from "axios";
+import { useBuddieStore } from "@/store/index";
 import {
   Table as TableUI,
   TableBody,
@@ -26,19 +28,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
 
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import {
+  FormDataCarrier,
+  FormDataWearer,
+} from "@/views/view-create-carrier/interfaces";
 import { getCountryCode } from "@/functions";
 import UpdatedCarrierModal from "./UpdatedCarrierModal ";
 import DeleteModalCarrier from "@/components/DeleteModalCarrier";
-import { useQueryCarriers } from "@/api/queries";
+import { useQueryCarriers, useQueryCarriersApi } from "@/api/queries";
+import { Wearer } from "@/interfaces/interfaces.read";
+import { axiosConfigBuddie } from "@/api/config";
 
 const TableCarriers = () => {
+  const { setToken } = useBuddieStore();
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wearers, setWearers] = useState<Wearer[]>([]);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [selectedCarrier, setSelectedCarrier] = useState<FormDataCarrier>();
-  const { data: carriers, refetch, isLoading } = useQueryCarriers();
+  const [selectedCarrier, setSelectedCarrier] = useState<FormDataWearer>();
+  const { data: carriers, isLoading, refetch } = useQueryCarriersApi();
+  // const { data: carriers, refetch, isLoading } = useQueryCarriers();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nombre social" },
@@ -48,6 +58,23 @@ const TableCarriers = () => {
     { id: 6, name: "Run" },
     { id: 7, name: "Teléfono" },
   ];
+  /*   const getAllWearers = async () => {
+    const response_read = await axios.get(
+      "/api/buddie?method=setup.wearer.grid",
+      {}
+    );
+    setToken(response_read.data.csrf_token);
+    console.log("RESPONSE: ", response_read.data);
+    if (!response_read.data.error) {
+      const wearers: Wearer[] = response_read.data.grid.rows;
+      console.log("ALL: ", wearers);
+      setWearers(wearers);
+    }
+  }; */
+
+  /*   useEffect(() => {
+    getAllWearers();
+  }, []); */
 
   return (
     <div>
@@ -75,9 +102,18 @@ const TableCarriers = () => {
             <TableHeader>
               <TableRow>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  NOMBRE COMPLETO
+                  NOMBRES
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
+                  APELLIDOS
+                </TableHead>
+                <TableHead className="text-xs font-bold text-gray-600">
+                  CORREO
+                </TableHead>
+                <TableHead className="text-xs font-bold text-gray-600">
+                  ACCIONES
+                </TableHead>
+                {/* <TableHead className="text-xs font-bold text-gray-600">
                   ESTADO CIVIL
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
@@ -94,30 +130,28 @@ const TableCarriers = () => {
                 </TableHead>
                 <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
-                </TableHead>
+                </TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
               {carriers?.map((carrier) => (
-                <TableRow key={carrier._id}>
-                  <TableCell>{carrier.personalData.fullName}</TableCell>
-                  <TableCell>{carrier.personalData.maritalStatus}</TableCell>
-                  <TableCell>
+                <TableRow key={carrier.id}>
+                  <TableCell>{carrier.first_name}</TableCell>
+                  <TableCell>{carrier.surname}</TableCell>
+                  {/* <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
-                        {carrier.personalData.nationality}
+                        {carrier.country_id}
                       </span>
                       <Flag
                         width={20}
-                        code={getCountryCode(
-                          carrier?.personalData.nationality || ""
-                        )}
+                        code={getCountryCode(carrier?.country_id || "")}
                       />
                     </div>
-                  </TableCell>
-                  <TableCell>{carrier.personalData.gender}</TableCell>
-                  <TableCell>{carrier.personalData.type_current}</TableCell>
-                  <TableCell>{carrier.personalData.phone}</TableCell>
+                  </TableCell> */}
+                  {/* <TableCell>{carrier.gender}</TableCell> */}
+                  <TableCell>{carrier.email || "Sin email"}</TableCell>
+                  {/* <TableCell>{carrier.phone_type}</TableCell> */}
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
@@ -129,7 +163,14 @@ const TableCarriers = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedCarrier(carrier);
+                            setSelectedCarrier({
+                              wearer: {
+                                id: carrier.id,
+                                first_name: carrier.first_name,
+                                surname: carrier.surname,
+                                email: carrier.email,
+                              },
+                            });
                             setIsModalOpen(true);
                           }}
                         >
@@ -142,7 +183,14 @@ const TableCarriers = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedCarrier(carrier);
+                            setSelectedCarrier({
+                              wearer: {
+                                id: carrier.id,
+                                first_name: carrier.first_name,
+                                surname: carrier.surname,
+                                email: carrier.email,
+                              },
+                            });
                             setIsModalOpen2(true);
                           }}
                         >
@@ -156,7 +204,14 @@ const TableCarriers = () => {
 
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedCarrier(carrier);
+                            setSelectedCarrier({
+                              wearer: {
+                                id: carrier.id,
+                                first_name: carrier.first_name,
+                                surname: carrier.surname,
+                                email: carrier.email,
+                              },
+                            });
                             setIsModalOpen3(true);
                           }}
                         >
@@ -195,7 +250,7 @@ const TableCarriers = () => {
         refetch={refetch}
       />
       <DeleteModalCarrier
-        id={selectedCarrier?._id}
+        id={selectedCarrier?.wearer.id}
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}
         refetch={refetch}
