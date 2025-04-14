@@ -211,6 +211,14 @@ export async function POST(request: Request) {
       });
     }
 
+    if (_METHOD === "auth.logout") {
+      const data = {
+        request_type: "post",
+        return_type: "extjs",
+        method: _METHOD,
+      };
+    }
+
     if (_METHOD === "") {
       return NextResponse.json({
         msg: "No method provided",

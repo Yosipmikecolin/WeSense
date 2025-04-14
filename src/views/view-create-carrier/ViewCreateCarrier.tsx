@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import { useBuddieStore } from "@/store/index";
+import axios from "axios";
 import {
   Card,
   CardContent,
@@ -10,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+import Wearer from "./components/Wearer";
 import DataForm from "./components/DataForm";
 import CauseForm from "./components/CauseForm";
 import MonitoringForm from "./components/MonitoringForm";
@@ -21,18 +24,21 @@ import {
   Step3Data,
   Step4Data,
   Step5Data,
+  Step6Data,
 } from "./interfaces";
 import classes from "./ViewCreateCarrier.module.css";
 import InclusionZoneForm from "./components/InclusionZoneForm";
 import ExclusionZoneForm from "./components/ExclusionZoneForm";
 import { initialFormData } from "./data/initialFormData";
 import toast from "react-hot-toast";
-import { addCarrier } from "@/db/carrier";
+// import { addCarrier } from "@/db/carrier";
 import { generateUUID } from "@/functions";
 
 const ViewCreateCarrier = () => {
+  const { token, setToken } = useBuddieStore();
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
+  const steps = ["Wearer"];
+  // const steps = ["Datos", "Causa", "Monitoreo", "Inclusión", "Exclusión"];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormDataCarrier>(initialFormData);
   const [loading, setLoading] = useState(false);
@@ -52,7 +58,13 @@ const ViewCreateCarrier = () => {
   const updateData = useCallback(
     (
       step: keyof FormDataCarrier,
-      data: Step1Data | Step2Data | Step3Data | Step4Data | Step5Data
+      data:
+        | Step1Data
+        | Step2Data
+        | Step3Data
+        | Step4Data
+        | Step5Data
+        | Step6Data
     ) => {
       setFormData((prevData) => ({
         ...prevData,
@@ -66,11 +78,16 @@ const ViewCreateCarrier = () => {
     switch (currentStep) {
       case 0:
         return (
-          <DataForm
-            formData={formData.personalData}
-            setFormData={(data) => updateData("personalData", data)}
+          <Wearer
+            formData={formData.wearer}
+            setFormData={(data) => updateData("wearer", data)}
             setCompleteForm={setCompleteForm}
           />
+          // <DataForm
+          //   formData={formData.personalData}
+          //   setFormData={(data) => updateData("personalData", data)}
+          //   setCompleteForm={setCompleteForm}
+          // />
         );
       case 1:
         return (
@@ -109,12 +126,26 @@ const ViewCreateCarrier = () => {
     }
   };
 
+  async function createWearer() {
+    // console.log("TOKEN: ", token);
+    console.log("WEARER: ", formData);
+
+    const response_create = await axios.post("/api/buddie", {
+      method: "setup.wearer.create",
+      token,
+      create_wearer: formData.wearer,
+    });
+    setToken(response_create.data.csrf_token);
+    console.log("CREATE: ", response_create.data);
+  }
+
   const handleSubmit = async () => {
     setLoading(true);
-    await addCarrier({
-      ...formData,
-      id: generateUUID(),
-    });
+    createWearer();
+    // await addCarrier({
+    //   ...formData,
+    //   id: generateUUID(),
+    // });
     setTimeout(() => {
       setCurrentStep(0);
       toast.success("Portador creado exitosamente");

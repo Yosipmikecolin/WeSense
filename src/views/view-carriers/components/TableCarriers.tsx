@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Flag from "react-world-flags";
 import axios from "axios";
+import { useBuddieStore } from "@/store/index";
 import {
   Table as TableUI,
   TableBody,
@@ -32,14 +33,17 @@ import { getCountryCode } from "@/functions";
 import UpdatedCarrierModal from "./UpdatedCarrierModal ";
 import DeleteModalCarrier from "@/components/DeleteModalCarrier";
 import { useQueryCarriers } from "@/api/queries";
+import { Wearer } from "@/interfaces/interfaces.read";
 
 const TableCarriers = () => {
+  const { setToken } = useBuddieStore();
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wearers, setWearers] = useState<Wearer[]>([]);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [selectedCarrier, setSelectedCarrier] = useState<FormDataCarrier>();
-  const { data: carriers, refetch, isLoading } = useQueryCarriers();
+  // const { data: carriers, refetch, isLoading } = useQueryCarriers();
   const filters = [
     { id: 1, name: "Nombre" },
     { id: 2, name: "Nombre social" },
@@ -50,17 +54,22 @@ const TableCarriers = () => {
     { id: 7, name: "Teléfono" },
   ];
 
-  const handleSubmitConsultar = async () => {
+  const getAllWearers = async () => {
     const response_read = await axios.get(
       "/api/buddie?method=setup.wearer.grid",
       {}
     );
-    // setToken(response_read.data.csrf_token);
-    console.log("READ: ", response_read.data);
+    setToken(response_read.data.csrf_token);
+    console.log("RESPONSE: ", response_read);
+    if (!response_read.data.error) {
+      const wearers: Wearer[] = response_read.data.grid.rows;
+      console.log("ALL: ", wearers);
+      setWearers(wearers);
+    }
   };
 
   useEffect(() => {
-    handleSubmitConsultar();
+    getAllWearers();
   }, []);
 
   return (
@@ -112,26 +121,24 @@ const TableCarriers = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {carriers?.map((carrier) => (
-                <TableRow key={carrier._id}>
-                  <TableCell>{carrier.personalData.fullName}</TableCell>
-                  <TableCell>{carrier.personalData.maritalStatus}</TableCell>
+              {wearers?.map((carrier) => (
+                <TableRow key={carrier.id}>
+                  <TableCell>{carrier.first_name}</TableCell>
+                  <TableCell>{carrier.surname}</TableCell>
                   <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
-                        {carrier.personalData.nationality}
+                        {carrier.country_id}
                       </span>
                       <Flag
                         width={20}
-                        code={getCountryCode(
-                          carrier?.personalData.nationality || ""
-                        )}
+                        code={getCountryCode(carrier?.country_id || "")}
                       />
                     </div>
                   </TableCell>
-                  <TableCell>{carrier.personalData.gender}</TableCell>
-                  <TableCell>{carrier.personalData.type_current}</TableCell>
-                  <TableCell>{carrier.personalData.phone}</TableCell>
+                  <TableCell>{carrier.gender}</TableCell>
+                  <TableCell>{carrier.email}</TableCell>
+                  <TableCell>{carrier.phone_type}</TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
                     <DropdownMenu>
@@ -188,11 +195,11 @@ const TableCarriers = () => {
               ))}
             </TableBody>
           </TableUI>
-          {isLoading && (
+          {/* {isLoading && (
             <div className="w-full h-[500px] bg-r flex justify-center items-center">
               <div className="loader-spiner" />
             </div>
-          )}
+          )} */}
         </CardContent>
       </Card>
       <Pagination />
@@ -202,7 +209,7 @@ const TableCarriers = () => {
         onClose={() => setIsModalOpen(false)}
       />
 
-      <UpdatedCarrierModal
+      {/* <UpdatedCarrierModal
         open={isModalOpen2}
         carrier={selectedCarrier}
         onClose={() => setIsModalOpen2(false)}
@@ -213,7 +220,7 @@ const TableCarriers = () => {
         open={isModalOpen3}
         onClose={() => setIsModalOpen3(false)}
         refetch={refetch}
-      />
+      /> */}
     </div>
   );
 };

@@ -7,8 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
+import { useBuddieStore } from "@/store/index";
 
 const Login = () => {
+  const { setToken: setTokenBuddie } = useBuddieStore();
   const [code, setCode] = useState("");
   const [token, setToken] = useState("");
   const [urlCaptcha, setUrlCaptcha] = useState("");
@@ -38,10 +40,11 @@ const Login = () => {
 
     const response_user = await axios.get(`/api/buddie?method=user.read`);
     setToken(response_user.data.csrf_token);
+    setTokenBuddie(response_user.data.csrf_token);
 
-    // console.log("AUTH: ", response_auth.data);
+    console.log("AUTH: ", response_auth.data);
     console.log("LOGIN: ", response_login.data);
-    // console.log("USER: ", response_user.data);
+    console.log("USER: ", response_user.data);
 
     if (!response_login.data.login) {
       setUrlCaptcha("");
