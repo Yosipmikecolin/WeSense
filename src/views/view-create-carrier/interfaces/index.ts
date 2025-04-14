@@ -5,7 +5,7 @@ export interface FormDataCarrier {
   monitoring: Step3Data;
   inclusionArea: Step4Data;
   exclusionArea: Step5Data;
-  wearer: Step6Data;
+  wearer?: Step6Data;
 }
 export interface FormDataWearer {
   // _id: string;
