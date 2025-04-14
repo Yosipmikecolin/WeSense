@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosConfig = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://we-sense.vercel.app/api",
 });
 
 axiosConfig.interceptors.request.use(
