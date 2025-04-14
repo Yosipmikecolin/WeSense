@@ -130,10 +130,42 @@ const ViewCreateCarrier = () => {
     // console.log("TOKEN: ", token);
     console.log("WEARER: ", formData);
 
+    const create_wearer = {
+      group_id: "2108",
+      first_name: formData.wearer.first_name,
+      surname: formData.wearer.surname,
+      ref: "555",
+      email: formData.wearer.email,
+      // notes: "",
+      start_tagging_time: "2025-04-13 00:15:00",
+      end_tagging_time: "2025-04-15 00:45:00",
+      device_profile_id: "179",
+      // device_profile_sb_id: "",
+      device_profile_name: "1. Live Tracking",
+      timezone_id: "74",
+      wearer_type_id: "21",
+      address_name: "Dirección de residencia",
+      line_1: "Carrera 21 #6848",
+      line_2: "Carrera 21 #6848",
+      line_3: "test",
+      city: "villanueva casanare",
+      county: "Bogotá",
+      postcode: "111221",
+      address_type_id: "2",
+      telephone: "3114486298",
+      interpretor_required: "0",
+      // size_id: "",
+      responsible_officer_id: "2452",
+      country_id: "185",
+      // risk_level_id: "",
+      lat: "4.650221",
+      lon: "-74.070586",
+    };
+
     const response_create = await axios.post("/api/buddie", {
       method: "setup.wearer.create",
       token,
-      create_wearer: formData.wearer,
+      create_wearer: create_wearer,
     });
     setToken(response_create.data.csrf_token);
     console.log("CREATE: ", response_create.data);

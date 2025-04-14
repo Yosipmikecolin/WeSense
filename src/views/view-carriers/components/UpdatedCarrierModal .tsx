@@ -167,7 +167,7 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
       setLoading(true);
       if (carrier) {
         const wearer_id = carrier.wearer.id;
-        const update_wearer: WearerUpdateData = {
+        const update_wearer = {
           first_name: formData.wearer.first_name,
           dob: "",
           ethnicity_id: "",
@@ -240,7 +240,7 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
           categories: "none",
           rule_template_ids: "none",
         };
-        console.log("DATA: ", update_wearer)
+        console.log("DATA: ", update_wearer);
         const response_update = await axios.post("/api/buddie", {
           method: "setup.wearer.update",
           token,

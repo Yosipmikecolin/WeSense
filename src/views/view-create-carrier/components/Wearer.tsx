@@ -36,7 +36,8 @@ const Wearer = ({ formData, setCompleteForm, setFormData }: StepProps6) => {
       (value) => value !== ""
       // (value) => value !== "" && date
     );
-    setCompleteForm(isComplete);
+    setCompleteForm(true);
+    // setCompleteForm(isComplete);
   }, [formData, setFormData, date]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

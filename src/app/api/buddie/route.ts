@@ -37,7 +37,9 @@ export async function GET(request: Request) {
           responseType: "arraybuffer",
         });
 
-        const base64Image = Buffer.from(imageCaptcha.data, "binary").toString("base64");
+        const base64Image = Buffer.from(imageCaptcha.data, "binary").toString(
+          "base64"
+        );
         const contentType = imageCaptcha.headers["content-type"];
 
         return NextResponse.json({
@@ -69,9 +71,13 @@ export async function GET(request: Request) {
 
     if (_METHOD === "setup.wearer.grid") {
       try {
+        console.log("METHOD: ", _METHOD);
+        console.log("CUSTOMER ID: ", _CUSTOMER_ID);
+        const dc = Date.now();
+        console.log("DC: ", dc);
         const response = await axiosConfigBuddie.get(`/api.php`, {
           params: {
-            _dc: Date.now(),
+            _dc: dc,
             request_type: "get",
             return_type: "extjs",
             method: _METHOD,
@@ -137,7 +143,10 @@ export async function POST(request: Request) {
           return_type: "extjs",
           method: _METHOD,
         };
-        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(loginFormData));
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(loginFormData)
+        );
         return NextResponse.json({ ...response.data });
       } catch (error: any) {
         return handleAxiosError(error);
@@ -155,7 +164,10 @@ export async function POST(request: Request) {
           return_type: "extjs",
           method: _METHOD,
         };
-        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(loginFormData));
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(loginFormData)
+        );
         return NextResponse.json({ ...response.data });
       } catch (error: any) {
         return handleAxiosError(error);
@@ -172,7 +184,10 @@ export async function POST(request: Request) {
           csrf_token: _TOKEN,
           wearer: _CREATE_WEARER,
         };
-        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(data));
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
         return NextResponse.json({ ...response.data });
       } catch (error: any) {
         return handleAxiosError(error);
@@ -193,7 +208,10 @@ export async function POST(request: Request) {
           csrf_token: _TOKEN,
           wearer: _UPDATE_WEARER,
         };
-        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(data));
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
         return NextResponse.json({ ...response.data });
       } catch (error: any) {
         return handleAxiosError(error);
@@ -211,7 +229,10 @@ export async function POST(request: Request) {
           c: _CUSTOMER_ID,
           csrf_token: _TOKEN,
         };
-        const response = await axiosConfigBuddie.post(`/api.php`, qs.stringify(data));
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
         return NextResponse.json({ ...response.data });
       } catch (error: any) {
         return handleAxiosError(error);
