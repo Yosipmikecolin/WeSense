@@ -1,4 +1,11 @@
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import {
+  FormDataCarrier,
+  Step1Data,
+  Step2Data,
+  Step3Data,
+  Step4Data,
+  Step5Data,
+} from "@/views/view-create-carrier/interfaces";
 import {
   Document,
   Packer,
@@ -28,7 +35,7 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
   // 🗂️ Definición de secciones y sus campos
   const sections: {
     title: string;
-    data: Record<string, any>;
+    data: Step1Data | Step2Data | Step3Data | Step4Data | Step5Data;
     fields: { key: string; label: string }[];
   }[] = [
     {
@@ -148,7 +155,8 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
         y = 20;
       }
 
-      const value = data?.[key] ?? "N/A";
+      const value =
+        (data as unknown as Record<string, unknown>)?.[key] ?? "N/A";
 
       // Fondo alternado
       if (index % 2 === 0) {
@@ -193,16 +201,6 @@ export const generatePDF = (selectedCarrier: FormDataCarrier) => {
     .toLowerCase();
   doc.save(`detalles_${nameFile}.pdf`);
 };
-
-interface Field {
-  key: keyof FormDataCarrier; // Unión de todas las claves: "fullName" | "socialName" | "nationality" | etc.
-  label: string;
-}
-
-interface Section {
-  title: string;
-  fields: Field[];
-}
 
 export const generateWord = (selectedCarrier: FormDataCarrier) => {
   // 🗂️ Definición de secciones y sus campos
