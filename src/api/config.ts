@@ -12,7 +12,7 @@ export const axiosConfigBuddie = wrapper(
 );
 
 export const axiosConfig = axios.create({
-  baseURL: "https://wesense.netlify.app/api",
+  baseURL: "http://localhost:3000/api",
 });
 
 axiosConfig.interceptors.request.use(

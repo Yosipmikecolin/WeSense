@@ -12,12 +12,13 @@ import Foto1 from "/public/foto-1.jpg";
 import Foto2 from "/public/foto-2.jpg";
 import dynamic from "next/dynamic";
 import { Request } from "@/interfaces";
+import { RequestTable } from "@/views/view-create-request/interfaces";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
 
 interface DetailsModalProps {
-  request?: Request;
+  request?: RequestTable;
   open: boolean;
   onClose: VoidFunction;
 }
@@ -120,7 +121,7 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
       <DialogContent className="modal sm:max-w-[550px] max-h-[800px] overflow-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">
-            Detalles de la factibilidad técnica
+            Detalles de la solicitud
           </DialogTitle>
         </DialogHeader>
         <DialogClose />
@@ -134,15 +135,30 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="application-information">
-            <div className="grid gap-4 py-4">
-              {request &&
+            <div className="bg-gray-100 font-bold p-3 text-lg border-gray-300 mt-3">
+             Estado de la solicitud
+            </div>
+            <div className="p-2 border-t border-b-0 flex items-center justify-between">
+              <div className="font-semibold p-1 flex">Respuesta:</div>
+              <div className="text-end">{request?.answer}</div>
+            </div>
+            <div className="p-2 border-t border-b-0 flex items-center justify-between">
+              <div className="font-semibold p-1 flex">Estado:</div>
+              <div className="text-end">{request?.status}</div>
+            </div>
+            <div className="p-2 border-t border-b-0 flex items-center justify-between">
+              <div className="font-semibold p-1 flex">Fecha de emision:</div>
+              <div className="text-end">{request?.issue_date}</div>
+            </div>
+                 <div className="grid gap-4 py-4">
+       {/*        {request &&
                 Object.entries(groupedFields).map(([sectionTitle, fields]) => (
                   <div key={sectionTitle} className="space-y-4">
                     <h3 className="text-lg font-bold border-b pb-2">
                       {sectionTitle}
                     </h3>
-                    {fields.map((key) =>
-                      request[key] ? (
+                    {fields .map((key) =>
+                      request.requester[key] ? (
                         <div
                           key={key}
                           className="flex justify-between items-center pb-2 border-b"
@@ -157,8 +173,8 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                       ) : null
                     )}
                   </div>
-                ))}
-            </div>
+                ))} */}
+            </div> 
           </TabsContent>
           <TabsContent value="awardee-response">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border p-4 rounded-md">

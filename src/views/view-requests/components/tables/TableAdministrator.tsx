@@ -67,7 +67,7 @@ export const TableAdministrator = () => {
   const [viewButton, setViewButton] = useState("");
   const [stateFilter, setStateFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
-  const { data: requests } = useQueryRequest();
+  const { data: requests, isLoading } = useQueryRequest();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
@@ -347,6 +347,11 @@ export const TableAdministrator = () => {
               ))}
             </TableBody>
           </TableUI>
+          {isLoading && (
+            <div className="w-full h-[500px] bg-r flex justify-center items-center">
+              <div className="loader-spiner" />
+            </div>
+          )}
         </CardContent>
       </Card>
       <Pagination />
@@ -354,11 +359,13 @@ export const TableAdministrator = () => {
         open={isModalReturnOpen}
         onClose={() => setIsModaReturnlOpen(false)}
       />
-      {/*       <DetailsModal
+
+      <DetailsModal
         open={isModalOpenDetails}
         request={selectedRequest}
         onClose={() => setIsModalOpenDetails(false)}
       />
+      {/*       
 
       <AddressModal
         request={selectedRequest}
