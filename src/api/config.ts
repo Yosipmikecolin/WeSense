@@ -12,7 +12,7 @@ export const axiosConfigBuddie = wrapper(
 );
 
 export const axiosConfig = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: process.env.NEXT_PUBLIC_URL,
 });
 
 axiosConfig.interceptors.request.use(
