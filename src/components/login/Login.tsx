@@ -47,7 +47,6 @@ const Login = () => {
     console.log("USER: ", response_user.data);
 
     if (response_auth.data.error) {
-      setUrlCaptcha("");
       getCaptcha();
       toast({
         title: "Error",
@@ -59,7 +58,6 @@ const Login = () => {
     }
 
     if (response_user.data.error) {
-      setUrlCaptcha("");
       getCaptcha();
       toast({
         title: "Error",
@@ -71,7 +69,6 @@ const Login = () => {
     }
 
     if (!response_login.data.login && !response_user.data.read) {
-      setUrlCaptcha("");
       getCaptcha();
       toast({
         title: "Error",
@@ -101,6 +98,7 @@ const Login = () => {
             title: "Acceso administrador",
             description: "administrator@gmail.com",
           });
+          setUrlCaptcha("");
           navigation.push("/administrator");
         }, 500);
       }
@@ -118,6 +116,7 @@ const Login = () => {
             title: "Acceso requirente",
             description: "requiring@gmail.com",
           });
+          setUrlCaptcha("");
           navigation.push("/requiring");
         }, 500);
       }
@@ -134,6 +133,7 @@ const Login = () => {
             title: "Acceso coordinador",
             description: "coordinator@gmail.com",
           });
+          setUrlCaptcha("");
           navigation.push("/coordinator");
         }, 500);
       }
@@ -150,6 +150,7 @@ const Login = () => {
             title: "Acceso adjudicatorio",
             description: "awardee@gmail.com",
           });
+          setUrlCaptcha("");
           navigation.push("/awardee");
         }, 500);
       }
@@ -166,6 +167,7 @@ const Login = () => {
             title: "Acceso adjudicatorio",
             description: "contract@gmail.com",
           });
+          setUrlCaptcha("");
           navigation.push("/contract");
         }, 500);
       }

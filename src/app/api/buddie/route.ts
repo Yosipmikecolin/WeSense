@@ -239,6 +239,23 @@ export async function POST(request: Request) {
       }
     }
 
+    if (_METHOD === "auth.logout") {
+      try {
+        const data = {
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+        };
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
+        return NextResponse.json({ ...response.data });
+      } catch (error) {
+        return handleAxiosError(error);
+      }
+    }
+
     if (_METHOD === "") {
       return NextResponse.json({
         msg: "No method provided",
