@@ -198,9 +198,9 @@ export async function POST(request: Request) {
       try {
         const data: UpdateWearerRequest = {
           wearer_id: _WEARER_ID,
-          last_edit_user: "-1",
-          last_edit_timestamp: "-1",
-          force: "0",
+          last_edit_user: "2454",
+          last_edit_timestamp: "2025-04-14 23:59:58",
+          force: "1",
           request_type: "post",
           return_type: "extjs",
           method: _METHOD,
