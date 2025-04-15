@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 import { LogOut } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Header = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -32,6 +34,14 @@ const Header = () => {
     }
   };
 
+  async function onLogout() {
+    const response_logout = await axios.post("/api/buddie", {
+      method: "auth.logout",
+    });
+    console.log("LOGOUT: ", response_logout);
+    router.push("/");
+  }
+
   return (
     <header className="border-b bg-white">
       <div className="flex items-center justify-end px-6 py-4">
@@ -50,11 +60,9 @@ const Header = () => {
               </span>
               <span className="text-xs text-gray-500">{email}</span>
             </div>
-            <Link href={"/"}>
-              <Button className="bg-green-100 text-green-600 hover:bg-green-200">
-                <LogOut size={16} />
-              </Button>
-            </Link>
+            <Button className="bg-green-100 text-green-600 hover:bg-green-200">
+              <LogOut onClick={onLogout} size={16} />
+            </Button>
           </div>
         </div>
       </div>
