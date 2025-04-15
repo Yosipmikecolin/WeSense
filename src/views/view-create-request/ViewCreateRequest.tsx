@@ -28,12 +28,14 @@ const ViewCreateRequest = () => {
   const steps = ["Requirente", "Portador"];
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<RequestPost>({
-    answer: "no-answer",
+    answer: "no-confirmed",
+    reason_return: "",
+    description_reason: "",
     issue_date: "",
     response_date: "",
     return_date: "",
     time_respond: "",
-    status: "no-confirmed",
+    status: "unconfirmed",
     requester: {
       _id: "",
       fullName: "",
@@ -54,6 +56,14 @@ const ViewCreateRequest = () => {
       observations: "",
     },
     carrier: initialFormData,
+    awardee_response: {
+      status: "",
+      minimum_coverage: "",
+      latitude: "",
+      length: "",
+      indication_aspects: "",
+      photographic_evidence: [],
+    },
   });
 
   const handleNext = () => {
@@ -115,6 +125,8 @@ const ViewCreateRequest = () => {
       setCurrentStep(0);
       setFormData({
         answer: "",
+        description_reason: "",
+        reason_return: "",
         issue_date: "",
         response_date: "",
         return_date: "",
@@ -140,6 +152,14 @@ const ViewCreateRequest = () => {
           observations: "",
         },
         carrier: initialFormData,
+        awardee_response: {
+          status: "",
+          minimum_coverage: "",
+          latitude: "",
+          length: "",
+          indication_aspects: "",
+          photographic_evidence: [],
+        },
       });
     } catch (error) {
     } finally {

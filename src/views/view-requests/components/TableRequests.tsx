@@ -508,11 +508,11 @@ const TableRequests = () => {
         open={isModalReturnOpen}
         onClose={() => setIsModaReturnlOpen(false)}
       />
-      <DetailsModal
+   {/*    <DetailsModal
         open={isModalOpenDetails}
         request={selectedRequest}
         onClose={() => setIsModalOpenDetails(false)}
-      />
+      /> */}
 
       <AddressModal
         request={selectedRequest}

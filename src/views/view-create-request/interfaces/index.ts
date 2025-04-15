@@ -12,12 +12,22 @@ export interface TimelineProps {
 export interface FormDataRequest {
   answer: string;
   issue_date: string;
+  reason_return: string;
+  description_reason: string;
   response_date: string;
   return_date: string;
   time_respond: string;
   status: string;
   requester: Requester;
   carrier: FormDataCarrier;
+  awardee_response: {
+    minimum_coverage: string;
+    status: string;
+    latitude: string;
+    length: string;
+    indication_aspects: string;
+    photographic_evidence: string[];
+  };
 }
 
 export interface RequestTable extends FormDataRequest {

@@ -64,7 +64,7 @@ export const TableAdministrator = () => {
   const subject = encodeURIComponent("SGAMGC");
   const body = encodeURIComponent("Respuesta de la solicitud");
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
-  const [viewButton, setViewButton] = useState("");
+
   const [stateFilter, setStateFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
   const { data: requests, isLoading } = useQueryRequest();
@@ -74,13 +74,6 @@ export const TableAdministrator = () => {
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
-
-  useEffect(() => {
-    const email = localStorage.getItem("email");
-    if (email) {
-      setViewButton(email);
-    }
-  }, []);
 
   const handleClick = () => {
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
@@ -157,7 +150,7 @@ export const TableAdministrator = () => {
 
                         <li className="flex items-center gap-2">
                           <CircleMinus size={17} color="#577BC1" />
-                          Hay respuesta
+                          Respuesta de adjudicado
                         </li>
                       </ul>
                     </PopoverContent>
@@ -175,26 +168,26 @@ export const TableAdministrator = () => {
                   <TableCell>{request.requester.fullName}</TableCell>
                   <TableCell className="text-xs ">
                     <div className="w-[110px]">
-                      {request.status === "positive" && (
+                      {request.answer === "positive" && (
                         <span className="bg-green-400 text-white p-1 rounded-md">
-                          {request.status}
+                          Positivo
                         </span>
                       )}
 
-                      {request.status === "negative" && (
+                      {request.answer === "negative" && (
                         <span className="bg-red-400 text-white p-1 rounded-md">
-                          {request.status}
+                          Negativo
                         </span>
                       )}
-                      {request.status === "not-recommended" && (
+                      {request.answer === "not-recommended" && (
                         <div className="flex items-center gap-2">
                           <span className="bg-orange-400 text-white p-1 rounded-md">
-                            {request.status}
+                            No recomendado
                           </span>
                         </div>
                       )}
 
-                      {request.status === "no-confirmed" && (
+                      {request.answer === "no-confirmed" && (
                         <div className="flex items-center gap-2">
                           <span className="bg-gray-400 text-white p-1 rounded-md">
                             Sin respuesta
@@ -208,28 +201,33 @@ export const TableAdministrator = () => {
                   <TableCell>{request.response_date || "----"}</TableCell>
 
                   <TableCell>
-                    {request.answer === "confirmed" && (
-                      <CircleCheck size={17} color="#16a34a" />
-                    )}
-
-                    {request.answer === "no-confirmed" &&
-                      request.response_date === "" && (
-                        <CircleSlash size={17} color="#B7B7B7" />
-                      )}
-
-                    {request.answer === "returned" && (
-                      <div className="flex gap-2 items-center">
-                        <RotateCw size={17} color="#FF9D23" />
+                    {request.status === "confirmed" && (
+                      <div className="flex items-center gap-2">
+                        <CircleCheck size={17} color="#16a34a" />
+                        <span className="text-sm">Confirmado</span>
                       </div>
                     )}
 
-                    {request.answer === "no-answer" &&
-                      request.response_date === "" && (
-                        <div className="flex items-center gap-2">
-                          <CircleSlash size={17} color="#B7B7B7" />
-                          <span className="text-sm">Sin confirmar</span>
-                        </div>
-                      )}
+                    {request.status === "returned" && (
+                      <div className="flex gap-2 items-center">
+                        <RotateCw size={17} color="#FF9D23" />
+                        <span className="text-sm">Retornado</span>
+                      </div>
+                    )}
+
+                    {request.status === "unconfirmed" && (
+                      <div className="flex items-center gap-2">
+                        <CircleSlash size={17} color="#B7B7B7" />
+                        <span className="text-sm">Sin confirmar</span>
+                      </div>
+                    )}
+
+                    {request.status === "answered" && (
+                      <div className="flex items-center gap-2">
+                        <CircleMinus size={17} color="#577BC1" />
+                        <span className="text-sm">Respuesta de adjudicado</span>
+                      </div>
+                    )}
                   </TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
@@ -254,92 +252,59 @@ export const TableAdministrator = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        {/* 
-                        {viewButton === "administrator@gmail.com" &&
-                          request.status !== "Sin respuesta" &&
-                          request.confirmation === "false" && (
-                            <DropdownMenuItem
-                              onClick={() =>
-                                toast({
-                                  title: "Solicitud confirmada",
-                                  className: "bg-green-500 text-white",
-                                  description:
-                                    "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
-                                })
-                              }
-                            >
-                              <div className="flex items-center gap-2 cursor-pointer">
-                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                  <FileCheck2 />
-                                </Button>
-                                <span>Confirmar</span>
-                              </div>
-                            </DropdownMenuItem>
-                          )} */}
-
-                        <DropdownMenuItem
-                          onClick={() =>
-                            toast({
-                              title: "Solicitud confirmada",
-                              className: "bg-green-500 text-white",
-                              description:
-                                "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
-                            })
-                          }
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <FileCheck2 />
-                            </Button>
-                            <span>Confirmar</span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        {/*        {viewButton === "administrator@gmail.com" &&
-                          request.status !== "Sin respuesta" &&
-                          request.status !== "Positivo" &&
-                          request.confirmation === "false" && (
-                            <DropdownMenuItem
-                              onClick={() => setIsModaReturnlOpen(true)}
-                            >
-                              <div className="flex items-center gap-2 cursor-pointer">
-                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                  <Redo2 />
-                                </Button>
-                                <span>Devolver</span>
-                              </div>
-                            </DropdownMenuItem>
-                          )} */}
-
-                        <DropdownMenuItem
-                          onClick={() => setIsModaReturnlOpen(true)}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Redo2 />
-                            </Button>
-                            <span>Devolver</span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSub>
-                          <DropdownMenuSubTrigger>
+                        {request.status === "answered" && (
+                          <DropdownMenuItem
+                            onClick={() =>
+                              toast({
+                                title: "Solicitud confirmada",
+                                className: "bg-green-500 text-white",
+                                description:
+                                  "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
+                              })
+                            }
+                          >
                             <div className="flex items-center gap-2 cursor-pointer">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <SendHorizontal />
+                                <FileCheck2 />
                               </Button>
-                              <span>Enviar IFT</span>
+                              <span>Confirmar</span>
                             </div>
-                          </DropdownMenuSubTrigger>
-                          <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                              <DropdownMenuItem onClick={handleClick}>
-                                <Mail size={15} />
-                                Email
-                              </DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                          </DropdownMenuPortal>
-                        </DropdownMenuSub>
+                          </DropdownMenuItem>
+                        )}
+
+                        {request.status === "answered" && (
+                          <DropdownMenuItem
+                            onClick={() => setIsModaReturnlOpen(true)}
+                          >
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Redo2 />
+                              </Button>
+                              <span>Devolver</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {request.status === "confirmed" && (
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <SendHorizontal />
+                                </Button>
+                                <span>Enviar IFT</span>
+                              </div>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                <DropdownMenuItem onClick={handleClick}>
+                                  <Mail size={15} />
+                                  Email
+                                </DropdownMenuItem>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
