@@ -155,7 +155,7 @@ export async function POST(request: Request) {
           username: _USERNAME,
           password: _PASSWORD,
           captchacode: _CAPTCHA_CODE,
-          remember: "false",
+          remember: "true",
           request_type: "post",
           return_type: "extjs",
           method: _METHOD,
@@ -242,6 +242,42 @@ export async function POST(request: Request) {
           request_type: "post",
           return_type: "extjs",
           method: _METHOD,
+        };
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
+        return NextResponse.json({ ...response.data });
+      } catch (error) {
+        return handleAxiosError(error);
+      }
+    }
+
+    if (_METHOD === "auth.check_user") {
+      try {
+        const data = {
+          username: _USERNAME,
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+        };
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
+        return NextResponse.json({ ...response.data });
+      } catch (error) {
+        return handleAxiosError(error);
+      }
+    }
+    if (_METHOD === "user.get_customer_config") {
+      try {
+        const data = {
+          customer_id: _CUSTOMER_ID,
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+          csrf_token: _TOKEN,
         };
         const response = await axiosConfigBuddie.post(
           `/api.php`,

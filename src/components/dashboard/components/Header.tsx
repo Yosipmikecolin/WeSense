@@ -1,3 +1,4 @@
+import { jar } from "@/api/config";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { LogOut } from "lucide-react";
@@ -37,6 +38,7 @@ const Header = () => {
     const response_logout = await axios.post("/api/buddie", {
       method: "auth.logout",
     });
+    await jar.removeAllCookies();
     console.log("LOGOUT: ", response_logout.data);
   }
 

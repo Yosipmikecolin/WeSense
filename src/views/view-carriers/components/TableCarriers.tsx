@@ -40,7 +40,7 @@ import { Wearer } from "@/interfaces/interfaces.read";
 import { axiosConfigBuddie } from "@/api/config";
 
 const TableCarriers = () => {
-  const { setToken } = useBuddieStore();
+  const { setToken, captcha } = useBuddieStore();
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [wearers, setWearers] = useState<Wearer[]>([]);
@@ -59,6 +59,13 @@ const TableCarriers = () => {
   ];
 
   const getAllWearers = async () => {
+    const response_auth = await axios.post("/api/buddie", {
+      captchacode: captcha,
+      method: "auth.requires_2fa",
+      username: "yosip.parrado@wesense.com.co",
+      password: "Yp2025$pY",
+    });
+    console.log("AUTH 2: ", response_auth.data);
     const response_read = await axios.get(
       "/api/buddie?method=setup.wearer.grid",
       {}

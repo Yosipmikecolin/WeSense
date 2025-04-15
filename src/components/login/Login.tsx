@@ -11,7 +11,7 @@ import { useBuddieStore } from "@/store/index";
 import { jar } from "@/api/config";
 
 const Login = () => {
-  const { setToken: setTokenBuddie } = useBuddieStore();
+  const { setToken: setTokenBuddie, setCaptcha } = useBuddieStore();
   const [code, setCode] = useState("");
   const [token, setToken] = useState("");
   const [urlCaptcha, setUrlCaptcha] = useState("");
@@ -23,6 +23,7 @@ const Login = () => {
 
   const loginBuddie = async (username: string, password: string) => {
     const _CAPTCHA = code;
+    setCaptcha(code);
     setCode("");
 
     const response_auth = await axios.post("/api/buddie", {
@@ -39,15 +40,21 @@ const Login = () => {
       password,
     });
 
-    jar.removeAllCookies();
-
     const response_user = await axios.get(`/api/buddie?method=user.read`);
+
+    const response_customer = await axios.post("/api/buddie", {
+      method: "user.get_customer_config",
+      token: response_user.data.csrf_token,
+    });
+
     setToken(response_user.data.csrf_token);
     setTokenBuddie(response_user.data.csrf_token);
 
+    
     console.log("AUTH: ", response_auth.data);
     console.log("LOGIN: ", response_login.data);
     console.log("USER: ", response_user.data);
+    console.log("CUSTOMER: ", response_customer.data);
 
     if (response_auth.data.error) {
       setUrlCaptcha("");
@@ -182,6 +189,11 @@ const Login = () => {
   };
 
   const getCaptcha = async () => {
+    const response_check = await axios.post("/api/buddie", {
+      captchacode: _CAPTCHA,
+      method: "auth.check_user",
+      username,
+    });
     const captchaRes = await axios.get(
       `/api/buddie?method=auth.get_captcha_details`
     );
