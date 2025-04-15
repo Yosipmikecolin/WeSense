@@ -31,6 +31,7 @@ const Header = () => {
 
       default:
         return "Perfil no autorizado";
+        
     }
   };
 
