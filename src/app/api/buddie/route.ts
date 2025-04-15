@@ -71,13 +71,9 @@ export async function GET(request: Request) {
 
     if (_METHOD === "setup.wearer.grid") {
       try {
-        console.log("METHOD: ", _METHOD);
-        console.log("CUSTOMER ID: ", _CUSTOMER_ID);
-        const dc = Date.now();
-        console.log("DC: ", dc);
         const response = await axiosConfigBuddie.get(`/api.php`, {
           params: {
-            _dc: dc,
+            _dc: Date.now(),
             request_type: "get",
             return_type: "extjs",
             method: _METHOD,
@@ -198,9 +194,9 @@ export async function POST(request: Request) {
       try {
         const data: UpdateWearerRequest = {
           wearer_id: _WEARER_ID,
-          last_edit_user: "-1",
-          last_edit_timestamp: "-1",
-          force: "0",
+          last_edit_user: "2454",
+          last_edit_timestamp: "2025-04-14 23:59:58",
+          force: "1",
           request_type: "post",
           return_type: "extjs",
           method: _METHOD,
@@ -208,6 +204,7 @@ export async function POST(request: Request) {
           csrf_token: _TOKEN,
           wearer: _UPDATE_WEARER,
         };
+        console.log("DATA TO UPDATE: ", data);
         const response = await axiosConfigBuddie.post(
           `/api.php`,
           qs.stringify(data)
@@ -235,6 +232,23 @@ export async function POST(request: Request) {
         );
         return NextResponse.json({ ...response.data });
       } catch (error: any) {
+        return handleAxiosError(error);
+      }
+    }
+
+    if (_METHOD === "auth.logout") {
+      try {
+        const data = {
+          request_type: "post",
+          return_type: "extjs",
+          method: _METHOD,
+        };
+        const response = await axiosConfigBuddie.post(
+          `/api.php`,
+          qs.stringify(data)
+        );
+        return NextResponse.json({ ...response.data });
+      } catch (error) {
         return handleAxiosError(error);
       }
     }

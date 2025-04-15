@@ -8,6 +8,7 @@ import { Input } from "../ui/input";
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useBuddieStore } from "@/store/index";
+import { jar } from "@/api/config";
 
 const Login = () => {
   const { setToken: setTokenBuddie } = useBuddieStore();
@@ -37,6 +38,8 @@ const Login = () => {
       username,
       password,
     });
+
+    jar.removeAllCookies();
 
     const response_user = await axios.get(`/api/buddie?method=user.read`);
     setToken(response_user.data.csrf_token);
