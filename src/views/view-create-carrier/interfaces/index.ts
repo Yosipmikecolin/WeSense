@@ -29,6 +29,7 @@ export interface Step1Data {
   fullName: string;
   socialName: string;
   paternalSurname: string;
+  sex: string;
   motherSurname: string;
   type_current: string;
   gender: string;

@@ -32,7 +32,6 @@ import ExclusionZoneForm from "./components/ExclusionZoneForm";
 import { initialFormData } from "./data/initialFormData";
 import toast from "react-hot-toast";
 // import { addCarrier } from "@/db/carrier";
-import { generateUUID } from "@/functions";
 
 const ViewCreateCarrier = () => {
   const { token, setToken } = useBuddieStore();

@@ -6,7 +6,7 @@ const RequesterSchema = new mongoose.Schema(
     lastName: String,
     middleName: String,
     email: String,
-    ruc: String,
+    run: String,
     phone: String,
     userType: String,
     institution: String,

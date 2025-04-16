@@ -60,16 +60,12 @@ const DetailsModal = ({ requester, open, onClose }: Props) => {
             <span>{requester?.institution}</span>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <span className="font-semibold">Télefono:</span>
-            <span>{requester?.phone}</span>
-          </div>
-          <div className="grid grid-cols-2 items-center gap-4">
             <span className="font-semibold">Número de identificación:</span>
             <span>{requester?.identificationNumber}</span>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <span className="font-semibold">RUC:</span>
-            <span>{requester?.ruc}</span>
+            <span className="font-semibold">RUN:</span>
+            <span>{requester?.run}</span>
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
             <span className="font-semibold">Ciudad:</span>

@@ -172,6 +172,16 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
       </div>
 
       <div>
+        <Label htmlFor="sex">Sexo</Label>
+        <Input
+          id="sex"
+          name="sex"
+          value={formData.sex}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
         <Label>Fecha de Nacimiento</Label>
         <Popover>
           <PopoverTrigger asChild>

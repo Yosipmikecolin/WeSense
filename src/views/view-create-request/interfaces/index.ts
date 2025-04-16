@@ -1,7 +1,12 @@
-import { Requester } from "@/db/requester";
+import { Requester, RequesterPost } from "@/db/requester";
 import {
   FormDataCarrier,
+  FormDataCarrierPost,
   Step1Data,
+  Step2Data,
+  Step3Data,
+  Step4Data,
+  Step5Data,
 } from "@/views/view-create-carrier/interfaces";
 
 export interface TimelineProps {
@@ -18,8 +23,8 @@ export interface FormDataRequest {
   return_date: string;
   time_respond: string;
   status: string;
-  requester: Requester;
-  carrier: FormDataCarrier;
+  requester: RequesterPost;
+  carrier: FormDataCarrierPost;
   awardee_response: {
     minimum_coverage: string;
     status: string;

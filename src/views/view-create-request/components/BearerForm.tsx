@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/select";
 
 import { Loader2 } from "lucide-react";
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import { FormDataCarrier, FormDataCarrierPost } from "@/views/view-create-carrier/interfaces";
 import { initialFormData } from "@/views/view-create-carrier/data/initialFormData";
 import { carriers } from "@/utils";
 import { generateUUID } from "@/functions";
 
 interface Props {
-  formData: FormDataCarrier;
+  formData: FormDataCarrierPost;
   setFormData: (data: FormDataCarrier) => void;
   setCompleteForm: (complete: boolean) => void;
 }

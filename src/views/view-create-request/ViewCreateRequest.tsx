@@ -16,44 +16,68 @@ import Timeline from "@/components/timeline/Timeline";
 import BearerForm from "./components/BearerForm";
 import ApplicantForm from "./components/ApplicantForm";
 import { Requester } from "@/db/requester";
-import { FormDataCarrier } from "../view-create-carrier/interfaces";
+import {
+  FormDataCarrier,
+  Step1Data,
+  Step2Data,
+  Step3Data,
+  Step4Data,
+  Step5Data,
+  Step6Data,
+} from "../view-create-carrier/interfaces";
 import { initialFormData } from "../view-create-carrier/data/initialFormData";
 import toast from "react-hot-toast";
 import { addRequest } from "@/api/request";
 import { getDate } from "@/functions";
+import CauseForm from "../view-create-carrier/components/CauseForm";
+import MonitoringForm from "../view-create-carrier/components/MonitoringForm";
+import InclusionZoneForm from "../view-create-carrier/components/InclusionZoneForm";
+import ExclusionZoneForm from "../view-create-carrier/components/ExclusionZoneForm";
+import DataForm from "../view-create-carrier/components/DataForm";
+import axios from "axios";
+import { useBuddieStore } from "@/store";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const { token, setToken } = useBuddieStore();
+  const steps = [
+    "Requirente",
+    "Persona sujeta a control",
+    "Causa",
+    "Monitoreo",
+    "Inclusión",
+    "Exclusión",
+  ];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
-  const steps = ["Requirente", "Portador"];
   const [loading, setLoading] = useState(false);
+  const [formDataCarrier, setFormDataCarrier] =
+    useState<FormDataCarrier>(initialFormData);
   const [formData, setFormData] = useState<RequestPost>({
     answer: "no-confirmed",
     reason_return: "",
     description_reason: "",
-    issue_date: "",
+    issue_date: getDate(),
     response_date: "",
     return_date: "",
     time_respond: "",
     status: "unconfirmed",
     requester: {
-      _id: "",
-      fullName: "",
-      lastName: "",
-      middleName: "",
-      email: "",
-      ruc: "",
-      phone: "",
-      userType: "",
-      institution: "",
-      identificationNumber: "",
-      region: "",
-      address: "",
-      accessAreas: "",
-      identityVerification: "",
-      securityQuestion: "",
-      registrationDate: "",
-      observations: "",
+      fullName: "Jose Stiven Alfredo Mendoza",
+      lastName: "Alfredo",
+      middleName: "Mendoza",
+      email: "jose1293@gmail.com",
+      run: "4234234",
+      phone: "58367294",
+      userType: "Abogado",
+      institution: "Los Andes",
+      identificationNumber: "Reclusión parcial",
+      region: "Santiago de Chile",
+      address: "Cra 21 # 43-43",
+      accessAreas: "Casa",
+      identityVerification: "5937234",
+      securityQuestion: "¿Como se llama tu madre?",
+      registrationDate: "16/04/2025",
+      observations: "Ninguna",
     },
     carrier: initialFormData,
     awardee_response: {
@@ -66,6 +90,39 @@ const ViewCreateRequest = () => {
       photographic_evidence: [],
     },
   });
+
+  const create_wearer = {
+    group_id: "2108",
+    first_name: formDataCarrier.personalData.fullName,
+    surname: formDataCarrier.personalData.paternalSurname,
+    ref: "555",
+    email: formDataCarrier.personalData.type_current,
+    // notes: "",
+    start_tagging_time: "2025-04-13 00:15:00",
+    end_tagging_time: "2025-04-15 00:45:00",
+    device_profile_id: "179",
+    // device_profile_sb_id: "",
+    device_profile_name: "1. Live Tracking",
+    timezone_id: "74",
+    wearer_type_id: "21",
+    address_name: formDataCarrier.personalData.nationality,
+    line_1: formDataCarrier.personalData.maritalStatus,
+    line_2: formDataCarrier.personalData.dateBirth,
+    line_3: formDataCarrier.personalData.run,
+    city: "Chile",
+    county: "Santiago",
+    postcode: "111221",
+    address_type_id: "2",
+    telephone: formDataCarrier.personalData.phone,
+    interpretor_required: "0",
+    // size_id: "",
+    responsible_officer_id: "2452",
+    country_id: "185",
+    // risk_level_id: "",
+    lat: "",
+    lon: "",
+  };
+
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -78,34 +135,77 @@ const ViewCreateRequest = () => {
     }
   };
 
-  const setDate = (date?: Date) => {
-    setFormData({ ...formData, issue_date: getDate(date) });
-  };
-  const updateData = useCallback(
-    (step: keyof FormDataRequest, data: Requester | FormDataCarrier) => {
+  /*   const updateData = useCallback(
+    (step: keyof FormDataRequest, data: Requester | FormDataCarrierPost) => {
       setFormData((prevData) => ({
         ...prevData,
         [step]: data,
       }));
     },
     []
+  ); */
+
+  const updateDataCarrier = useCallback(
+    (
+      step: keyof FormDataCarrier,
+      data:
+        | Step1Data
+        | Step2Data
+        | Step3Data
+        | Step4Data
+        | Step5Data
+        | Step6Data
+    ) => {
+      setFormDataCarrier((prevData) => ({
+        ...prevData,
+        [step]: data,
+      }));
+    },
+    []
   );
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
+        return <ApplicantForm setCompleteForm={setCompleteForm} />;
+
+      case 1:
         return (
-          <ApplicantForm
-            setDate={setDate}
-            formData={formData.requester}
-            setFormData={(data) => updateData("requester", data)}
+          <DataForm
+            formData={formDataCarrier.personalData}
+            setFormData={(data) => updateDataCarrier("personalData", data)}
             setCompleteForm={setCompleteForm}
           />
         );
-      case 1:
+      case 2:
         return (
-          <BearerForm
-            formData={formData.carrier}
-            setFormData={(data) => updateData("carrier", data)}
+          <CauseForm
+            formData={formDataCarrier.cause}
+            setFormData={(data) => updateDataCarrier("cause", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+      case 3:
+        return (
+          <MonitoringForm
+            formData={formDataCarrier.monitoring}
+            setFormData={(data) => updateDataCarrier("monitoring", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+      case 4:
+        return (
+          <InclusionZoneForm
+            formData={formDataCarrier.inclusionArea}
+            setFormData={(data) => updateDataCarrier("inclusionArea", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+      case 5:
+        return (
+          <ExclusionZoneForm
+            formData={formDataCarrier.exclusionArea}
+            setFormData={(data) => updateDataCarrier("exclusionArea", data)}
             setCompleteForm={setCompleteForm}
           />
         );
@@ -117,9 +217,15 @@ const ViewCreateRequest = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-
     try {
-      await addRequest(formData);
+      await addRequest({ ...formData, carrier: formDataCarrier });
+      const response_create = await axios.post("/api/buddie", {
+        method: "setup.wearer.create",
+        token,
+        create_wearer: create_wearer,
+      });
+      setFormDataCarrier(initialFormData);
+      setToken(response_create.data.csrf_token);
       toast.success("Solicitud creada exitosamente");
       setLoading(false);
       setCurrentStep(0);
@@ -133,23 +239,22 @@ const ViewCreateRequest = () => {
         time_respond: "",
         status: "",
         requester: {
-          _id: "",
-          fullName: "",
-          lastName: "",
-          middleName: "",
-          email: "",
-          ruc: "",
-          phone: "",
-          userType: "",
-          institution: "",
-          identificationNumber: "",
-          region: "",
-          address: "",
-          accessAreas: "",
-          identityVerification: "",
-          securityQuestion: "",
-          registrationDate: "",
-          observations: "",
+          fullName: "Jose Stiven Alfredo Mendoza",
+          lastName: "Alfredo",
+          middleName: "Mendoza",
+          email: "jose1293@gmail.com",
+          run: "4234234",
+          phone: "58367294",
+          userType: "Abogado",
+          institution: "Los Andes",
+          identificationNumber: "Reclusión parcial",
+          region: "Santiago de Chile",
+          address: "Cra 21 # 43-43",
+          accessAreas: "Casa",
+          identityVerification: "5937234",
+          securityQuestion: "¿Como se llama tu madre?",
+          registrationDate: "16/04/2025",
+          observations: "Ninguna",
         },
         carrier: initialFormData,
         awardee_response: {
@@ -187,24 +292,27 @@ const ViewCreateRequest = () => {
           <Button
             variant={"primary"}
             onClick={handlePrevious}
-            disabled={currentStep < steps.length - 1}
+            disabled={currentStep <= 0}
           >
             Atras
           </Button>
           <Button
             variant={"primary"}
             onClick={() => {
-              if (currentStep === steps.length - 1) {
+              if (currentStep === steps.length - 2) {
                 handleSubmit();
               } else {
                 handleNext();
               }
             }}
-            disabled={!completeForm}
+            disabled={loading || !completeForm}
           >
-            {currentStep === steps.length - 1 ? (
+            {currentStep === steps.length - 2 ? (
               loading ? (
-                <div className="loader-button" />
+                <div className="flex justify-center items-center gap-3">
+                  <div className="loader-button" />
+                  <span>Creando solicitud</span>
+                </div>
               ) : (
                 "Crear solicitud"
               )

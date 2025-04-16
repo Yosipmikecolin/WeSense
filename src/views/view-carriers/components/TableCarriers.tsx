@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import Flag from "react-world-flags";
-import axios from "axios";
 import { useBuddieStore } from "@/store/index";
 import {
   Table as TableUI,
