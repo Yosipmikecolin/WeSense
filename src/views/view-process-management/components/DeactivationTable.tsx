@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ellipsis, Eye, Pencil, SendHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,10 +23,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { data6 } from "../data";
 import DetailsModal from "./DetailsModal";
+import { DesactivationType } from "./DeactivationProcess";
+import axios from "axios";
+import DeleteModalDesactivation from "./DeleteModalDesactivation";
 
-const DeactivationTable = () => {
+interface Props {
+  onUpdate: (type: string, desactivation: DesactivationType) => void;
+}
+
+const DeactivationTable = ({ onUpdate }: Props) => {
+  const [data, setData] = useState<DesactivationType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState({});
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const getAll = async () => {
+    const response = await axios.get(`/api/awardee/desactivation`);
+    setData(response.data);
+  };
+
+  const onDelete = async (item: DesactivationType) => {
+    setSelectedToDelete(item._id);
+    setIsModalDeleteOpen(true);
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   return (
     <div>
@@ -56,13 +80,13 @@ const DeactivationTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data6.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.idDispositivo}</TableCell>
-                  <TableCell>{item.fechaDesactivacion}</TableCell>
-                  <TableCell>{item.motivoDesactivacion}</TableCell>
-                  <TableCell>{item.estadoDispositivo}</TableCell>
-                  <TableCell>{item.observaciones}</TableCell>
+              {data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.deviceId}</TableCell>
+                  <TableCell>{item.deactivationDate}</TableCell>
+                  <TableCell>{item.deactivationReason}</TableCell>
+                  <TableCell>{item.deviceStatus}</TableCell>
+                  <TableCell>{item.comments}</TableCell>
                   <TableCell className="flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
@@ -73,7 +97,7 @@ const DeactivationTable = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelected(item);
+                            setSelectedDocument(item);
                             setIsModalOpen(true);
                           }}
                         >
@@ -84,7 +108,9 @@ const DeactivationTable = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => onUpdate("desactivation", item)}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -92,7 +118,7 @@ const DeactivationTable = () => {
                             <span>Editar</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(item)}>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -123,14 +149,20 @@ const DeactivationTable = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Detalles de la desactivación"
-        data={selected}
+        data={selectedDocument}
         fields={[
-          { key: "idDispositivo", label: "ID del Dispositivo" },
-          { key: "fechaDesactivacion", label: "Fecha de Desactivación" },
-          { key: "motivoDesactivacion", label: "Motivo de Desactivación" },
-          { key: "estadoDispositivo", label: "Estado del Dispositivo" },
-          { key: "observaciones", label: "Observaciones" },
+          { key: "deviceId", label: "ID del Dispositivo" },
+          { key: "deactivationDate", label: "Fecha de Desactivación" },
+          { key: "deactivationReason", label: "Motivo de Desactivación" },
+          { key: "deviceStatus", label: "Estado del Dispositivo" },
+          { key: "comments", label: "Observaciones" },
         ]}
+      />
+      <DeleteModalDesactivation
+        id={selectedToDelete}
+        open={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        // refetch={refetch}
       />
     </div>
   );

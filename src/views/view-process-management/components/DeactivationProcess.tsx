@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +13,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import axios from "axios";
 
-const DeactivationProcess = () => {
+export interface DesactivationType {
+  _id: string;
+  deviceId: string;
+  deactivationDate: string;
+  deactivationReason: string;
+  deviceStatus: string;
+  comments: string;
+}
+
+interface Props {
+  onClose: () => void;
+  desactivation: DesactivationType | null;
+}
+
+const DeactivationProcess = ({ desactivation, onClose }: Props) => {
+  const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
     deviceId: "",
     deactivationDate: "",
@@ -35,8 +51,50 @@ const DeactivationProcess = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUpdate) {
+      update();
+    } else {
+      save();
+    }
     console.log("Datos del formulario:", formData);
   };
+
+  const save = async () => {
+    console.log("FORM: ", formData);
+    const response = await axios.post(`/api/awardee/desactivation`, formData);
+    console.log("DATA: ", response.data);
+    setFormData({
+      deviceId: "",
+      deactivationDate: "",
+      deactivationReason: "",
+      deviceStatus: "",
+      comments: "",
+    });
+    onClose();
+  };
+
+  const update = async () => {
+    const data = {
+      ...desactivation,
+      ...formData,
+    };
+    const response = await axios.put(`/api/awardee/desactivation`, data);
+    setFormData({
+      deviceId: "",
+      deactivationDate: "",
+      deactivationReason: "",
+      deviceStatus: "",
+      comments: "",
+    });
+    onClose();
+  };
+
+  useEffect(() => {
+    if (desactivation) {
+      setIsUpdate(true);
+      setFormData(desactivation);
+    }
+  }, [desactivation]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -118,7 +176,7 @@ const DeactivationProcess = () => {
       </div>
 
       <Button type="submit" variant={"primary"}>
-        Registrar Desactivación
+        {isUpdate ? "Editar Desactivación" : "Registrar Desactivación"}
       </Button>
     </form>
   );

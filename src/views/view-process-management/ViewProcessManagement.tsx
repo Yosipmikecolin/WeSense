@@ -24,7 +24,9 @@ import ProcessManagementAlarms, {
 import ProcessTechnicalSupport, {
   SuportType,
 } from "./components/ProcessTechnicalSupport";
-import DeactivationProcess from "./components/DeactivationProcess";
+import DeactivationProcess, {
+  DesactivationType,
+} from "./components/DeactivationProcess";
 import ReceptionTable from "./components/ReceptionTable";
 import InstallationTable from "./components/InstallationTable";
 import TableManagementResolutions from "./components/TableManagementResolutions";
@@ -53,6 +55,9 @@ const ViewProcessManagement = () => {
   const [resolution, setResolution] = useState<ResolutionType | null>(null);
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [suport, setSuport] = useState<SuportType | null>(null);
+  const [desactivation, setDesactivation] = useState<DesactivationType | null>(
+    null
+  );
 
   const filters = [
     { id: 1, name: "Numero" },
@@ -112,7 +117,7 @@ const ViewProcessManagement = () => {
     }
     if (isDesactivation && isUpdate) {
       setIsUpdate(false);
-      // setReception(null);
+      setDesactivation(null);
     }
   };
 
@@ -125,6 +130,7 @@ const ViewProcessManagement = () => {
       setIsResolution(false);
       setIsAlert(false);
       setIsSuport(false);
+      setIsDesactivation(false);
     }
     if (type === "instalation") {
       setIsShowModal(true);
@@ -134,6 +140,7 @@ const ViewProcessManagement = () => {
       setIsResolution(false);
       setIsAlert(false);
       setIsSuport(false);
+      setIsDesactivation(false);
     }
     if (type === "resolution") {
       setIsShowModal(true);
@@ -143,6 +150,7 @@ const ViewProcessManagement = () => {
       setIsInstalation(false);
       setIsAlert(false);
       setIsSuport(false);
+      setIsDesactivation(false);
     }
     if (type === "alert") {
       setIsShowModal(true);
@@ -152,6 +160,7 @@ const ViewProcessManagement = () => {
       setIsResolution(false);
       setIsInstalation(false);
       setIsSuport(false);
+      setIsDesactivation(false);
     }
     if (type === "suport") {
       setIsShowModal(true);
@@ -161,10 +170,17 @@ const ViewProcessManagement = () => {
       setIsResolution(false);
       setIsInstalation(false);
       setIsAlert(false);
+      setIsDesactivation(false);
     }
     if (type === "desactivation") {
       setIsShowModal(true);
       setIsDesactivation(true);
+
+      setIsProcessReception(false);
+      setIsResolution(false);
+      setIsInstalation(false);
+      setIsSuport(false);
+      setIsAlert(false);
     }
   };
 
@@ -192,6 +208,11 @@ const ViewProcessManagement = () => {
   const onUpdateSuport = (type: string, value: SuportType) => {
     setIsUpdate(true);
     setSuport(value);
+    show(type);
+  };
+  const onUpdateDesactivation = (type: string, value: DesactivationType) => {
+    setIsUpdate(true);
+    setDesactivation(value);
     show(type);
   };
 
@@ -279,7 +300,7 @@ const ViewProcessManagement = () => {
           )}
           {isDesactivation && (
             <DeactivationProcess
-              reception={reception}
+              desactivation={desactivation}
               onClose={() => closeDialog("desactivation")}
             />
           )}
@@ -311,7 +332,7 @@ const ViewProcessManagement = () => {
           <TechnicalSupportTable onUpdate={onUpdateSuport} />
         </TabsContent>
         <TabsContent value="deactivation">
-          <DeactivationTable onUpdate={onUpdateReception} />
+          <DeactivationTable onUpdate={onUpdateDesactivation} />
         </TabsContent>
       </Tabs>
     </div>
