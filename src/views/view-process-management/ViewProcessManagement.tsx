@@ -15,7 +15,9 @@ import ProcessReception, { ReceptionType } from "./components/ProcessReception";
 import InstallationProcess, {
   InstalationType,
 } from "./components/InstallationProcess";
-import ProcessManagementResolutions from "./components/ProcessManagementResolutions";
+import ProcessManagementResolutions, {
+  ResolutionType,
+} from "./components/ProcessManagementResolutions";
 import ProcessManagementAlarms from "./components/ProcessManagementAlarms";
 import ProcessTechnicalSupport from "./components/ProcessTechnicalSupport";
 import DeactivationProcess from "./components/DeactivationProcess";
@@ -44,6 +46,7 @@ const ViewProcessManagement = () => {
 
   const [reception, setReception] = useState<ReceptionType | null>(null);
   const [instalation, setInstalation] = useState<InstalationType | null>(null);
+  const [resolution, setResolution] = useState<ResolutionType | null>(null);
 
   const filters = [
     { id: 1, name: "Numero" },
@@ -91,7 +94,7 @@ const ViewProcessManagement = () => {
     }
     if (isResolution && isUpdate) {
       setIsUpdate(false);
-      // setReception(null);
+      setResolution(null);
     }
     if (isAlert && isUpdate) {
       setIsUpdate(false);
@@ -113,17 +116,21 @@ const ViewProcessManagement = () => {
       setIsProcessReception(true);
 
       setIsInstalation(false);
+      setIsResolution(false);
     }
     if (type === "instalation") {
-      console.log("ENTRO 2: ", instalation)
       setIsShowModal(true);
       setIsInstalation(true);
 
       setIsProcessReception(false);
+      setIsResolution(false);
     }
     if (type === "resolution") {
       setIsShowModal(true);
       setIsResolution(true);
+
+      setIsProcessReception(false);
+      setIsInstalation(false);
     }
     if (type === "alert") {
       setIsShowModal(true);
@@ -140,42 +147,19 @@ const ViewProcessManagement = () => {
   };
 
   const onUpdateReception = (type: string, value: ReceptionType) => {
-    // if (type === "reception") {
-      setIsUpdate(true);
-      setReception(value);
-      show(type);
-    // }
-
-    // if (type === "instalation") {
-    //   setIsUpdate(true);
-    //   setInstalation(value);
-    //   show(type);
-    // }
-    // if (type === "resolution") {
-    //   setIsUpdate(true);
-    //   // setReception(reception);
-    //   show(type);
-    // }
-    // if (type === "alert") {
-    //   setIsUpdate(true);
-    //   // setReception(reception);
-    //   show(type);
-    // }
-    // if (type === "suport") {
-    //   setIsUpdate(true);
-    //   // setReception(reception);
-    //   show(type);
-    // }
-    // if (type === "desactivation") {
-    //   setIsUpdate(true);
-    //   // setReception(reception);
-    //   show(type);
-    // }
+    setIsUpdate(true);
+    setReception(value);
+    show(type);
   };
 
   const onUpdateInstalation = (type: string, value: InstalationType) => {
     setIsUpdate(true);
     setInstalation(value);
+    show(type);
+  };
+  const onUpdateResolution = (type: string, value: ResolutionType) => {
+    setIsUpdate(true);
+    setResolution(value);
     show(type);
   };
 
@@ -245,7 +229,7 @@ const ViewProcessManagement = () => {
 
           {isResolution && (
             <ProcessManagementResolutions
-              reception={reception}
+              resolution={resolution}
               onClose={() => closeDialog("resolution")}
             />
           )}
@@ -286,7 +270,7 @@ const ViewProcessManagement = () => {
           <InstallationTable onUpdate={onUpdateInstalation} />
         </TabsContent>
         <TabsContent value="management-resolutions">
-          <TableManagementResolutions onUpdate={onUpdateReception} />
+          <TableManagementResolutions onUpdate={onUpdateResolution} />
         </TabsContent>
         <TabsContent value="alarm-management">
           <AlarmManagementTable onUpdate={onUpdateReception} />

@@ -50,11 +50,11 @@ export const AwardeeInstalacion =
 
 const AwardeeResolucionSchema = new mongoose.Schema(
   {
-    number_resolution: String,
-    expedition_date: Date,
-    type_resolution: String,
-    content: String,
-    state: String,
+    resolutionNumber: String,
+    issuanceDate: Date,
+    resolutionType: String,
+    resolutionContent: String,
+    implementationStatus: String,
   },
   { timestamps: true }
 );

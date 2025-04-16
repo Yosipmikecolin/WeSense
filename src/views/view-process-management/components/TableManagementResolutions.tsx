@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,10 +23,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { data3 } from "../data";
 import DetailsModal from "./DetailsModal";
+import { ResolutionType } from "./ProcessManagementResolutions";
+import axios from "axios";
+import DeleteModalResolution from "./DeleteModalResolution";
 
-const TableManagementResolutions = () => {
+interface Props {
+  onUpdate: (type: string, instalation: ResolutionType) => void;
+}
+
+const TableManagementResolutions = ({ onUpdate }: Props) => {
+  const [data, setData] = useState<ResolutionType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState({});
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const getAll = async () => {
+    const response = await axios.get(`/api/awardee/resolution`);
+    setData(response.data);
+  };
+
+  const onDelete = async (item: ResolutionType) => {
+    setSelectedToDelete(item._id);
+    setIsModalDeleteOpen(true);
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   return (
     <div>
@@ -56,13 +80,13 @@ const TableManagementResolutions = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data3.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.numeroResolucion}</TableCell>
-                  <TableCell>{item.fechaEmision}</TableCell>
-                  <TableCell>{item.tipoResolucion}</TableCell>
-                  <TableCell>{item.contenidoResolucion}</TableCell>
-                  <TableCell>{item.estadoImplementacion}</TableCell>
+              {data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.resolutionNumber}</TableCell>
+                  <TableCell>{item.issuanceDate}</TableCell>
+                  <TableCell>{item.resolutionType}</TableCell>
+                  <TableCell>{item.resolutionContent}</TableCell>
+                  <TableCell>{item.implementationStatus}</TableCell>
                   <TableCell className="flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
@@ -73,7 +97,7 @@ const TableManagementResolutions = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelected(item);
+                            setSelectedDocument(item);
                             setIsModalOpen(true);
                           }}
                         >
@@ -84,7 +108,9 @@ const TableManagementResolutions = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => onUpdate("resolution", item)}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -92,7 +118,7 @@ const TableManagementResolutions = () => {
                             <span>Editar</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(item)}>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -114,14 +140,20 @@ const TableManagementResolutions = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Detalles de la resolución"
-        data={selected}
+        data={selectedDocument}
         fields={[
-          { key: "numeroResolucion", label: "Número" },
-          { key: "fechaEmision", label: "Fecha" },
-          { key: "tipoResolucion", label: "Tipo" },
-          { key: "estadoImplementacion", label: "Estado" },
-          { key: "contenidoResolucion", label: "Contenido" },
+          { key: "resolutionNumber", label: "Número" },
+          { key: "issuanceDate", label: "Fecha" },
+          { key: "resolutionType", label: "Tipo" },
+          { key: "implementationStatus", label: "Estado" },
+          { key: "resolutionContent", label: "Contenido" },
         ]}
+      />
+      <DeleteModalResolution
+        id={selectedToDelete}
+        open={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        // refetch={refetch}
       />
     </div>
   );

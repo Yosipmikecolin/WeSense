@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +13,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import axios from "axios";
 
-const ProcessManagementResolutions = () => {
+export interface ResolutionType {
+  _id: string;
+  resolutionNumber: string;
+  issuanceDate: string;
+  resolutionType: string;
+  resolutionContent: string;
+  implementationStatus: string;
+}
+
+interface Props {
+  onClose: () => void;
+  resolution: ResolutionType | null;
+}
+
+const ProcessManagementResolutions = ({ onClose, resolution }: Props) => {
+  const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
     resolutionNumber: "",
     issuanceDate: "",
@@ -35,8 +51,50 @@ const ProcessManagementResolutions = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUpdate) {
+      update();
+    } else {
+      save();
+    }
     console.log("Form data:", formData);
   };
+
+  const save = async () => {
+    console.log("FORM: ", formData)
+    const response = await axios.post(`/api/awardee/resolution`, formData);
+    console.log("DATA: ", response.data)
+    setFormData({
+      resolutionNumber: "",
+      issuanceDate: "",
+      resolutionType: "",
+      resolutionContent: "",
+      implementationStatus: "",
+    });
+    onClose();
+  };
+
+  const update = async () => {
+    const data = {
+      ...resolution,
+      ...formData,
+    };
+    const response = await axios.put(`/api/awardee/resolution`, data);
+    setFormData({
+      resolutionNumber: "",
+      issuanceDate: "",
+      resolutionType: "",
+      resolutionContent: "",
+      implementationStatus: "",
+    });
+    onClose();
+  };
+
+  useEffect(() => {
+    if (resolution) {
+      setIsUpdate(true);
+      setFormData(resolution);
+    }
+  }, [resolution]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -60,7 +118,7 @@ const ProcessManagementResolutions = () => {
           id="issuanceDate"
           name="issuanceDate"
           type="date"
-          value={formData.issuanceDate}
+          value={formData.issuanceDate.split("T")[0]}
           onChange={handleChange}
         />
       </div>
@@ -107,7 +165,7 @@ const ProcessManagementResolutions = () => {
       </div>
 
       <Button type="submit" variant={"primary"}>
-        Register Resolution
+        {isUpdate ? "Editar Resolución" : "Registrar Resolución"}
       </Button>
     </form>
   );
