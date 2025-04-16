@@ -131,7 +131,7 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
-                    <InfoItem label="RUC" value={request?.requester.ruc} />
+                    <InfoItem label="RUC" value={request?.requester.run} />
                     <InfoItem
                       label="Número de Identificación"
                       value={request?.requester.identificationNumber}
