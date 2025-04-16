@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ellipsis, Eye, Pencil, SendHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,10 +23,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { data5 } from "../data";
 import DetailsModal from "./DetailsModal";
+import { SuportType } from "./ProcessTechnicalSupport";
+import axios from "axios";
+import DeleteModalSuport from "./DeleteModalSuport";
 
-const TechnicalSupportTable = () => {
+interface Props {
+  onUpdate: (type: string, suport: SuportType) => void;
+}
+
+const TechnicalSupportTable = ({ onUpdate }: Props) => {
+  const [data, setData] = useState<SuportType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState({});
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const getAll = async () => {
+    const response = await axios.get(`/api/awardee/suport`);
+    setData(response.data);
+  };
+
+  const onDelete = async (item: SuportType) => {
+    setSelectedToDelete(item._id);
+    setIsModalDeleteOpen(true);
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   return (
     <div>
@@ -53,12 +77,12 @@ const TechnicalSupportTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data5.map((ticket) => (
-                <TableRow key={ticket.id}>
-                  <TableCell>{ticket.idTicket}</TableCell>
-                  <TableCell>{ticket.fechaApertura}</TableCell>
-                  <TableCell>{ticket.tipoProblema}</TableCell>
-                  <TableCell>{ticket.estadoTicket}</TableCell>
+              {data.map((ticket, index) => (
+                <TableRow key={index}>
+                  <TableCell>{ticket.ticketId}</TableCell>
+                  <TableCell>{ticket.openingDate}</TableCell>
+                  <TableCell>{ticket.issueType}</TableCell>
+                  <TableCell>{ticket.ticketStatus}</TableCell>
                   <TableCell className="flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
@@ -69,7 +93,7 @@ const TechnicalSupportTable = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelectedTicket(ticket);
+                            setSelectedDocument(ticket);
                             setIsModalOpen(true);
                           }}
                         >
@@ -80,7 +104,9 @@ const TechnicalSupportTable = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => onUpdate("suport", ticket)}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -88,7 +114,7 @@ const TechnicalSupportTable = () => {
                             <span>Editar</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(ticket)}>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -118,15 +144,21 @@ const TechnicalSupportTable = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Detalles del ticket"
-        data={selectedTicket}
+        data={selectedDocument}
         fields={[
-          { key: "idTicket", label: "ID de Ticket" },
-          { key: "fechaApertura", label: "Fecha de Apertura" },
-          { key: "tipoProblema", label: "Tipo de Problema" },
-          { key: "descripcionProblema", label: "Descripción del Problema" },
-          { key: "accionesTomadas", label: "Acciones Tomadas" },
-          { key: "estadoTicket", label: "Estado del Ticket" },
+          { key: "ticketId", label: "ID de Ticket" },
+          { key: "openingDate", label: "Fecha de Apertura" },
+          { key: "issueType", label: "Tipo de Problema" },
+          { key: "issueDescription", label: "Descripción del Problema" },
+          { key: "actionsTaken", label: "Acciones Tomadas" },
+          { key: "ticketStatus", label: "Estado del Ticket" },
         ]}
+      />
+      <DeleteModalSuport
+        id={selectedToDelete}
+        open={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        // refetch={refetch}
       />
     </div>
   );

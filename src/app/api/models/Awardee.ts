@@ -85,12 +85,12 @@ export const AwardeeAlarmas =
 
 const AwardeeSoporteSchema = new mongoose.Schema(
   {
-    ticket: String,
-    opening_date: Date,
-    type_error: String,
-    description_error: String,
-    taken_action: String,
-    state: String,
+    ticketId: String,
+    openingDate: Date,
+    issueType: String,
+    issueDescription: String,
+    actionsTaken: String,
+    ticketStatus: String,
   },
   { timestamps: true }
 );
@@ -103,11 +103,11 @@ export const AwardeeSoporte =
 
 const AwardeeDesactivacionSchema = new mongoose.Schema(
   {
-    id_device: String,
-    desactivation_date: Date,
-    cause_desactivation: String,
-    state: String,
-    observations: String,
+    deviceId: String,
+    deactivationDate: Date,
+    deactivationReason: String,
+    deviceStatus: String,
+    comments: String,
   },
   { timestamps: true }
 );

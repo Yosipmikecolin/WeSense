@@ -28,7 +28,7 @@ import axios from "axios";
 import DeleteModalAlert from "./DeleteModalAlert";
 
 interface Props {
-  onUpdate: (type: string, instalation: AlertType) => void;
+  onUpdate: (type: string, alert: AlertType) => void;
 }
 
 const AlarmManagementTable = ({ onUpdate }: Props) => {

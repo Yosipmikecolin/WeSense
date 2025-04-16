@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +13,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import axios from "axios";
 
-const ProcessTechnicalSupport = () => {
+export interface SuportType {
+  _id: string;
+  ticketId: string;
+  openingDate: string;
+  issueType: string;
+  issueDescription: string;
+  actionsTaken: string;
+  ticketStatus: string;
+}
+
+interface Props {
+  onClose: () => void;
+  suport: SuportType | null;
+}
+
+const ProcessTechnicalSupport = ({ onClose, suport }: Props) => {
+  const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
     ticketId: "",
     openingDate: "",
@@ -36,8 +53,52 @@ const ProcessTechnicalSupport = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUpdate) {
+      update();
+    } else {
+      save();
+    }
     console.log("Form data:", formData);
   };
+
+  const save = async () => {
+    console.log("FORM: ", formData);
+    const response = await axios.post(`/api/awardee/suport`, formData);
+    console.log("DATA: ", response.data);
+    setFormData({
+      ticketId: "",
+      openingDate: "",
+      issueType: "",
+      issueDescription: "",
+      actionsTaken: "",
+      ticketStatus: "",
+    });
+    onClose();
+  };
+
+  const update = async () => {
+    const data = {
+      ...alert,
+      ...formData,
+    };
+    const response = await axios.put(`/api/awardee/suport`, data);
+    setFormData({
+      ticketId: "",
+      openingDate: "",
+      issueType: "",
+      issueDescription: "",
+      actionsTaken: "",
+      ticketStatus: "",
+    });
+    onClose();
+  };
+
+  useEffect(() => {
+    if (suport) {
+      setIsUpdate(true);
+      setFormData(suport);
+    }
+  }, [suport]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -126,7 +187,7 @@ const ProcessTechnicalSupport = () => {
       </div>
 
       <Button type="submit" variant={"primary"}>
-        Register Ticket
+        {isUpdate ? "Editar Ticket" : "Registrar Ticket"}
       </Button>
     </form>
   );
