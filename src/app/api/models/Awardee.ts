@@ -67,12 +67,12 @@ export const AwardeeResolucion =
 
 const AwardeeAlarmasSchema = new mongoose.Schema(
   {
-    alert_id: String,
-    date_alert: Date,
-    type_alert: String,
-    description_alert: String,
-    taken_action: String,
-    state: String,
+    alarmId: String,
+    alarmDateTime: Date,
+    alarmType: String,
+    alarmDescription: String,
+    actionTaken: String,
+    resolutionStatus: String,
   },
   { timestamps: true }
 );

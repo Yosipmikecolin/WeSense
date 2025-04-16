@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +13,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import axios from "axios";
 
-const ProcessManagementAlarms = () => {
+export interface AlertType {
+  _id: string;
+  alarmId: string;
+  alarmDateTime: string;
+  alarmType: string;
+  alarmDescription: string;
+  actionTaken: string;
+  resolutionStatus: string;
+}
+
+interface Props {
+  onClose: () => void;
+  alert: AlertType | null;
+}
+
+const ProcessManagementAlarms = ({ alert, onClose }: Props) => {
+  const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
     alarmId: "",
     alarmDateTime: "",
@@ -36,8 +53,52 @@ const ProcessManagementAlarms = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUpdate) {
+      update();
+    } else {
+      save();
+    }
     console.log("Form data:", formData);
   };
+
+  const save = async () => {
+    console.log("FORM: ", formData);
+    const response = await axios.post(`/api/awardee/alert`, formData);
+    console.log("DATA: ", response.data);
+    setFormData({
+      alarmId: "",
+      alarmDateTime: "",
+      alarmType: "",
+      alarmDescription: "",
+      actionTaken: "",
+      resolutionStatus: "",
+    });
+    onClose();
+  };
+
+  const update = async () => {
+    const data = {
+      ...alert,
+      ...formData,
+    };
+    const response = await axios.put(`/api/awardee/alert`, data);
+    setFormData({
+      alarmId: "",
+      alarmDateTime: "",
+      alarmType: "",
+      alarmDescription: "",
+      actionTaken: "",
+      resolutionStatus: "",
+    });
+    onClose();
+  };
+
+  useEffect(() => {
+    if (alert) {
+      setIsUpdate(true);
+      setFormData(alert);
+    }
+  }, [alert]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -130,7 +191,7 @@ const ProcessManagementAlarms = () => {
       </div>
 
       <Button type="submit" variant={"primary"}>
-        Registrar Alarma
+        {isUpdate ? "Editar Alarma" : "Registrar Alarma"}
       </Button>
     </form>
   );

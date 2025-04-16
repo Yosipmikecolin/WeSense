@@ -18,7 +18,9 @@ import InstallationProcess, {
 import ProcessManagementResolutions, {
   ResolutionType,
 } from "./components/ProcessManagementResolutions";
-import ProcessManagementAlarms from "./components/ProcessManagementAlarms";
+import ProcessManagementAlarms, {
+  AlertType,
+} from "./components/ProcessManagementAlarms";
 import ProcessTechnicalSupport from "./components/ProcessTechnicalSupport";
 import DeactivationProcess from "./components/DeactivationProcess";
 import ReceptionTable from "./components/ReceptionTable";
@@ -47,6 +49,7 @@ const ViewProcessManagement = () => {
   const [reception, setReception] = useState<ReceptionType | null>(null);
   const [instalation, setInstalation] = useState<InstalationType | null>(null);
   const [resolution, setResolution] = useState<ResolutionType | null>(null);
+  const [alert, setAlert] = useState<AlertType | null>(null);
 
   const filters = [
     { id: 1, name: "Numero" },
@@ -98,7 +101,7 @@ const ViewProcessManagement = () => {
     }
     if (isAlert && isUpdate) {
       setIsUpdate(false);
-      // setReception(null);
+      setAlert(null);
     }
     if (isSuport && isUpdate) {
       setIsUpdate(false);
@@ -117,6 +120,7 @@ const ViewProcessManagement = () => {
 
       setIsInstalation(false);
       setIsResolution(false);
+      setIsAlert(false);
     }
     if (type === "instalation") {
       setIsShowModal(true);
@@ -124,6 +128,7 @@ const ViewProcessManagement = () => {
 
       setIsProcessReception(false);
       setIsResolution(false);
+      setIsAlert(false);
     }
     if (type === "resolution") {
       setIsShowModal(true);
@@ -131,6 +136,7 @@ const ViewProcessManagement = () => {
 
       setIsProcessReception(false);
       setIsInstalation(false);
+      setIsAlert(false);
     }
     if (type === "alert") {
       setIsShowModal(true);
@@ -139,6 +145,10 @@ const ViewProcessManagement = () => {
     if (type === "suport") {
       setIsShowModal(true);
       setIsSuport(true);
+
+      setIsProcessReception(false);
+      setIsResolution(false);
+      setIsInstalation(false);
     }
     if (type === "desactivation") {
       setIsShowModal(true);
@@ -160,6 +170,11 @@ const ViewProcessManagement = () => {
   const onUpdateResolution = (type: string, value: ResolutionType) => {
     setIsUpdate(true);
     setResolution(value);
+    show(type);
+  };
+  const onUpdateAlert = (type: string, value: AlertType) => {
+    setIsUpdate(true);
+    setAlert(value);
     show(type);
   };
 
@@ -200,7 +215,7 @@ const ViewProcessManagement = () => {
           <DropdownMenuItem onSelect={() => show("resolution")}>
             Gestión de Resoluciones
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => show("alerts")}>
+          <DropdownMenuItem onSelect={() => show("alert")}>
             Gestión de Alarmas
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => show("soporte")}>
@@ -235,7 +250,7 @@ const ViewProcessManagement = () => {
           )}
           {isAlert && (
             <ProcessManagementAlarms
-              reception={reception}
+              alert={alert}
               onClose={() => closeDialog("alert")}
             />
           )}
@@ -273,7 +288,7 @@ const ViewProcessManagement = () => {
           <TableManagementResolutions onUpdate={onUpdateResolution} />
         </TabsContent>
         <TabsContent value="alarm-management">
-          <AlarmManagementTable onUpdate={onUpdateReception} />
+          <AlarmManagementTable onUpdate={onUpdateAlert} />
         </TabsContent>
         <TabsContent value="technical-support">
           <TechnicalSupportTable onUpdate={onUpdateReception} />
