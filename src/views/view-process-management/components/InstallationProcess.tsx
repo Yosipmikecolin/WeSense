@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,12 +13,28 @@ import {
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import DeviceForm from "@/components/devices/Device";
+import axios from "axios";
 
-const InstallationProcess = () => {
+export interface InstalationType {
+  _id: string;
+  deviceStatus: string;
+  installationLocation: string;
+  deviceType: string;
+  serialNumber: string;
+  installationDate: string;
+}
+
+interface Props {
+  onClose: () => void;
+  instalation: InstalationType | null;
+}
+
+const InstallationProcess = ({ instalation, onClose }: Props) => {
+  const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
     deviceStatus: "",
     installationLocation: "",
-    deviceType: "",
+    deviceType: "vacio",
     serialNumber: "",
     installationDate: "",
   });
@@ -33,8 +49,50 @@ const InstallationProcess = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUpdate) {
+      update();
+    } else {
+      save();
+    }
     console.log("Datos del formulario:", formData);
   };
+
+  const save = async () => {
+    console.log("FORM: ", formData);
+    const response = await axios.post(`/api/awardee/instalation`, formData);
+    console.log("DATA: ", response.data);
+    setFormData({
+      deviceStatus: "",
+      installationLocation: "",
+      deviceType: "",
+      serialNumber: "",
+      installationDate: "",
+    });
+    onClose();
+  };
+
+  const update = async () => {
+    const data = {
+      ...instalation,
+      ...formData,
+    };
+    const response = await axios.put(`/api/awardee/instalation`, data);
+    setFormData({
+      deviceStatus: "",
+      installationLocation: "",
+      deviceType: "",
+      serialNumber: "",
+      installationDate: "",
+    });
+    onClose();
+  };
+
+  useEffect(() => {
+    if (instalation) {
+      setIsUpdate(true);
+      setFormData(instalation);
+    }
+  }, [instalation]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,13 +148,13 @@ const InstallationProcess = () => {
           id="installationDate"
           name="installationDate"
           type="date"
-          value={formData.installationDate}
+          value={formData.installationDate.split("T")[0]}
           onChange={handleChange}
         />
       </div>
 
       <Button type="submit" variant={"primary"}>
-        Guardar Instalación
+        {isUpdate ? "Editar Instalación" : "Registrar Instalación"}
       </Button>
     </form>
   );

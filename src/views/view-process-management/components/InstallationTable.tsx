@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ellipsis, Eye, Pencil, SendHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,12 +21,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { data2 } from "../data";
 import DetailsModal from "./DetailsModal";
+import { InstalationType } from "./InstallationProcess";
+import axios from "axios";
+import DeleteModalInstalation from "./DeleteModalInstalation";
 
-const InstallationTable = () => {
+interface Props {
+  onUpdate: (type: string, instalation: InstalationType) => void;
+}
+
+const InstallationTable = ({ onUpdate }: Props) => {
+  const [data, setData] = useState<InstalationType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState({});
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const getAll = async () => {
+    const response = await axios.get(`/api/awardee/instalation`);
+    setData(response.data);
+  };
+
+  const onDelete = async (item: InstalationType) => {
+    setSelectedToDelete(item._id);
+    setIsModalDeleteOpen(true);
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   return (
     <div>
@@ -56,13 +79,13 @@ const InstallationTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data2.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.estadoDispositivo}</TableCell>
-                  <TableCell>{item.lugarInstalacion}</TableCell>
-                  <TableCell>{item.tipoDispositivo}</TableCell>
-                  <TableCell>{item.numeroSerie}</TableCell>
-                  <TableCell>{item.fechaInstalacion}</TableCell>
+              {data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.deviceStatus}</TableCell>
+                  <TableCell>{item.installationLocation}</TableCell>
+                  <TableCell>{item.deviceType}</TableCell>
+                  <TableCell>{item.serialNumber}</TableCell>
+                  <TableCell>{item.installationDate}</TableCell>
                   <TableCell className="flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
@@ -73,7 +96,7 @@ const InstallationTable = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            setSelected(item);
+                            setSelectedDocument(item);
                             setIsModalOpen(true);
                           }}
                         >
@@ -84,7 +107,9 @@ const InstallationTable = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => onUpdate("instalation", item)}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -92,7 +117,7 @@ const InstallationTable = () => {
                             <span>Editar</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(item)}>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -123,14 +148,20 @@ const InstallationTable = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Detalles del instalación"
-        data={selected}
+        data={selectedDocument}
         fields={[
-          { key: "estadoDispositivo", label: "Estado del Dispositivo" },
-          { key: "lugarInstalacion", label: "Lugar de Instalación" },
-          { key: "tipoDispositivo", label: "Tipo de Dispositivo" },
-          { key: "numeroSerie", label: "Número de Serie" },
-          { key: "fechaInstalacion", label: "Fecha de Instalación" },
+          { key: "deviceStatus", label: "Estado del Dispositivo" },
+          { key: "installationLocation", label: "Lugar de Instalación" },
+          { key: "deviceType", label: "Tipo de Dispositivo" },
+          { key: "serialNumber", label: "Número de Serie" },
+          { key: "installationDate", label: "Fecha de Instalación" },
         ]}
+      />
+      <DeleteModalInstalation
+        id={selectedToDelete}
+        open={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        // refetch={refetch}
       />
     </div>
   );

@@ -33,12 +33,11 @@ export const AwardeeRecepcion =
 
 const AwardeeInstalacionSchema = new mongoose.Schema(
   {
-    state: String,
-    place_instalation: String,
-    devices_victimizer: String,
-    devices_victim: String,
-    number_serie: String,
-    date_instalation: Date,
+    deviceStatus: String,
+    installationLocation: String,
+    deviceType: String,
+    serialNumber: String,
+    installationDate: Date,
   },
   { timestamps: true }
 );

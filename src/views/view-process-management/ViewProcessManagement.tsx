@@ -12,7 +12,9 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { PlusCircle } from "lucide-react";
 import ProcessReception, { ReceptionType } from "./components/ProcessReception";
-import InstallationProcess from "./components/InstallationProcess";
+import InstallationProcess, {
+  InstalationType,
+} from "./components/InstallationProcess";
 import ProcessManagementResolutions from "./components/ProcessManagementResolutions";
 import ProcessManagementAlarms from "./components/ProcessManagementAlarms";
 import ProcessTechnicalSupport from "./components/ProcessTechnicalSupport";
@@ -30,10 +32,18 @@ const ViewProcessManagement = () => {
   const [dialogContent, setDialogContent] = useState<ReactNode | null>(null);
   const [idFilter, setIdFilter] = useState(1);
   const [isShowModal, setIsShowModal] = useState(false);
+
   const [isProcessReception, setIsProcessReception] = useState(false);
+  const [isInstalation, setIsInstalation] = useState(false);
+  const [isResolution, setIsResolution] = useState(false);
+  const [isAlert, setIsAlert] = useState(false);
+  const [isSuport, setIsSuport] = useState(false);
+  const [isDesactivation, setIsDesactivation] = useState(false);
+
   const [isUpdate, setIsUpdate] = useState(false);
 
   const [reception, setReception] = useState<ReceptionType | null>(null);
+  const [instalation, setInstalation] = useState<InstalationType | null>(null);
 
   const filters = [
     { id: 1, name: "Numero" },
@@ -41,13 +51,30 @@ const ViewProcessManagement = () => {
     { id: 3, name: "Fecha" },
   ];
 
-  const openDialog = (content: ReactNode) => {
-    setDialogContent(content);
-  };
-
   const closeDialog = (type: string) => {
     if (type === "reception") {
       setIsProcessReception(false);
+      setIsShowModal(false);
+    }
+    if (type === "instalation") {
+      setIsInstalation(false);
+      setIsShowModal(false);
+    }
+    if (type === "resolution") {
+      setIsResolution(false);
+      setIsShowModal(false);
+    }
+
+    if (type === "alert") {
+      setIsAlert(false);
+      setIsShowModal(false);
+    }
+    if (type === "suport") {
+      setIsSuport(false);
+      setIsShowModal(false);
+    }
+    if (type === "desactivation") {
+      setIsDesactivation(false);
       setIsShowModal(false);
     }
   };
@@ -58,21 +85,98 @@ const ViewProcessManagement = () => {
       setIsUpdate(false);
       setReception(null);
     }
+    if (isInstalation && isUpdate) {
+      setIsUpdate(false);
+      setInstalation(null);
+    }
+    if (isResolution && isUpdate) {
+      setIsUpdate(false);
+      // setReception(null);
+    }
+    if (isAlert && isUpdate) {
+      setIsUpdate(false);
+      // setReception(null);
+    }
+    if (isSuport && isUpdate) {
+      setIsUpdate(false);
+      // setReception(null);
+    }
+    if (isDesactivation && isUpdate) {
+      setIsUpdate(false);
+      // setReception(null);
+    }
   };
 
   const show = (type: string) => {
     if (type === "reception") {
       setIsShowModal(true);
       setIsProcessReception(true);
+
+      setIsInstalation(false);
+    }
+    if (type === "instalation") {
+      console.log("ENTRO 2: ", instalation)
+      setIsShowModal(true);
+      setIsInstalation(true);
+
+      setIsProcessReception(false);
+    }
+    if (type === "resolution") {
+      setIsShowModal(true);
+      setIsResolution(true);
+    }
+    if (type === "alert") {
+      setIsShowModal(true);
+      setIsAlert(true);
+    }
+    if (type === "suport") {
+      setIsShowModal(true);
+      setIsSuport(true);
+    }
+    if (type === "desactivation") {
+      setIsShowModal(true);
+      setIsDesactivation(true);
     }
   };
 
-  const onUpdate = (type: string, reception: ReceptionType) => {
-    if (type === "reception") {
+  const onUpdateReception = (type: string, value: ReceptionType) => {
+    // if (type === "reception") {
       setIsUpdate(true);
-      setReception(reception);
+      setReception(value);
       show(type);
-    }
+    // }
+
+    // if (type === "instalation") {
+    //   setIsUpdate(true);
+    //   setInstalation(value);
+    //   show(type);
+    // }
+    // if (type === "resolution") {
+    //   setIsUpdate(true);
+    //   // setReception(reception);
+    //   show(type);
+    // }
+    // if (type === "alert") {
+    //   setIsUpdate(true);
+    //   // setReception(reception);
+    //   show(type);
+    // }
+    // if (type === "suport") {
+    //   setIsUpdate(true);
+    //   // setReception(reception);
+    //   show(type);
+    // }
+    // if (type === "desactivation") {
+    //   setIsUpdate(true);
+    //   // setReception(reception);
+    //   show(type);
+    // }
+  };
+
+  const onUpdateInstalation = (type: string, value: InstalationType) => {
+    setIsUpdate(true);
+    setInstalation(value);
+    show(type);
   };
 
   return (
@@ -103,46 +207,24 @@ const ViewProcessManagement = () => {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          {/* <DialogTrigger asChild> */}
           <DropdownMenuItem onSelect={() => show("reception")}>
             Recepción de Sentencias
           </DropdownMenuItem>
-          {/* </DialogTrigger> */}
-          {/* <DialogTrigger asChild> */}
-          <DropdownMenuItem
-            onSelect={() => openDialog(<InstallationProcess />)}
-          >
+          <DropdownMenuItem onSelect={() => show("instalation")}>
             Instalación de Dispositivo
           </DropdownMenuItem>
-          {/* </DialogTrigger> */}
-          {/* <DialogTrigger asChild> */}
-          <DropdownMenuItem
-            onSelect={() => openDialog(<ProcessManagementResolutions />)}
-          >
+          <DropdownMenuItem onSelect={() => show("resolution")}>
             Gestión de Resoluciones
           </DropdownMenuItem>
-          {/* </DialogTrigger> */}
-          {/* <DialogTrigger asChild> */}
-          <DropdownMenuItem
-            onSelect={() => openDialog(<ProcessManagementAlarms />)}
-          >
+          <DropdownMenuItem onSelect={() => show("alerts")}>
             Gestión de Alarmas
           </DropdownMenuItem>
-          {/* </DialogTrigger> */}
-          {/* <DialogTrigger asChild> */}
-          <DropdownMenuItem
-            onSelect={() => openDialog(<ProcessTechnicalSupport />)}
-          >
+          <DropdownMenuItem onSelect={() => show("soporte")}>
             Soporte Técnico
           </DropdownMenuItem>
-          {/* </DialogTrigger> */}
-          {/* <DialogTrigger asChild> */}
-          <DropdownMenuItem
-            onSelect={() => openDialog(<DeactivationProcess />)}
-          >
+          <DropdownMenuItem onSelect={() => show("desactivation")}>
             Desactivación de Dispositivo
           </DropdownMenuItem>
-          {/* </DialogTrigger> */}
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog open={isShowModal} onOpenChange={onChangeModal}>
@@ -151,6 +233,38 @@ const ViewProcessManagement = () => {
             <ProcessReception
               reception={reception}
               onClose={() => closeDialog("reception")}
+            />
+          )}
+
+          {isInstalation && (
+            <InstallationProcess
+              instalation={instalation}
+              onClose={() => closeDialog("instalation")}
+            />
+          )}
+
+          {isResolution && (
+            <ProcessManagementResolutions
+              reception={reception}
+              onClose={() => closeDialog("resolution")}
+            />
+          )}
+          {isAlert && (
+            <ProcessManagementAlarms
+              reception={reception}
+              onClose={() => closeDialog("alert")}
+            />
+          )}
+          {isSuport && (
+            <ProcessTechnicalSupport
+              reception={reception}
+              onClose={() => closeDialog("suport")}
+            />
+          )}
+          {isDesactivation && (
+            <DeactivationProcess
+              reception={reception}
+              onClose={() => closeDialog("desactivation")}
             />
           )}
         </DialogContent>
@@ -166,22 +280,22 @@ const ViewProcessManagement = () => {
           <TabsTrigger value="deactivation">Desactivación</TabsTrigger>
         </TabsList>
         <TabsContent value="reception">
-          <ReceptionTable onUpdate={onUpdate} />
+          <ReceptionTable onUpdate={onUpdateReception} />
         </TabsContent>
         <TabsContent value="facility">
-          <InstallationTable />
+          <InstallationTable onUpdate={onUpdateInstalation} />
         </TabsContent>
         <TabsContent value="management-resolutions">
-          <TableManagementResolutions />
+          <TableManagementResolutions onUpdate={onUpdateReception} />
         </TabsContent>
         <TabsContent value="alarm-management">
-          <AlarmManagementTable />
+          <AlarmManagementTable onUpdate={onUpdateReception} />
         </TabsContent>
         <TabsContent value="technical-support">
-          <TechnicalSupportTable />
+          <TechnicalSupportTable onUpdate={onUpdateReception} />
         </TabsContent>
         <TabsContent value="deactivation">
-          <DeactivationTable />
+          <DeactivationTable onUpdate={onUpdateReception} />
         </TabsContent>
       </Tabs>
     </div>
