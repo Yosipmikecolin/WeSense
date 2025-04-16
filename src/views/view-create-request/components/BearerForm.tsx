@@ -93,22 +93,17 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
         i.personalData.fullName === value && i.cause.crime === requesterType
     );
     if (selectRequirent) {
-      setFormData({ ...selectRequirent, _id: generateUUID(),wearer:{
-        surname: "",
-        id: "",
-        first_name: "",
-        email: ""
-      } });
+      setFormData({
+        ...selectRequirent,
+        _id: generateUUID(),
+        wearer: {
+          surname: "",
+          id: "",
+          first_name: "",
+          email: "",
+        },
+      });
     }
-  };
-
-  const uniqueArray = (carriers: FormDataCarrier[]) => {
-    const seen = new Set();
-    return carriers.filter((item) => {
-      if (seen.has(item.cause.crime)) return false;
-      seen.add(item.cause.crime);
-      return true;
-    });
   };
 
   return (

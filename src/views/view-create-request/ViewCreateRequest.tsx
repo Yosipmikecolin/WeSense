@@ -62,10 +62,10 @@ const ViewCreateRequest = () => {
       latitude: "",
       length: "",
       indication_aspects: "",
+      value: "",
       photographic_evidence: [],
     },
   });
-
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -158,6 +158,7 @@ const ViewCreateRequest = () => {
           latitude: "",
           length: "",
           indication_aspects: "",
+          value: "",
           photographic_evidence: [],
         },
       });

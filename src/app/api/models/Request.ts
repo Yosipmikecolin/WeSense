@@ -54,6 +54,7 @@ const RequestSchema = new mongoose.Schema(
       latitude: String,
       length: String,
       indication_aspects: String,
+      value: String,
       photographic_evidence: [String],
     },
   },

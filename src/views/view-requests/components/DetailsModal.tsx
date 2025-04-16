@@ -5,21 +5,28 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
 import Foto1 from "/public/foto-1.jpg";
 import Foto2 from "/public/foto-2.jpg";
+import Foto3 from "/public/foto-3.jpg";
+import Foto4 from "/public/foto-4.jpg";
 import dynamic from "next/dynamic";
-import { Request } from "@/interfaces";
 import { RequestTable } from "@/views/view-create-request/interfaces";
-import { CircleCheck, CircleMinus, CircleSlash, RotateCw } from "lucide-react";
+import {
+  CircleCheck,
+  CircleMinus,
+  CircleSlash,
+  PackageOpen,
+  RotateCw,
+} from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import PhotoUpload from "./PhotoUpload";
+import Image from "next/image";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
@@ -29,44 +36,6 @@ interface DetailsModalProps {
   open: boolean;
   onClose: VoidFunction;
 }
-
-const fieldLabels = {
-  requester_type: "Tipo de solicitante",
-  requester_name: "Nombre del solicitante",
-  identification_number: "Número de identificación",
-  situation_type: "Tipo de situación",
-  request_date: "Fecha de solicitud",
-  response_date: "Fecha de respuesta",
-  status: "Estado",
-  confirmation: "Confirmación",
-  hour: "Hora",
-  requesterType: "Tipo de solicitante",
-  region: "Región",
-  tribunalCourt: "Tribunal o corte",
-  crime: "Delito",
-  lastName: "Apellido",
-  maternalLastName: "Apellido materno",
-  firstName: "Primer nombre",
-  isForeigner: "Es extranjero",
-  street: "Calle",
-  number: "Número",
-  blockApartmentHouse: "Bloque/Departamento/Casa",
-  commune: "Comuna",
-  highwayRouteKilometer: "Autopista/Ruta/Kilómetro",
-  populationCondominiumVilla: "Población/Condominio/Villa",
-  postalCode: "Código postal",
-  geographicCoordinates: "Coordenadas geográficas",
-  radius: "Radio",
-  complianceSchedule: "Horario de cumplimiento",
-  sectorCharacteristics: "Características del sector",
-  victimLastName: "Apellido de la víctima",
-  victimMaternalLastName: "Apellido materno de la víctima",
-  victimFirstName: "Primer nombre de la víctima",
-  victimRut: "RUT de la víctima",
-  victimEmail: "Correo de la víctima",
-  victimPhone: "Teléfono de la víctima",
-  victimWorkPhone: "Teléfono del trabajo de la víctima",
-};
 
 const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
   return (
@@ -88,41 +57,7 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="application-information">
-            <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3">
-              Estado de la solicitud
-            </div>
-            <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
-              <div className="font-semibold p-1 flex">Respuesta:</div>
-              <div className="text-end">
-                {request?.answer === "positive" && (
-                  <span className="bg-green-400 text-white p-1 rounded-md">
-                    Positivo
-                  </span>
-                )}
-
-                {request?.answer === "negative" && (
-                  <span className="bg-red-400 text-white p-1 rounded-md">
-                    Negativo
-                  </span>
-                )}
-                {request?.answer === "not-recommended" && (
-                  <div className="flex items-center gap-2">
-                    <span className="bg-orange-400 text-white p-1 rounded-md">
-                      No recomendado
-                    </span>
-                  </div>
-                )}
-
-                {request?.answer === "no-confirmed" && (
-                  <div className="flex items-center gap-2">
-                    <span className="bg-gray-400 text-white p-1 rounded-md">
-                      Sin respuesta
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+            {/*      <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
               <div className="font-semibold p-1 flex">Estado:</div>
               <div className="text-end ">
                 {request?.status === "confirmed" && (
@@ -153,11 +88,8 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                   </div>
                 )}
               </div>
-            </div>
-            <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
-              <div className="font-semibold p-1 flex">Fecha de emision:</div>
-              <div className="text-end">{request?.issue_date}</div>
-            </div>
+            </div> */}
+
             <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3">
               Información del solicitante
             </div>
@@ -575,54 +507,128 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
             </Accordion>
           </TabsContent>
           <TabsContent value="awardee-response">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border p-4 rounded-md">
+            {request?.status === "answered" ? (
               <div>
-                <Label className="text-sm font-bold">Estado</Label>
-                <span className="block text-gray-700">Positivo</span>
-              </div>
-              <div>
-                <Label className="text-sm font-bold">Cobertura mínima</Label>
-                <span className="block text-gray-700">100</span>
-              </div>
-              <div className="sm:col-span-3">
-                <Label className="text-sm font-bold mb-2 block">
-                  Ubicación
-                </Label>
-                <div className="animate-pulse bg-gray-200 rounded-md h-[200px] w-full">
-                  <Map
-                    latitude={-33.46651382914682}
-                    longitude={-70.66412385948745}
-                  />
+                <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3">
+                  Información de la ubicacion
                 </div>
-              </div>
-              <div>
-                <Label className="text-sm font-bold">
-                  Indicación de aspectos
-                </Label>
-                <span className="block text-gray-700">Geográficos</span>
-              </div>
-              <div className="sm:col-span-2">
-                <Label className="text-sm font-bold">
-                  Pruebas fotográficas
-                </Label>
-                <div className="flex gap-2 flex-wrap mt-2">
+                <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">Respuesta:</div>
+                  <div className="text-end ">
+                    <div className="flex items-center gap-2">
+                      <div>
+                        {request.answer === "positive" && (
+                          <span className="bg-green-400 text-white py-1 px-2 rounded-md">
+                            Positivo
+                          </span>
+                        )}
+
+                        {request.answer === "negative" && (
+                          <span className="bg-red-400 text-white py-1 px-2 rounded-md">
+                            Negativo
+                          </span>
+                        )}
+                        {request.answer === "not-recommended" && (
+                          <span className="bg-orange-400 text-white py-1 px-2 rounded-md">
+                            No recomendado
+                          </span>
+                        )}
+
+                        {request.answer === "no-confirmed" && (
+                          <div className="flex items-center gap-2">
+                            <span className="bg-gray-400 text-white py-1 px-2 rounded-md">
+                              Sin respuesta
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">
+                    Cobertura mínima:
+                  </div>
+                  <div className="text-end">
+                    {request.awardee_response.minimum_coverage}
+                  </div>
+                </div>
+
+                <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">Latitud:</div>
+                  <div className="text-end">
+                    {request.awardee_response.latitude}
+                  </div>
+                </div>
+
+                <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">Longitud:</div>
+                  <div className="text-end">
+                    {request.awardee_response.length}
+                  </div>
+                </div>
+
+                <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">
+                    Indicación de aspectos:
+                  </div>
+                  <div className="text-end">
+                    {request.awardee_response.indication_aspects}
+                  </div>
+                </div>
+
+                <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
+                  <div className="font-semibold p-1 flex">Valor:</div>
+                  <div className="text-end">
+                    {request.awardee_response.value}
+                  </div>
+                </div>
+                <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3 mb-5">
+                  Pruebas fotograficas
+                </div>
+                <div className="flex gap-2 flex-wrap">
                   <Image
                     width={70}
                     height={70}
                     src={Foto1}
                     alt="foto-1"
-                    className="rounded-md border"
+                    className="rounded-md"
                   />
+
                   <Image
                     width={70}
                     height={70}
                     src={Foto2}
                     alt="foto-2"
-                    className="rounded-md border"
+                    className="rounded-md"
+                  />
+
+                  <Image
+                    width={70}
+                    height={70}
+                    src={Foto3}
+                    alt="foto-3"
+                    className="rounded-md"
+                  />
+
+                  <Image
+                    width={70}
+                    height={70}
+                    src={Foto4}
+                    alt="foto-4"
+                    className="rounded-md"
                   />
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="h-[500px] flex justify-center items-center flex-col gap-3">
+                <h1 className="text-lg text-gray-600">
+                  No hay respuesta del adjudicado
+                </h1>
+                <PackageOpen size={100} color="gray" strokeWidth={1} />
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </DialogContent>

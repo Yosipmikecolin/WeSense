@@ -17,14 +17,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PhotoUpload from "./PhotoUpload";
-//import Map from "@/components/map/Map";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info, MapPinned } from "lucide-react";
+import { Info } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import Foto1 from "/public/foto-1.jpg";
@@ -32,27 +31,75 @@ import Foto2 from "/public/foto-2.jpg";
 import Foto3 from "/public/foto-3.jpg";
 import Foto4 from "/public/foto-4.jpg";
 import dynamic from "next/dynamic";
-import { Request } from "@/interfaces";
+import { RequestTable } from "@/views/view-create-request/interfaces";
+import { updatedRequest } from "@/api/request";
+import toast from "react-hot-toast";
+import { getDate } from "@/functions";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
 
 interface AddressModalProps {
-  request?: Request;
+  request?: RequestTable;
   isOpen: boolean;
   onClose: () => void;
+  refetch: VoidFunction;
 }
 
-const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
+const AddressModal = ({
+  isOpen,
+  onClose,
+  request,
+  refetch,
+}: AddressModalProps) => {
   const [status, setStatus] = useState<string>("");
-  const [coordinates, setCoordinates] = useState({ lat: "", lng: "" });
+  const [coordinates, setCoordinates] = useState({
+    lat: "",
+    lng: "",
+  });
 
-  const [fotos, setFotos] = useState<File[]>([]);
-  const [cobertura, setCobertura] = useState<string>("");
+  const [_images, setImages] = useState<File[]>([]);
+  const [minimumCoverage, setMinimumCoverage] = useState<string>("");
+  const [indicationAspects, setIndicationAspects] = useState("");
+  const [value, setValue] = useState("");
 
-  const handleSubmit = () => {
-    console.log({ status, coordinates, fotos, cobertura });
-    onClose();
+  const cleanInputs = () => {
+    setStatus("");
+    setCoordinates({
+      lat: "",
+      lng: "",
+    });
+    setValue("");
+    setIndicationAspects("");
+    setMinimumCoverage("");
+  };
+
+  const handleSubmit = async () => {
+    if (request) {
+      try {
+        await updatedRequest({
+          ...request,
+          response_date: getDate(),
+          answer: status,
+          status: "answered",
+          awardee_response: {
+            status,
+            length: coordinates.lng,
+            latitude: coordinates.lat,
+            minimum_coverage: minimumCoverage,
+            indication_aspects: indicationAspects,
+            photographic_evidence: [],
+            value,
+          },
+        });
+        refetch();
+        toast.success("Solicitud gestionada");
+        cleanInputs();
+        onClose();
+      } catch (error) {
+        toast.error("Error al gestionar la solicitud");
+      }
+    }
   };
 
   return (
@@ -72,9 +119,9 @@ const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
                   <SelectValue placeholder="Seleccione una opción" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="positivo">Positivo</SelectItem>
-                  <SelectItem value="negativo">Negativo</SelectItem>
-                  <SelectItem value="no-recomendable">
+                  <SelectItem value="positive">Positivo</SelectItem>
+                  <SelectItem value="negative">Negativo</SelectItem>
+                  <SelectItem value="not-recommended">
                     No recomendable
                   </SelectItem>
                 </SelectContent>
@@ -88,8 +135,8 @@ const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
                 type="number"
                 min="0"
                 max="100"
-                value={cobertura}
-                onChange={(e) => setCobertura(e.target.value)}
+                value={minimumCoverage}
+                onChange={(e) => setMinimumCoverage(e.target.value)}
               />
             </div>
           </div>
@@ -146,20 +193,16 @@ const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
                   }
                 }}
               />
-
-              <Button>
-                <MapPinned size={18} />
-              </Button>
             </div>
-            <div className="animate-pulse bg-gray-200 rounded-md h-[200px] w-full">
+            <div className="animate-pulse bg-gray-200 rounded-md h-[200px] w-full overflow-hidden">
               <Map
-                latitude={-33.46651382914682}
-                longitude={-70.66412385948745}
+                latitude={Number(coordinates.lat) || -33.46651382914682}
+                longitude={Number(coordinates.lng) || -70.66412385948745}
               />
             </div>
           </div>
 
-          {request?.confirmation === "return" && (
+          {request?.status === "return" && (
             <div>
               <Label htmlFor="note">Observación respuesta de devolución</Label>
               <Textarea id="note" name="note" required />
@@ -169,7 +212,10 @@ const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
           <div className="flex justify-between items-center gap-2 mb-2">
             <div className="flex flex-col gap-2 w-full">
               <Label htmlFor="calificacion">Indicación de aspectos</Label>
-              <Select onValueChange={setStatus} value={status}>
+              <Select
+                onValueChange={setIndicationAspects}
+                value={indicationAspects}
+              >
                 <SelectTrigger id="options">
                   <SelectValue placeholder="Seleccione una opción" />
                 </SelectTrigger>
@@ -185,7 +231,11 @@ const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
             </div>
             <div className="flex flex-col gap-2 w-full">
               <Label htmlFor="value">Valor</Label>
-              <Input placeholder="Valor" />
+              <Input
+                placeholder="Valor"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -225,8 +275,19 @@ const AddressModal = ({ isOpen, onClose, request }: AddressModalProps) => {
         </div>
 
         <DialogFooter className="flex items-center justify-between">
-          <PhotoUpload onPhotosSelected={setFotos} />
-          <Button variant={"primary"} onClick={handleSubmit}>
+          <PhotoUpload onPhotosSelected={setImages} />
+          <Button
+            disabled={
+              status === "" ||
+              minimumCoverage === "" ||
+              indicationAspects === "" ||
+              value === "" ||
+              coordinates.lat === "" ||
+              coordinates.lng === ""
+            }
+            variant={"primary"}
+            onClick={handleSubmit}
+          >
             Guardar cambios
           </Button>
         </DialogFooter>

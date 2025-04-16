@@ -1,5 +1,5 @@
 import { User, UserPost } from "@/db/user";
-import { axiosConfig, axiosConfigBuddie } from "./config";
+import { axiosConfig } from "./config";
 import {
   FormDataCarrier,
   FormDataCarrierPost,
@@ -73,6 +73,10 @@ export const getRequest = async () => {
 
 export const addRequest = async (request: RequestPost) => {
   return await axiosConfig.post("/requests/", request);
+};
+
+export const updatedRequest = async (request: RequestTable) => {
+  return await axiosConfig.put(`/requests/${request._id}`, request);
 };
 
 //* PORTADORES

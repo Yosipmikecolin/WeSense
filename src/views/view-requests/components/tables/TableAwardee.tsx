@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -16,12 +18,9 @@ import {
   CircleSlash,
   Ellipsis,
   Eye,
-  FileCheck2,
+  FilePen,
   Info,
-  Mail,
-  Redo2,
   RotateCw,
-  SendHorizontal,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
@@ -33,15 +32,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "../DetailsModal";
-import ReturnRequestModal from "../ReturnRequestModal";
 import ReturnDetailsModal from "../ReturnDetailsModal";
-import { toast } from "@/hooks/use-toast";
 import FilterStatus from "../FilterStatus";
 import {
   Popover,
@@ -50,32 +43,24 @@ import {
 } from "@/components/ui/popover";
 import { useQueryRequest } from "@/api/queries";
 import { RequestTable } from "@/views/view-create-request/interfaces";
+import AddressModal from "../AddressModal";
 
-export const TableAdministrator = () => {
+export const TableAwardee = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
   const [isModalReturnOpenDetails, setIsModaReturnlOpenDetails] =
     useState(false);
-  const email = "sgamgc@correo.com";
-  const subject = encodeURIComponent("SGAMGC");
-  const body = encodeURIComponent("Respuesta de la solicitud");
-  const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
 
+  const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
   const [stateFilter, setStateFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
-  const { data: requests, isLoading } = useQueryRequest();
+  const { data: requests, isLoading, refetch } = useQueryRequest();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
-
-  const handleClick = () => {
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
-    window.open(gmailUrl, "_blank");
-  };
 
   return (
     <div>
@@ -122,7 +107,11 @@ export const TableAdministrator = () => {
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600 ">
-                  FECHA DE RESPUESTA
+                  FECHA DE DEVOLUCIÓN
+                </TableHead>
+
+                <TableHead className="text-xs font-bold text-gray-600 ">
+                  TIEMPO PARA RESPONDER
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600">
@@ -134,20 +123,14 @@ export const TableAdministrator = () => {
                       <ul>
                         <li className="flex items-center gap-2">
                           <CircleSlash size={17} color="#B7B7B7" />
-                          Sin respuesta
+                          Sin responder
                         </li>
-
+                        <li className="flex items-center gap-2">
+                          <CircleCheck size={17} color="#16a34a" /> Respondido
+                        </li>
                         <li className="flex items-center gap-2">
                           <RotateCw size={17} color="#FF9D23" />
                           Retornado
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <CircleCheck size={17} color="#16a34a" /> Confirmado
-                        </li>
-
-                        <li className="flex items-center gap-2">
-                          <CircleMinus size={17} color="#577BC1" />
-                          El adjudicado respondio
                         </li>
                       </ul>
                     </PopoverContent>
@@ -164,47 +147,37 @@ export const TableAdministrator = () => {
                   <TableCell>{request.requester.userType}</TableCell>
                   <TableCell>{request.requester.fullName}</TableCell>
                   <TableCell className="text-xs ">
-                    <div className="w-[110px]">
+                    <div className="w-[120px]">
                       {request.answer === "positive" && (
-                        <span className="bg-green-400 text-white p-1 rounded-md">
+                        <span className="bg-green-400 text-white py-1 px-2 rounded-md">
                           Positivo
                         </span>
                       )}
 
                       {request.answer === "negative" && (
-                        <span className="bg-red-400 text-white p-1 rounded-md">
+                        <span className="bg-red-400 text-white py-1 px-2 rounded-md">
                           Negativo
                         </span>
                       )}
                       {request.answer === "not-recommended" && (
-                        <div className="flex items-center gap-2">
-                          <span className="bg-orange-400 text-white p-1 rounded-md">
-                            No recomendado
-                          </span>
-                        </div>
+                        <span className="bg-orange-400 text-white py-1 px-2 rounded-md">
+                          No recomendado
+                        </span>
                       )}
 
                       {request.answer === "no-confirmed" && (
-                        <div className="flex items-center gap-2">
-                          <span className="bg-gray-400 text-white p-1 rounded-md">
-                            Sin respuesta
-                          </span>
-                        </div>
+                        <span className="bg-gray-400 text-white py-1 px-2 rounded-md">
+                          Sin respuesta
+                        </span>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>{request.issue_date}</TableCell>
 
                   <TableCell>{request.response_date || "----"}</TableCell>
+                  <TableCell>{request.time_respond || "----"}</TableCell>
 
                   <TableCell>
-                    {request.status === "confirmed" && (
-                      <div className="flex items-center gap-2">
-                        <CircleCheck size={17} color="#16a34a" />
-                        <span className="text-sm">Confirmado</span>
-                      </div>
-                    )}
-
                     {request.status === "returned" && (
                       <div className="flex gap-2 items-center">
                         <RotateCw size={17} color="#FF9D23" />
@@ -215,14 +188,14 @@ export const TableAdministrator = () => {
                     {request.status === "unconfirmed" && (
                       <div className="flex items-center gap-2">
                         <CircleSlash size={17} color="#B7B7B7" />
-                        <span className="text-sm">Sin respuesta</span>
+                        <span className="text-sm">Sin responder</span>
                       </div>
                     )}
 
                     {request.status === "answered" && (
                       <div className="flex items-center gap-2">
-                        <CircleMinus size={17} color="#577BC1" />
-                        <span className="text-sm">El adjudicado respondio</span>
+                        <CircleCheck size={17} color="#16a34a" />
+                        <span className="text-sm">Respondido</span>
                       </div>
                     )}
                   </TableCell>
@@ -249,58 +222,42 @@ export const TableAdministrator = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        {request.status === "answered" && (
+                        {request.status === "returned" && (
                           <DropdownMenuItem
-                            onClick={() =>
-                              toast({
-                                title: "Solicitud confirmada",
-                                className: "bg-green-500 text-white",
-                                description:
-                                  "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
-                              })
-                            }
+                            onClick={() => {
+                              setSelectedRequest(request);
+                              setIsModalOpen(true);
+                            }}
                           >
-                            <div className="flex items-center gap-2 cursor-pointer">
+                            <div
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={() => setSelectedRequest(request)}
+                            >
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileCheck2 />
+                                <FilePen />
                               </Button>
-                              <span>Confirmar</span>
+                              Gestionar devolución
                             </div>
                           </DropdownMenuItem>
                         )}
 
-                        {request.status === "answered" && (
+                        {request.status === "unconfirmed" && (
                           <DropdownMenuItem
-                            onClick={() => setIsModaReturnlOpen(true)}
+                            onClick={() => {
+                              setSelectedRequest(request);
+                              setIsModalOpen(true);
+                            }}
                           >
-                            <div className="flex items-center gap-2 cursor-pointer">
+                            <div
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={() => setSelectedRequest(undefined)}
+                            >
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Redo2 />
+                                <FilePen />
                               </Button>
-                              <span>Devolver</span>
+                              Gestionar
                             </div>
                           </DropdownMenuItem>
-                        )}
-
-                        {request.status === "confirmed" && (
-                          <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>
-                              <div className="flex items-center gap-2 cursor-pointer">
-                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                  <SendHorizontal />
-                                </Button>
-                                <span>Enviar IFT</span>
-                              </div>
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                              <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={handleClick}>
-                                  <Mail size={15} />
-                                  Email
-                                </DropdownMenuItem>
-                              </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                          </DropdownMenuSub>
                         )}
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -317,24 +274,17 @@ export const TableAdministrator = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <ReturnRequestModal
-        open={isModalReturnOpen}
-        onClose={() => setIsModaReturnlOpen(false)}
-      />
-
       <DetailsModal
         open={isModalOpenDetails}
         request={selectedRequest}
         onClose={() => setIsModalOpenDetails(false)}
       />
-      {/*       
-
       <AddressModal
         request={selectedRequest}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-      /> */}
-
+        refetch={refetch}
+      />
       <ReturnDetailsModal
         open={isModalReturnOpenDetails}
         onClose={() => setIsModaReturnlOpenDetails(false)}

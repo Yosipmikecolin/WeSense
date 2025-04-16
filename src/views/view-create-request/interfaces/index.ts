@@ -26,6 +26,7 @@ export interface FormDataRequest {
     latitude: string;
     length: string;
     indication_aspects: string;
+    value: string;
     photographic_evidence: string[];
   };
 }

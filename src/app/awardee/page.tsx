@@ -1,10 +1,6 @@
 import { Dashboard } from "@/components";
-import {
-  ViewCreationEvents,
-  ViewProcessManagement,
-  ViewReport,
-  ViewRequests,
-} from "@/views";
+import { ViewCreationEvents, ViewProcessManagement, ViewReport } from "@/views";
+import { TableAwardee } from "@/views/view-requests/components/tables/TableAwardee";
 import { BookText, CalendarPlus, Files, RefreshCcwDot } from "lucide-react";
 
 const Awardee = () => {
@@ -12,7 +8,7 @@ const Awardee = () => {
     {
       icon: <Files size={17} />,
       label: "Solicitudes",
-      content: <ViewRequests />,
+      content: <TableAwardee />,
     },
     {
       icon: <RefreshCcwDot size={17} />,
