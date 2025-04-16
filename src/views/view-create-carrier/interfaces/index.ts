@@ -110,6 +110,12 @@ export interface Step6Data {
   first_name: string;
   surname: string;
   email: string;
+  line_1: string;
+  line_2: string;
+  line_3: string;
+  city: string;
+  county: string;
+  telephone: string;
 }
 
 export interface StepProps1 {

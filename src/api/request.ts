@@ -90,6 +90,12 @@ export const getCarriersAPI = async () => {
           first_name: string;
           surname: string;
           email: string;
+          line_1: string;
+          line_2: string;
+          line_3: string;
+          city: string;
+          county: string;
+          telephone: string;
         }[];
       };
     }>("/api/buddie?method=setup.wearer.grid")

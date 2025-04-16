@@ -36,7 +36,7 @@ const Admin = () => {
     },
     {
       icon: <Link size={17} />,
-      label: "Portadores",
+      label: "Persona SC",
       content: <ViewCarries />,
     },
     {

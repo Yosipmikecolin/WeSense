@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -35,10 +34,9 @@ const Header = () => {
   };
 
   async function onLogout() {
-    const response_logout = await axios.post("/api/buddie", {
+/*     const response_logout = await axios.post("/api/buddie", {
       method: "auth.logout",
-    });
-    console.log("LOGOUT: ", response_logout);
+    }); */
     router.push("/");
   }
 

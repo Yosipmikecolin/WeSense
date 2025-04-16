@@ -96,7 +96,7 @@ const ViewCreateRequest = () => {
     first_name: formDataCarrier.personalData.fullName,
     surname: formDataCarrier.personalData.paternalSurname,
     ref: "555",
-    email: formDataCarrier.personalData.type_current,
+    email: formDataCarrier.cause.penatype,
     // notes: "",
     start_tagging_time: "2025-04-13 00:15:00",
     end_tagging_time: "2025-04-15 00:45:00",
@@ -108,9 +108,9 @@ const ViewCreateRequest = () => {
     address_name: formDataCarrier.personalData.nationality,
     line_1: formDataCarrier.personalData.maritalStatus,
     line_2: formDataCarrier.personalData.dateBirth,
-    line_3: formDataCarrier.personalData.run,
-    city: "Chile",
-    county: "Santiago",
+    line_3: formDataCarrier.personalData.gender,
+    city: "Santiago",
+    county: formData.carrier.personalData.nationality,
     postcode: "111221",
     address_type_id: "2",
     telephone: formDataCarrier.personalData.phone,
@@ -119,8 +119,8 @@ const ViewCreateRequest = () => {
     responsible_officer_id: "2452",
     country_id: "185",
     // risk_level_id: "",
-    lat: "",
-    lon: "",
+    lat: "4.650221",
+    lon: "-74.070586",
   };
 
   const handleNext = () => {
@@ -299,7 +299,7 @@ const ViewCreateRequest = () => {
           <Button
             variant={"primary"}
             onClick={() => {
-              if (currentStep === steps.length - 2) {
+              if (currentStep === 1) {
                 handleSubmit();
               } else {
                 handleNext();
@@ -307,7 +307,7 @@ const ViewCreateRequest = () => {
             }}
             disabled={loading || !completeForm}
           >
-            {currentStep === steps.length - 2 ? (
+            {currentStep === 1 ? (
               loading ? (
                 <div className="flex justify-center items-center gap-3">
                   <div className="loader-button" />
