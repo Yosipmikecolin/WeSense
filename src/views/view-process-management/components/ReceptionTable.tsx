@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ellipsis, Eye, Pencil, SendHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,12 +21,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { data1 } from "../data";
 import DetailsModal from "./DetailsModal";
+import axios from "axios";
+import { ReceptionType } from "./ProcessReception";
+import DeleteModal from "./DeleteModal";
 
-const ReceptionTable = () => {
+interface Props {
+  onUpdate: (type: string, reception: ReceptionType) => void;
+}
+
+const ReceptionTable = ({ onUpdate }: Props) => {
+  const [data, setData] = useState<ReceptionType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const getAll = async () => {
+    const response = await axios.get(`/api/awardee/reception`);
+    setData(response.data);
+  };
+
+  const onDelete = async (item: ReceptionType) => {
+    setSelectedToDelete(item._id);
+    setIsModalDeleteOpen(true);
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   return (
     <div>
@@ -38,7 +61,9 @@ const ReceptionTable = () => {
                 <TableHead className="text-xs font-bold text-gray-600">
                   NÚMERO DE EXPEDIENTE
                 </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600"></TableHead>
+                <TableHead className="text-xs font-bold text-gray-600">
+                  FECHA
+                </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
                   TIPO DE DOCUMENTO
                 </TableHead>
@@ -51,12 +76,12 @@ const ReceptionTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data1.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.numeroExpediente}</TableCell>
-                  <TableCell>{item.fechaRecepcion}</TableCell>
-                  <TableCell>{item.tipoDocumento}</TableCell>
-                  <TableCell>{item.contenidoDocumento}</TableCell>
+              {data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.caseNumber}</TableCell>
+                  <TableCell>{item.receptionDate}</TableCell>
+                  <TableCell>{item.documentType}</TableCell>
+                  <TableCell>{item.documentContent}</TableCell>
                   <TableCell className="flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
@@ -78,7 +103,9 @@ const ReceptionTable = () => {
                             <span>Detalles</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => onUpdate("reception", item)}
+                        >
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
@@ -86,7 +113,7 @@ const ReceptionTable = () => {
                             <span>Editar</span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(item)}>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Trash />
@@ -97,7 +124,7 @@ const ReceptionTable = () => {
                         <DropdownMenuItem>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <SendHorizontal  />
+                              <SendHorizontal />
                             </Button>
                             <span>Informar y enviar al tribunal</span>
                           </div>
@@ -118,11 +145,17 @@ const ReceptionTable = () => {
         title="Detalles del documento"
         data={selectedDocument}
         fields={[
-          { key: "numeroExpediente", label: "Número de Expediente" },
-          { key: "fechaRecepcion", label: "Fecha de Recepción" },
-          { key: "tipoDocumento", label: "Tipo de Documento" },
-          { key: "contenidoDocumento", label: "Contenido del Documento" },
+          { key: "caseNumber", label: "Número de Expediente" },
+          { key: "receptionDate", label: "Fecha de Recepción" },
+          { key: "documentType", label: "Tipo de Documento" },
+          { key: "documentContent", label: "Contenido del Documento" },
         ]}
+      />
+      <DeleteModal
+        id={selectedToDelete}
+        open={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        // refetch={refetch}
       />
     </div>
   );

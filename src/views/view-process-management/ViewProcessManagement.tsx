@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { PlusCircle } from "lucide-react";
-import ProcessReception from "./components/ProcessReception";
+import ProcessReception, { ReceptionType } from "./components/ProcessReception";
 import InstallationProcess from "./components/InstallationProcess";
 import ProcessManagementResolutions from "./components/ProcessManagementResolutions";
 import ProcessManagementAlarms from "./components/ProcessManagementAlarms";
@@ -29,6 +29,12 @@ import { DropdownFilter } from "@/components";
 const ViewProcessManagement = () => {
   const [dialogContent, setDialogContent] = useState<ReactNode | null>(null);
   const [idFilter, setIdFilter] = useState(1);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [isProcessReception, setIsProcessReception] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  const [reception, setReception] = useState<ReceptionType | null>(null);
+
   const filters = [
     { id: 1, name: "Numero" },
     { id: 2, name: "Tipo" },
@@ -39,80 +45,115 @@ const ViewProcessManagement = () => {
     setDialogContent(content);
   };
 
+  const closeDialog = (type: string) => {
+    if (type === "reception") {
+      setIsProcessReception(false);
+      setIsShowModal(false);
+    }
+  };
+
+  const onChangeModal = (e: boolean) => {
+    setIsShowModal(e);
+    if (isProcessReception && isUpdate) {
+      setIsUpdate(false);
+      setReception(null);
+    }
+  };
+
+  const show = (type: string) => {
+    if (type === "reception") {
+      setIsShowModal(true);
+      setIsProcessReception(true);
+    }
+  };
+
+  const onUpdate = (type: string, reception: ReceptionType) => {
+    if (type === "reception") {
+      setIsUpdate(true);
+      setReception(reception);
+      show(type);
+    }
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
         Agendamiento y ejecución de procesos
       </h1>
-      <Dialog>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="mt-5">
-            <div className="flex items-center justify-between">
-              <Button variant="outline">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Nuevo Proceso
-              </Button>
-              <div className="flex gap-2">
-                <Input
-                  maxLength={30}
-                  placeholder={`Buscar por ${filters
-                    .find((i) => i.id === idFilter)
-                    ?.name.toLowerCase()}`}
-                />
-                <DropdownFilter
-                  filters={filters}
-                  idFilter={idFilter}
-                  setIdFilter={setIdFilter}
-                />
-              </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="mt-5">
+          <div className="flex items-center justify-between">
+            <Button variant="outline">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Nuevo Proceso
+            </Button>
+            <div className="flex gap-2">
+              <Input
+                maxLength={30}
+                placeholder={`Buscar por ${filters
+                  .find((i) => i.id === idFilter)
+                  ?.name.toLowerCase()}`}
+              />
+              <DropdownFilter
+                filters={filters}
+                idFilter={idFilter}
+                setIdFilter={setIdFilter}
+              />
             </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={() => openDialog(<ProcessReception />)}
-              >
-                Recepción de Sentencias
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={() => openDialog(<InstallationProcess />)}
-              >
-                Instalación de Dispositivo
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={() => openDialog(<ProcessManagementResolutions />)}
-              >
-                Gestión de Resoluciones
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={() => openDialog(<ProcessManagementAlarms />)}
-              >
-                Gestión de Alarmas
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={() => openDialog(<ProcessTechnicalSupport />)}
-              >
-                Soporte Técnico
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={() => openDialog(<DeactivationProcess />)}
-              >
-                Desactivación de Dispositivo
-              </DropdownMenuItem>
-            </DialogTrigger>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <DialogContent>{dialogContent}</DialogContent>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {/* <DialogTrigger asChild> */}
+          <DropdownMenuItem onSelect={() => show("reception")}>
+            Recepción de Sentencias
+          </DropdownMenuItem>
+          {/* </DialogTrigger> */}
+          {/* <DialogTrigger asChild> */}
+          <DropdownMenuItem
+            onSelect={() => openDialog(<InstallationProcess />)}
+          >
+            Instalación de Dispositivo
+          </DropdownMenuItem>
+          {/* </DialogTrigger> */}
+          {/* <DialogTrigger asChild> */}
+          <DropdownMenuItem
+            onSelect={() => openDialog(<ProcessManagementResolutions />)}
+          >
+            Gestión de Resoluciones
+          </DropdownMenuItem>
+          {/* </DialogTrigger> */}
+          {/* <DialogTrigger asChild> */}
+          <DropdownMenuItem
+            onSelect={() => openDialog(<ProcessManagementAlarms />)}
+          >
+            Gestión de Alarmas
+          </DropdownMenuItem>
+          {/* </DialogTrigger> */}
+          {/* <DialogTrigger asChild> */}
+          <DropdownMenuItem
+            onSelect={() => openDialog(<ProcessTechnicalSupport />)}
+          >
+            Soporte Técnico
+          </DropdownMenuItem>
+          {/* </DialogTrigger> */}
+          {/* <DialogTrigger asChild> */}
+          <DropdownMenuItem
+            onSelect={() => openDialog(<DeactivationProcess />)}
+          >
+            Desactivación de Dispositivo
+          </DropdownMenuItem>
+          {/* </DialogTrigger> */}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Dialog open={isShowModal} onOpenChange={onChangeModal}>
+        <DialogContent>
+          {isProcessReception && (
+            <ProcessReception
+              reception={reception}
+              onClose={() => closeDialog("reception")}
+            />
+          )}
+        </DialogContent>
       </Dialog>
 
       <Tabs defaultValue="reception" className="mt-4">
@@ -125,7 +166,7 @@ const ViewProcessManagement = () => {
           <TabsTrigger value="deactivation">Desactivación</TabsTrigger>
         </TabsList>
         <TabsContent value="reception">
-          <ReceptionTable />
+          <ReceptionTable onUpdate={onUpdate} />
         </TabsContent>
         <TabsContent value="facility">
           <InstallationTable />

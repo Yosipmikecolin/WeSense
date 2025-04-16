@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +10,23 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import axios from "axios";
 
-const ProcessReception = () => {
+export interface ReceptionType {
+  _id: string;
+  caseNumber: string;
+  receptionDate: string;
+  documentType: string;
+  documentContent: string;
+}
+
+interface Props {
+  onClose: () => void;
+  reception: ReceptionType | null;
+}
+
+const ProcessReception = ({ onClose, reception }: Props) => {
+  const [isUpdate, setIsUpdate] = useState(false);
   const [formData, setFormData] = useState({
     caseNumber: "",
     receptionDate: "",
@@ -25,10 +40,47 @@ const ProcessReception = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const save = async () => {
+    const response = await axios.post(`/api/awardee/reception`, formData);
+    setFormData({
+      caseNumber: "",
+      receptionDate: "",
+      documentType: "",
+      documentContent: "",
+    });
+    onClose();
+  };
+
+  const update = async () => {
+    const data = {
+      ...reception,
+      ...formData,
+    };
+    const response = await axios.put(`/api/awardee/reception`, data);
+    setFormData({
+      caseNumber: "",
+      receptionDate: "",
+      documentType: "",
+      documentContent: "",
+    });
+    onClose();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form data:", formData);
+    if (isUpdate) {
+      update();
+    } else {
+      save();
+    }
   };
+
+  useEffect(() => {
+    if (reception) {
+      setIsUpdate(true);
+      setFormData(reception);
+    }
+  }, [reception]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -59,7 +111,7 @@ const ProcessReception = () => {
           id="receptionDate"
           name="receptionDate"
           type="date"
-          value={formData.receptionDate}
+          value={formData.receptionDate.split("T")[0]}
           onChange={handleChange}
         />
       </div>
@@ -88,7 +140,7 @@ const ProcessReception = () => {
       </div>
 
       <Button type="submit" variant={"primary"}>
-        Register Reception
+        {isUpdate ? "Editar Recepción" : "Registrar Recepción"}
       </Button>
     </form>
   );
