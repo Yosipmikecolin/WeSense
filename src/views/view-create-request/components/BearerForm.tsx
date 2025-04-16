@@ -86,7 +86,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
     }
   }, [requesterType]);
 
-  const selectCarrier = (value: string) => {
+/*   const selectCarrier = (value: string) => {
     setSelectedCarrier(value);
     const selectRequirent = carriers.find(
       (i) =>
@@ -97,6 +97,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
         ...selectRequirent,
         _id: generateUUID(),
         wearer: {
+          
           surname: "",
           id: "",
           first_name: "",
@@ -104,7 +105,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
         },
       });
     }
-  };
+  }; */
 
   return (
     <div className="space-y-4">
@@ -130,7 +131,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
         <Label htmlFor="requester">Portador</Label>
         <Select
           value={selectedCarrier}
-          onValueChange={selectCarrier}
+          //onValueChange={selectCarrier}
           disabled={!requesterType || loading}
         >
           <SelectTrigger id="requester" className="w-full">
