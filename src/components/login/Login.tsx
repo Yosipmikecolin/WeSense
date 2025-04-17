@@ -188,6 +188,23 @@ const Login = () => {
           navigation.push("/dmt");
         }, 500);
       }
+    } else if (username === "crs@gmail.com" && password === "12345") {
+      setLoading(true);
+      const is_valid = await loginBuddie(
+        "yosip.parrado@wesense.com.co",
+        "Yp2025$pY"
+      );
+      if (is_valid) {
+        localStorage.setItem("email", "crs@gmail.com");
+        setTimeout(() => {
+          toast({
+            title: "Acceso CRS",
+            description: "crs@gmail.com",
+          });
+          setUrlCaptcha("");
+          navigation.push("/dmt");
+        }, 500);
+      }
     } else {
       toast({
         title: "Error",
