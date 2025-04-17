@@ -12,20 +12,13 @@ import Foto3 from "/public/foto-3.jpg";
 import Foto4 from "/public/foto-4.jpg";
 import dynamic from "next/dynamic";
 import { RequestTable } from "@/views/view-create-request/interfaces";
-import {
-  CircleCheck,
-  CircleMinus,
-  CircleSlash,
-  PackageOpen,
-  RotateCw,
-} from "lucide-react";
+import { PackageOpen } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import PhotoUpload from "./PhotoUpload";
 import Image from "next/image";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
@@ -511,7 +504,8 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
             </Accordion>
           </TabsContent>
           <TabsContent value="awardee-response">
-            {request?.status === "answered" ? (
+            {request?.status === "answered" ||
+            request?.status === "confirmed" ? (
               <div>
                 <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3">
                   Información de la ubicacion

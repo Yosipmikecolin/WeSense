@@ -34,12 +34,9 @@ import MonitoringForm from "../view-create-carrier/components/MonitoringForm";
 import InclusionZoneForm from "../view-create-carrier/components/InclusionZoneForm";
 import ExclusionZoneForm from "../view-create-carrier/components/ExclusionZoneForm";
 import DataForm from "../view-create-carrier/components/DataForm";
-import axios from "axios";
-import { useBuddieStore } from "@/store";
 
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const { token, setToken } = useBuddieStore();
   const steps = [
     "Requirente",
     "Persona sujeta a control",

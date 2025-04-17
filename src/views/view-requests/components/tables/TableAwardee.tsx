@@ -108,7 +108,7 @@ export const TableAwardee = () => {
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600 ">
-                  FECHA DE DEVOLUCIÓN
+                  FECHA DE RESPUESTA
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600 ">
@@ -184,7 +184,6 @@ export const TableAwardee = () => {
                       </div>
                     </TableCell>
                     <TableCell>{request.issue_date}</TableCell>
-
                     <TableCell>{request.response_date || "----"}</TableCell>
                     <TableCell>{request.time_respond || "----"}</TableCell>
 

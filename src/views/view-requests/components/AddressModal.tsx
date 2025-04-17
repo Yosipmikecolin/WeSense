@@ -82,6 +82,7 @@ const AddressModal = ({
         await updatedRequest({
           ...request,
           response_date: getDate(),
+          time_respond: "",
           answer: status,
           status: "answered",
           awardee_response: {

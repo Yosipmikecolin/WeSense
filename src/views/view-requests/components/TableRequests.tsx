@@ -42,9 +42,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
-import DetailsModal from "./DetailsModal";
-import ReturnRequestModal from "./ReturnRequestModal";
-import ReturnDetailsModal from "./ReturnDetailsModal";
+
 import { toast } from "@/hooks/use-toast";
 import FilterStatus from "./FilterStatus";
 import {
@@ -504,10 +502,7 @@ const TableRequests = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <ReturnRequestModal
-        open={isModalReturnOpen}
-        onClose={() => setIsModaReturnlOpen(false)}
-      />
+
       {/*    <DetailsModal
         open={isModalOpenDetails}
         request={selectedRequest}
@@ -519,11 +514,6 @@ const TableRequests = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       /> */}
-
-      <ReturnDetailsModal
-        open={isModalReturnOpenDetails}
-        onClose={() => setIsModaReturnlOpenDetails(false)}
-      />
     </div>
   );
 };

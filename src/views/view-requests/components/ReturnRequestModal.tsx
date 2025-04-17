@@ -16,9 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
 import { RequestTable } from "@/views/view-create-request/interfaces";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface ReturnRequestModalProps {
   type: "requester" | "awardee";
@@ -59,16 +59,9 @@ const ReturnRequestModal = ({
           });
           clsoeModal();
           refetch();
-          toast({
-            title: "Se regreso la solicitud",
-            className: "bg-green-500 text-white",
-            description: "Esta solicitud no paso la revision.",
-          });
+          toast.success("Se regreso la solicitud");
         } catch (error) {
-          toast({
-            title: "Error al devolver la solicitud",
-            className: "bg-red-500 text-white",
-          });
+          toast.error("Error al devolver la solicitud");
         } finally {
           setLoading(false);
         }
@@ -88,16 +81,9 @@ const ReturnRequestModal = ({
           });
           clsoeModal();
           refetch();
-          toast({
-            title: "Se regreso la solicitud",
-            className: "bg-green-500 text-white",
-            description: "Esta solicitud no paso la revision.",
-          });
+          toast.success("Se regreso la solicitud");
         } catch (error) {
-          toast({
-            title: "Error al devolver la solicitud",
-            className: "bg-red-500 text-white",
-          });
+          toast.error("Error al devolver la solicitud");
         } finally {
           setLoading(false);
         }
