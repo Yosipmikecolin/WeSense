@@ -1,0 +1,202 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Check,
+  Delete,
+  Ellipsis,
+  Eye,
+  Pencil,
+  PlusCircle,
+  SendHorizontal,
+  Trash,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table as TableUI,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Pagination } from "@/components";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import DetailsModal from "./DetailsModal";
+import axios from "axios";
+import DeleteModalInstalation from "./DeleteModalInstalation";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { FilterMatchMode } from "primereact/api";
+import { ProcessType } from "../ViewProcessManagement";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { InputText } from "primereact/inputtext";
+
+const TableInstalation = () => {
+  // const [data, setData] = useState<InstalationType[]>([]);
+  const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const [products, setProducts] = useState<ProcessType[]>([]);
+
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    type_law: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    rit: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    ruc: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    run: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    type_resolution: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  });
+
+  const getAllProcess = async () => {
+    const response = await axios.get(`/api/awardee`);
+    console.log("DATA: ", response.data);
+    setProducts(response.data);
+  };
+
+  useEffect(() => {
+    getAllProcess();
+  }, []);
+
+  const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+
+    // @ts-ignore
+    _filters["global"].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
+
+  const renderHeader = () => {
+    return (
+      <div className="flex justify-between">
+        <div className="flex flex-1"></div>
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search" />
+          <InputText
+            className="p-1"
+            value={globalFilterValue}
+            onChange={onGlobalFilterChange}
+            placeholder="Filtrar..."
+          />
+        </IconField>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Card>
+        <CardContent>
+          <DataTable
+            className="mt-6"
+            dataKey="_id"
+            value={products}
+            tableStyle={{ minWidth: "50rem" }}
+            size="small"
+            filters={filters}
+            columnResizeMode="expand"
+            resizableColumns
+            stripedRows
+            filterDisplay="row"
+            header={renderHeader}
+            globalFilterFields={[
+              "type_law",
+              "rit",
+              "ruc",
+              "run",
+              "type_resolution",
+            ]}
+          >
+            <Column field="date" header="Fecha"></Column>
+            <Column field="type_law" sortable header="Tipo de ley"></Column>
+            <Column field="rit" sortable header="RIT"></Column>
+            <Column field="ruc" sortable header="RUC"></Column>
+            <Column field="run" sortable header="RUN"></Column>
+            <Column field="date_limit" header="Fecha limite"></Column>
+            {/* <Column
+              field="type_resolution"
+              sortable
+              header="Tipo de resolución"
+            ></Column> */}
+            <Column
+              field="document"
+              header="Documento adjunto"
+              body={<span>Sin documento</span>}
+            ></Column>
+            <Column field="status" header="Estado"></Column>
+            <Column
+              field="actions"
+              header="Acciones"
+              body={
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                    <Ellipsis />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => {}}>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                          <Check />
+                        </Button>
+                        <span>
+                          La persona no llega después de la fecha límite
+                        </span>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => {}}>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                          <Delete />
+                        </Button>
+                        <span>La persona llega dentro de la fecha límite</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              }
+            ></Column>
+          </DataTable>
+        </CardContent>
+      </Card>
+      <Pagination />
+      <DetailsModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Detalles del instalación"
+        data={selectedDocument}
+        fields={[
+          { key: "deviceStatus", label: "Estado del Dispositivo" },
+          { key: "installationLocation", label: "Lugar de Instalación" },
+          { key: "deviceType", label: "Tipo de Dispositivo" },
+          { key: "serialNumber", label: "Número de Serie" },
+          { key: "installationDate", label: "Fecha de Instalación" },
+        ]}
+      />
+      <DeleteModalInstalation
+        id={selectedToDelete}
+        open={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        // refetch={refetch}
+      />
+    </div>
+  );
+};
+
+export default TableInstalation;

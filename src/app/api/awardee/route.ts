@@ -6,6 +6,9 @@ import { getDate } from "@/functions";
 export async function GET() {
   await connectDB();
   const awardees = await Awardee.find();
+  // const awardees = await Awardee.find({
+  //   type_resolution: { $nin: ["Sin estado"] },
+  // });
   return NextResponse.json(awardees);
 }
 

@@ -11,28 +11,30 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ProcessType } from "../ViewProcessManagement";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface Props {
-  id?: string;
   open: boolean;
-  refetch?: VoidFunction;
+  process?: ProcessType;
   onClose: VoidFunction;
 }
 
-const DeleteModal = ({ id, open, onClose, refetch }: Props) => {
+const ProcessModal = ({ onClose, process, open }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (id) {
+    if (process) {
       try {
         setLoading(true);
         const response = await axios.delete(`/api/awardee/reception`, {
           params: {
-            id,
+            process,
           },
         });
         // refetch();
-        onClose();
+        // onClose();
       } catch (error) {
         toast.error("Ocurrio un error");
       } finally {
@@ -40,34 +42,33 @@ const DeleteModal = ({ id, open, onClose, refetch }: Props) => {
       }
     }
   };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogClose />
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-center">
-            Eliminar recepción
-          </DialogTitle>
+          <DialogTitle>Aceptar Proceso</DialogTitle>
         </DialogHeader>
-        <div>
-          <p className="text-sm text-center">
-            ¿Estas seguro que deseas eliminar esta recepción?
-          </p>
-          <br />
-          <Button
-            variant={"destructive"}
-            size={"lg"}
-            className="w-full mt-2 text-md"
-            type="submit"
-            disabled={loading}
-            onClick={handleSubmit}
-          >
-            {loading ? <div className="loader-button-2" /> : "Eliminar"}
-          </Button>
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="resolutionNumber">Número de resolución</Label>
+            <Input
+              id="resolutionNumber"
+              name="resolutionNumber"
+              placeholder="Ej.: RES-2023-001"
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <Button type="submit" variant={"primary"}>
+              Se notifica al solicitante
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default DeleteModal;
+export default ProcessModal;

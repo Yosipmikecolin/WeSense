@@ -24,7 +24,7 @@ import {
 import DetailsModal from "./DetailsModal";
 import axios from "axios";
 import { ReceptionType } from "./ProcessReception";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./ProcessModal";
 
 interface Props {
   onUpdate: (type: string, reception: ReceptionType) => void;

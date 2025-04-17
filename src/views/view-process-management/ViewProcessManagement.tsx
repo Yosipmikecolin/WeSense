@@ -28,7 +28,7 @@ import DeactivationProcess, {
   DesactivationType,
 } from "./components/DeactivationProcess";
 import ReceptionTable from "./components/ReceptionTable";
-import InstallationTable from "./components/InstallationTable";
+import InstallationTable from "./components/TableInstalation";
 import TableManagementResolutions from "./components/TableManagementResolutions";
 import AlarmManagementTable from "./components/AlarmManagementTable";
 import TechnicalSupportTable from "./components/TechnicalSupportTable";
@@ -46,8 +46,9 @@ import axios from "axios";
 import { InputText } from "primereact/inputtext";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
+import ProcessModal from "./components/ProcessModal";
 
-interface ProcessType {
+export interface ProcessType {
   _id: string;
   createdAt: string;
   type_law: string;
@@ -62,10 +63,13 @@ interface ProcessType {
 
 const ViewProcessManagement = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
-  const [idFilter, setIdFilter] = useState(1);
+  const [currentProcess, setCurrentProcess] = useState<ProcessType>();
   const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowModalProcess, setIsShowModalProcess] = useState(false);
 
   const [isProcessReception, setIsProcessReception] = useState(false);
+
+  const [modal, setModal] = useState(false);
 
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -116,21 +120,6 @@ const ViewProcessManagement = () => {
     setGlobalFilterValue(value);
   };
 
-  const filters2 = [
-    { id: 1, name: "Numero" },
-    { id: 2, name: "Tipo" },
-    { id: 3, name: "Fecha" },
-  ];
-
-  const laws = ["Ley 21.378", "Ley 18.216"];
-  const resolutions = [
-    "Instalación",
-    "Prorroga / Extensión",
-    "Cese de control",
-    "Cambio de domicilio",
-    "Solicita informe de control",
-  ];
-
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
@@ -176,28 +165,10 @@ const ViewProcessManagement = () => {
         </DialogContent>
       </Dialog>
 
-      <Card className="">
+      <Card>
         <CardContent>
-          <div className="flex items-center justify-between my-5">
-            {/* <Button onClick={show} variant="outline">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Nuevo Proceso
-            </Button> */}
-            {/* <div className="flex gap-2">
-              <Input
-                maxLength={30}
-                placeholder={`Buscar por ${filters2
-                  .find((i) => i.id === idFilter)
-                  ?.name.toLowerCase()}`}
-              />
-              <DropdownFilter
-                filters={filters2}
-                idFilter={idFilter}
-                setIdFilter={setIdFilter}
-              />
-            </div> */}
-          </div>
           <DataTable
+            className="mt-6"
             dataKey="_id"
             value={products}
             tableStyle={{ minWidth: "50rem" }}
@@ -205,6 +176,7 @@ const ViewProcessManagement = () => {
             filters={filters}
             columnResizeMode="expand"
             resizableColumns
+            stripedRows
             filterDisplay="row"
             header={renderHeader}
             globalFilterFields={[
@@ -226,7 +198,11 @@ const ViewProcessManagement = () => {
               sortable
               header="Tipo de resolución"
             ></Column>
-            <Column field="document" header="Documento adjunto"></Column>
+            <Column
+              field="document"
+              header="Documento adjunto"
+              body={<span>Sin documento</span>}
+            ></Column>
             <Column field="status" header="Estado"></Column>
             <Column
               field="actions"
@@ -239,7 +215,11 @@ const ViewProcessManagement = () => {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => {}}>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setModal(true);
+                      }}
+                    >
                       <div className="flex items-center gap-2 cursor-pointer">
                         <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                           <Check />
@@ -263,36 +243,37 @@ const ViewProcessManagement = () => {
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="reception" className="mt-4" defaultChecked>
+      <Tabs defaultValue="0" className="mt-2" defaultChecked>
         <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
-          <TabsTrigger value="facility">Instalación</TabsTrigger>
-          <TabsTrigger value="management-resolutions">
-            Prorroga / Extensión
-          </TabsTrigger>
-          <TabsTrigger value="deactivation">Cese de control </TabsTrigger>
-          <TabsTrigger value="alarm-management">
-            Cambio de domicilio
-          </TabsTrigger>
-          <TabsTrigger value="technical-support">
-            Solicita informe de control
-          </TabsTrigger>
+          <TabsTrigger value="0">Instalación</TabsTrigger>
+          <TabsTrigger value="1">Prorroga / Extensión</TabsTrigger>
+          <TabsTrigger value="2">Cese de control </TabsTrigger>
+          <TabsTrigger value="3">Cambio de domicilio</TabsTrigger>
+          <TabsTrigger value="4">Solicita informe de control</TabsTrigger>
         </TabsList>
-        <TabsContent value="facility">
+        <TabsContent value="0">
           <InstallationTable />
         </TabsContent>
-        <TabsContent value="management-resolutions">
+        <TabsContent value="1">
           {/* <TableManagementResolutions onUpdate={onUpdateResolution} /> */}
         </TabsContent>
-        <TabsContent value="alarm-management">
+        <TabsContent value="2">
           {/* <AlarmManagementTable onUpdate={onUpdateAlert} /> */}
         </TabsContent>
-        <TabsContent value="technical-support">
+        <TabsContent value="3">
           {/* <TechnicalSupportTable onUpdate={onUpdateSuport} /> */}
         </TabsContent>
-        <TabsContent value="deactivation">
+        <TabsContent value="4">
           {/* <DeactivationTable onUpdate={onUpdateDesactivation} /> */}
         </TabsContent>
       </Tabs>
+
+      <ProcessModal
+        open={modal}
+        process={currentProcess}
+        onClose={() => setModal(false)}
+        // refetch={refetch}
+      />
     </div>
   );
 };
