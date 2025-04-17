@@ -71,7 +71,7 @@ const ViewProcessManagement = () => {
 
   const [modal, setModal] = useState(false);
 
-  const [isUpdate, setIsUpdate] = useState(false);
+  const [typeModal, setTypeModal] = useState("0");
 
   const [reception, setReception] = useState<ReceptionType | null>(null);
 
@@ -92,20 +92,18 @@ const ViewProcessManagement = () => {
 
   const onChangeModal = (e: boolean) => {
     setIsShowModal(e);
-    if (isProcessReception && isUpdate) {
-      setIsUpdate(false);
-      setReception(null);
-    }
   };
 
   const show = () => {
     setIsShowModal(true);
-    setIsProcessReception(true);
   };
 
   const getAllProcess = async () => {
-    const response = await axios.get(`/api/awardee`);
-    console.log("DATA: ", response.data);
+    const response = await axios.get(`/api/awardee`, {
+      params: {
+        method: "get.all",
+      },
+    });
     setProducts(response.data);
   };
 
@@ -128,7 +126,6 @@ const ViewProcessManagement = () => {
           Nuevo Proceso
         </Button>
         <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
           <InputText
             autoFocus
             className="p-1"
@@ -141,9 +138,61 @@ const ViewProcessManagement = () => {
     );
   };
 
+  const bodyActions = (process: ProcessType) => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+          <Ellipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              onChangeStatus("1", process);
+            }}
+          >
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                <Check />
+              </Button>
+              <span>Aceptar</span>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              onChangeStatus("0", process);
+            }}
+          >
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                <i className="pi pi-times-circle"></i>
+                {/* <Delete /> */}
+              </Button>
+              <span>Devolución</span>
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
   useEffect(() => {
     getAllProcess();
   }, []);
+
+  const onChangeStatus = (value: string, process: ProcessType) => {
+    if (value === "1") {
+      setTypeModal(value);
+      setCurrentProcess(process);
+      setModal(true);
+    }
+    if (value === "0") {
+      setTypeModal(value);
+      setCurrentProcess(process);
+      setModal(true);
+    }
+  };
 
   return (
     <div>
@@ -207,37 +256,7 @@ const ViewProcessManagement = () => {
             <Column
               field="actions"
               header="Acciones"
-              body={
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
-                    <Ellipsis />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setModal(true);
-                      }}
-                    >
-                      <div className="flex items-center gap-2 cursor-pointer">
-                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                          <Check />
-                        </Button>
-                        <span>Aceptar</span>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => {}}>
-                      <div className="flex items-center gap-2 cursor-pointer">
-                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                          <Delete />
-                        </Button>
-                        <span>Devolución</span>
-                      </div>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              }
+              body={bodyActions}
             ></Column>
           </DataTable>
         </CardContent>
@@ -270,6 +289,7 @@ const ViewProcessManagement = () => {
 
       <ProcessModal
         open={modal}
+        type={typeModal}
         process={currentProcess}
         onClose={() => setModal(false)}
         // refetch={refetch}

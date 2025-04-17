@@ -3,13 +3,19 @@ import { connectDB } from "@/lib/mongodb";
 import { Awardee } from "../models/Awardee";
 import { getDate } from "@/functions";
 
-export async function GET() {
+export async function GET(req: Request) {
   await connectDB();
-  const awardees = await Awardee.find();
-  // const awardees = await Awardee.find({
-  //   type_resolution: { $nin: ["Sin estado"] },
-  // });
-  return NextResponse.json(awardees);
+  const { searchParams } = new URL(req.url);
+  const _METHOD = searchParams.get("method") || "";
+
+  if (_METHOD === "get.approved") {
+    const awardees = await Awardee.find({ status: { $eq: "Aceptado" } });
+    return NextResponse.json(awardees);
+  }
+  if (_METHOD === "get.all") {
+    const awardees = await Awardee.find({ status: { $ne: "Aceptado" } });
+    return NextResponse.json(awardees);
+  }
 }
 
 export async function POST(req: Request) {
@@ -29,22 +35,14 @@ function getISODate(date: string) {
 export async function PUT(req: Request) {
   await connectDB();
   const body = await req.json();
-  const data = {
-    type_law: body.type_law,
-    rit: body.rit,
-    ruc: body.ruc,
-    run: body.run,
-    document: body.document,
-    date_limit: body.date_limit,
-    type_resolution: body.type_resolution,
-    status: body.status,
-    denied_note: body.denied_note,
-    approved_note: body.approved_note,
-    resolution: body.resolution,
-  };
-
-  const updatedAwardee = await Awardee.updateOne({ _id: body._id }, data);
-  return NextResponse.json(updatedAwardee, { status: 201 });
+  const _METHOD = body.method;
+  if (_METHOD === "update.process") {
+    const updatedAwardee = await Awardee.updateOne(
+      { _id: body._id },
+      { status: body.status }
+    );
+    return NextResponse.json(updatedAwardee, { status: 201 });
+  }
 }
 
 export async function DELETE(req: Request) {

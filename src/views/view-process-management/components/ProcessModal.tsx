@@ -14,27 +14,32 @@ import toast from "react-hot-toast";
 import { ProcessType } from "../ViewProcessManagement";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
   open: boolean;
   process?: ProcessType;
   onClose: VoidFunction;
+  type: string;
 }
 
-const ProcessModal = ({ onClose, process, open }: Props) => {
+const ProcessModal = ({ onClose, process, open, type }: Props) => {
   const [loading, setLoading] = useState(false);
+  const [nota, setNota] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (process) {
       try {
         setLoading(true);
-        const response = await axios.delete(`/api/awardee/reception`, {
-          params: {
-            process,
-          },
+        const response = await axios.put(`/api/awardee`, {
+          _id: process._id,
+          status: type === "1" ? "Aceptado" : "Devuelto",
+          method: "update.process",
         });
+        console.log("RESPONSE: ", response.data);
         // refetch();
-        // onClose();
+        onClose();
       } catch (error) {
         toast.error("Ocurrio un error");
       } finally {
@@ -48,21 +53,25 @@ const ProcessModal = ({ onClose, process, open }: Props) => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogClose />
         <DialogHeader>
-          <DialogTitle>Aceptar Proceso</DialogTitle>
+          <DialogTitle>
+            {type === "1" ? "Aceptar Proceso" : "Devolución de proceso"}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="resolutionNumber">Número de resolución</Label>
-            <Input
-              id="resolutionNumber"
-              name="resolutionNumber"
-              placeholder="Ej.: RES-2023-001"
+            <Label htmlFor="note">Nota</Label>
+            <Textarea
+              id="note"
+              name="note"
+              value={nota}
+              onChange={(e) => setNota(e.target.value)}
+              placeholder="Escribe una nota corta..."
             />
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit" variant={"primary"}>
-              Se notifica al solicitante
+            <Button type="submit" variant={"primary"} disabled={nota === ""}>
+              {type === "1" ? "Aceptar" : "Devolver"}
             </Button>
           </div>
         </form>

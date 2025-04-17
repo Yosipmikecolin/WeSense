@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
+  CalendarCheck,
+  CalendarX2,
   Check,
   Delete,
   Ellipsis,
@@ -61,7 +63,11 @@ const TableInstalation = () => {
   });
 
   const getAllProcess = async () => {
-    const response = await axios.get(`/api/awardee`);
+    const response = await axios.get(`/api/awardee`, {
+      params: {
+        method: "get.approved",
+      },
+    });
     console.log("DATA: ", response.data);
     setProducts(response.data);
   };
@@ -86,7 +92,6 @@ const TableInstalation = () => {
       <div className="flex justify-between">
         <div className="flex flex-1"></div>
         <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
           <InputText
             className="p-1"
             value={globalFilterValue}
@@ -124,20 +129,20 @@ const TableInstalation = () => {
           >
             <Column field="date" header="Fecha"></Column>
             <Column field="type_law" sortable header="Tipo de ley"></Column>
+            <Column field="run" sortable header="RUN"></Column>
             <Column field="rit" sortable header="RIT"></Column>
             <Column field="ruc" sortable header="RUC"></Column>
-            <Column field="run" sortable header="RUN"></Column>
             <Column field="date_limit" header="Fecha limite"></Column>
             {/* <Column
               field="type_resolution"
               sortable
               header="Tipo de resolución"
             ></Column> */}
-            <Column
+            {/* <Column
               field="document"
               header="Documento adjunto"
               body={<span>Sin documento</span>}
-            ></Column>
+            ></Column> */}
             <Column field="status" header="Estado"></Column>
             <Column
               field="actions"
@@ -153,7 +158,7 @@ const TableInstalation = () => {
                     <DropdownMenuItem onClick={() => {}}>
                       <div className="flex items-center gap-2 cursor-pointer">
                         <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                          <Check />
+                          <CalendarX2 />
                         </Button>
                         <span>
                           La persona no llega después de la fecha límite
@@ -163,7 +168,7 @@ const TableInstalation = () => {
                     <DropdownMenuItem onClick={() => {}}>
                       <div className="flex items-center gap-2 cursor-pointer">
                         <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                          <Delete />
+                          <CalendarCheck />
                         </Button>
                         <span>La persona llega dentro de la fecha límite</span>
                       </div>
