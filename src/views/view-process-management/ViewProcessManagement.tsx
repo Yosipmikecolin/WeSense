@@ -13,26 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Ellipsis, Eye, Check, Delete, PlusCircle } from "lucide-react";
-import ProcessReception, { ReceptionType } from "./components/ProcessReception";
 import InstallationProcess from "./components/CreationProcess";
-import ProcessManagementResolutions, {
-  ResolutionType,
-} from "./components/ProcessManagementResolutions";
-import ProcessManagementAlarms, {
-  AlertType,
-} from "./components/ProcessManagementAlarms";
-import ProcessTechnicalSupport, {
-  SuportType,
-} from "./components/ProcessTechnicalSupport";
-import DeactivationProcess, {
-  DesactivationType,
-} from "./components/DeactivationProcess";
-import ReceptionTable from "./components/ReceptionTable";
-import InstallationTable from "./components/TableInstallation";
-import TableManagementResolutions from "./components/TableManagementResolutions";
-import AlarmManagementTable from "./components/AlarmManagementTable";
-import TechnicalSupportTable from "./components/TechnicalSupportTable";
-import DeactivationTable from "./components/DeactivationTable";
+
 import { Input } from "@/components/ui/input";
 import { DropdownFilter } from "@/components";
 
@@ -47,6 +29,7 @@ import { InputText } from "primereact/inputtext";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import ProcessModal from "./components/ProcessModal";
+import TableInstallation from "./components/TableInstallation";
 
 export interface ProcessType {
   _id: string;
@@ -268,7 +251,7 @@ const ViewProcessManagement = () => {
           <TabsTrigger value="4">Solicita informe de control</TabsTrigger>
         </TabsList>
         <TabsContent value="0">
-          <InstallationTable />
+          <TableInstallation />
         </TabsContent>
         <TabsContent value="1">
           {/* <TableManagementResolutions onUpdate={onUpdateResolution} /> */}

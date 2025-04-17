@@ -32,9 +32,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DetailsModal from "./DetailsModal";
 import axios from "axios";
-import DeleteModalInstalation from "./DeleteModalInstalation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
