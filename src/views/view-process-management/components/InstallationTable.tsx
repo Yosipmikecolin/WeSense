@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
-import { InstalationType } from "./InstallationProcess";
+import { InstalationType } from "./CreationProcess";
 import axios from "axios";
 import DeleteModalInstalation from "./DeleteModalInstalation";
 
@@ -30,7 +30,7 @@ interface Props {
   onUpdate: (type: string, instalation: InstalationType) => void;
 }
 
-const InstallationTable = ({ onUpdate }: Props) => {
+const InstallationTable = () => {
   const [data, setData] = useState<InstalationType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
@@ -104,34 +104,19 @@ const InstallationTable = ({ onUpdate }: Props) => {
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Eye />
                             </Button>
-                            <span>Detalles</span>
+                            <span>
+                              La persona no llega después de la fecha límite
+                            </span>
                           </div>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => onUpdate("instalation", item)}
-                        >
+                        <DropdownMenuItem>
                           <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Pencil />
                             </Button>
-                            <span>Editar</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onDelete(item)}>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Trash />
-                            </Button>
-                            <span>Eliminar</span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <SendHorizontal />
-                            </Button>
-                            <span>Informar y enviar al tribunal</span>
+                            <span>
+                              La persona llega dentro de la fecha límite
+                            </span>
                           </div>
                         </DropdownMenuItem>
                       </DropdownMenuContent>

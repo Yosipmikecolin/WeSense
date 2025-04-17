@@ -61,8 +61,8 @@ const Header = () => {
               </span>
               <span className="text-xs text-gray-500">{email}</span>
             </div>
-            <Button className="bg-green-100 text-green-600 hover:bg-green-200">
-              <LogOut onClick={onLogout} size={16} />
+            <Button onClick={onLogout} className="bg-green-100 text-green-600 hover:bg-green-200">
+              <LogOut  size={16} />
             </Button>
           </div>
         </div>

@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { PlusCircle } from "lucide-react";
+import { Ellipsis, Eye, Check, Delete, PlusCircle } from "lucide-react";
 import ProcessReception, { ReceptionType } from "./components/ProcessReception";
-import InstallationProcess, {
-  InstalationType,
-} from "./components/InstallationProcess";
+import InstallationProcess from "./components/CreationProcess";
 import ProcessManagementResolutions, {
   ResolutionType,
 } from "./components/ProcessManagementResolutions";
@@ -36,61 +36,54 @@ import DeactivationTable from "./components/DeactivationTable";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter } from "@/components";
 
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { FilterMatchMode } from "primereact/api";
+import { Card, CardContent } from "@/components/ui/card";
+import CreationProcess from "./components/CreationProcess";
+import axios from "axios";
+
+import { InputText } from "primereact/inputtext";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+
+interface ProcessType {
+  _id: string;
+  createdAt: string;
+  type_law: string;
+  rit: string;
+  ruc: string;
+  run: string;
+  document: string;
+  date_limit: string;
+  type_resolution: string;
+  status: string;
+}
+
 const ViewProcessManagement = () => {
-  const [dialogContent, setDialogContent] = useState<ReactNode | null>(null);
+  const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
   const [idFilter, setIdFilter] = useState(1);
   const [isShowModal, setIsShowModal] = useState(false);
 
   const [isProcessReception, setIsProcessReception] = useState(false);
-  const [isInstalation, setIsInstalation] = useState(false);
-  const [isResolution, setIsResolution] = useState(false);
-  const [isAlert, setIsAlert] = useState(false);
-  const [isSuport, setIsSuport] = useState(false);
-  const [isDesactivation, setIsDesactivation] = useState(false);
 
   const [isUpdate, setIsUpdate] = useState(false);
 
   const [reception, setReception] = useState<ReceptionType | null>(null);
-  const [instalation, setInstalation] = useState<InstalationType | null>(null);
-  const [resolution, setResolution] = useState<ResolutionType | null>(null);
-  const [alert, setAlert] = useState<AlertType | null>(null);
-  const [suport, setSuport] = useState<SuportType | null>(null);
-  const [desactivation, setDesactivation] = useState<DesactivationType | null>(
-    null
-  );
 
-  const filters = [
-    { id: 1, name: "Numero" },
-    { id: 2, name: "Tipo" },
-    { id: 3, name: "Fecha" },
-  ];
+  const [products, setProducts] = useState<ProcessType[]>([]);
 
-  const closeDialog = (type: string) => {
-    if (type === "reception") {
-      setIsProcessReception(false);
-      setIsShowModal(false);
-    }
-    if (type === "instalation") {
-      setIsInstalation(false);
-      setIsShowModal(false);
-    }
-    if (type === "resolution") {
-      setIsResolution(false);
-      setIsShowModal(false);
-    }
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    type_law: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    rit: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    ruc: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    run: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    type_resolution: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  });
 
-    if (type === "alert") {
-      setIsAlert(false);
-      setIsShowModal(false);
-    }
-    if (type === "suport") {
-      setIsSuport(false);
-      setIsShowModal(false);
-    }
-    if (type === "desactivation") {
-      setIsDesactivation(false);
-      setIsShowModal(false);
-    }
+  const closeDialog = () => {
+    setIsShowModal(false);
   };
 
   const onChangeModal = (e: boolean) => {
@@ -99,240 +92,205 @@ const ViewProcessManagement = () => {
       setIsUpdate(false);
       setReception(null);
     }
-    if (isInstalation && isUpdate) {
-      setIsUpdate(false);
-      setInstalation(null);
-    }
-    if (isResolution && isUpdate) {
-      setIsUpdate(false);
-      setResolution(null);
-    }
-    if (isAlert && isUpdate) {
-      setIsUpdate(false);
-      setAlert(null);
-    }
-    if (isSuport && isUpdate) {
-      setIsUpdate(false);
-      setSuport(null);
-    }
-    if (isDesactivation && isUpdate) {
-      setIsUpdate(false);
-      setDesactivation(null);
-    }
   };
 
-  const show = (type: string) => {
-    if (type === "reception") {
-      setIsShowModal(true);
-      setIsProcessReception(true);
-
-      setIsInstalation(false);
-      setIsResolution(false);
-      setIsAlert(false);
-      setIsSuport(false);
-      setIsDesactivation(false);
-    }
-    if (type === "instalation") {
-      setIsShowModal(true);
-      setIsInstalation(true);
-
-      setIsProcessReception(false);
-      setIsResolution(false);
-      setIsAlert(false);
-      setIsSuport(false);
-      setIsDesactivation(false);
-    }
-    if (type === "resolution") {
-      setIsShowModal(true);
-      setIsResolution(true);
-
-      setIsProcessReception(false);
-      setIsInstalation(false);
-      setIsAlert(false);
-      setIsSuport(false);
-      setIsDesactivation(false);
-    }
-    if (type === "alert") {
-      setIsShowModal(true);
-      setIsAlert(true);
-
-      setIsProcessReception(false);
-      setIsResolution(false);
-      setIsInstalation(false);
-      setIsSuport(false);
-      setIsDesactivation(false);
-    }
-    if (type === "suport") {
-      setIsShowModal(true);
-      setIsSuport(true);
-
-      setIsProcessReception(false);
-      setIsResolution(false);
-      setIsInstalation(false);
-      setIsAlert(false);
-      setIsDesactivation(false);
-    }
-    if (type === "desactivation") {
-      setIsShowModal(true);
-      setIsDesactivation(true);
-
-      setIsProcessReception(false);
-      setIsResolution(false);
-      setIsInstalation(false);
-      setIsSuport(false);
-      setIsAlert(false);
-    }
+  const show = () => {
+    setIsShowModal(true);
+    setIsProcessReception(true);
   };
 
-  const onUpdateReception = (type: string, value: ReceptionType) => {
-    setIsUpdate(true);
-    setReception(value);
-    show(type);
+  const getAllProcess = async () => {
+    const response = await axios.get(`/api/awardee`);
+    console.log("DATA: ", response.data);
+    setProducts(response.data);
   };
 
-  const onUpdateInstalation = (type: string, value: InstalationType) => {
-    setIsUpdate(true);
-    setInstalation(value);
-    show(type);
+  const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+
+    // @ts-ignore
+    _filters["global"].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
   };
-  const onUpdateResolution = (type: string, value: ResolutionType) => {
-    setIsUpdate(true);
-    setResolution(value);
-    show(type);
+
+  const filters2 = [
+    { id: 1, name: "Numero" },
+    { id: 2, name: "Tipo" },
+    { id: 3, name: "Fecha" },
+  ];
+
+  const laws = ["Ley 21.378", "Ley 18.216"];
+  const resolutions = [
+    "Instalación",
+    "Prorroga / Extensión",
+    "Cese de control",
+    "Cambio de domicilio",
+    "Solicita informe de control",
+  ];
+
+  const renderHeader = () => {
+    return (
+      <div className="flex justify-between">
+        <Button onClick={show} variant="outline">
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Nuevo Proceso
+        </Button>
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search" />
+          <InputText
+            autoFocus
+            className="p-1"
+            value={globalFilterValue}
+            onChange={onGlobalFilterChange}
+            placeholder="Filtrar..."
+          />
+        </IconField>
+      </div>
+    );
   };
-  const onUpdateAlert = (type: string, value: AlertType) => {
-    setIsUpdate(true);
-    setAlert(value);
-    show(type);
-  };
-  const onUpdateSuport = (type: string, value: SuportType) => {
-    setIsUpdate(true);
-    setSuport(value);
-    show(type);
-  };
-  const onUpdateDesactivation = (type: string, value: DesactivationType) => {
-    setIsUpdate(true);
-    setDesactivation(value);
-    show(type);
-  };
+
+  useEffect(() => {
+    getAllProcess();
+  }, []);
 
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
-        Agendamiento y ejecución de procesos
+        Proceso de recepción de sentencias y resoluciones
       </h1>
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="mt-5">
           <div className="flex items-center justify-between">
-            <Button variant="outline">
+            <div className="flex gap-2"></div>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start"></DropdownMenuContent>
+      </DropdownMenu>
+      <Dialog open={isShowModal} onOpenChange={onChangeModal}>
+        <DialogContent>
+          <CreationProcess onClose={closeDialog} />
+        </DialogContent>
+      </Dialog>
+
+      <Card className="">
+        <CardContent>
+          <div className="flex items-center justify-between my-5">
+            {/* <Button onClick={show} variant="outline">
               <PlusCircle className="mr-2 h-4 w-4" />
               Nuevo Proceso
-            </Button>
-            <div className="flex gap-2">
+            </Button> */}
+            {/* <div className="flex gap-2">
               <Input
                 maxLength={30}
-                placeholder={`Buscar por ${filters
+                placeholder={`Buscar por ${filters2
                   .find((i) => i.id === idFilter)
                   ?.name.toLowerCase()}`}
               />
               <DropdownFilter
-                filters={filters}
+                filters={filters2}
                 idFilter={idFilter}
                 setIdFilter={setIdFilter}
               />
-            </div>
+            </div> */}
           </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onSelect={() => show("reception")}>
-            Recepción de Sentencias
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => show("instalation")}>
-            Instalación de Dispositivo
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => show("resolution")}>
-            Gestión de Resoluciones
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => show("alert")}>
-            Gestión de Alarmas
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => show("suport")}>
-            Soporte Técnico
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => show("desactivation")}>
-            Desactivación de Dispositivo
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <Dialog open={isShowModal} onOpenChange={onChangeModal}>
-        <DialogContent>
-          {isProcessReception && (
-            <ProcessReception
-              reception={reception}
-              onClose={() => closeDialog("reception")}
-            />
-          )}
+          <DataTable
+            dataKey="_id"
+            value={products}
+            tableStyle={{ minWidth: "50rem" }}
+            size="small"
+            filters={filters}
+            columnResizeMode="expand"
+            resizableColumns
+            filterDisplay="row"
+            header={renderHeader}
+            globalFilterFields={[
+              "type_law",
+              "rit",
+              "ruc",
+              "run",
+              "type_resolution",
+            ]}
+          >
+            <Column field="date" header="Fecha"></Column>
+            <Column field="type_law" sortable header="Tipo de ley"></Column>
+            <Column field="rit" sortable header="RIT"></Column>
+            <Column field="ruc" sortable header="RUC"></Column>
+            <Column field="run" sortable header="RUN"></Column>
+            <Column field="date_limit" header="Fecha limite"></Column>
+            <Column
+              field="type_resolution"
+              sortable
+              header="Tipo de resolución"
+            ></Column>
+            <Column field="document" header="Documento adjunto"></Column>
+            <Column field="status" header="Estado"></Column>
+            <Column
+              field="actions"
+              header="Acciones"
+              body={
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                    <Ellipsis />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => {}}>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                          <Check />
+                        </Button>
+                        <span>Aceptar</span>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => {}}>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                          <Delete />
+                        </Button>
+                        <span>Devolución</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              }
+            ></Column>
+          </DataTable>
+        </CardContent>
+      </Card>
 
-          {isInstalation && (
-            <InstallationProcess
-              instalation={instalation}
-              onClose={() => closeDialog("instalation")}
-            />
-          )}
-
-          {isResolution && (
-            <ProcessManagementResolutions
-              resolution={resolution}
-              onClose={() => closeDialog("resolution")}
-            />
-          )}
-          {isAlert && (
-            <ProcessManagementAlarms
-              alert={alert}
-              onClose={() => closeDialog("alert")}
-            />
-          )}
-          {isSuport && (
-            <ProcessTechnicalSupport
-              suport={suport}
-              onClose={() => closeDialog("suport")}
-            />
-          )}
-          {isDesactivation && (
-            <DeactivationProcess
-              desactivation={desactivation}
-              onClose={() => closeDialog("desactivation")}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      <Tabs defaultValue="reception" className="mt-4">
+      <Tabs defaultValue="reception" className="mt-4" defaultChecked>
         <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
-          <TabsTrigger value="reception">Recepción</TabsTrigger>
           <TabsTrigger value="facility">Instalación</TabsTrigger>
-          <TabsTrigger value="management-resolutions">Resoluciones</TabsTrigger>
-          <TabsTrigger value="alarm-management">Alarmas</TabsTrigger>
-          <TabsTrigger value="technical-support">Soporte</TabsTrigger>
-          <TabsTrigger value="deactivation">Desactivación</TabsTrigger>
+          <TabsTrigger value="management-resolutions">
+            Prorroga / Extensión
+          </TabsTrigger>
+          <TabsTrigger value="deactivation">Cese de control </TabsTrigger>
+          <TabsTrigger value="alarm-management">
+            Cambio de domicilio
+          </TabsTrigger>
+          <TabsTrigger value="technical-support">
+            Solicita informe de control
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="reception">
-          <ReceptionTable onUpdate={onUpdateReception} />
-        </TabsContent>
         <TabsContent value="facility">
-          <InstallationTable onUpdate={onUpdateInstalation} />
+          <InstallationTable />
         </TabsContent>
         <TabsContent value="management-resolutions">
-          <TableManagementResolutions onUpdate={onUpdateResolution} />
+          {/* <TableManagementResolutions onUpdate={onUpdateResolution} /> */}
         </TabsContent>
         <TabsContent value="alarm-management">
-          <AlarmManagementTable onUpdate={onUpdateAlert} />
+          {/* <AlarmManagementTable onUpdate={onUpdateAlert} /> */}
         </TabsContent>
         <TabsContent value="technical-support">
-          <TechnicalSupportTable onUpdate={onUpdateSuport} />
+          {/* <TechnicalSupportTable onUpdate={onUpdateSuport} /> */}
         </TabsContent>
         <TabsContent value="deactivation">
-          <DeactivationTable onUpdate={onUpdateDesactivation} />
+          {/* <DeactivationTable onUpdate={onUpdateDesactivation} /> */}
         </TabsContent>
       </Tabs>
     </div>
