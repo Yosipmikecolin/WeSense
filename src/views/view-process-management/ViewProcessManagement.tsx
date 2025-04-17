@@ -191,24 +191,16 @@ const ViewProcessManagement = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
-        Proceso de recepción de sentencias y resoluciones
+        Gestión de sentencias y resoluciones
       </h1>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="mt-5">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2"></div>
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start"></DropdownMenuContent>
-      </DropdownMenu>
       <Dialog open={isShowModal} onOpenChange={onChangeModal}>
         <DialogContent>
           <CreationProcess onClose={closeDialog} refetch={refetch} />
         </DialogContent>
       </Dialog>
 
-      <Card>
+      <Card className="mt-6">
         <CardContent>
           <DataTable
             className="mt-6"

@@ -21,6 +21,29 @@ const AwardeeProcessSchema = new mongoose.Schema(
 export const AwardeeProcess =
   mongoose.models.AwardeeProcess ||
   mongoose.model("AwardeeProcess", AwardeeProcessSchema);
+
+/** ---------------------------------------------------- */
+
+const AwardeeSupportSchema = new mongoose.Schema(
+  {
+    adress: String,
+    type_support: String,
+    priority: String,
+    status: { type: String, default: "Pendiente por agendar" },
+    result: String,
+    // window: String,
+    start_date: String,
+    finish_date: String,
+    user_assigned: String,
+    finished: { type: String, default: "No" },
+    support: {},
+  },
+  { timestamps: true }
+);
+
+export const AwardeeSupport =
+  mongoose.models.AwardeeSupport ||
+  mongoose.model("AwardeeSupport", AwardeeSupportSchema);
 /** ------------------------------------------------------------------ */
 const AwardeeSchema = new mongoose.Schema(
   {

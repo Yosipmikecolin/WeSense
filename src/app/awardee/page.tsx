@@ -5,7 +5,8 @@ import {
   ViewReport,
   ViewRequests,
 } from "@/views";
-import { BookText, CalendarPlus, Files, RefreshCcwDot } from "lucide-react";
+import ViewSupportManagement from "@/views/view-support-management/ViewSupportManagement";
+import { BookText, CalendarPlus, Cog, Files, RefreshCcwDot } from "lucide-react";
 
 const Awardee = () => {
   const menuItems = [
@@ -16,8 +17,13 @@ const Awardee = () => {
     },
     {
       icon: <RefreshCcwDot size={17} />,
-      label: "Gestion de procesos",
+      label: "Gestión de resoluciones",
       content: <ViewProcessManagement />,
+    },
+    {
+      icon: <Cog size={17} />,
+      label: "Gestión de soporte",
+      content: <ViewSupportManagement />,
     },
     {
       icon: <CalendarPlus size={17} />,
