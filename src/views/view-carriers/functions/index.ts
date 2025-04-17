@@ -8,6 +8,7 @@ import {
   Step5Data,
   Step6Data,
 } from "@/views/view-create-carrier/interfaces";
+import { RequestTable } from "@/views/view-create-request/interfaces";
 import {
   Document,
   Packer,
@@ -21,6 +22,7 @@ import {
 } from "docx";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
+import * as XLSX from "xlsx";
 
 export const generatePDF = (selectedCarrier: FormDataWearer) => {
   const doc = new jsPDF();
@@ -484,4 +486,194 @@ export const generateWord = (selectedCarrier: FormDataWearer) => {
       .toLowerCase();
     saveAs(blob, `detalles_${nameFile}.docx`);
   });
+};
+
+export const exportToExcel = (request: RequestTable) => {
+  // Flatten the nested data for Excel with Spanish column names
+  const flattenedData: Record<string, string> = {
+    /* ID: request._id, */
+    Respuesta: request.answer,
+    Fecha_Emisión: request.issue_date,
+    /*     Motivo_Devolución: request.reason_return,
+    Descripción_Motivo: request.description_reason, */
+    /*   Fecha_Respuesta: request.response_date,
+    Fecha_Devolución: request.return_date, */
+    //Tiempo_Respuesta: request.time_respond,
+    Estado: request.status,
+
+    // Datos del Solicitante
+    Solicitante_Nombre_Completo: request.requester.fullName,
+    Solicitante_Apellido: request.requester.lastName,
+    Solicitante_Segundo_Nombre: request.requester.middleName,
+    Solicitante_Correo: request.requester.email,
+    Solicitante_RUN: request.requester.run,
+    Solicitante_Teléfono: request.requester.phone,
+    Solicitante_Tipo_Usuario: request.requester.userType,
+    Solicitante_Institución: request.requester.institution,
+    Solicitante_Número_Identificación: request.requester.identificationNumber,
+    Solicitante_Región: request.requester.region,
+    Solicitante_Dirección: request.requester.address,
+    Solicitante_Áreas_Acceso: request.requester.accessAreas,
+    Solicitante_Verificación_Identidad: request.requester.identityVerification,
+    Solicitante_Pregunta_Seguridad: request.requester.securityQuestion,
+    Solicitante_Fecha_Registro: request.requester.registrationDate,
+    Solicitante_Observaciones: request.requester.observations,
+
+    // Portador: Datos Personales
+    Portador_DatosPersonales_Nombre_Completo:
+      request.carrier.personalData.fullName,
+    Portador_DatosPersonales_Nombre_Social:
+      request.carrier.personalData.socialName,
+    Portador_DatosPersonales_Apellido_Paterno:
+      request.carrier.personalData.paternalSurname,
+    Portador_DatosPersonales_Apellido_Materno:
+      request.carrier.personalData.motherSurname,
+    Portador_DatosPersonales_Sexo: request.carrier.personalData.sex,
+    Portador_DatosPersonales_Tipo_Actual:
+      request.carrier.personalData.type_current,
+    Portador_DatosPersonales_Género: request.carrier.personalData.gender,
+    Portador_DatosPersonales_Fecha_Nacimiento:
+      request.carrier.personalData.dateBirth,
+    Portador_DatosPersonales_Estado_Civil:
+      request.carrier.personalData.maritalStatus,
+    Portador_DatosPersonales_Nacionalidad:
+      request.carrier.personalData.nationality,
+    Portador_DatosPersonales_RUN: request.carrier.personalData.run,
+    Portador_DatosPersonales_Teléfono: request.carrier.personalData.phone,
+    Portador_DatosPersonales_Extranjero: request.carrier.personalData.foreigner
+      ? "Sí"
+      : "No",
+
+    // Portador: Causa
+    Portador_Causa_Tipo_Pena: request.carrier.cause.penatype,
+    Portador_Causa_Delito: request.carrier.cause.crime,
+    Portador_Causa_Corte_Apelaciones: request.carrier.cause.courtAppeals,
+    Portador_Causa_Región_Corte: request.carrier.cause.courtRegion,
+    Portador_Causa_Corte: request.carrier.cause.court,
+    Portador_Causa_RUC: request.carrier.cause.ruc,
+    Portador_Causa_RIT: request.carrier.cause.rit,
+    Portador_Causa_ROL: request.carrier.cause.rol,
+
+    // Portador: Monitoreo
+    Portador_Monitoreo_CRS: request.carrier.monitoring.crs,
+    Portador_Monitoreo_Áreas: request.carrier.monitoring.areas,
+    Portador_Monitoreo_Duración_Medida:
+      request.carrier.monitoring.durationMeasurement,
+    Portador_Monitoreo_Horario_Control:
+      request.carrier.monitoring.controlSchedule,
+    Portador_Monitoreo_Periodo_Efectivo:
+      request.carrier.monitoring.effectivePeriod,
+    Portador_Monitoreo_Solicitudes_Viabilidad:
+      request.carrier.monitoring.requestsFeasibility,
+    Portador_Monitoreo_Sentencia: request.carrier.monitoring.judgment,
+    Portador_Monitoreo_Programación_Instalación:
+      request.carrier.monitoring.programmingInstallation,
+    Portador_Monitoreo_Instalaciones_Realizadas:
+      request.carrier.monitoring.installationsDone,
+    Portador_Monitoreo_Resolución_Modificación:
+      request.carrier.monitoring.modificationResolution,
+    Portador_Monitoreo_Soportes_Técnicos:
+      request.carrier.monitoring.technicalSupports,
+    Portador_Monitoreo_No_Informes: request.carrier.monitoring.nonReports,
+    Portador_Monitoreo_Días_Control: request.carrier.monitoring.daysControl,
+    Portador_Monitoreo_Desinstalaciones:
+      request.carrier.monitoring.uninstallations,
+
+    // Portador: Área de Inclusión
+    Portador_ÁreaInclusión_Calle: request.carrier.inclusionArea.street,
+    Portador_ÁreaInclusión_Número: request.carrier.inclusionArea.number,
+    Portador_ÁreaInclusión_Información_Adicional:
+      request.carrier.inclusionArea.additionalInformation,
+    Portador_ÁreaInclusión_Comuna: request.carrier.inclusionArea.commune,
+    Portador_ÁreaInclusión_Región: request.carrier.inclusionArea.region,
+    Portador_ÁreaInclusión_Camino: request.carrier.inclusionArea.road,
+    Portador_ÁreaInclusión_Población: request.carrier.inclusionArea.population,
+    Portador_ÁreaInclusión_Código_Postal: request.carrier.inclusionArea.zipCode,
+    Portador_ÁreaInclusión_Coordenadas_Geográficas:
+      request.carrier.inclusionArea.geographicCoordinates,
+    Portador_ÁreaInclusión_Radio: request.carrier.inclusionArea.radio,
+    Portador_ÁreaInclusión_Horario_Cumplimiento:
+      request.carrier.inclusionArea.complianceSchedule,
+    Portador_ÁreaInclusión_Características:
+      request.carrier.inclusionArea.characteristics,
+
+    // Portador: Área de Exclusión
+    Portador_ÁreaExclusión_Calle: request.carrier.exclusionArea.street,
+    Portador_ÁreaExclusión_Número: request.carrier.exclusionArea.number,
+    Portador_ÁreaExclusión_Información_Adicional:
+      request.carrier.exclusionArea.additionalInformation,
+    Portador_ÁreaExclusión_Comuna: request.carrier.exclusionArea.commune,
+    Portador_ÁreaExclusión_Región: request.carrier.exclusionArea.region,
+    Portador_ÁreaExclusión_Camino: request.carrier.exclusionArea.road,
+    Portador_ÁreaExclusión_Población: request.carrier.exclusionArea.population,
+    Portador_ÁreaExclusión_Código_Postal: request.carrier.exclusionArea.zipCode,
+    Portador_ÁreaExclusión_Coordenadas_Geográficas:
+      request.carrier.exclusionArea.geographicCoordinates,
+    Portador_ÁreaExclusión_Radio: request.carrier.exclusionArea.radio,
+    Portador_ÁreaExclusión_Características:
+      request.carrier.exclusionArea.characteristics,
+    Portador_ÁreaExclusión_Apellido_Paterno:
+      request.carrier.exclusionArea.paternalSurname,
+    Portador_ÁreaExclusión_Apellido_Materno:
+      request.carrier.exclusionArea.motherSurname,
+    Portador_ÁreaExclusión_Nombres: request.carrier.exclusionArea.names,
+    Portador_ÁreaExclusión_RUT: request.carrier.exclusionArea.rut,
+    Portador_ÁreaExclusión_Correo_Víctima:
+      request.carrier.exclusionArea.victimEmail,
+    Portador_ÁreaExclusión_Teléfono_Domicilio:
+      request.carrier.exclusionArea.homeTelephone,
+    Portador_ÁreaExclusión_Teléfono_Trabajo:
+      request.carrier.exclusionArea.workplaceTelephone,
+
+    // Respuesta del Adjudicatario
+    Adjudicatario_Cobertura_Mínima: request.awardee_response.minimum_coverage,
+    Adjudicatario_Estado: request.awardee_response.status,
+    Adjudicatario_Latitud: request.awardee_response.latitude,
+    Adjudicatario_Longitud: request.awardee_response.length,
+    Adjudicatario_Aspectos_Indicación:
+      request.awardee_response.indication_aspects,
+    Adjudicatario_Valor: request.awardee_response.value,
+    Adjudicatario_Evidencia_Fotográfica:
+      request.awardee_response.photographic_evidence.join(", "),
+
+    // Motivos de Revolución del Solicitante (serializados como valores separados por coma)
+    Motivos_Revolución_Solicitante: request.reason_revolution_requester
+      .map(
+        (r, index) =>
+          `Motivo ${index + 1}: ${r.reason_return}, Descripción: ${
+            r.description_reason
+          }`
+      )
+      .join("; "),
+
+    // Motivos de Revolución del Adjudicatario (serializados como valores separados por coma)
+    Motivos_Revolución_Adjudicatario: request.reason_revolution_awardee
+      .map(
+        (r, index) =>
+          `Motivo ${index + 1}: ${r.reason_return}, Descripción: ${
+            r.description_reason
+          }`
+      )
+      .join("; "),
+  };
+
+  // Create worksheet
+  const worksheet = XLSX.utils.json_to_sheet([flattenedData]);
+
+  // Create workbook and add worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Datos Solicitud");
+
+  // Auto-size columns (approximate)
+  const colWidths = Object.keys(flattenedData).map((key) => ({
+    wch:
+      Math.max(key.length, String(flattenedData[key]).length) > 50
+        ? 50
+        : Math.max(key.length, String(flattenedData[key]).length),
+  }));
+  worksheet["!cols"] = colWidths;
+
+  // Generate Excel file
+  const fileName = `Solicitud_${request._id}.xlsx`;
+  XLSX.writeFile(workbook, fileName);
 };

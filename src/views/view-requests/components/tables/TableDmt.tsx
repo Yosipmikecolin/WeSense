@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -17,6 +19,7 @@ import {
   Ellipsis,
   Eye,
   FileCheck2,
+  FileDown,
   FileX2,
   Info,
   Redo2,
@@ -49,15 +52,14 @@ import { updatedRequest } from "@/api/request";
 import axios from "axios";
 import { useBuddieStore } from "@/store";
 import toast from "react-hot-toast";
+import { exportToExcel } from "@/views/view-carriers/functions";
 
-export const TableAdministrator = () => {
+export const TableDmt = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
   const [isModalReturnOpenDetails, setIsModaReturnlOpenDetails] =
     useState(false);
-  const email = "sgamgc@correo.com";
-  const subject = encodeURIComponent("SGAMGC");
-  const body = encodeURIComponent("Respuesta de la solicitud");
+
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
 
   const [stateFilter, setStateFilter] = useState("");
@@ -72,11 +74,6 @@ export const TableAdministrator = () => {
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
-
-  const handleClick = () => {
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
-    window.open(gmailUrl, "_blank");
-  };
 
   useEffect(() => {
     const carrierBuddie = localStorage.getItem("carrier-buddie");
@@ -426,14 +423,11 @@ export const TableAdministrator = () => {
                         )}
 
                         {/* OPCIONES PARA LA GENDARMERRIA SI ACEPTO LA SOLCIITUD DE BUDDI */}
-
-                        {/*                         {request.status === "confirmed" && (
+                        {request.status === "confirmed" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={() => {
-                              setSelectedRequest(request);
-                              setIsModaReturnlOpen(true);
-                              setType("awardee");
+                              exportToExcel(request);
                             }}
                           >
                             <div className="flex items-center gap-2">
@@ -443,28 +437,7 @@ export const TableAdministrator = () => {
                               <span>Exportar SFIT</span>
                             </div>
                           </DropdownMenuItem>
-                        )} */}
-
-                        {/*              {request.status === "confirmed" && (
-                          <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>
-                              <div className="flex items-center gap-2 cursor-pointer">
-                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                  <SendHorizontal />
-                                </Button>
-                                <span>Exportar SFIT</span>
-                              </div>
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                              <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={handleClick}>
-                                  <Mail size={15} />
-                                  Email
-                                </DropdownMenuItem>
-                              </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                          </DropdownMenuSub>
-                        )} */}
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
