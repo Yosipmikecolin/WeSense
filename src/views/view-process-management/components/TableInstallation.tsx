@@ -43,6 +43,7 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
+import { Input } from "@/components/ui/input";
 
 const TableInstallation = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -98,14 +99,14 @@ const TableInstallation = () => {
     return (
       <div className="flex justify-between">
         <div className="flex flex-1"></div>
-        <IconField iconPosition="left">
-          <InputText
-            className="p-1"
+        <div>
+          <Input
+            className="bg-white"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
             placeholder="Filtrar..."
           />
-        </IconField>
+        </div>
       </div>
     );
   };

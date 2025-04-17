@@ -120,15 +120,15 @@ const ViewProcessManagement = () => {
           <PlusCircle className="mr-2 h-4 w-4" />
           Nuevo Proceso
         </Button>
-        <IconField iconPosition="left">
-          <InputText
+        <div>
+          <Input
             autoFocus
-            className="p-1"
+            className="bg-white"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
             placeholder="Filtrar..."
           />
-        </IconField>
+        </div>
       </div>
     );
   };
@@ -245,7 +245,9 @@ const ViewProcessManagement = () => {
             <Column
               field="document"
               header="Documento adjunto"
-              body={<i className="pi pi-eye text-green-400 hover:text-green-700 cursor-pointer"></i>}
+              body={
+                <i className="pi pi-eye text-green-400 hover:text-green-700 cursor-pointer"></i>
+              }
             ></Column>
             <Column field="status" header="Estado"></Column>
             <Column
