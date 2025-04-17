@@ -33,8 +33,9 @@ export function UploadButtonWithModal() {
     <div className="w-full space-y-4 mt-4">
       <Button
         size={"lg"}
+        variant={"outline"}
         onClick={() => setIsModalOpen(true)}
-        className="w-full flex items-center justify-center gap-2"
+        className="flex items-center justify-center gap-2"
       >
         <Upload className="h-5 w-5" />
         Cargar archivos

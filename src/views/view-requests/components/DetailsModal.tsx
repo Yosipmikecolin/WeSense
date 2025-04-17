@@ -12,7 +12,7 @@ import Foto3 from "/public/foto-3.jpg";
 import Foto4 from "/public/foto-4.jpg";
 import dynamic from "next/dynamic";
 import { RequestTable } from "@/views/view-create-request/interfaces";
-import { PackageOpen } from "lucide-react";
+import { Download, FileText, PackageOpen } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -20,6 +20,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
@@ -582,6 +583,12 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                     {request.awardee_response.value}
                   </div>
                 </div>
+                <div className="animate-pulse bg-gray-200 rounded-md h-[200px] w-full overflow-hidden">
+                  <Map
+                    latitude={-33.46651382914682}
+                    longitude={-70.66412385948745}
+                  />
+                </div>
                 <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3 mb-5">
                   Pruebas fotograficas
                 </div>
@@ -618,6 +625,53 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                     className="rounded-md"
                   />
                 </div>
+                <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300 mt-3 mb-5">
+                  Archivos adjuntados
+                </div>
+
+                <ul className="divide-y">
+                  <li className="flex items-center justify-between p-3 bg-gray-100">
+                    <div className="flex items-center space-x-3">
+                      <FileText className="h-5 w-5 text-blue-500" />
+                      <div>
+                        <p className="text-sm font-medium truncate max-w-[200px]">
+                          Datos del solicitante
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-blue-600 hover:text-blue-700"
+                        title="Descargar"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center justify-between p-3 bg-gray-100 ">
+                    <div className="flex items-center space-x-3">
+                      <FileText className="h-5 w-5 text-blue-500" />
+                      <div>
+                        <p className="text-sm font-medium truncate max-w-[200px]">
+                          Información de la persona sujeta a control
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-blue-600 hover:text-blue-700"
+                        title="Descargar"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </li>
+                </ul>
               </div>
             ) : (
               <div className="h-[500px] flex justify-center items-center flex-col gap-3">

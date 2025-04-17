@@ -8,12 +8,12 @@ export interface FormDataCarrier {
   wearer: Step6Data;
 }
 export interface FormDataWearer {
-  // _id: string;
-  // personalData: Step1Data;
-  // cause: Step2Data;
-  // monitoring: Step3Data;
-  // inclusionArea: Step4Data;
-  // exclusionArea: Step5Data;
+  _id: string;
+  personalData: Step1Data;
+  cause: Step2Data;
+  monitoring: Step3Data;
+  inclusionArea: Step4Data;
+  exclusionArea: Step5Data;
   wearer: Step6Data;
 }
 

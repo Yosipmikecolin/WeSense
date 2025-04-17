@@ -50,6 +50,7 @@ import AddressModal from "../AddressModal";
 import EditRequestModal from "../EditRequestModal";
 import { updatedRequest } from "@/api/request";
 import toast from "react-hot-toast";
+import { generatePDF } from "@/views/view-carriers/functions";
 
 export const TableRequiring = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -68,7 +69,6 @@ export const TableRequiring = () => {
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
-  console.log("requests", requests);
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -368,7 +368,22 @@ export const TableRequiring = () => {
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={async () => {
-                              alert("Ver informe");
+                              generatePDF({
+                                _id: request._id,
+                                ...request.carrier,
+                                wearer: {
+                                  id: "",
+                                  first_name: "",
+                                  surname: "",
+                                  email: "",
+                                  line_1: "",
+                                  line_2: "",
+                                  line_3: "",
+                                  city: "",
+                                  county: "",
+                                  telephone: "",
+                                },
+                              });
                             }}
                           >
                             <div className="flex items-center gap-2">

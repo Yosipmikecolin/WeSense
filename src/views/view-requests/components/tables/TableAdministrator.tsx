@@ -58,7 +58,6 @@ import toast from "react-hot-toast";
 
 export const TableAdministrator = () => {
   const [idFilter, setIdFilter] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
   const [isModalReturnOpenDetails, setIsModaReturnlOpenDetails] =
     useState(false);
