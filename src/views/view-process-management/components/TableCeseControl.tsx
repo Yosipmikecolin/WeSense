@@ -1,8 +1,29 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import {
+  CalendarCheck,
+  CalendarX2,
+  Check,
+  Delete,
+  Ellipsis,
+  Eye,
+  Pencil,
+  PlusCircle,
+  SendHorizontal,
+  Trash,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table as TableUI,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Pagination } from "@/components";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,47 +32,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Ellipsis, Eye, Check, Delete, PlusCircle } from "lucide-react";
-import InstallationProcess from "./components/CreationProcess";
-
-import { Input } from "@/components/ui/input";
-import { DropdownFilter } from "@/components";
-
+import axios from "axios";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
-import { Card, CardContent } from "@/components/ui/card";
-import CreationProcess from "./components/CreationProcess";
-import axios from "axios";
-
-import { InputText } from "primereact/inputtext";
+import { ProcessType } from "../ViewProcessManagement";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
-import ProcessModal from "./components/ProcessModal";
-import TableInstallation from "./components/TableInstallation";
-import TableProrroga from "./components/TableProrroga";
-import TableCeseControl from "./components/TableCeseControl";
-import TableCambioDomicilio from "./components/TableCambioDomicilio";
-import TableInforme from "./components/TableInforme";
+import { InputText } from "primereact/inputtext";
+import InstallationModal from "./InstallationModal";
+import { Input } from "@/components/ui/input";
 
-export interface ProcessType {
-  _id: string;
-  createdAt: string;
-  type_law: string;
-  rit: string;
-  ruc: string;
-  run: string;
-  document: string;
-  date_limit: string;
-  type_resolution: string;
-  status: string;
-}
-
-const ViewProcessManagement = () => {
+const TableCeseControl = () => {
+  // const [data, setData] = useState<InstalationType[]>([]);
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
   const [currentProcess, setCurrentProcess] = useState<ProcessType>();
-  const [isShowModal, setIsShowModal] = useState(false);
 
   const [modal, setModal] = useState(false);
 
@@ -68,26 +68,19 @@ const ViewProcessManagement = () => {
     type_resolution: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   });
 
-  const closeDialog = () => {
-    setIsShowModal(false);
-  };
-
-  const onChangeModal = (e: boolean) => {
-    setIsShowModal(e);
-  };
-
-  const show = () => {
-    setIsShowModal(true);
-  };
-
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.all",
+        method: "get.approved",
       },
     });
+    console.log("DATA: ", response.data);
     setProducts(response.data);
   };
+
+  useEffect(() => {
+    getAllProcess();
+  }, []);
 
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -103,13 +96,9 @@ const ViewProcessManagement = () => {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <Button onClick={show} variant="outline">
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Nuevo Proceso
-        </Button>
+        <div className="flex flex-1"></div>
         <div>
           <Input
-            autoFocus
             className="bg-white"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
@@ -119,49 +108,6 @@ const ViewProcessManagement = () => {
       </div>
     );
   };
-
-  const bodyActions = (process: ProcessType) => {
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
-          <Ellipsis />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              onChangeStatus("1", process);
-            }}
-          >
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <Check />
-              </Button>
-              <span>Aceptar</span>
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              onChangeStatus("0", process);
-            }}
-          >
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <i className="pi pi-times-circle"></i>
-                {/* <Delete /> */}
-              </Button>
-              <span>Devolución</span>
-            </div>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  };
-
-  useEffect(() => {
-    getAllProcess();
-  }, []);
 
   const onChangeStatus = (value: string, process: ProcessType) => {
     if (value === "1") {
@@ -176,26 +122,46 @@ const ViewProcessManagement = () => {
     }
   };
 
+  const bodyActions = (process: ProcessType) => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+          <Ellipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              onChangeStatus("0", process);
+            }}
+          >
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                <CalendarX2 />
+              </Button>
+              <span>La persona no llega después de la fecha límite</span>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              onChangeStatus("1", process);
+            }}
+          >
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                <CalendarCheck />
+              </Button>
+              <span>La persona llega dentro de la fecha límite</span>
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
   return (
     <div>
-      <h1 className="text-3xl font-bold tracking-tight">
-        Proceso de recepción de sentencias y resoluciones
-      </h1>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="mt-5">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2"></div>
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start"></DropdownMenuContent>
-      </DropdownMenu>
-      <Dialog open={isShowModal} onOpenChange={onChangeModal}>
-        <DialogContent>
-          <CreationProcess onClose={closeDialog} />
-        </DialogContent>
-      </Dialog>
-
       <Card>
         <CardContent>
           <DataTable
@@ -220,22 +186,20 @@ const ViewProcessManagement = () => {
           >
             <Column field="date" header="Fecha"></Column>
             <Column field="type_law" sortable header="Tipo de ley"></Column>
+            <Column field="run" sortable header="RUN"></Column>
             <Column field="rit" sortable header="RIT"></Column>
             <Column field="ruc" sortable header="RUC"></Column>
-            <Column field="run" sortable header="RUN"></Column>
             <Column field="date_limit" header="Fecha limite"></Column>
-            <Column
+            {/* <Column
               field="type_resolution"
               sortable
               header="Tipo de resolución"
-            ></Column>
-            <Column
+            ></Column> */}
+            {/* <Column
               field="document"
               header="Documento adjunto"
-              body={
-                <i className="pi pi-eye text-green-400 hover:text-green-700 cursor-pointer"></i>
-              }
-            ></Column>
+              body={<span>Sin documento</span>}
+            ></Column> */}
             <Column field="status" header="Estado"></Column>
             <Column
               field="actions"
@@ -245,41 +209,29 @@ const ViewProcessManagement = () => {
           </DataTable>
         </CardContent>
       </Card>
-
-      <Tabs defaultValue="0" className="mt-2" defaultChecked>
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
-          <TabsTrigger value="0">Instalación</TabsTrigger>
-          <TabsTrigger value="1">Prorroga / Extensión</TabsTrigger>
-          <TabsTrigger value="2">Cese de control </TabsTrigger>
-          <TabsTrigger value="3">Cambio de domicilio</TabsTrigger>
-          <TabsTrigger value="4">Solicita informe de control</TabsTrigger>
-        </TabsList>
-        <TabsContent value="0">
-          <TableInstallation />
-        </TabsContent>
-        <TabsContent value="1">
-          <TableProrroga />
-        </TabsContent>
-        <TabsContent value="2">
-          <TableCeseControl />
-        </TabsContent>
-        <TabsContent value="3">
-          <TableCambioDomicilio />
-        </TabsContent>
-        <TabsContent value="4">
-          <TableInforme />
-        </TabsContent>
-      </Tabs>
-
-      <ProcessModal
+      <Pagination />
+      <InstallationModal
         open={modal}
         type={typeModal}
         process={currentProcess}
         onClose={() => setModal(false)}
         // refetch={refetch}
       />
+      {/* <DetailsModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Detalles del instalación"
+        data={selectedDocument}
+        fields={[
+          { key: "deviceStatus", label: "Estado del Dispositivo" },
+          { key: "installationLocation", label: "Lugar de Instalación" },
+          { key: "deviceType", label: "Tipo de Dispositivo" },
+          { key: "serialNumber", label: "Número de Serie" },
+          { key: "installationDate", label: "Fecha de Instalación" },
+        ]}
+      /> */}
     </div>
   );
 };
 
-export default ViewProcessManagement;
+export default TableCeseControl;
