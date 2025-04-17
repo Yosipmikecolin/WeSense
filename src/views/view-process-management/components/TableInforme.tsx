@@ -10,6 +10,7 @@ import {
   Eye,
   Pencil,
   PlusCircle,
+  Send,
   SendHorizontal,
   Trash,
 } from "lucide-react";
@@ -42,6 +43,7 @@ import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
 import { Input } from "@/components/ui/input";
+import InformeModal from "./InformeModal";
 
 const TableInforme = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -71,7 +73,7 @@ const TableInforme = () => {
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.approved",
+        method: "get.informe",
       },
     });
     console.log("DATA: ", response.data);
@@ -133,26 +135,14 @@ const TableInforme = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              onChangeStatus("0", process);
-            }}
-          >
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <CalendarX2 />
-              </Button>
-              <span>La persona no llega después de la fecha límite</span>
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
               onChangeStatus("1", process);
             }}
           >
             <div className="flex items-center gap-2 cursor-pointer">
               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <CalendarCheck />
+                <Send />
               </Button>
-              <span>La persona llega dentro de la fecha límite</span>
+              <span>Respuesta de resolución</span>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -210,7 +200,7 @@ const TableInforme = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <InstallationModal
+      <InformeModal
         open={modal}
         type={typeModal}
         process={currentProcess}

@@ -1,28 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  CalendarCheck,
-  CalendarX2,
-  Check,
-  Delete,
-  Ellipsis,
-  Eye,
-  Pencil,
-  PlusCircle,
-  SendHorizontal,
-  Trash,
-} from "lucide-react";
+import { CalendarCheck, CalendarX2, Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Table as TableUI,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { Pagination } from "@/components";
 import {
   DropdownMenu,
@@ -37,11 +19,14 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import { ProcessType } from "../ViewProcessManagement";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
-import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
 import { Input } from "@/components/ui/input";
+
+import { useQuery } from "@tanstack/react-query";
+
+// interface Props {
+//   refetch: () => void;
+// }
 
 const TableInstallation = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -71,12 +56,23 @@ const TableInstallation = () => {
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.approved",
+        method: "get.instalacion",
       },
     });
-    console.log("DATA: ", response.data);
-    setProducts(response.data);
+    // console.log("DATA: ", response.data);
+    // setProducts(response.data);
+    return response.data;
   };
+
+  const useQueryAllProcess = () => {
+    return useQuery({
+      queryKey: ["all_instalacion"],
+      queryFn: () => getAllProcess(),
+      refetchInterval: 5000,
+    });
+  };
+
+  const { data, isLoading, refetch } = useQueryAllProcess();
 
   useEffect(() => {
     getAllProcess();
@@ -167,7 +163,7 @@ const TableInstallation = () => {
           <DataTable
             className="mt-6"
             dataKey="_id"
-            value={products}
+            value={data}
             tableStyle={{ minWidth: "50rem" }}
             size="small"
             filters={filters}

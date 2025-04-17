@@ -28,9 +28,10 @@ export interface CreationType {
 
 interface Props {
   onClose: () => void;
+  refetch: () => void;
 }
 
-const CreationProcess = ({ onClose }: Props) => {
+const CreationProcess = ({ onClose, refetch }: Props) => {
   const [formData, setFormData] = useState({
     type_law: "",
     rit: "",
@@ -52,6 +53,7 @@ const CreationProcess = ({ onClose }: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     save();
+    refetch();
     console.log("Datos del formulario:", formData);
   };
 

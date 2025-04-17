@@ -15,32 +15,32 @@ import { ProcessType } from "../ViewProcessManagement";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface Props {
   open: boolean;
   process?: ProcessType;
   onClose: VoidFunction;
   type: string;
-  refetch: () => void;
 }
 
-const ProcessModal = ({ onClose, process, open, type, refetch }: Props) => {
+const CeseControlModal = ({ onClose, process, open, type }: Props) => {
   const [loading, setLoading] = useState(false);
   const [nota, setNota] = useState("");
+  const [date, setDate] = useState("");
+  const [firstVisit, setFirstVisit] = useState("");
+  const [secondVisit, setSecondVisit] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (process) {
       try {
         setLoading(true);
-        const response = await axios.put(`/api/awardee/process`, {
-          _id: process._id,
-          status: type === "1" ? "Aceptado" : "Devuelto",
-          method: "update.process",
-        });
-        console.log("RESPONSE: ", response.data);
+        // refetch();
         setNota("");
-        refetch();
+        setDate("");
+        setFirstVisit("");
+        setSecondVisit("");
         onClose();
       } catch (error) {
         toast.error("Ocurrio un error");
@@ -56,10 +56,30 @@ const ProcessModal = ({ onClose, process, open, type, refetch }: Props) => {
         <DialogClose />
         <DialogHeader>
           <DialogTitle>
-            {type === "1" ? "Aceptar Proceso" : "Devolución de proceso"}
+            {type === "1"
+              ? "Dentro de la fecha límite"
+              : "Fuera de la fecha límite"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            {type === "1" && (
+              <>
+                <div className="mb-3">
+                  <Label htmlFor="presentation_date">
+                    Fecha de presentación
+                  </Label>
+                  <Input
+                    id="presentation_date"
+                    name="presentation_date"
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+          </div>
           <div>
             <Label htmlFor="note">Nota</Label>
             <Textarea
@@ -72,9 +92,20 @@ const ProcessModal = ({ onClose, process, open, type, refetch }: Props) => {
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit" variant={"primary"} disabled={nota === ""}>
-              {type === "1" ? "Aceptar" : "Devolver"}
-            </Button>
+            {type === "0" && (
+              <Button type="submit" variant={"primary"} disabled={nota === ""}>
+                Se notifica al solicitante
+              </Button>
+            )}
+            {type === "1" && (
+              <Button
+                type="submit"
+                variant={"primary"}
+                disabled={nota === "" || date === ""}
+              >
+                Aceptar
+              </Button>
+            )}
           </div>
         </form>
       </DialogContent>
@@ -82,4 +113,4 @@ const ProcessModal = ({ onClose, process, open, type, refetch }: Props) => {
   );
 };
 
-export default ProcessModal;
+export default CeseControlModal;

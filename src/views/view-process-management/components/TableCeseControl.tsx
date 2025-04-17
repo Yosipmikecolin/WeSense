@@ -42,6 +42,7 @@ import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
 import { Input } from "@/components/ui/input";
+import CeseControlModal from "./CeseControlModal";
 
 const TableCeseControl = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -71,7 +72,7 @@ const TableCeseControl = () => {
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.approved",
+        method: "get.cese_control",
       },
     });
     console.log("DATA: ", response.data);
@@ -210,7 +211,7 @@ const TableCeseControl = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <InstallationModal
+      <CeseControlModal
         open={modal}
         type={typeModal}
         process={currentProcess}

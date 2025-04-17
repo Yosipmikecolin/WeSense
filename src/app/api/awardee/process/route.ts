@@ -16,6 +16,42 @@ export async function GET(req: Request) {
     const awardees = await AwardeeProcess.find({ status: { $ne: "Aceptado" } });
     return NextResponse.json(awardees);
   }
+
+  if (_METHOD === "get.instalacion") {
+    const awardees = await AwardeeProcess.find({
+      type_resolution: { $eq: "Instalación" },
+      status: { $eq: "Aceptado" },
+    });
+    return NextResponse.json(awardees);
+  }
+  if (_METHOD === "get.prorroga") {
+    const awardees = await AwardeeProcess.find({
+      type_resolution: { $eq: "Prorroga / Extensión" },
+      status: { $eq: "Aceptado" },
+    });
+    return NextResponse.json(awardees);
+  }
+  if (_METHOD === "get.cese_control") {
+    const awardees = await AwardeeProcess.find({
+      type_resolution: { $eq: "Cese de control" },
+      status: { $eq: "Aceptado" },
+    });
+    return NextResponse.json(awardees);
+  }
+  if (_METHOD === "get.cambio_domicilio") {
+    const awardees = await AwardeeProcess.find({
+      type_resolution: { $eq: "Cambio de domicilio" },
+      status: { $eq: "Aceptado" },
+    });
+    return NextResponse.json(awardees);
+  }
+  if (_METHOD === "get.informe") {
+    const awardees = await AwardeeProcess.find({
+      type_resolution: { $eq: "Solicita informe de control" },
+      status: { $eq: "Aceptado" },
+    });
+    return NextResponse.json(awardees);
+  }
 }
 
 export async function POST(req: Request) {

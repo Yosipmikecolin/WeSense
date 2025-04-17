@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   CalendarCheck,
+  CalendarSync,
   CalendarX2,
   Check,
   Delete,
@@ -42,6 +43,7 @@ import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
 import { Input } from "@/components/ui/input";
+import ProrrogaModal from "./ProrrogaModal";
 
 const TableProrroga = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -71,7 +73,7 @@ const TableProrroga = () => {
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.approved",
+        method: "get.prorroga",
       },
     });
     console.log("DATA: ", response.data);
@@ -138,12 +140,12 @@ const TableProrroga = () => {
           >
             <div className="flex items-center gap-2 cursor-pointer">
               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <CalendarX2 />
+                <CalendarSync />
               </Button>
-              <span>La persona no llega después de la fecha límite</span>
+              <span>Cambiar fecha</span>
             </div>
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => {
               onChangeStatus("1", process);
             }}
@@ -154,7 +156,7 @@ const TableProrroga = () => {
               </Button>
               <span>La persona llega dentro de la fecha límite</span>
             </div>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -210,7 +212,7 @@ const TableProrroga = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <InstallationModal
+      <ProrrogaModal
         open={modal}
         type={typeModal}
         process={currentProcess}

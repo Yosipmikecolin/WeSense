@@ -8,6 +8,9 @@ import {
   Delete,
   Ellipsis,
   Eye,
+  MapPin,
+  MapPinCheck,
+  MapPinMinus,
   Pencil,
   PlusCircle,
   SendHorizontal,
@@ -42,6 +45,7 @@ import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
 import { Input } from "@/components/ui/input";
+import CambioDomicilioModal from "./CambioDomicilioModal";
 
 const TableCambioDomicilio = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -71,7 +75,7 @@ const TableCambioDomicilio = () => {
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.approved",
+        method: "get.cambio_domicilio",
       },
     });
     console.log("DATA: ", response.data);
@@ -138,9 +142,9 @@ const TableCambioDomicilio = () => {
           >
             <div className="flex items-center gap-2 cursor-pointer">
               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <CalendarX2 />
+                <MapPinMinus />
               </Button>
-              <span>La persona no llega después de la fecha límite</span>
+              <span>Zona de exclusión </span>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -150,9 +154,9 @@ const TableCambioDomicilio = () => {
           >
             <div className="flex items-center gap-2 cursor-pointer">
               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <CalendarCheck />
+                <MapPinCheck />
               </Button>
-              <span>La persona llega dentro de la fecha límite</span>
+              <span>Zona de inclusión</span>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -210,7 +214,7 @@ const TableCambioDomicilio = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <InstallationModal
+      <CambioDomicilioModal
         open={modal}
         type={typeModal}
         process={currentProcess}

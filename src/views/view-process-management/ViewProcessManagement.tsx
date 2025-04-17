@@ -35,6 +35,8 @@ import TableCeseControl from "./components/TableCeseControl";
 import TableCambioDomicilio from "./components/TableCambioDomicilio";
 import TableInforme from "./components/TableInforme";
 
+import { useQuery } from "@tanstack/react-query";
+
 export interface ProcessType {
   _id: string;
   createdAt: string;
@@ -86,8 +88,18 @@ const ViewProcessManagement = () => {
         method: "get.all",
       },
     });
-    setProducts(response.data);
+    return response.data;
+    // setProducts(response.data);
   };
+
+  const useQueryAllProcess = () => {
+    return useQuery({
+      queryKey: ["all_process"],
+      queryFn: () => getAllProcess(),
+    });
+  };
+
+  const { data, isLoading, refetch } = useQueryAllProcess();
 
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -192,7 +204,7 @@ const ViewProcessManagement = () => {
       </DropdownMenu>
       <Dialog open={isShowModal} onOpenChange={onChangeModal}>
         <DialogContent>
-          <CreationProcess onClose={closeDialog} />
+          <CreationProcess onClose={closeDialog} refetch={refetch} />
         </DialogContent>
       </Dialog>
 
@@ -201,7 +213,7 @@ const ViewProcessManagement = () => {
           <DataTable
             className="mt-6"
             dataKey="_id"
-            value={products}
+            value={data}
             tableStyle={{ minWidth: "50rem" }}
             size="small"
             filters={filters}
@@ -272,6 +284,7 @@ const ViewProcessManagement = () => {
       </Tabs>
 
       <ProcessModal
+        refetch={refetch}
         open={modal}
         type={typeModal}
         process={currentProcess}
