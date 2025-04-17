@@ -32,7 +32,7 @@ const ProcessModal = ({ onClose, process, open, type }: Props) => {
     if (process) {
       try {
         setLoading(true);
-        const response = await axios.put(`/api/awardee`, {
+        const response = await axios.put(`/api/awardee/process`, {
           _id: process._id,
           status: type === "1" ? "Aceptado" : "Devuelto",
           method: "update.process",

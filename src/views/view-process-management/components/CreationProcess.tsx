@@ -57,7 +57,7 @@ const CreationProcess = ({ onClose }: Props) => {
 
   const save = async () => {
     console.log("FORM: ", formData);
-    const response = await axios.post(`/api/awardee`, formData);
+    const response = await axios.post(`/api/awardee/process`, formData);
     console.log("DATA: ", response.data);
     setFormData({
       type_law: "",

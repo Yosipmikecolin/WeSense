@@ -1,48 +1,32 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Awardee } from "../models/Awardee";
-import { getDate } from "@/functions";
 
-export async function GET(req: Request) {
+export async function GET() {
   await connectDB();
-  const { searchParams } = new URL(req.url);
-  const _METHOD = searchParams.get("method") || "";
-
-  if (_METHOD === "get.approved") {
-    const awardees = await Awardee.find({ status: { $eq: "Aceptado" } });
-    return NextResponse.json(awardees);
-  }
-  if (_METHOD === "get.all") {
-    const awardees = await Awardee.find({ status: { $ne: "Aceptado" } });
-    return NextResponse.json(awardees);
-  }
+  const awardees = await Awardee.find();
+  return NextResponse.json(awardees);
 }
 
 export async function POST(req: Request) {
   await connectDB();
   const body = await req.json();
-  body["date"] = new Date().toLocaleDateString();
-  body["date_limit"] = getISODate(body.date_limit);
   const newAwardee = await Awardee.create(body);
   return NextResponse.json(newAwardee, { status: 201 });
-}
-
-function getISODate(date: string) {
-  const fecha = new Date(date);
-  return fecha.toLocaleDateString();
 }
 
 export async function PUT(req: Request) {
   await connectDB();
   const body = await req.json();
-  const _METHOD = body.method;
-  if (_METHOD === "update.process") {
-    const updatedAwardee = await Awardee.updateOne(
-      { _id: body._id },
-      { status: body.status }
-    );
-    return NextResponse.json(updatedAwardee, { status: 201 });
-  }
+  const data = {
+    date: body.date,
+    note: body.note,
+    type: body.type,
+    user: body.user,
+  };
+
+  const updatedAwardee = await Awardee.updateOne({ _id: body._id }, data);
+  return NextResponse.json(updatedAwardee, { status: 201 });
 }
 
 export async function DELETE(req: Request) {

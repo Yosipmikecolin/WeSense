@@ -77,7 +77,7 @@ const ViewProcessManagement = () => {
   };
 
   const getAllProcess = async () => {
-    const response = await axios.get(`/api/awardee`, {
+    const response = await axios.get(`/api/awardee/process`, {
       params: {
         method: "get.all",
       },
