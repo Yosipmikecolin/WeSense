@@ -74,9 +74,9 @@ const TableInstallation = () => {
 
   const { data, isLoading, refetch } = useQueryAllProcess();
 
-  useEffect(() => {
-    getAllProcess();
-  }, []);
+  // useEffect(() => {
+  //   getAllProcess();
+  // }, []);
 
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

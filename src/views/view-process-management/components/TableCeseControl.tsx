@@ -43,6 +43,7 @@ import { InputText } from "primereact/inputtext";
 import InstallationModal from "./InstallationModal";
 import { Input } from "@/components/ui/input";
 import CeseControlModal from "./CeseControlModal";
+import { useQuery } from "@tanstack/react-query";
 
 const TableCeseControl = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
@@ -75,13 +76,24 @@ const TableCeseControl = () => {
         method: "get.cese_control",
       },
     });
-    console.log("DATA: ", response.data);
-    setProducts(response.data);
+    // console.log("DATA: ", response.data);
+    // setProducts(response.data);
+    return response.data;
   };
 
-  useEffect(() => {
-    getAllProcess();
-  }, []);
+  const useQueryAllProcess = () => {
+    return useQuery({
+      queryKey: ["all_cese_control"],
+      queryFn: () => getAllProcess(),
+      refetchInterval: 5000,
+    });
+  };
+
+  const { data, isLoading, refetch } = useQueryAllProcess();
+
+  // useEffect(() => {
+  //   getAllProcess();
+  // }, []);
 
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -168,7 +180,7 @@ const TableCeseControl = () => {
           <DataTable
             className="mt-6"
             dataKey="_id"
-            value={products}
+            value={data}
             tableStyle={{ minWidth: "50rem" }}
             size="small"
             filters={filters}
