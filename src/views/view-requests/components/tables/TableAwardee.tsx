@@ -21,6 +21,7 @@ import {
   FilePen,
   Info,
   RotateCw,
+  Search,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownFilter, Pagination } from "@/components";
@@ -61,7 +62,7 @@ export const TableAwardee = () => {
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
-
+  console.log("requests", requests);
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -142,128 +143,156 @@ export const TableAwardee = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requests?.map((request, index) => (
-                <TableRow key={index}>
-                  <TableCell>{request.requester.userType}</TableCell>
-                  <TableCell>{request.requester.fullName}</TableCell>
-                  <TableCell className="text-xs ">
-                    <div className="w-[120px]">
-                      {request.answer === "positive" && (
-                        <span className="bg-green-400 text-white py-1 px-2 rounded-md">
-                          Positivo
-                        </span>
-                      )}
+              {requests
+                ?.filter(
+                  (i) =>
+                    i.status !== "confirmed" &&
+                    i.status !== "reviewing" &&
+                    i.status !== "returned_to_requester"
+                )
+                ?.filter((i) => {
+                  if (!stateFilter) return true;
+                  return i.status === stateFilter;
+                })
+                .map((request, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{request.requester.userType}</TableCell>
+                    <TableCell>{request.requester.fullName}</TableCell>
+                    <TableCell className="text-xs ">
+                      <div className="w-[120px]">
+                        {request.answer === "positive" && (
+                          <span className="bg-green-400 text-white py-1 px-2 rounded-md">
+                            Positivo
+                          </span>
+                        )}
+                        {request.answer === "negative" && (
+                          <span className="bg-red-400 text-white py-1 px-2 rounded-md">
+                            Negativo
+                          </span>
+                        )}
+                        {request.answer === "not-recommended" && (
+                          <span className="bg-orange-400 text-white py-1 px-2 rounded-md">
+                            No recomendado
+                          </span>
+                        )}
 
-                      {request.answer === "negative" && (
-                        <span className="bg-red-400 text-white py-1 px-2 rounded-md">
-                          Negativo
-                        </span>
-                      )}
-                      {request.answer === "not-recommended" && (
-                        <span className="bg-orange-400 text-white py-1 px-2 rounded-md">
-                          No recomendado
-                        </span>
-                      )}
-
-                      {request.answer === "no-confirmed" && (
-                        <span className="bg-gray-400 text-white py-1 px-2 rounded-md">
-                          Sin respuesta
-                        </span>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>{request.issue_date}</TableCell>
-
-                  <TableCell>{request.response_date || "----"}</TableCell>
-                  <TableCell>{request.time_respond || "----"}</TableCell>
-
-                  <TableCell>
-                    {request.status === "returned" && (
-                      <div className="flex gap-2 items-center">
-                        <RotateCw size={17} color="#FF9D23" />
-                        <span className="text-sm">Retornado</span>
+                        {request.answer === "no-confirmed" && (
+                          <span className="bg-gray-400 text-white py-1 px-2 rounded-md">
+                            Sin respuesta
+                          </span>
+                        )}
                       </div>
-                    )}
+                    </TableCell>
+                    <TableCell>{request.issue_date}</TableCell>
 
-                    {request.status === "unconfirmed" && (
-                      <div className="flex items-center gap-2">
-                        <CircleSlash size={17} color="#B7B7B7" />
-                        <span className="text-sm">Sin responder</span>
-                      </div>
-                    )}
+                    <TableCell>{request.response_date || "----"}</TableCell>
+                    <TableCell>{request.time_respond || "----"}</TableCell>
 
-                    {request.status === "answered" && (
-                      <div className="flex items-center gap-2">
-                        <CircleCheck size={17} color="#16a34a" />
-                        <span className="text-sm">Respondido</span>
-                      </div>
-                    )}
-                  </TableCell>
+                    <TableCell>
+                      {request.status === "returned" && (
+                        <div className="flex gap-2 items-center">
+                          <RotateCw size={17} color="#FF9D23" />
+                          <span className="text-sm">Retornado</span>
+                        </div>
+                      )}
 
-                  <TableCell className="mr-10 flex justify-end">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
-                        <Ellipsis />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setSelectedRequest(request);
-                            setIsModalOpenDetails(true);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Eye />
-                            </Button>
-                            <span>Detalles</span>
-                          </div>
-                        </DropdownMenuItem>
+                      {request.status === "unconfirmed" && (
+                        <div className="flex items-center gap-2">
+                          <CircleSlash size={17} color="#B7B7B7" />
+                          <span className="text-sm">Sin responder</span>
+                        </div>
+                      )}
 
-                        {request.status === "returned" && (
+                      {request.status === "answered" && (
+                        <div className="flex items-center gap-2">
+                          <CircleCheck size={17} color="#16a34a" />
+                          <span className="text-sm">Respondido</span>
+                        </div>
+                      )}
+                    </TableCell>
+
+                    <TableCell className="mr-10 flex justify-end">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                          <Ellipsis />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
                           <DropdownMenuItem
                             onClick={() => {
                               setSelectedRequest(request);
-                              setIsModalOpen(true);
+                              setIsModalOpenDetails(true);
                             }}
                           >
-                            <div
-                              className="flex items-center gap-2 cursor-pointer"
-                              onClick={() => setSelectedRequest(request)}
-                            >
+                            <div className="flex items-center gap-2 cursor-pointer">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FilePen />
+                                <Eye />
                               </Button>
-                              Gestionar devolución
+                              <span>Detalles</span>
                             </div>
                           </DropdownMenuItem>
-                        )}
 
-                        {request.status === "unconfirmed" && (
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setSelectedRequest(request);
-                              setIsModalOpen(true);
-                            }}
-                          >
-                            <div
-                              className="flex items-center gap-2 cursor-pointer"
-                              onClick={() => setSelectedRequest(undefined)}
+                          {request.status === "returned" && (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedRequest(request);
+                                setIsModalOpen(true);
+                              }}
                             >
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FilePen />
-                              </Button>
-                              Gestionar
-                            </div>
-                          </DropdownMenuItem>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
+                              <div
+                                className="flex items-center gap-2 cursor-pointer"
+                                onClick={() => setSelectedRequest(request)}
+                              >
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FilePen />
+                                </Button>
+                                Gestionar devolución
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+
+                          {request.status === "unconfirmed" && (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedRequest(request);
+                                setIsModalOpen(true);
+                              }}
+                            >
+                              <div
+                                className="flex items-center gap-2 cursor-pointer"
+                                onClick={() => setSelectedRequest(undefined)}
+                              >
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FilePen />
+                                </Button>
+                                Gestionar
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+
+                          {/* OPCIONES PARA LA RETONRO DEL ADJUDICADO */}
+                          {request.status === "returned" && (
+                            <DropdownMenuItem
+                              className="cursor-pointer"
+                              onClick={() => {
+                                setIsModaReturnlOpenDetails(true);
+                                setSelectedRequest(request);
+                              }}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Search />
+                                </Button>
+                                <span>Motivo</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </TableUI>
           {isLoading && (
@@ -271,6 +300,17 @@ export const TableAwardee = () => {
               <div className="loader-spiner" />
             </div>
           )}
+          {!isLoading &&
+            !requests?.filter(
+              (i) =>
+                i.status !== "confirmed" &&
+                i.status !== "reviewing" &&
+                i.status !== "returned_to_requester"
+            ).length && (
+              <div className="w-full h-[500px] bg-r flex justify-center items-center">
+                <h1 className="text-xl">No hay solicitudes</h1>
+              </div>
+            )}
         </CardContent>
       </Card>
       <Pagination />
@@ -285,10 +325,14 @@ export const TableAwardee = () => {
         onClose={() => setIsModalOpen(false)}
         refetch={refetch}
       />
-      <ReturnDetailsModal
-        open={isModalReturnOpenDetails}
-        onClose={() => setIsModaReturnlOpenDetails(false)}
-      />
+      {selectedRequest && (
+        <ReturnDetailsModal
+          type={"awardee"}
+          request={selectedRequest}
+          open={isModalReturnOpenDetails}
+          onClose={() => setIsModaReturnlOpenDetails(false)}
+        />
+      )}
     </div>
   );
 };

@@ -53,14 +53,14 @@ const ViewCreateRequest = () => {
   const [formDataCarrier, setFormDataCarrier] =
     useState<FormDataCarrier>(initialFormData);
   const [formData, setFormData] = useState<RequestPost>({
-    answer: "no-confirmed",
+    answer: "---",
     reason_return: "",
     description_reason: "",
     issue_date: getDate(),
     response_date: "",
     return_date: "",
     time_respond: "",
-    status: "unconfirmed",
+    status: "reviewing",
     requester: {
       fullName: "Jose Stiven Alfredo Mendoza",
       lastName: "Alfredo",
@@ -80,6 +80,8 @@ const ViewCreateRequest = () => {
       observations: "Ninguna",
     },
     carrier: initialFormData,
+    reason_revolution_requester: [],
+    reason_revolution_awardee: [],
     awardee_response: {
       status: "",
       minimum_coverage: "",
@@ -215,7 +217,7 @@ const ViewCreateRequest = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  /*   const handleSubmit = async () => {
     setLoading(true);
     try {
       await addRequest({ ...formData, carrier: formDataCarrier });
@@ -271,8 +273,63 @@ const ViewCreateRequest = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }; */
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await addRequest({ ...formData, carrier: formDataCarrier });
+      toast.success("Solicitud creada exitosamente");
+      setLoading(false);
+      setCurrentStep(0);
+      setFormDataCarrier(initialFormData);
+      localStorage.setItem("carrier-buddie", JSON.stringify(create_wearer));
+      setFormData({
+        answer: "---",
+        reason_return: "",
+        description_reason: "",
+        issue_date: getDate(),
+        response_date: "",
+        return_date: "",
+        time_respond: "",
+        status: "reviewing",
+        requester: {
+          fullName: "Jose Stiven Alfredo Mendoza",
+          lastName: "Alfredo",
+          middleName: "Mendoza",
+          email: "jose1293@gmail.com",
+          run: "4234234",
+          phone: "58367294",
+          userType: "Abogado",
+          institution: "Los Andes",
+          identificationNumber: "Reclusión parcial",
+          region: "Santiago de Chile",
+          address: "Cra 21 # 43-43",
+          accessAreas: "Casa",
+          identityVerification: "5937234",
+          securityQuestion: "¿Como se llama tu madre?",
+          registrationDate: "16/04/2025",
+          observations: "Ninguna",
+        },
+        carrier: initialFormData,
+        reason_revolution_requester: [],
+        reason_revolution_awardee: [],
+        awardee_response: {
+          status: "",
+          minimum_coverage: "",
+          latitude: "",
+          length: "",
+          indication_aspects: "",
+          value: "",
+          photographic_evidence: [],
+        },
+      });
+    } catch (error) {
+      toast.error("Error al crear la solicitud");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div
       className={classes.container}
@@ -299,7 +356,7 @@ const ViewCreateRequest = () => {
           <Button
             variant={"primary"}
             onClick={() => {
-              if (currentStep === 1) {
+              if (currentStep === steps.length - 1) {
                 handleSubmit();
               } else {
                 handleNext();
@@ -307,7 +364,7 @@ const ViewCreateRequest = () => {
             }}
             disabled={loading || !completeForm}
           >
-            {currentStep === 1 ? (
+            {currentStep === steps.length - 1 ? (
               loading ? (
                 <div className="flex justify-center items-center gap-3">
                   <div className="loader-button" />

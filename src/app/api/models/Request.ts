@@ -39,8 +39,6 @@ const RequesterSchema = new mongoose.Schema({
 const RequestSchema = new mongoose.Schema(
   {
     answer: String,
-    description_reason: String,
-    reason_return: String,
     issue_date: String,
     response_date: String,
     return_date: String,
@@ -48,6 +46,18 @@ const RequestSchema = new mongoose.Schema(
     status: String,
     requester: RequesterSchema,
     carrier: CarrierSchema,
+    reason_revolution_requester: [
+      {
+        description_reason: String,
+        reason_return: String,
+      },
+    ],
+    reason_revolution_awardee: [
+      {
+        description_reason: String,
+        reason_return: String,
+      },
+    ],
     awardee_response: {
       minimum_coverage: String,
       status: String,

@@ -11,16 +11,19 @@ import {
 } from "@/components/ui/table";
 
 import {
+  Check,
   CircleCheck,
   CircleMinus,
   CircleSlash,
   Ellipsis,
   Eye,
   FileCheck2,
+  FileX2,
   Info,
   Mail,
   Redo2,
   RotateCw,
+  Search,
   SendHorizontal,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -50,6 +53,7 @@ import {
 } from "@/components/ui/popover";
 import { useQueryRequest } from "@/api/queries";
 import { RequestTable } from "@/views/view-create-request/interfaces";
+import { updatedRequest } from "@/api/request";
 
 export const TableAdministrator = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -64,7 +68,8 @@ export const TableAdministrator = () => {
 
   const [stateFilter, setStateFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
-  const { data: requests, isLoading } = useQueryRequest();
+  const [type, setType] = useState<"requester" | "awardee">("requester");
+  const { data: requests, isLoading, refetch } = useQueryRequest();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
     { id: 2, name: "Nombre del requirente" },
@@ -139,12 +144,19 @@ export const TableAdministrator = () => {
 
                         <li className="flex items-center gap-2">
                           <RotateCw size={17} color="#FF9D23" />
-                          Retornado
+                          Retornado al adjudicado
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <RotateCw size={17} color="#FF9D23" />
+                          Retornado al requirente
                         </li>
                         <li className="flex items-center gap-2">
                           <CircleCheck size={17} color="#16a34a" /> Confirmado
                         </li>
-
+                        <li className="flex items-center gap-2">
+                          <Eye size={17} color="#4D55CC" />
+                          En revision
+                        </li>
                         <li className="flex items-center gap-2">
                           <CircleMinus size={17} color="#577BC1" />
                           El adjudicado respondio
@@ -164,23 +176,37 @@ export const TableAdministrator = () => {
                   <TableCell>{request.requester.userType}</TableCell>
                   <TableCell>{request.requester.fullName}</TableCell>
                   <TableCell className="text-xs ">
-                    <div className="w-[110px]">
+                    <div className="w-[140px]">
                       {request.answer === "positive" && (
-                        <span className="bg-green-400 text-white p-1 rounded-md">
-                          Positivo
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="bg-green-400 text-white p-1 rounded-md">
+                            Positivo
+                          </span>
+                          {request.status === "confirmed" && (
+                            <CircleCheck size={17} color="#16a34a" />
+                          )}
+                        </div>
                       )}
 
                       {request.answer === "negative" && (
-                        <span className="bg-red-400 text-white p-1 rounded-md">
-                          Negativo
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="bg-red-400 text-white p-1 rounded-md">
+                            Negativo
+                          </span>
+                          {request.status === "confirmed" && (
+                            <CircleCheck size={17} color="#16a34a" />
+                          )}
+                        </div>
                       )}
+
                       {request.answer === "not-recommended" && (
                         <div className="flex items-center gap-2">
                           <span className="bg-orange-400 text-white p-1 rounded-md">
                             No recomendado
                           </span>
+                          {request.status === "confirmed" && (
+                            <CircleCheck size={17} color="#16a34a" />
+                          )}
                         </div>
                       )}
 
@@ -190,6 +216,10 @@ export const TableAdministrator = () => {
                             Sin respuesta
                           </span>
                         </div>
+                      )}
+
+                      {request.answer === "---" && (
+                        <div className="flex items-center gap-2">---</div>
                       )}
                     </div>
                   </TableCell>
@@ -208,7 +238,7 @@ export const TableAdministrator = () => {
                     {request.status === "returned" && (
                       <div className="flex gap-2 items-center">
                         <RotateCw size={17} color="#FF9D23" />
-                        <span className="text-sm">Retornado</span>
+                        <span className="text-sm">Retornado al adjudicado</span>
                       </div>
                     )}
 
@@ -225,6 +255,20 @@ export const TableAdministrator = () => {
                         <span className="text-sm">El adjudicado respondio</span>
                       </div>
                     )}
+
+                    {request.status === "reviewing" && (
+                      <li className="flex items-center gap-2">
+                        <Eye size={17} color="#4D55CC" />
+                        En revision
+                      </li>
+                    )}
+
+                    {request.status === "returned_to_requester" && (
+                      <li className="flex items-center gap-2">
+                        <RotateCw size={17} color="#FF9D23" />
+                        Retornado al requirente
+                      </li>
+                    )}
                   </TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
@@ -236,12 +280,13 @@ export const TableAdministrator = () => {
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
+                          className="cursor-pointer"
                           onClick={() => {
                             setSelectedRequest(request);
                             setIsModalOpenDetails(true);
                           }}
                         >
-                          <div className="flex items-center gap-2 cursor-pointer">
+                          <div className="flex items-center gap-2">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Eye />
                             </Button>
@@ -249,18 +294,109 @@ export const TableAdministrator = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        {request.status === "answered" && (
+                        {/* OPCIONES PARA LA RETONRO DE LA SOLICITUD AL REQUIRENTE */}
+                        {request.status === "returned_to_requester" && (
                           <DropdownMenuItem
-                            onClick={() =>
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setIsModaReturnlOpenDetails(true);
+                              setSelectedRequest(request);
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Search />
+                              </Button>
+                              <span>Motivo</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {/* OPCIONES PARA LA RETONRO DEL ADJUDICADO */}
+                        {request.status === "returned" && (
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setIsModaReturnlOpenDetails(true);
+                              setSelectedRequest(request);
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Search />
+                              </Button>
+                              <span>Motivo</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {/* OPCIONES PARA LA SOLICITUD DEL REQUIRENTE */}
+                        {request.status === "reviewing" && (
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={async () => {
                               toast({
                                 title: "Solicitud confirmada",
                                 className: "bg-green-500 text-white",
                                 description:
                                   "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
-                              })
-                            }
+                              });
+                              await updatedRequest({
+                                ...request,
+                                status: "unconfirmed",
+                                answer: "no-confirmed",
+                                time_respond: "12 horas",
+                              });
+                              refetch();
+                            }}
                           >
-                            <div className="flex items-center gap-2 cursor-pointer">
+                            <div className="flex items-center gap-2">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FileCheck2 />
+                              </Button>
+                              <span>Aceptar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {request.status === "reviewing" && (
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setIsModaReturnlOpen(true);
+                              setSelectedRequest(request);
+                              setType("requester");
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FileX2 />
+                              </Button>
+                              <span>Regresar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {/* OPCIONES PARA LA RESPUESTA DE BUDDI */}
+                        {request.status === "answered" && (
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={async () => {
+                              await updatedRequest({
+                                ...request,
+                                status: "confirmed",
+                                time_respond: "12 horas",
+                              });
+
+                              toast({
+                                title: "Solicitud confirmada",
+                                className: "bg-green-500 text-white",
+                                description:
+                                  "Esta solicitud ha pasado por todo el proceso de verificación y validación.",
+                              });
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                                 <FileCheck2 />
                               </Button>
@@ -271,9 +407,14 @@ export const TableAdministrator = () => {
 
                         {request.status === "answered" && (
                           <DropdownMenuItem
-                            onClick={() => setIsModaReturnlOpen(true)}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setSelectedRequest(request);
+                              setIsModaReturnlOpen(true);
+                              setType("awardee");
+                            }}
                           >
-                            <div className="flex items-center gap-2 cursor-pointer">
+                            <div className="flex items-center gap-2">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                                 <Redo2 />
                               </Button>
@@ -282,6 +423,7 @@ export const TableAdministrator = () => {
                           </DropdownMenuItem>
                         )}
 
+                        {/* OPCIONES PARA LA GENDARMERRIA SI ACEPTO LA SOLCIITUD DE BUDDI */}
                         {request.status === "confirmed" && (
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
@@ -314,10 +456,18 @@ export const TableAdministrator = () => {
               <div className="loader-spiner" />
             </div>
           )}
+          {!isLoading && !requests?.length && (
+            <div className="w-full h-[500px] bg-r flex justify-center items-center">
+              <h1 className="text-xl">No hay solicitudes</h1>
+            </div>
+          )}
         </CardContent>
       </Card>
       <Pagination />
       <ReturnRequestModal
+        type={type}
+        refetch={refetch}
+        request={selectedRequest}
         open={isModalReturnOpen}
         onClose={() => setIsModaReturnlOpen(false)}
       />
@@ -327,18 +477,15 @@ export const TableAdministrator = () => {
         request={selectedRequest}
         onClose={() => setIsModalOpenDetails(false)}
       />
-      {/*       
 
-      <AddressModal
-        request={selectedRequest}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      /> */}
-
-      <ReturnDetailsModal
-        open={isModalReturnOpenDetails}
-        onClose={() => setIsModaReturnlOpenDetails(false)}
-      />
+      {selectedRequest && (
+        <ReturnDetailsModal
+          type={type}
+          request={selectedRequest}
+          open={isModalReturnOpenDetails}
+          onClose={() => setIsModaReturnlOpenDetails(false)}
+        />
+      )}
     </div>
   );
 };

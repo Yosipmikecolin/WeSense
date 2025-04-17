@@ -57,6 +57,10 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="application-information">
+            <div className="flex items-center justify-between">
+              <span>Fecha de emisión</span>
+              <span>{request?.issue_date}</span>
+            </div>
             {/*      <div className="p-2 border-t text-lg border-b-0 flex items-center justify-between">
               <div className="font-semibold p-1 flex">Estado:</div>
               <div className="text-end ">

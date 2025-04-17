@@ -88,9 +88,8 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
           </SelectContent>
         </Select>
       </div>
-
       <div>
-        <Label htmlFor="court">Tribunal</Label>
+        <Label htmlFor="court">Tribunal/Juzgado</Label>
         <Input
           id="court"
           name="court"

@@ -25,6 +25,14 @@ export interface FormDataRequest {
   status: string;
   requester: RequesterPost;
   carrier: FormDataCarrierPost;
+  reason_revolution_requester: {
+    description_reason: string;
+    reason_return: string;
+  }[];
+  reason_revolution_awardee: {
+    description_reason: string;
+    reason_return: string;
+  }[];
   awardee_response: {
     minimum_coverage: string;
     status: string;

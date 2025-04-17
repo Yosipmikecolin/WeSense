@@ -62,6 +62,7 @@ const AddressModal = ({
   const [minimumCoverage, setMinimumCoverage] = useState<string>("");
   const [indicationAspects, setIndicationAspects] = useState("");
   const [value, setValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const cleanInputs = () => {
     setStatus("");
@@ -76,6 +77,7 @@ const AddressModal = ({
 
   const handleSubmit = async () => {
     if (request) {
+      setIsLoading(true);
       try {
         await updatedRequest({
           ...request,
@@ -98,6 +100,8 @@ const AddressModal = ({
         onClose();
       } catch (error) {
         toast.error("Error al gestionar la solicitud");
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -278,6 +282,7 @@ const AddressModal = ({
           <PhotoUpload onPhotosSelected={setImages} />
           <Button
             disabled={
+              isLoading ||
               status === "" ||
               minimumCoverage === "" ||
               indicationAspects === "" ||
@@ -288,7 +293,7 @@ const AddressModal = ({
             variant={"primary"}
             onClick={handleSubmit}
           >
-            Guardar cambios
+            {isLoading ? <div className="loader-button" /> : "Guardar cambios"}
           </Button>
         </DialogFooter>
       </DialogContent>
