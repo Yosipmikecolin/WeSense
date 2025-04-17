@@ -42,14 +42,21 @@ import { ProcessType } from "../ViewProcessManagement";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
+import InstallationModal from "./InstallationModal";
 
-const TableInstalation = () => {
+const TableInstallation = () => {
   // const [data, setData] = useState<InstalationType[]>([]);
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const [currentProcess, setCurrentProcess] = useState<ProcessType>();
+
+  const [modal, setModal] = useState(false);
+
+  const [typeModal, setTypeModal] = useState("0");
 
   const [products, setProducts] = useState<ProcessType[]>([]);
 
@@ -103,6 +110,57 @@ const TableInstalation = () => {
     );
   };
 
+  const onChangeStatus = (value: string, process: ProcessType) => {
+    if (value === "1") {
+      setTypeModal(value);
+      setCurrentProcess(process);
+      setModal(true);
+    }
+    if (value === "0") {
+      setTypeModal(value);
+      setCurrentProcess(process);
+      setModal(true);
+    }
+  };
+
+  const bodyActions = (process: ProcessType) => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+          <Ellipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              onChangeStatus("0", process);
+            }}
+          >
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                <CalendarX2 />
+              </Button>
+              <span>La persona no llega después de la fecha límite</span>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              onChangeStatus("1", process);
+            }}
+          >
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                <CalendarCheck />
+              </Button>
+              <span>La persona llega dentro de la fecha límite</span>
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
   return (
     <div>
       <Card>
@@ -147,41 +205,20 @@ const TableInstalation = () => {
             <Column
               field="actions"
               header="Acciones"
-              body={
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
-                    <Ellipsis />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => {}}>
-                      <div className="flex items-center gap-2 cursor-pointer">
-                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                          <CalendarX2 />
-                        </Button>
-                        <span>
-                          La persona no llega después de la fecha límite
-                        </span>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => {}}>
-                      <div className="flex items-center gap-2 cursor-pointer">
-                        <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                          <CalendarCheck />
-                        </Button>
-                        <span>La persona llega dentro de la fecha límite</span>
-                      </div>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              }
+              body={bodyActions}
             ></Column>
           </DataTable>
         </CardContent>
       </Card>
       <Pagination />
-      <DetailsModal
+      <InstallationModal
+        open={modal}
+        type={typeModal}
+        process={currentProcess}
+        onClose={() => setModal(false)}
+        // refetch={refetch}
+      />
+      {/* <DetailsModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Detalles del instalación"
@@ -193,15 +230,9 @@ const TableInstalation = () => {
           { key: "serialNumber", label: "Número de Serie" },
           { key: "installationDate", label: "Fecha de Instalación" },
         ]}
-      />
-      <DeleteModalInstalation
-        id={selectedToDelete}
-        open={isModalDeleteOpen}
-        onClose={() => setIsModalDeleteOpen(false)}
-        // refetch={refetch}
-      />
+      /> */}
     </div>
   );
 };
 
-export default TableInstalation;
+export default TableInstallation;

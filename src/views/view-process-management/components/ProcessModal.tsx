@@ -39,6 +39,7 @@ const ProcessModal = ({ onClose, process, open, type }: Props) => {
         });
         console.log("RESPONSE: ", response.data);
         // refetch();
+        setNota("");
         onClose();
       } catch (error) {
         toast.error("Ocurrio un error");

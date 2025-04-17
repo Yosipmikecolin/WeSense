@@ -28,7 +28,7 @@ import DeactivationProcess, {
   DesactivationType,
 } from "./components/DeactivationProcess";
 import ReceptionTable from "./components/ReceptionTable";
-import InstallationTable from "./components/TableInstalation";
+import InstallationTable from "./components/TableInstallation";
 import TableManagementResolutions from "./components/TableManagementResolutions";
 import AlarmManagementTable from "./components/AlarmManagementTable";
 import TechnicalSupportTable from "./components/TechnicalSupportTable";
@@ -65,15 +65,10 @@ const ViewProcessManagement = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
   const [currentProcess, setCurrentProcess] = useState<ProcessType>();
   const [isShowModal, setIsShowModal] = useState(false);
-  const [isShowModalProcess, setIsShowModalProcess] = useState(false);
-
-  const [isProcessReception, setIsProcessReception] = useState(false);
 
   const [modal, setModal] = useState(false);
 
   const [typeModal, setTypeModal] = useState("0");
-
-  const [reception, setReception] = useState<ReceptionType | null>(null);
 
   const [products, setProducts] = useState<ProcessType[]>([]);
 
@@ -250,7 +245,7 @@ const ViewProcessManagement = () => {
             <Column
               field="document"
               header="Documento adjunto"
-              body={<span>Sin documento</span>}
+              body={<i className="pi pi-eye text-green-400 hover:text-green-700 cursor-pointer"></i>}
             ></Column>
             <Column field="status" header="Estado"></Column>
             <Column
