@@ -386,6 +386,7 @@ export const TableAdministrator = () => {
                                 status: "confirmed",
                                 time_respond: "",
                               });
+                              toast.success("Solicitud confirmada");
                               const response_create = await axios.post(
                                 "/api/buddie",
                                 {
@@ -395,7 +396,6 @@ export const TableAdministrator = () => {
                                 }
                               );
                               setToken(response_create.data.csrf_token);
-                              toast.success("Solicitud confirmada");
                             }}
                           >
                             <div className="flex items-center gap-2">

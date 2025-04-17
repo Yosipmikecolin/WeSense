@@ -35,6 +35,7 @@ import { RequestTable } from "@/views/view-create-request/interfaces";
 import { updatedRequest } from "@/api/request";
 import toast from "react-hot-toast";
 import { getDate } from "@/functions";
+import { UploadButtonWithModal } from "@/components/upload-file/upload-button-with-modal";
 const Map = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
 });
@@ -278,6 +279,8 @@ const AddressModal = ({
             className="rounded-md"
           />
         </div>
+
+        <UploadButtonWithModal />
 
         <DialogFooter className="flex items-center justify-between">
           <PhotoUpload onPhotosSelected={setImages} />

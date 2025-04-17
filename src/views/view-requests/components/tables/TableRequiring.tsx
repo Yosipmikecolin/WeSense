@@ -21,6 +21,7 @@ import {
   FileInput,
   FilePen,
   FileText,
+  House,
   Info,
   RotateCw,
   Search,
@@ -50,10 +51,12 @@ import EditRequestModal from "../EditRequestModal";
 import { updatedRequest } from "@/api/request";
 import toast from "react-hot-toast";
 import { generatePDF } from "@/views/view-carriers/functions";
+import { ChangeAddressModal } from "../ChangeAddressModal";
 
 export const TableRequiring = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenAddres, setIsModalOpenAddres] = useState(false);
   const [isModalReturnOpenDetails, setIsModaReturnlOpenDetails] =
     useState(false);
 
@@ -203,9 +206,15 @@ export const TableRequiring = () => {
                           <div className="flex items-center gap-2">---</div>
                         ))}
 
-                      {request.answer === "---" && (
-                        <div className="flex items-center gap-2">---</div>
-                      )}
+                      {request.answer !== "---" &&
+                        request.status === "returned" && (
+                          <div className="flex items-center gap-2">---</div>
+                        )}
+
+                      {request.answer !== "---" &&
+                        request.status === "reviewing" && (
+                          <div className="flex items-center gap-2">---</div>
+                        )}
                     </div>
                   </TableCell>
                   <TableCell>{request.issue_date}</TableCell>
@@ -396,6 +405,23 @@ export const TableRequiring = () => {
                             </div>
                           </DropdownMenuItem>
                         )}
+
+                        {request.status === "confirmed" && (
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={async () => {
+                              setIsModalOpenAddres(true);
+                              setSelectedRequest(request);
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <House />
+                              </Button>
+                              <span>Cambio de domicilió</span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -443,6 +469,15 @@ export const TableRequiring = () => {
           request={selectedRequest}
           open={isModalReturnOpenDetails}
           onClose={() => setIsModaReturnlOpenDetails(false)}
+        />
+      )}
+
+      {selectedRequest && (
+        <ChangeAddressModal
+          request={selectedRequest}
+          refetch={refetch}
+          isOpen={isModalOpenAddres}
+          onClose={() => setIsModalOpenAddres(false)}
         />
       )}
     </div>
