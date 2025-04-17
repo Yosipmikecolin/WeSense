@@ -1,12 +1,7 @@
-import { Requester, RequesterPost } from "@/db/requester";
+import { RequesterPost } from "@/db/requester";
 import {
-  FormDataCarrier,
   FormDataCarrierPost,
   Step1Data,
-  Step2Data,
-  Step3Data,
-  Step4Data,
-  Step5Data,
 } from "@/views/view-create-carrier/interfaces";
 
 export interface TimelineProps {
@@ -16,6 +11,7 @@ export interface TimelineProps {
 
 export interface FormDataRequest {
   answer: string;
+  law: string;
   issue_date: string;
   reason_return: string;
   description_reason: string;

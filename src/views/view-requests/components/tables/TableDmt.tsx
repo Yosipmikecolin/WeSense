@@ -40,7 +40,6 @@ import {
 import DetailsModal from "../DetailsModal";
 import ReturnRequestModal from "../ReturnRequestModal";
 import ReturnDetailsModal from "../ReturnDetailsModal";
-import FilterStatus from "../FilterStatus";
 import {
   Popover,
   PopoverContent,
@@ -55,24 +54,21 @@ import toast from "react-hot-toast";
 import { exportToExcel } from "@/views/view-carriers/functions";
 
 export const TableDmt = () => {
-  const [idFilter, setIdFilter] = useState(1);
+  const [idFilter, setIdFilter] = useState(0);
   const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
   const [isModalReturnOpenDetails, setIsModaReturnlOpenDetails] =
     useState(false);
 
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
-
-  const [stateFilter, setStateFilter] = useState("");
+  const [valueFilter, setValueFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
   const [type, setType] = useState<"requester" | "awardee">("requester");
   const { data: requests, isLoading, refetch } = useQueryRequest();
   const { token, setToken } = useBuddieStore();
   const [carrier, setCarrier] = useState();
   const filters = [
-    { id: 1, name: "Tipo de requirente" },
-    { id: 2, name: "Nombre del requirente" },
-    { id: 3, name: "Numero de identificación" },
-    { id: 4, name: "Tipo de situación" },
+    { id: 1, name: "RUC" },
+    { id: 2, name: "RIT" },
   ];
 
   useEffect(() => {
@@ -92,6 +88,8 @@ export const TableDmt = () => {
         <div className="flex gap-2">
           <Input
             maxLength={30}
+            value={valueFilter}
+            onChange={(e) => setValueFilter(e.target.value)}
             placeholder={`Buscar por ${filters
               .find((i) => i.id === idFilter)
               ?.name.toLowerCase()}`}
@@ -100,10 +98,6 @@ export const TableDmt = () => {
             filters={filters}
             idFilter={idFilter}
             setIdFilter={setIdFilter}
-          />
-          <FilterStatus
-            stateFilter={stateFilter}
-            setStateFilter={setStateFilter}
           />
         </div>
       </div>
@@ -172,7 +166,14 @@ export const TableDmt = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requests?.map((request, index) => (
+              {((idFilter === 1 || idFilter === 2) && valueFilter !== ""
+                ? requests?.filter(
+                    (i) =>
+                      i.carrier.cause[idFilter === 1 ? "ruc" : "rit"] ===
+                      valueFilter
+                  )
+                : requests
+              )?.map((request, index) => (
                 <TableRow key={index}>
                   <TableCell>{request.requester.userType}</TableCell>
                   <TableCell>{request.requester.fullName}</TableCell>

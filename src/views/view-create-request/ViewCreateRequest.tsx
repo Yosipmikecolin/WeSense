@@ -9,13 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FormDataRequest, RequestPost } from "./interfaces";
+import { RequestPost } from "./interfaces";
 
 import classes from "./ViewCreateRequest.module.css";
 import Timeline from "@/components/timeline/Timeline";
-import BearerForm from "./components/BearerForm";
 import ApplicantForm from "./components/ApplicantForm";
-import { Requester } from "@/db/requester";
 import {
   FormDataCarrier,
   Step1Data,
@@ -51,6 +49,7 @@ const ViewCreateRequest = () => {
     useState<FormDataCarrier>(initialFormData);
   const [formData, setFormData] = useState<RequestPost>({
     answer: "---",
+    law: "",
     reason_return: "",
     description_reason: "",
     issue_date: getDate(),
@@ -166,7 +165,12 @@ const ViewCreateRequest = () => {
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 0:
-        return <ApplicantForm setCompleteForm={setCompleteForm} />;
+        return (
+          <ApplicantForm
+            setCompleteForm={setCompleteForm}
+            setFormData={setFormData}
+          />
+        );
 
       case 1:
         return (
@@ -283,6 +287,7 @@ const ViewCreateRequest = () => {
       localStorage.setItem("carrier-buddie", JSON.stringify(create_wearer));
       setFormData({
         answer: "---",
+        law: "",
         reason_return: "",
         description_reason: "",
         issue_date: getDate(),

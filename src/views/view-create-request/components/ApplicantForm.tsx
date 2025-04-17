@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { CalendarIcon, Loader2 } from "lucide-react";
-
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { UploadButtonWithModal } from "@/components/upload-file/upload-button-with-modal";
+import { Label } from "@radix-ui/react-label";
 import {
   Select,
   SelectContent,
@@ -10,31 +8,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
-import { cn } from "@/lib/utils";
-import { Requester, RequesterPost } from "@/db/requester";
-import { getRequesters } from "@/api/request";
-import { UploadButtonWithModal } from "@/components/upload-file/upload-button-with-modal";
+import { FormDataRequest } from "../interfaces";
 
 interface Props {
   setCompleteForm: (complete: boolean) => void;
+  setFormData: React.Dispatch<React.SetStateAction<FormDataRequest>>;
 }
 
-const ApplicantForm = ({ setCompleteForm }: Props) => {
+const ApplicantForm = ({ setCompleteForm, setFormData }: Props) => {
+  const [law, setLaw] = useState("");
   useEffect(() => {
-    setCompleteForm(true);
-  }, []);
+    if (law) {
+      setCompleteForm(true);
+      setFormData((prev) => ({ ...prev, law }));
+    }
+  }, [law]);
 
   return (
     <div>
+      <div className="mb-5 space-y-2">
+        <Label>Ley que se aplica</Label>
+        <Select value={law} onValueChange={(value) => setLaw(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione una ley" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="21.378">21.378</SelectItem>
+            <SelectItem value="18.216">18.216</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       <div className="space-y-1">
         <div className="bg-gray-100 rounded-sm font-bold p-3 text-lg border-gray-300">
           Información del solicitante

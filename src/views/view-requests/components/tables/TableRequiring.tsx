@@ -38,7 +38,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "../DetailsModal";
 import ReturnDetailsModal from "../ReturnDetailsModal";
-import FilterStatus from "../FilterStatus";
 import {
   Popover,
   PopoverContent,
@@ -60,14 +59,12 @@ export const TableRequiring = () => {
 
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
-  const [stateFilter, setStateFilter] = useState("");
+  const [valueFilter, setValueFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
   const { data: requests, isLoading, refetch } = useQueryRequest();
   const filters = [
-    { id: 1, name: "Tipo de requirente" },
-    { id: 2, name: "Nombre del requirente" },
-    { id: 3, name: "Numero de identificación" },
-    { id: 4, name: "Tipo de situación" },
+    { id: 1, name: "RUC" },
+    { id: 2, name: "RIT" },
   ];
   return (
     <div>
@@ -78,6 +75,8 @@ export const TableRequiring = () => {
         <div className="flex gap-2">
           <Input
             maxLength={30}
+            value={valueFilter}
+            onChange={(e) => setValueFilter(e.target.value)}
             placeholder={`Buscar por ${filters
               .find((i) => i.id === idFilter)
               ?.name.toLowerCase()}`}
@@ -86,10 +85,6 @@ export const TableRequiring = () => {
             filters={filters}
             idFilter={idFilter}
             setIdFilter={setIdFilter}
-          />
-          <FilterStatus
-            stateFilter={stateFilter}
-            setStateFilter={setStateFilter}
           />
         </div>
       </div>
@@ -145,7 +140,14 @@ export const TableRequiring = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requests?.map((request, index) => (
+              {((idFilter === 1 || idFilter === 2) && valueFilter !== ""
+                ? requests?.filter(
+                    (i) =>
+                      i.carrier.cause[idFilter === 1 ? "ruc" : "rit"] ===
+                      valueFilter
+                  )
+                : requests
+              )?.map((request, index) => (
                 <TableRow key={index}>
                   <TableCell>{request.requester.userType}</TableCell>
                   <TableCell>{request.requester.fullName}</TableCell>
