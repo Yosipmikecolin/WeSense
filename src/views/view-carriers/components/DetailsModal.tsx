@@ -449,7 +449,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
               </div> */}
             </div>
           </div>
-          <div className="flex gap-2 mt-4">
+{/*           <div className="flex gap-2 mt-4">
             <Button
               variant="outline"
               onClick={() => carrier && generatePDF(carrier)}
@@ -466,7 +466,7 @@ const DetailsModal = ({ carrier, open, onClose }: Props) => {
               WORD
               <Download />
             </Button>
-          </div>
+          </div> */}
         </div>
       </DialogContent>
     </Dialog>

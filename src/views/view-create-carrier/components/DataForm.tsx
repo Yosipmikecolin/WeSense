@@ -110,7 +110,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
       </div>
 
       <div>
-        <Label>Tipo de portador</Label>
+        <Label>Tipo de persona sujeta a control</Label>
         <Select
           value={formData.type_current}
           onValueChange={(value) => handleSelectChange("type_current", value)}

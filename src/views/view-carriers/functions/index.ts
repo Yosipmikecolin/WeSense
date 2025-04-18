@@ -1,3 +1,4 @@
+import { RequesterPost } from "@/db/requester";
 import {
   FormDataCarrier,
   FormDataWearer,
@@ -24,7 +25,7 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 
-export const generatePDF = (selectedCarrier: FormDataWearer) => {
+export const generatePDF = (selectedCarrier: RequestTable) => {
   const doc = new jsPDF();
 
   // 🎨 Encabezado
@@ -39,42 +40,61 @@ export const generatePDF = (selectedCarrier: FormDataWearer) => {
   // 🗂️ Definición de secciones y sus campos
   const sections: {
     title: string;
-    data: Step1Data | Step2Data | Step3Data | Step4Data | Step5Data | Step6Data;
+    data:
+      | Step1Data
+      | Step2Data
+      | Step3Data
+      | Step4Data
+      | Step5Data
+      | Step6Data
+      | RequesterPost;
     fields: { key: string; label: string }[];
   }[] = [
     {
-      title: "Información Personal",
-      data: selectedCarrier.personalData,
+      title: "Información de la causa",
+      data: selectedCarrier.carrier.cause,
+      fields: [
+        /*  { key: "crime", label: "Delito" }, */
+        { key: "test", label: "Tipo de solicitante" },
+        { key: "courtRegion", label: "Región" },
+        { key: "court", label: "Tribunal/Juzgado" },
+        /* { key: "rol", label: "ROL" }, */
+        { key: "penatype", label: "Tipo de Pena Sustantiva" },
+        { key: "rit", label: "RIT" },
+        { key: "ruc", label: "RUC" },
+      ],
+    },
+    {
+      title: "Datos del solicitante",
+      data: selectedCarrier.requester,
+      fields: [
+        { key: "test", label: "Tipo de requirente" },
+        { key: "institution", label: "Nombre del tribunal" },
+        { key: "email", label: "Correo electronico" },
+        { key: "phone", label: "Teléfono del Tribunal" },
+      ],
+    },
+
+    {
+      title: "Datos del condenado/inputado",
+      data: selectedCarrier.carrier.personalData,
       fields: [
         { key: "fullName", label: "Nombre Completo" },
-        { key: "socialName", label: "Nombre Social" },
+        /*   { key: "socialName", label: "Nombre Social" },
         { key: "paternalSurname", label: "Apellido Paterno" },
         { key: "motherSurname", label: "Apellido Materno" },
         { key: "type_current", label: "Tipo Actual" },
-        { key: "gender", label: "Género" },
+        { key: "gender", label: "Género" }, */
         { key: "dateBirth", label: "Fecha de Nacimiento" },
-        { key: "maritalStatus", label: "Estado Civil" },
+        { key: "run", label: "RUT" },
+        /*      { key: "maritalStatus", label: "Estado Civil" },
         { key: "nationality", label: "Nacionalidad" },
         { key: "run", label: "RUN" },
         { key: "phone", label: "Teléfono" },
-        { key: "foreigner", label: "Extranjero" },
+        { key: "foreigner", label: "Extranjero" }, */
       ],
     },
-    {
-      title: "Causa",
-      data: selectedCarrier.cause,
-      fields: [
-        { key: "penatype", label: "Tipo de Pena" },
-        { key: "crime", label: "Delito" },
-        { key: "courtAppeals", label: "Corte de Apelaciones" },
-        { key: "courtRegion", label: "Región del Tribunal" },
-        { key: "court", label: "Tribunal" },
-        { key: "ruc", label: "RUC" },
-        { key: "rit", label: "RIT" },
-        { key: "rol", label: "ROL" },
-      ],
-    },
-    {
+    /*     {
       title: "Monitoreo",
       data: selectedCarrier.monitoring,
       fields: [
@@ -96,10 +116,10 @@ export const generatePDF = (selectedCarrier: FormDataWearer) => {
         { key: "daysControl", label: "Días de Control" },
         { key: "uninstallations", label: "Desinstalaciones" },
       ],
-    },
+    }, */
     {
       title: "Área de inclusión",
-      data: selectedCarrier.inclusionArea,
+      data: selectedCarrier.carrier.inclusionArea,
       fields: [
         { key: "street", label: "Calle" },
         { key: "number", label: "Número" },
@@ -116,8 +136,8 @@ export const generatePDF = (selectedCarrier: FormDataWearer) => {
       ],
     },
     {
-      title: "Área de exclusión y Información de Víctima ",
-      data: selectedCarrier.exclusionArea,
+      title: "Área de exclusión",
+      data: selectedCarrier.carrier.exclusionArea,
       fields: [
         { key: "street", label: "Calle" },
         { key: "number", label: "Número" },
@@ -130,6 +150,20 @@ export const generatePDF = (selectedCarrier: FormDataWearer) => {
         { key: "geographicCoordinates", label: "Coordenadas Geográficas" },
         { key: "radio", label: "Radio" },
         { key: "characteristics", label: "Características" },
+        { key: "paternalSurname", label: "Apellido Paterno" },
+        { key: "motherSurname", label: "Apellido Materno" },
+        { key: "names", label: "Nombres" },
+        { key: "rut", label: "RUT" },
+        { key: "victimEmail", label: "Correo de la Víctima" },
+        { key: "homeTelephone", label: "Teléfono Domicilio" },
+        { key: "workplaceTelephone", label: "Teléfono Trabajo" },
+      ],
+    },
+
+    {
+      title: "Información de Víctima ",
+      data: selectedCarrier.carrier.exclusionArea,
+      fields: [
         { key: "paternalSurname", label: "Apellido Paterno" },
         { key: "motherSurname", label: "Apellido Materno" },
         { key: "names", label: "Nombres" },
@@ -160,7 +194,8 @@ export const generatePDF = (selectedCarrier: FormDataWearer) => {
       }
 
       const value =
-        (data as unknown as Record<string, unknown>)?.[key] ?? "N/A";
+        (data as unknown as Record<string, unknown>)?.[key] ??
+        (key === "test" ? "Abogado" : "N/A");
 
       // Fondo alternado
       if (index % 2 === 0) {
@@ -199,7 +234,7 @@ export const generatePDF = (selectedCarrier: FormDataWearer) => {
   doc.text("Generado con SGAMGC", 105, 289, { align: "center" });
 
   // Guardar el archivo
-  const nameFile = selectedCarrier.personalData.fullName
+  const nameFile = selectedCarrier.carrier.personalData.fullName
     .split(" ")
     .join("_")
     .toLowerCase();

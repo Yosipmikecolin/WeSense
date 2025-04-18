@@ -380,22 +380,7 @@ export const TableRequiring = () => {
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={async () => {
-                              generatePDF({
-                                _id: request._id,
-                                ...request.carrier,
-                                wearer: {
-                                  id: "",
-                                  first_name: "",
-                                  surname: "",
-                                  email: "",
-                                  line_1: "",
-                                  line_2: "",
-                                  line_3: "",
-                                  city: "",
-                                  county: "",
-                                  telephone: "",
-                                },
-                              });
+                              generatePDF(request);
                             }}
                           >
                             <div className="flex items-center gap-2">
