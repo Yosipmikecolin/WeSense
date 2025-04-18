@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Ellipsis, Eye, Check, Delete, PlusCircle } from "lucide-react";
-import InstallationProcess from "./components/CreationProcess";
+// import InstallationProcess from "./components/CreationProcess";
 
 import { Input } from "@/components/ui/input";
 import { DropdownFilter } from "@/components";
@@ -22,18 +22,18 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import { Card, CardContent } from "@/components/ui/card";
-import CreationProcess from "./components/CreationProcess";
+// import CreationProcess from "./components/CreationProcess";
 import axios from "axios";
 
-import { InputText } from "primereact/inputtext";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
-import ProcessModal from "./components/ProcessModal";
-import TableInstallation from "./components/TableInstallation";
-import TableProrroga from "./components/TableProrroga";
-import TableCeseControl from "./components/TableCeseControl";
-import TableCambioDomicilio from "./components/TableCambioDomicilio";
-import TableInforme from "./components/TableInforme";
+// import { InputText } from "primereact/inputtext";
+// import { IconField } from "primereact/iconfield";
+// import { InputIcon } from "primereact/inputicon";
+// import ProcessModal from "./components/ProcessModal";
+// import TableInstallation from "./components/TableInstallation";
+// import TableProrroga from "./components/TableProrroga";
+// import TableCeseControl from "./components/TableCeseControl";
+// import TableCambioDomicilio from "./components/TableCambioDomicilio";
+// import TableInforme from "./components/TableInforme";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -50,7 +50,7 @@ export interface ProcessType {
   status: string;
 }
 
-const ViewProcessManagement = () => {
+const ViewHistory = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
   const [currentProcess, setCurrentProcess] = useState<ProcessType>();
   const [isShowModal, setIsShowModal] = useState(false);
@@ -85,7 +85,7 @@ const ViewProcessManagement = () => {
   const getAllProcess = async () => {
     const response = await axios.get(`/api/awardee/process`, {
       params: {
-        method: "get.all",
+        method: "get.all.master",
       },
     });
     return response.data;
@@ -115,10 +115,7 @@ const ViewProcessManagement = () => {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <Button onClick={show} variant="outline">
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Nuevo Proceso
-        </Button>
+        <div className="flex flex-1"></div>
         <div>
           <Input
             autoFocus
@@ -141,18 +138,18 @@ const ViewProcessManagement = () => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Acciones</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => {
               onChangeStatus("1", process);
             }}
           >
             <div className="flex items-center gap-2 cursor-pointer">
               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <Check />
+                <Eye />
               </Button>
-              <span>Aceptar</span>
+              <span>Detalles</span>
             </div>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem
             onClick={() => {
               onChangeStatus("0", process);
@@ -160,10 +157,9 @@ const ViewProcessManagement = () => {
           >
             <div className="flex items-center gap-2 cursor-pointer">
               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <i className="pi pi-times-circle"></i>
-                {/* <Delete /> */}
+                <i className="pi pi-file-excel"></i>
               </Button>
-              <span>Devolución</span>
+              <span>Excel</span>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -191,12 +187,12 @@ const ViewProcessManagement = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
-        Gestión de sentencias y resoluciones
+        Histórico de sentencias y resoluciones
       </h1>
 
       <Dialog open={isShowModal} onOpenChange={onChangeModal}>
         <DialogContent>
-          <CreationProcess onClose={closeDialog} refetch={refetch} />
+          {/* <CreationProcess onClose={closeDialog} refetch={refetch} /> */}
         </DialogContent>
       </Dialog>
 
@@ -250,7 +246,7 @@ const ViewProcessManagement = () => {
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="0" className="mt-2" defaultChecked>
+      {/* <Tabs defaultValue="0" className="mt-2" defaultChecked>
         <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
           <TabsTrigger value="0">Instalación</TabsTrigger>
           <TabsTrigger value="1">Prorroga / Extensión</TabsTrigger>
@@ -273,18 +269,18 @@ const ViewProcessManagement = () => {
         <TabsContent value="4">
           <TableInforme />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
 
-      <ProcessModal
+      {/* <ProcessModal
         refetch={refetch}
         open={modal}
         type={typeModal}
         process={currentProcess}
         onClose={() => setModal(false)}
         // refetch={refetch}
-      />
+      /> */}
     </div>
   );
 };
 
-export default ViewProcessManagement;
+export default ViewHistory;
