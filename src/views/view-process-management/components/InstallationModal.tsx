@@ -87,6 +87,19 @@ const InstallationModal = ({ onClose, process, open, type }: Props) => {
                     onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
+
+
+
+<div>
+  
+</div>
+
+
+
+
+
+
+
                 <div>
                   <Label htmlFor="presentation_date">Primera visita?</Label>
                   <div className="flex items-center">

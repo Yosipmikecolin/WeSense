@@ -291,13 +291,39 @@ const ViewHistory = () => {
             ]}
           >
             <Column field="date" header="Fecha"></Column>
-            <Column field="type_law" sortable header="Tipo de ley"></Column>
-            <Column field="rit" sortable header="RIT"></Column>
-            <Column field="ruc" sortable header="RUC"></Column>
-            <Column field="run" sortable header="RUN"></Column>
+            <Column
+              field="type_law"
+              filter
+              filterPlaceholder="Buscar por ley"
+              sortable
+              header="Tipo de ley"
+            ></Column>
+            <Column
+              field="rit"
+              filter
+              filterPlaceholder="Buscar por RIT"
+              sortable
+              header="RIT"
+            ></Column>
+            <Column
+              field="ruc"
+              filter
+              filterPlaceholder="Buscar por RUC"
+              sortable
+              header="RUC"
+            ></Column>
+            <Column
+              field="run"
+              filter
+              filterPlaceholder="Buscar por RUN"
+              sortable
+              header="RUN"
+            ></Column>
             <Column field="date_limit" header="Fecha limite"></Column>
             <Column
               field="type_resolution"
+              filter
+              filterPlaceholder="Buscar por resolución"
               sortable
               header="Tipo de resolución"
             ></Column>
