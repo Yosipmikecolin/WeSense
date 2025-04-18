@@ -7,7 +7,7 @@ const AwardeeProcessSchema = new mongoose.Schema(
     rit: String,
     ruc: String,
     run: String,
-    document: String,
+    // document: String,
     date_limit: String,
     type_resolution: String,
     status: { type: String, default: "Sin estado" },

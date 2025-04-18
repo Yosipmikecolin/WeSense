@@ -24,6 +24,7 @@ import { FilterMatchMode } from "primereact/api";
 import { Card, CardContent } from "@/components/ui/card";
 // import CreationProcess from "./components/CreationProcess";
 import axios from "axios";
+import * as XLSX from "xlsx";
 
 // import { InputText } from "primereact/inputtext";
 // import { IconField } from "primereact/iconfield";
@@ -37,6 +38,19 @@ import axios from "axios";
 
 import { useQuery } from "@tanstack/react-query";
 
+interface ResolutionType {
+  presentation_date?: string;
+  first_visit?: string;
+  second_visit?: string;
+  note?: string;
+  answer?: string;
+  region?: string;
+  comuna?: string;
+  domicilio?: string;
+  radio?: string;
+  new_prorroga?: string;
+}
+
 export interface ProcessType {
   _id: string;
   createdAt: string;
@@ -48,6 +62,7 @@ export interface ProcessType {
   date_limit: string;
   type_resolution: string;
   status: string;
+  resolution: ResolutionType;
 }
 
 const ViewHistory = () => {
@@ -130,6 +145,74 @@ const ViewHistory = () => {
     );
   };
 
+  const generateExcel = (process: ProcessType) => {
+    console.log("PROCESO: ", process);
+    const flattenedData: Record<string, string> = {
+      Fecha: process.createdAt,
+      Tipo_de_ley: process.type_law,
+      RIT: process.rit,
+      RUC: process.ruc,
+      RUN: process.run,
+      Fecha_limite: process.date_limit,
+      Tipo_de_resolución: process.type_resolution,
+      Estado: process.status,
+    };
+
+    for (const key in process.resolution) {
+      const val = key as keyof ResolutionType;
+      if (process.resolution[val]) {
+        if (process.resolution.answer) {
+          flattenedData[`${process.type_resolution}.Fecha_de_resolución`] =
+            process.resolution[val];
+        }
+        if (process.resolution.comuna) {
+          flattenedData[`${process.type_resolution}.Comuna`] =
+            process.resolution[val];
+        }
+        if (process.resolution.domicilio) {
+          flattenedData[`${process.type_resolution}.Domicilio`] =
+            process.resolution[val];
+        }
+        if (process.resolution.first_visit) {
+          flattenedData[`${process.type_resolution}.Primera_visita`] =
+            process.resolution[val];
+        }
+        if (process.resolution.new_prorroga) {
+          flattenedData[`${process.type_resolution}.Nueva_prórroga`] =
+            process.resolution[val];
+        }
+        if (process.resolution.note) {
+          flattenedData[`${process.type_resolution}.Nota`] =
+            process.resolution[val];
+        }
+        if (process.resolution.presentation_date) {
+          flattenedData[`${process.type_resolution}.Fecha_de_presentación`] =
+            process.resolution[val];
+        }
+        if (process.resolution.radio) {
+          flattenedData[`${process.type_resolution}.Radio`] =
+            process.resolution[val];
+        }
+        if (process.resolution.region) {
+          flattenedData[`${process.type_resolution}.Región`] =
+            process.resolution[val];
+        }
+        if (process.resolution.second_visit) {
+          flattenedData[`${process.type_resolution}.Segunda_visita`] =
+            process.resolution[val];
+        }
+      }
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet([flattenedData]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet);
+
+    const fileName = `${process.type_resolution}_${process._id}.xlsx`;
+    XLSX.writeFile(workbook, fileName);
+  };
+
   const bodyActions = (process: ProcessType) => {
     return (
       <DropdownMenu>
@@ -139,21 +222,9 @@ const ViewHistory = () => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Acciones</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {/* <DropdownMenuItem
-            onClick={() => {
-              onChangeStatus("1", process);
-            }}
-          >
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                <Eye />
-              </Button>
-              <span>Detalles</span>
-            </div>
-          </DropdownMenuItem> */}
           <DropdownMenuItem
             onClick={() => {
-              onChangeStatus("0", process);
+              generateExcel(process);
             }}
           >
             <div className="flex items-center gap-2 cursor-pointer">
