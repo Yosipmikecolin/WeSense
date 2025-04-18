@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import Flag from "react-world-flags";
-import axios from "axios";
 import { useBuddieStore } from "@/store/index";
 import {
   Table as TableUI,
@@ -38,6 +36,7 @@ import DeleteModalCarrier from "@/components/DeleteModalCarrier";
 import { useQueryCarriers, useQueryCarriersApi } from "@/api/queries";
 import { Wearer } from "@/interfaces/interfaces.read";
 import { axiosConfigBuddie } from "@/api/config";
+import Flag from "react-world-flags";
 
 const TableCarriers = () => {
   const { setToken } = useBuddieStore();
@@ -48,6 +47,7 @@ const TableCarriers = () => {
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [selectedCarrier, setSelectedCarrier] = useState<FormDataWearer>();
   const { data: carriers, isLoading, refetch } = useQueryCarriersApi();
+  console.log("carriers", carriers);
   // const { data: carriers, refetch, isLoading } = useQueryCarriers();
   const filters = [
     { id: 1, name: "Nombre" },
@@ -80,7 +80,7 @@ const TableCarriers = () => {
     <div>
       <div className="flex justify-between items-center mb-5">
         <CardTitle className="text-3xl font-bold tracking-tight">
-          Portadores
+          Personas sujetas a control
         </CardTitle>
         <div className="flex gap-2">
           <Input
@@ -108,12 +108,9 @@ const TableCarriers = () => {
                   APELLIDOS
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  CORREO
+                  TIPO DE PENA
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  ACCIONES
-                </TableHead>
-                {/* <TableHead className="text-xs font-bold text-gray-600">
                   ESTADO CIVIL
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
@@ -123,14 +120,11 @@ const TableCarriers = () => {
                   GÉNERO
                 </TableHead>
                 <TableHead className="text-xs font-bold text-gray-600">
-                  TIPO DE PORTADOR
-                </TableHead>
-                <TableHead className="text-xs font-bold text-gray-600">
                   TELÉFONO
                 </TableHead>
                 <TableHead className="mr-10 text-xs font-bold uppercase text-gray-600 flex justify-end">
                   ACCIONES
-                </TableHead> */}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
@@ -138,23 +132,25 @@ const TableCarriers = () => {
                 <TableRow key={carrier.id}>
                   <TableCell>{carrier.first_name}</TableCell>
                   <TableCell>{carrier.surname}</TableCell>
-                  {/* <TableCell>
+                  <TableCell>{carrier.line_1}</TableCell>
+                  <TableCell>{carrier.email}</TableCell>
+                  <TableCell>{carrier.line_1}</TableCell>
+                  <TableCell>
                     <div className="flex justify-between items-center gap-1 max-w-[100px]">
                       <span className="whitespace-nowrap overflow-hidden text-ellipsis ">
-                        {carrier.country_id}
+                        {carrier.county}
                       </span>
                       <Flag
                         width={20}
-                        code={getCountryCode(carrier?.country_id || "")}
+                        code={getCountryCode(carrier?.county || "")}
                       />
                     </div>
-                  </TableCell> */}
-                  {/* <TableCell>{carrier.gender}</TableCell> */}
-                  <TableCell>{carrier.email || "Sin email"}</TableCell>
-                  {/* <TableCell>{carrier.phone_type}</TableCell> */}
+                  </TableCell>
+                  <TableCell>{carrier.line_3}</TableCell>
+                  <TableCell>{carrier.telephone}</TableCell>
 
                   <TableCell className="mr-10 flex justify-end">
-                    <DropdownMenu>
+                    {/*    <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
                         <Ellipsis />
                       </DropdownMenuTrigger>
@@ -223,7 +219,7 @@ const TableCarriers = () => {
                           </div>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu> */}
                   </TableCell>
                 </TableRow>
               ))}

@@ -2,31 +2,47 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { RequestTable } from "@/views/view-create-request/interfaces";
 
 interface ReturnDetailsProps {
+  type: "requester" | "awardee";
+  request?: RequestTable;
   open: boolean;
   onClose: VoidFunction;
 }
 
-const ReturnDetailsModal = ({ open, onClose }: ReturnDetailsProps) => {
+const ReturnDetailsModal = ({
+  open,
+  onClose,
+  request,
+  type,
+}: ReturnDetailsProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Razón de la devolución</DialogTitle>
-          <DialogDescription>
-            Yosip Parrado envió la siguiente nota.
-          </DialogDescription>
+          <DialogTitle>
+            {type === "requester"
+              ? request?.reason_revolution_requester[
+                  request.reason_revolution_requester.length - 1
+                ]?.reason_return
+              : request?.reason_revolution_awardee[
+                  request.reason_revolution_awardee.length - 1
+                ]?.reason_return}
+          </DialogTitle>
         </DialogHeader>
         <p>
-          La solicitud fue devuelta debido a que los datos adjuntos no coinciden
-          con la ubicación del solicitante. Asimismo, no se adjuntaron las
-          pruebas fotográficas del lugar de alojamiento.
+          {type === "requester"
+            ? request?.reason_revolution_requester[
+                request.reason_revolution_requester.length - 1
+              ]?.description_reason
+            : request?.reason_revolution_awardee[
+                request.reason_revolution_awardee.length - 1
+              ]?.description_reason}
         </p>
         <DialogFooter>
           <Button type="submit" onClick={onClose}>

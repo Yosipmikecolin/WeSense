@@ -8,12 +8,12 @@ export interface FormDataCarrier {
   wearer: Step6Data;
 }
 export interface FormDataWearer {
-  // _id: string;
-  // personalData: Step1Data;
-  // cause: Step2Data;
-  // monitoring: Step3Data;
-  // inclusionArea: Step4Data;
-  // exclusionArea: Step5Data;
+  _id: string;
+  personalData: Step1Data;
+  cause: Step2Data;
+  monitoring: Step3Data;
+  inclusionArea: Step4Data;
+  exclusionArea: Step5Data;
   wearer: Step6Data;
 }
 
@@ -29,6 +29,7 @@ export interface Step1Data {
   fullName: string;
   socialName: string;
   paternalSurname: string;
+  sex: string;
   motherSurname: string;
   type_current: string;
   gender: string;
@@ -109,6 +110,12 @@ export interface Step6Data {
   first_name: string;
   surname: string;
   email: string;
+  line_1: string;
+  line_2: string;
+  line_3: string;
+  city: string;
+  county: string;
+  telephone: string;
 }
 
 export interface StepProps1 {

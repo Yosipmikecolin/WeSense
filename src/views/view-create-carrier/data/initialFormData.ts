@@ -3,6 +3,7 @@ import { FormDataCarrier } from "../interfaces";
 export const initialFormData: FormDataCarrier = {
   _id: "",
   personalData: {
+    sex: "",
     fullName: "",
     socialName: "",
     paternalSurname: "",
@@ -81,5 +82,11 @@ export const initialFormData: FormDataCarrier = {
     first_name: "",
     surname: "",
     email: "",
+    line_1: "",
+    line_2: "",
+    line_3: "",
+    city: "",
+    county: "",
+    telephone: "",
   },
 };

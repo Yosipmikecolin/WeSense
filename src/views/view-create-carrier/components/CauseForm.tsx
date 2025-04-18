@@ -31,13 +31,22 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="penatype">Tipo de pena o Medida sujeta a control</Label>
-        <Input
-          id="penatype"
-          name="penatype"
+        <Label htmlFor="courtRegion">Tipo de pena</Label>
+        <Select
           value={formData.penatype}
-          onChange={handleChange}
-        />
+          onValueChange={(value) => handleSelectChange("penatype", value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione un tipo de pena" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Reclusión parcial">Reclusión parcial</SelectItem>
+            <SelectItem value="Reclusión total">Reclusión total</SelectItem>
+            <SelectItem value="Reclusión intensiva">
+              Reclusión intensiva
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div>
@@ -79,9 +88,8 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
           </SelectContent>
         </Select>
       </div>
-
       <div>
-        <Label htmlFor="court">Tribunal</Label>
+        <Label htmlFor="court">Tribunal/Juzgado</Label>
         <Input
           id="court"
           name="court"

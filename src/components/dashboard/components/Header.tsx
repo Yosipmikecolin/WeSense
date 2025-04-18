@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -31,15 +30,13 @@ const Header = () => {
 
       default:
         return "Perfil no autorizado";
-        
     }
   };
 
   async function onLogout() {
-    const response_logout = await axios.post("/api/buddie", {
+/*     const response_logout = await axios.post("/api/buddie", {
       method: "auth.logout",
-    });
-    console.log("LOGOUT: ", response_logout);
+    }); */
     router.push("/");
   }
 
@@ -61,8 +58,11 @@ const Header = () => {
               </span>
               <span className="text-xs text-gray-500">{email}</span>
             </div>
-            <Button onClick={onLogout} className="bg-green-100 text-green-600 hover:bg-green-200">
-              <LogOut  size={16} />
+            <Button
+              className="bg-green-100 text-green-600 hover:bg-green-200"
+              onClick={onLogout}
+            >
+              <LogOut size={16} />
             </Button>
           </div>
         </div>

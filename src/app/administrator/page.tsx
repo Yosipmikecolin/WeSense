@@ -3,16 +3,12 @@ import {
   BriefcaseBusiness,
   FileInput,
   Files,
-  Link,
-  Unlink,
   UserPlus,
   UserRoundPlus,
   Users,
   Users2,
 } from "lucide-react";
 import {
-  ViewCarries,
-  ViewCreateCarrier,
   ViewCreateRequest,
   ViewCreateRequester,
   ViewCreateUser,
@@ -34,16 +30,16 @@ const Admin = () => {
       label: "Crear usuario",
       content: <ViewCreateUser />,
     },
-    {
+    /*     {
       icon: <Link size={17} />,
-      label: "Portadores",
+      label: "Persona SC",
       content: <ViewCarries />,
-    },
-    {
+    }, */
+    /*     {
       icon: <Unlink size={17} />,
       label: "Crear portador",
       content: <ViewCreateCarrier />,
-    },
+    }, */
     {
       icon: <Users size={17} />,
       label: "Requirentes",

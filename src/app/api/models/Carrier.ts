@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export const Step1Schema = new mongoose.Schema({
   fullName: String,
   socialName: String,
+  sex: String,
   paternalSurname: String,
   motherSurname: String,
   type_current: String,

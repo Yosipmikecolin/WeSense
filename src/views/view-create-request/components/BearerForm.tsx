@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/select";
 
 import { Loader2 } from "lucide-react";
-import { FormDataCarrier } from "@/views/view-create-carrier/interfaces";
+import { FormDataCarrier, FormDataCarrierPost } from "@/views/view-create-carrier/interfaces";
 import { initialFormData } from "@/views/view-create-carrier/data/initialFormData";
 import { carriers } from "@/utils";
 import { generateUUID } from "@/functions";
 
 interface Props {
-  formData: FormDataCarrier;
+  formData: FormDataCarrierPost;
   setFormData: (data: FormDataCarrier) => void;
   setCompleteForm: (complete: boolean) => void;
 }
@@ -86,30 +86,26 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
     }
   }, [requesterType]);
 
-  const selectCarrier = (value: string) => {
+/*   const selectCarrier = (value: string) => {
     setSelectedCarrier(value);
     const selectRequirent = carriers.find(
       (i) =>
         i.personalData.fullName === value && i.cause.crime === requesterType
     );
     if (selectRequirent) {
-      setFormData({ ...selectRequirent, _id: generateUUID(),wearer:{
-        surname: "",
-        id: "",
-        first_name: "",
-        email: ""
-      } });
+      setFormData({
+        ...selectRequirent,
+        _id: generateUUID(),
+        wearer: {
+          
+          surname: "",
+          id: "",
+          first_name: "",
+          email: "",
+        },
+      });
     }
-  };
-
-  const uniqueArray = (carriers: FormDataCarrier[]) => {
-    const seen = new Set();
-    return carriers.filter((item) => {
-      if (seen.has(item.cause.crime)) return false;
-      seen.add(item.cause.crime);
-      return true;
-    });
-  };
+  }; */
 
   return (
     <div className="space-y-4">
@@ -135,7 +131,7 @@ const BearerForm = ({ formData, setFormData, setCompleteForm }: Props) => {
         <Label htmlFor="requester">Portador</Label>
         <Select
           value={selectedCarrier}
-          onValueChange={selectCarrier}
+          //onValueChange={selectCarrier}
           disabled={!requesterType || loading}
         >
           <SelectTrigger id="requester" className="w-full">

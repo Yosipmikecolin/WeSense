@@ -3,7 +3,7 @@ interface RequesterBase {
   lastName: string;
   middleName: string;
   email: string;
-  ruc: string;
+  run: string;
   phone: string;
   userType: string;
   institution: string;

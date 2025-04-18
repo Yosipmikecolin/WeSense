@@ -1,5 +1,6 @@
 import { Dashboard } from "@/components";
-import { ViewCreateRequest, ViewRequests } from "@/views";
+import { ViewCreateRequest } from "@/views";
+import { TableRequiring } from "@/views/view-requests/components/tables/TableRequiring";
 import { FileInput, Files } from "lucide-react";
 
 const ProfileRequirers = () => {
@@ -12,7 +13,7 @@ const ProfileRequirers = () => {
     {
       icon: <Files size={17} />,
       label: "Solicitudes",
-      content: <ViewRequests />,
+      content: <TableRequiring />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

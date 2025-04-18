@@ -16,12 +16,13 @@ import {
   RefreshCcwDot,
 } from "lucide-react";
 
+
 const Awardee = () => {
   const menuItems = [
     {
       icon: <Files size={17} />,
       label: "Solicitudes",
-      content: <ViewRequests />,
+      content: <TableAwardee />,
     },
     {
       icon: <RefreshCcwDot size={17} />,

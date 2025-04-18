@@ -172,6 +172,16 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
       </div>
 
       <div>
+        <Label htmlFor="sex">Sexo</Label>
+        <Input
+          id="sex"
+          name="sex"
+          value={formData.sex}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
         <Label>Fecha de Nacimiento</Label>
         <Popover>
           <PopoverTrigger asChild>
@@ -222,18 +232,31 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
 
       <div>
         <Label htmlFor="nationality">Nacionalidad</Label>
-        <Input
-          name="nationality"
+
+        <Select
           value={formData.nationality}
-          onChange={handleChange}
-        />
+          onValueChange={(value) => handleSelectChange("nationality", value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione un país" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Chile">Chile</SelectItem>
+            <SelectItem value="Colombia">Colombia</SelectItem>
+            <SelectItem value="Brasil">Brasil</SelectItem>
+            <SelectItem value="Argentina">Argentina</SelectItem>
+            <SelectItem value="Perú">Perú</SelectItem>
+            <SelectItem value="México">México</SelectItem>
+            <SelectItem value="Uruguay">Uruguay</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div>
         <Label htmlFor="phone">Número teléfono celular</Label>
         <Input
           name="phone"
-          type="tel"
+          type="number"
           value={formData.phone}
           onChange={handleChange}
         />

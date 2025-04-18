@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Briefcase,
   BriefcaseBusiness,
   Ellipsis,
   Eye,
@@ -113,17 +114,21 @@ const TableRequester = () => {
                   <TableCell>{requester.email}</TableCell>
                   <TableCell>
                     <div className="w-28 flex items-center justify-between gap-2 bg-green-400 text-white py-1 px-2 font-bold rounded-md">
-                      {requester.userType === "Abogado particular"
-                        ? "Abogado"
-                        : requester.userType}
+                      {requester.userType}
 
-                      {requester.userType === "Defensor" && <Gavel size={15} />}
-
-                      {requester.userType === "Abogado particular" && (
+                      {requester.userType === "Abogado" && (
                         <BriefcaseBusiness size={15} />
                       )}
 
-                      {requester.userType === "Otro" && <UserCheck size={15} />}
+                      {requester.userType === "Defensor" && <Gavel size={15} />}
+
+                      {requester.userType === "Particular" && (
+                        <UserCheck size={15} />
+                      )}
+
+                      {requester.userType === "Otros" && (
+                        <Briefcase size={15} />
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>{requester.institution}</TableCell>

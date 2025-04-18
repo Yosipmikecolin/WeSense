@@ -1,19 +1,14 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Flag from "react-world-flags";
+
 import { Download } from "lucide-react";
 import { generatePDF, generateWord } from "../functions";
-import {
-  FormDataCarrier,
-  FormDataWearer,
-} from "@/views/view-create-carrier/interfaces";
-import { getCountryCode } from "@/functions";
+import { FormDataWearer } from "@/views/view-create-carrier/interfaces";
 
 interface Props {
   carrier?: FormDataWearer;

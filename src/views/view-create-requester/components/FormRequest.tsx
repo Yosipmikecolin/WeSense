@@ -36,7 +36,7 @@ const FormRequest = () => {
     lastName: "",
     middleName: "",
     email: "",
-    ruc: "",
+    run: "",
     phone: "",
     userType: "",
     institution: "",
@@ -82,7 +82,7 @@ const FormRequest = () => {
           lastName: "",
           middleName: "",
           email: "",
-          ruc: "",
+          run: "",
           phone: "",
           userType: "",
           institution: "",
@@ -149,11 +149,11 @@ const FormRequest = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="run">RUC</Label>
+              <Label htmlFor="run">RUN</Label>
               <Input
-                id="ruc"
+                id="run"
                 type="number"
-                value={formData.ruc}
+                value={formData.run}
                 onChange={handleChange}
                 placeholder="34234"
               />
@@ -179,7 +179,8 @@ const FormRequest = () => {
                 <SelectContent>
                   <SelectItem value="Defensor">Defensor</SelectItem>
                   <SelectItem value="Abogado">Abogado</SelectItem>
-                  <SelectItem value="Otro">Otro</SelectItem>
+                  <SelectItem value="Particular">Particular</SelectItem>
+                  <SelectItem value="Otros">Otros</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
@@ -12,14 +14,15 @@ import {
 
 import {
   CircleCheck,
-  CircleMinus,
   CircleSlash,
   Ellipsis,
   Eye,
-  FileCheck2,
-  FileX2,
+  FileCog,
+  FileInput,
+  FilePen,
+  FileText,
+  House,
   Info,
-  Redo2,
   RotateCw,
   Search,
 } from "lucide-react";
@@ -35,9 +38,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "../DetailsModal";
-import ReturnRequestModal from "../ReturnRequestModal";
 import ReturnDetailsModal from "../ReturnDetailsModal";
-import FilterStatus from "../FilterStatus";
 import {
   Popover,
   PopoverContent,
@@ -45,47 +46,29 @@ import {
 } from "@/components/ui/popover";
 import { useQueryRequest } from "@/api/queries";
 import { RequestTable } from "@/views/view-create-request/interfaces";
+import AddressModal from "../AddressModal";
+import EditRequestModal from "../EditRequestModal";
 import { updatedRequest } from "@/api/request";
-import axios from "axios";
-import { useBuddieStore } from "@/store";
 import toast from "react-hot-toast";
+import { generatePDF } from "@/views/view-carriers/functions";
+import { ChangeAddressModal } from "../ChangeAddressModal";
 
-export const TableAdministrator = () => {
+export const TableRequiring = () => {
   const [idFilter, setIdFilter] = useState(1);
-  const [isModalReturnOpen, setIsModaReturnlOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenAddres, setIsModalOpenAddres] = useState(false);
   const [isModalReturnOpenDetails, setIsModaReturnlOpenDetails] =
     useState(false);
-  const email = "sgamgc@correo.com";
-  const subject = encodeURIComponent("SGAMGC");
-  const body = encodeURIComponent("Respuesta de la solicitud");
+
   const [isModalOpenDetails, setIsModalOpenDetails] = useState(false);
-
-  const [stateFilter, setStateFilter] = useState("");
+  const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
+  const [valueFilter, setValueFilter] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<RequestTable>();
-  const [type, setType] = useState<"requester" | "awardee">("requester");
   const { data: requests, isLoading, refetch } = useQueryRequest();
-  const { token, setToken } = useBuddieStore();
-  const [carrier, setCarrier] = useState();
   const filters = [
-    { id: 1, name: "Tipo de requirente" },
-    { id: 2, name: "Nombre del requirente" },
-    { id: 3, name: "Numero de identificación" },
-    { id: 4, name: "Tipo de situación" },
+    { id: 1, name: "RUC" },
+    { id: 2, name: "RIT" },
   ];
-
-  const handleClick = () => {
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
-    window.open(gmailUrl, "_blank");
-  };
-
-  useEffect(() => {
-    const carrierBuddie = localStorage.getItem("carrier-buddie");
-    if (carrierBuddie) {
-      const value = JSON.parse(carrierBuddie);
-      setCarrier(value);
-    }
-  }, []);
-
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -95,6 +78,8 @@ export const TableAdministrator = () => {
         <div className="flex gap-2">
           <Input
             maxLength={30}
+            value={valueFilter}
+            onChange={(e) => setValueFilter(e.target.value)}
             placeholder={`Buscar por ${filters
               .find((i) => i.id === idFilter)
               ?.name.toLowerCase()}`}
@@ -103,10 +88,6 @@ export const TableAdministrator = () => {
             filters={filters}
             idFilter={idFilter}
             setIdFilter={setIdFilter}
-          />
-          <FilterStatus
-            stateFilter={stateFilter}
-            setStateFilter={setStateFilter}
           />
         </div>
       </div>
@@ -143,27 +124,14 @@ export const TableAdministrator = () => {
                       <ul>
                         <li className="flex items-center gap-2">
                           <CircleSlash size={17} color="#B7B7B7" />
-                          Sin respuesta
+                          En proceso
                         </li>
-
                         <li className="flex items-center gap-2">
-                          <RotateCw size={17} color="#FF9D23" />
-                          Retornado al adjudicado
+                          <CircleCheck size={17} color="#16a34a" /> Respondido
                         </li>
                         <li className="flex items-center gap-2">
                           <RotateCw size={17} color="#FF9D23" />
-                          Retornado al requirente
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <CircleCheck size={17} color="#16a34a" /> Confirmado
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Eye size={17} color="#4D55CC" />
-                          En revision
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <CircleMinus size={17} color="#577BC1" />
-                          El adjudicado respondio
+                          Retornado
                         </li>
                       </ul>
                     </PopoverContent>
@@ -175,56 +143,78 @@ export const TableAdministrator = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {requests?.map((request, index) => (
+              {((idFilter === 1 || idFilter === 2) && valueFilter !== ""
+                ? requests?.filter(
+                    (i) =>
+                      i.carrier.cause[idFilter === 1 ? "ruc" : "rit"] ===
+                      valueFilter
+                  )
+                : requests
+              )?.map((request, index) => (
                 <TableRow key={index}>
                   <TableCell>{request.requester.userType}</TableCell>
                   <TableCell>{request.requester.fullName}</TableCell>
                   <TableCell className="text-xs ">
                     <div className="w-[140px]">
-                      {request.answer === "positive" && (
-                        <div className="flex items-center gap-2">
-                          <span className="bg-green-400 text-white p-1 rounded-md">
-                            Positivo
-                          </span>
-                          {request.status === "confirmed" && (
-                            <CircleCheck size={17} color="#16a34a" />
-                          )}
-                        </div>
-                      )}
+                      {request.answer === "positive" &&
+                        request.status === "confirmed" && (
+                          <div className="flex items-center gap-2">
+                            <span className="bg-green-400 text-white p-1 rounded-md">
+                              Positivo
+                            </span>
+                            {request.status === "confirmed" && (
+                              <CircleCheck size={17} color="#16a34a" />
+                            )}
+                          </div>
+                        )}
 
-                      {request.answer === "negative" && (
-                        <div className="flex items-center gap-2">
-                          <span className="bg-red-400 text-white p-1 rounded-md">
-                            Negativo
-                          </span>
-                          {request.status === "confirmed" && (
-                            <CircleCheck size={17} color="#16a34a" />
-                          )}
-                        </div>
-                      )}
+                      {request.answer === "negative" &&
+                        request.status === "confirmed" && (
+                          <div className="flex items-center gap-2">
+                            <span className="bg-red-400 text-white p-1 rounded-md">
+                              Negativo
+                            </span>
+                            {request.status === "confirmed" && (
+                              <CircleCheck size={17} color="#16a34a" />
+                            )}
+                          </div>
+                        )}
 
-                      {request.answer === "not-recommended" && (
-                        <div className="flex items-center gap-2">
-                          <span className="bg-orange-400 text-white p-1 rounded-md">
-                            No recomendado
-                          </span>
-                          {request.status === "confirmed" && (
-                            <CircleCheck size={17} color="#16a34a" />
-                          )}
-                        </div>
-                      )}
+                      {request.answer === "not-recommended" &&
+                        request.status === "confirmed" && (
+                          <div className="flex items-center gap-2">
+                            <span className="bg-orange-400 text-white p-1 rounded-md">
+                              No recomendado
+                            </span>
+                            {request.status === "confirmed" && (
+                              <CircleCheck size={17} color="#16a34a" />
+                            )}
+                          </div>
+                        )}
 
-                      {request.answer === "no-confirmed" && (
-                        <div className="flex items-center gap-2">
-                          <span className="bg-gray-400 text-white p-1 rounded-md">
-                            Sin respuesta
-                          </span>
-                        </div>
-                      )}
+                      {request.answer === "no-confirmed" &&
+                        request.status === "confirmed" && (
+                          <div className="flex items-center gap-2">
+                            <span className="bg-gray-400 text-white p-1 rounded-md">
+                              Sin respuesta
+                            </span>
+                          </div>
+                        )}
 
-                      {request.answer === "---" && (
-                        <div className="flex items-center gap-2">---</div>
-                      )}
+                      {request.answer === "---" ||
+                        (request.status === "answered" && (
+                          <div className="flex items-center gap-2">---</div>
+                        ))}
+
+                      {request.answer !== "---" &&
+                        request.status === "returned" && (
+                          <div className="flex items-center gap-2">---</div>
+                        )}
+
+                      {request.answer !== "---" &&
+                        request.status === "reviewing" && (
+                          <div className="flex items-center gap-2">---</div>
+                        )}
                     </div>
                   </TableCell>
                   <TableCell>{request.issue_date}</TableCell>
@@ -232,46 +222,39 @@ export const TableAdministrator = () => {
                   <TableCell>{request.response_date || "----"}</TableCell>
 
                   <TableCell>
-                    {request.status === "confirmed" && (
-                      <div className="flex items-center gap-2">
-                        <CircleCheck size={17} color="#16a34a" />
-                        <span className="text-sm">Confirmado</span>
-                      </div>
-                    )}
-
-                    {request.status === "returned" && (
+                    {request.status === "returned_to_requester" && (
                       <div className="flex gap-2 items-center">
                         <RotateCw size={17} color="#FF9D23" />
-                        <span className="text-sm">Retornado al adjudicado</span>
+                        <span className="text-sm">Retornado</span>
                       </div>
                     )}
 
                     {request.status === "unconfirmed" && (
                       <div className="flex items-center gap-2">
                         <CircleSlash size={17} color="#B7B7B7" />
-                        <span className="text-sm">Sin respuesta</span>
+                        <span className="text-sm">En proceso</span>
+                      </div>
+                    )}
+
+                    {request.status === "reviewing" && (
+                      <div className="flex items-center gap-2">
+                        <CircleSlash size={17} color="#B7B7B7" />
+                        <span className="text-sm">En proceso</span>
+                      </div>
+                    )}
+
+                    {request.status === "confirmed" && (
+                      <div className="flex items-center gap-2">
+                        <CircleCheck size={17} color="#16a34a" />
+                        <span className="text-sm">Respondido</span>
                       </div>
                     )}
 
                     {request.status === "answered" && (
                       <div className="flex items-center gap-2">
-                        <CircleMinus size={17} color="#577BC1" />
-                        <span className="text-sm">El adjudicado respondio</span>
+                        <CircleSlash size={17} color="#B7B7B7" />
+                        <span className="text-sm">En proceso</span>
                       </div>
-                    )}
-
-                    {request.status === "reviewing" && (
-                      <li className="flex items-center gap-2">
-                        <Eye size={17} color="#4D55CC" />
-                        En revision
-                      </li>
-                    )}
-
-                    {request.status === "returned_to_requester" && (
-                      <li className="flex items-center gap-2">
-                        <RotateCw size={17} color="#FF9D23" />
-                        Retornado al requirente
-                      </li>
                     )}
                   </TableCell>
 
@@ -284,13 +267,12 @@ export const TableAdministrator = () => {
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                          className="cursor-pointer"
                           onClick={() => {
                             setSelectedRequest(request);
                             setIsModalOpenDetails(true);
                           }}
                         >
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 cursor-pointer">
                             <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                               <Eye />
                             </Button>
@@ -298,7 +280,45 @@ export const TableAdministrator = () => {
                           </div>
                         </DropdownMenuItem>
 
-                        {/* OPCIONES PARA LA RETONRO DE LA SOLICITUD AL REQUIRENTE */}
+                        {request.status === "returned" && (
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedRequest(request);
+                              setIsModalOpen(true);
+                            }}
+                          >
+                            <div
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={() => setSelectedRequest(request)}
+                            >
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FilePen />
+                              </Button>
+                              Gestionar devolución
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {request.status === "unconfirmed" && (
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedRequest(request);
+                              setIsModalOpen(true);
+                            }}
+                          >
+                            <div
+                              className="flex items-center gap-2 cursor-pointer"
+                              onClick={() => setSelectedRequest(undefined)}
+                            >
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FilePen />
+                              </Button>
+                              Gestionar
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+
+                        {/* OPCIONES PARA LA RETONRO DEL ADJUDICADO */}
                         {request.status === "returned_to_requester" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
@@ -316,155 +336,92 @@ export const TableAdministrator = () => {
                           </DropdownMenuItem>
                         )}
 
-                        {/* OPCIONES PARA LA RETONRO DEL ADJUDICADO */}
-                        {request.status === "returned" && (
+                        {request.status === "returned_to_requester" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={() => {
-                              setIsModaReturnlOpenDetails(true);
+                              setIsModalOpenEdit(true);
                               setSelectedRequest(request);
                             }}
                           >
                             <div className="flex items-center gap-2">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Search />
+                                <FileCog />
                               </Button>
-                              <span>Motivo</span>
+                              <span>Corregir</span>
                             </div>
                           </DropdownMenuItem>
                         )}
 
-                        {/* OPCIONES PARA LA SOLICITUD DEL REQUIRENTE */}
-                        {request.status === "reviewing" && (
+                        {request.status === "returned_to_requester" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={async () => {
-                              toast.success("Solicitud confirmada");
+                              toast.success("Solicitud enviada");
+
                               await updatedRequest({
                                 ...request,
-                                status: "unconfirmed",
-                                answer: "no-confirmed",
-                                time_respond: "24 horas",
+                                status: "reviewing",
                               });
                               refetch();
                             }}
                           >
                             <div className="flex items-center gap-2">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileCheck2 />
+                                <FileInput />
                               </Button>
-                              <span>Aceptar</span>
+                              <span>Enviar</span>
                             </div>
                           </DropdownMenuItem>
                         )}
 
-                        {request.status === "reviewing" && (
-                          <DropdownMenuItem
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setIsModaReturnlOpen(true);
-                              setSelectedRequest(request);
-                              setType("requester");
-                            }}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileX2 />
-                              </Button>
-                              <span>Regresar</span>
-                            </div>
-                          </DropdownMenuItem>
-                        )}
-
-                        {/* OPCIONES PARA LA RESPUESTA DE BUDDI */}
-                        {request.status === "answered" && (
+                        {request.status === "confirmed" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={async () => {
-                              await updatedRequest({
-                                ...request,
-                                status: "confirmed",
-                                time_respond: "",
+                              generatePDF({
+                                _id: request._id,
+                                ...request.carrier,
+                                wearer: {
+                                  id: "",
+                                  first_name: "",
+                                  surname: "",
+                                  email: "",
+                                  line_1: "",
+                                  line_2: "",
+                                  line_3: "",
+                                  city: "",
+                                  county: "",
+                                  telephone: "",
+                                },
                               });
-                              toast.success("Solicitud confirmada");
-                              const response_create = await axios.post(
-                                "/api/buddie",
-                                {
-                                  method: "setup.wearer.create",
-                                  token,
-                                  create_wearer: carrier,
-                                }
-                              );
-                              setToken(response_create.data.csrf_token);
                             }}
                           >
                             <div className="flex items-center gap-2">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileCheck2 />
+                                <FileText />
                               </Button>
-                              <span>Confirmar</span>
+                              <span>Ver informe</span>
                             </div>
                           </DropdownMenuItem>
                         )}
 
-                        {request.status === "answered" && (
+                        {request.status === "confirmed" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
-                            onClick={() => {
+                            onClick={async () => {
+                              setIsModalOpenAddres(true);
                               setSelectedRequest(request);
-                              setIsModaReturnlOpen(true);
-                              setType("awardee");
                             }}
                           >
                             <div className="flex items-center gap-2">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Redo2 />
+                                <House />
                               </Button>
-                              <span>Devolver</span>
+                              <span>Cambio de domicilió</span>
                             </div>
                           </DropdownMenuItem>
                         )}
-
-                        {/* OPCIONES PARA LA GENDARMERRIA SI ACEPTO LA SOLCIITUD DE BUDDI */}
-
-                        {/*                         {request.status === "confirmed" && (
-                          <DropdownMenuItem
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setSelectedRequest(request);
-                              setIsModaReturnlOpen(true);
-                              setType("awardee");
-                            }}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileDown />
-                              </Button>
-                              <span>Exportar SFIT</span>
-                            </div>
-                          </DropdownMenuItem>
-                        )} */}
-
-                        {/*              {request.status === "confirmed" && (
-                          <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>
-                              <div className="flex items-center gap-2 cursor-pointer">
-                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                  <SendHorizontal />
-                                </Button>
-                                <span>Exportar SFIT</span>
-                              </div>
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                              <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={handleClick}>
-                                  <Mail size={15} />
-                                  Email
-                                </DropdownMenuItem>
-                              </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                          </DropdownMenuSub>
-                        )} */}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -485,14 +442,6 @@ export const TableAdministrator = () => {
         </CardContent>
       </Card>
       <Pagination />
-      <ReturnRequestModal
-        type={type}
-        refetch={refetch}
-        request={selectedRequest}
-        open={isModalReturnOpen}
-        onClose={() => setIsModaReturnlOpen(false)}
-      />
-
       <DetailsModal
         open={isModalOpenDetails}
         request={selectedRequest}
@@ -500,11 +449,35 @@ export const TableAdministrator = () => {
       />
 
       {selectedRequest && (
+        <EditRequestModal
+          refetch={refetch}
+          open={isModalOpenEdit}
+          request={selectedRequest}
+          onClose={() => setIsModalOpenEdit(false)}
+        />
+      )}
+
+      <AddressModal
+        request={selectedRequest}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        refetch={refetch}
+      />
+      {selectedRequest && (
         <ReturnDetailsModal
-          type={type}
+          type={"requester"}
           request={selectedRequest}
           open={isModalReturnOpenDetails}
           onClose={() => setIsModaReturnlOpenDetails(false)}
+        />
+      )}
+
+      {selectedRequest && (
+        <ChangeAddressModal
+          request={selectedRequest}
+          refetch={refetch}
+          isOpen={isModalOpenAddres}
+          onClose={() => setIsModalOpenAddres(false)}
         />
       )}
     </div>

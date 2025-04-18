@@ -53,7 +53,7 @@ const UpdatedRequesterModal = ({
     lastName: "",
     middleName: "",
     email: "",
-    ruc: "",
+    run: "",
     phone: "",
     userType: "",
     institution: "",
@@ -98,6 +98,7 @@ const UpdatedRequesterModal = ({
         await updatedRequester({
           ...formData,
           registrationDate: requester?.registrationDate || "",
+          run: "",
         });
         refetch();
         toast.success("Requirente actualizado");
@@ -109,7 +110,7 @@ const UpdatedRequesterModal = ({
           lastName: "",
           middleName: "",
           email: "",
-          ruc: "",
+          run: "",
           phone: "",
           userType: "",
           institution: "",
@@ -178,11 +179,11 @@ const UpdatedRequesterModal = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="ruc">RUC</Label>
+              <Label htmlFor="ruc">RUN</Label>
               <Input
-                id="ruc"
+                id="run"
                 type="number"
-                value={formData.ruc}
+                value={formData.run}
                 onChange={handleChange}
                 placeholder="34234"
               />

@@ -60,7 +60,7 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
             {/* Step label */}
             <span
               className={cn(
-                "mt-2 text-sm font-medium text-center max-w-[120px]",
+                "mt-7 text-sm font-medium text-center max-w-[120px]",
                 index <= currentStep ? "text-gray-900" : "text-gray-500"
               )}
             >

@@ -1,6 +1,6 @@
-import { Requester } from "@/db/requester";
+import { RequesterPost } from "@/db/requester";
 import {
-  FormDataCarrier,
+  FormDataCarrierPost,
   Step1Data,
 } from "@/views/view-create-carrier/interfaces";
 
@@ -11,13 +11,33 @@ export interface TimelineProps {
 
 export interface FormDataRequest {
   answer: string;
+  law: string;
   issue_date: string;
+  reason_return: string;
+  description_reason: string;
   response_date: string;
   return_date: string;
   time_respond: string;
   status: string;
-  requester: Requester;
-  carrier: FormDataCarrier;
+  requester: RequesterPost;
+  carrier: FormDataCarrierPost;
+  reason_revolution_requester: {
+    description_reason: string;
+    reason_return: string;
+  }[];
+  reason_revolution_awardee: {
+    description_reason: string;
+    reason_return: string;
+  }[];
+  awardee_response: {
+    minimum_coverage: string;
+    status: string;
+    latitude: string;
+    length: string;
+    indication_aspects: string;
+    value: string;
+    photographic_evidence: string[];
+  };
 }
 
 export interface RequestTable extends FormDataRequest {
