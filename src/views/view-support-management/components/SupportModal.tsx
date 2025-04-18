@@ -16,6 +16,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SupportType } from "../ViewSupportManagement";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { UploadButtonWithModal } from "@/components/upload-file/upload-button-with-modal";
 
 interface Props {
   open: boolean;
@@ -69,39 +71,24 @@ const SupportModal = ({ onClose, support, open, type, refetch }: Props) => {
           </div>
           <div>
             <Label htmlFor="note">Respuesta del soporte</Label>
-            <Input
-              id="note"
-              name="note"
-              // value={nota}
-              type="file"
-              // onChange={(e) => setNota(e.target.value)}
-              // placeholder="Escribe una nota corta..."
-            />
+            <UploadButtonWithModal />
           </div>
+
           <div>
             <Label htmlFor="presentation_date">Se presenta técnico?</Label>
-            <div className="flex items-center">
-              <Input
-                className="w-4"
-                id="presentation_date"
-                name="presentation_date"
-                type="checkbox"
-                // value={secondVisit}
-                // onChange={(e) => setSecondVisit(e.target.value)}
-              />
-              <span className="ml-2">Si</span>
-            </div>
-            <div className="flex items-center">
-              <Input
-                className="w-4"
-                id="presentation_date"
-                name="presentation_date"
-                type="checkbox"
-                // value={secondVisit}
-                // onChange={(e) => setSecondVisit(e.target.value)}
-              />
-              <span className="ml-2">No</span>
-            </div>
+            <RadioGroup
+              defaultValue="r1"
+              // onValueChange={(e) => setFirstVisit(e)}
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Si" id="r1" />
+                <Label htmlFor="r1">Si</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="No" id="r2" />
+                <Label htmlFor="r2">No</Label>
+              </div>
+            </RadioGroup>
           </div>
 
           <div className="flex justify-end">
