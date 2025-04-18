@@ -83,6 +83,13 @@ export async function PUT(req: Request) {
     );
     return NextResponse.json(updatedAwardee, { status: 201 });
   }
+  if (_METHOD === "update.resolution") {
+    const updatedAwardee = await AwardeeProcess.updateOne(
+      { _id: body._id },
+      { resolution: body.resolution }
+    );
+    return NextResponse.json(updatedAwardee, { status: 201 });
+  }
 }
 
 export async function DELETE(req: Request) {

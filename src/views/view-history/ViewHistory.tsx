@@ -96,6 +96,7 @@ const ViewHistory = () => {
     return useQuery({
       queryKey: ["all_process"],
       queryFn: () => getAllProcess(),
+      refetchInterval: 5000,
     });
   };
 
@@ -229,13 +230,13 @@ const ViewHistory = () => {
               sortable
               header="Tipo de resolución"
             ></Column>
-            <Column
+            {/* <Column
               field="document"
               header="Documento adjunto"
               body={
                 <i className="pi pi-eye text-green-400 hover:text-green-700 cursor-pointer"></i>
               }
-            ></Column>
+            ></Column> */}
             <Column field="status" header="Estado"></Column>
             <Column
               field="actions"

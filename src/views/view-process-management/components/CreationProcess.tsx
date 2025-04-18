@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import DeviceForm from "@/components/devices/Device";
+import { UploadButtonWithModal } from "@/components/upload-file/upload-button-with-modal";
 import axios from "axios";
 
 export interface CreationType {
@@ -125,14 +126,7 @@ const CreationProcess = ({ onClose, refetch }: Props) => {
       </div>
       <div>
         <Label htmlFor="document">Documento adjunto</Label>
-        <Input
-          id="document"
-          name="document"
-          type="file"
-          value={formData.document}
-          onChange={handleChange}
-          placeholder="Ej: Domicilio del usuario"
-        />
+        <UploadButtonWithModal />
       </div>
       <div>
         <Label htmlFor="date_limit">Fecha limite</Label>
@@ -171,7 +165,18 @@ const CreationProcess = ({ onClose, refetch }: Props) => {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" variant={"primary"}>
+        <Button
+          type="submit"
+          variant={"primary"}
+          disabled={
+            formData.date_limit === "" ||
+            formData.rit === "" ||
+            formData.ruc === "" ||
+            formData.run === "" ||
+            formData.type_law === "" ||
+            formData.type_resolution === ""
+          }
+        >
           Registrar Proceso
         </Button>
       </div>

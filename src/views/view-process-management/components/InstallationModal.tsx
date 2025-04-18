@@ -36,6 +36,16 @@ const InstallationModal = ({ onClose, process, open, type }: Props) => {
     if (process) {
       try {
         setLoading(true);
+        const response = await axios.put(`/api/awardee/process`, {
+          _id: process._id,
+          method: "update.resolution",
+          resolution: {
+            presentation_date: date,
+            first_visit: firstVisit,
+            second_visit: secondVisit,
+            note: nota,
+          },
+        });
         // refetch();
         setNota("");
         setDate("");

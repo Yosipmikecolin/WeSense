@@ -191,7 +191,7 @@ const ViewProcessManagement = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
-        Gestión de sentencias y resoluciones
+      Proceso de recepción de sentencia y resoluciones
       </h1>
 
       <Dialog open={isShowModal} onOpenChange={onChangeModal}>
