@@ -16,6 +16,10 @@ export async function GET(req: Request) {
     const awardees = await AwardeeProcess.find({ status: { $ne: "Aceptado" } });
     return NextResponse.json(awardees);
   }
+  if (_METHOD === "get.all.master") {
+    const awardees = await AwardeeProcess.find();
+    return NextResponse.json(awardees);
+  }
 
   if (_METHOD === "get.instalacion") {
     const awardees = await AwardeeProcess.find({

@@ -29,7 +29,7 @@ export async function PUT(req: Request) {
 
   const updatedAwardee = await AwardeeSupport.updateOne(
     { _id: body._id },
-    { finished: "Si" }
+    { finished: "Si", status: "Cerrado" }
   );
   return NextResponse.json(updatedAwardee, { status: 201 });
 }

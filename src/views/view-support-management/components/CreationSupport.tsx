@@ -58,7 +58,7 @@ const CreationSupport = ({ onClose, refetch }: Props) => {
 
   const save = async () => {
     const response = await axios.post(`/api/awardee/support`, formData);
-    console.log("RESPONSE: ", response.data)
+    console.log("RESPONSE: ", response.data);
     refetch();
     setFormData({
       adress: "",
@@ -99,6 +99,11 @@ const CreationSupport = ({ onClose, refetch }: Props) => {
           <SelectContent>
             <SelectItem value="Soporte técnico">Soporte técnico</SelectItem>
             <SelectItem value="Instalación">Instalación</SelectItem>
+            <SelectItem value="IFT">IFT</SelectItem>
+            <SelectItem value="Desinstalación">Desinstalación</SelectItem>
+            <SelectItem value="Entrega y retiro de dispositivo de víctima">
+              Entrega y retiro de dispositivo de víctima
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

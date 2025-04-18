@@ -5,8 +5,16 @@ import {
   ViewReport,
   ViewRequests,
 } from "@/views";
+import ViewHistory from "@/views/view-history/ViewHistory";
 import ViewSupportManagement from "@/views/view-support-management/ViewSupportManagement";
-import { BookText, CalendarPlus, Cog, Files, RefreshCcwDot } from "lucide-react";
+import {
+  BookText,
+  CalendarPlus,
+  Cog,
+  Files,
+  FileStack,
+  RefreshCcwDot,
+} from "lucide-react";
 
 const Awardee = () => {
   const menuItems = [
@@ -34,6 +42,11 @@ const Awardee = () => {
       icon: <BookText size={17} />,
       label: "Reportes",
       content: <ViewReport />,
+    },
+    {
+      icon: <FileStack size={17} />,
+      label: "Histórico de resoluciones",
+      content: <ViewHistory />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
