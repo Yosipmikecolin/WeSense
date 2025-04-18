@@ -148,7 +148,7 @@ export const TableAdministrator = () => {
 
                         <li className="flex items-center gap-2">
                           <RotateCw size={17} color="#FF9D23" />
-                          Retornado al adjudicado
+                          Retornado a la empresa
                         </li>
                         <li className="flex items-center gap-2">
                           <RotateCw size={17} color="#FF9D23" />
@@ -163,7 +163,7 @@ export const TableAdministrator = () => {
                         </li>
                         <li className="flex items-center gap-2">
                           <CircleMinus size={17} color="#577BC1" />
-                          El adjudicado respondio
+                          La empresa respondio
                         </li>
                       </ul>
                     </PopoverContent>
@@ -242,7 +242,7 @@ export const TableAdministrator = () => {
                     {request.status === "returned" && (
                       <div className="flex gap-2 items-center">
                         <RotateCw size={17} color="#FF9D23" />
-                        <span className="text-sm">Retornado al adjudicado</span>
+                        <span className="text-sm">Retornado a la empresa</span>
                       </div>
                     )}
 
@@ -256,7 +256,7 @@ export const TableAdministrator = () => {
                     {request.status === "answered" && (
                       <div className="flex items-center gap-2">
                         <CircleMinus size={17} color="#577BC1" />
-                        <span className="text-sm">El adjudicado respondio</span>
+                        <span className="text-sm">La empresa respondio</span>
                       </div>
                     )}
 

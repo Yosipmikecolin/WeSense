@@ -207,7 +207,8 @@ export const TableRequiring = () => {
                         ))}
 
                       {request.answer !== "---" &&
-                        request.status === "returned" && (
+                        (request.status === "returned" ||
+                          request.status === "returned_to_requester") && (
                           <div className="flex items-center gap-2">---</div>
                         )}
 
