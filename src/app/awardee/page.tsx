@@ -1,11 +1,7 @@
 import { Dashboard } from "@/components";
-import {
-  ViewCreationEvents,
-  ViewProcessManagement,
-  ViewReport,
-  ViewRequests,
-} from "@/views";
+import { ViewCreationEvents, ViewProcessManagement, ViewReport } from "@/views";
 import ViewHistory from "@/views/view-history/ViewHistory";
+import { TableAwardee } from "@/views/view-requests/components/tables/TableAwardee";
 import ViewSupportManagement from "@/views/view-support-management/ViewSupportManagement";
 import {
   BookText,
@@ -15,7 +11,6 @@ import {
   FileStack,
   RefreshCcwDot,
 } from "lucide-react";
-
 
 const Awardee = () => {
   const menuItems = [
