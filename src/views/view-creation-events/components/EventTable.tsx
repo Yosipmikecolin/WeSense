@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -8,40 +9,85 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Pagination } from "@/components";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Ellipsis, Eye, Pencil, Trash } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import DeleteModalEvent from "./DeleteModalEvent";
 
-const events = [
-  {
-    id: 1,
-    type: "Error",
-    date: "2023-05-01",
-    note: "Sistema caído",
-    user: "Juan Pérez",
-  },
-  {
-    id: 2,
-    type: "Advertencia",
-    date: "2023-05-02",
-    note: "Rendimiento lento",
-    user: "María García",
-  },
-  {
-    id: 3,
-    type: "Información",
-    date: "2023-05-03",
-    note: "Actualización completada",
-    user: "Carlos Rodríguez",
-  },
-  // Add more mock data to demonstrate scrolling
-  ...Array.from({ length: 12 }, (_, i) => ({
-    id: i + 4,
-    type: "Evento",
-    date: `2023-05-${String(i + 4).padStart(2, "0")}`,
-    note: `Nota de ejemplo ${i + 4}`,
-    user: "Usuario de Prueba",
-  })),
-];
+export interface EventType {
+  _id: string;
+  type: string;
+  date: string;
+  note: string;
+  user: string;
+}
+export interface UserType {
+  _id: string;
+  email: string;
+  name: string;
+  nit: string;
+  perfil: string;
+  phone: string;
+  status: string;
+}
 
-export default function EventTable() {
+interface Props {
+  onEvent: (data: EventType) => void;
+}
+
+export default function EventTable({ onEvent }: Props) {
+  const [events, setEvents] = useState<EventType[]>([]);
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedToDelete, setSelectedToDelete] = useState("");
+
+  const getAll = async () => {
+    try {
+      const response = await axios.get<EventType[]>(`/api/awardee`);
+      setEvents(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllUsers = async () => {
+    try {
+      const response = await axios.get(`/api/users`);
+      setUsers(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllUsers().then(() => {
+      getAll();
+    });
+  }, []);
+
+  const findUser = (value: EventType) => {
+    const result = users.find((item) => item._id === value.user);
+    return result ? result.name : "Sin usuario";
+  };
+
+  const onUpdate = (item: EventType) => {
+    onEvent(item);
+  };
+
+  const onDelete = async (item: EventType) => {
+    setSelectedToDelete(item._id);
+    setIsModalOpen(true);
+  };
+
   return (
     <div>
       <Card>
@@ -65,15 +111,46 @@ export default function EventTable() {
                   <TableHead className="text-xs font-bold text-gray-600">
                     USUARIO
                   </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600">
+                    ACCIONES
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {events.map((event) => (
-                  <TableRow key={event.id}>
+                {events.map((event, index) => (
+                  <TableRow key={index}>
                     <TableCell>{event.type}</TableCell>
                     <TableCell>{event.date}</TableCell>
                     <TableCell>{event.note}</TableCell>
-                    <TableCell>{event.user}</TableCell>
+                    <TableCell>{users.length > 0 && findUser(event)}</TableCell>
+                    <TableCell className="mr-10 flex justify-end">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                          <Ellipsis />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-10">
+                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={() => onUpdate(event)}>
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Pencil />
+                              </Button>
+                              <span>Editar</span>
+                            </div>
+                          </DropdownMenuItem>
+
+                          <DropdownMenuItem onClick={() => onDelete(event)}>
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <Trash />
+                              </Button>
+                              <span>Eliminar</span>
+                            </div>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -82,6 +159,12 @@ export default function EventTable() {
         </CardContent>
       </Card>
       <Pagination />
+      <DeleteModalEvent
+        id={selectedToDelete}
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        // refetch={refetch}
+      />
     </div>
   );
 }
