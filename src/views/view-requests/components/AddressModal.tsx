@@ -91,7 +91,7 @@ const AddressModal = ({
       try {
         await updatedRequest({
           ...request,
-          response_date: getDate() + getHour(),
+          response_date: getDate() + " - " + getHour(),
           time_respond: "",
           answer: status,
           status: "answered",
