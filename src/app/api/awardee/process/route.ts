@@ -79,7 +79,11 @@ export async function PUT(req: Request) {
   if (_METHOD === "update.process") {
     const updatedAwardee = await AwardeeProcess.updateOne(
       { _id: body._id },
-      { status: body.status }
+      {
+        status: body.status,
+        denied_note: body.denied,
+        approved_note: body.approved,
+      }
     );
     return NextResponse.json(updatedAwardee, { status: 201 });
   }
