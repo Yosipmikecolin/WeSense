@@ -1,5 +1,7 @@
 import { updatedRequest } from "@/api/request";
+import Timeline from "@/components/timeline/Timeline";
 import { Button } from "@/components/ui/button";
+import { CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +19,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import ExclusionZoneForm from "@/views/view-create-carrier/components/ExclusionZoneForm";
+import InclusionZoneForm from "@/views/view-create-carrier/components/InclusionZoneForm";
+import {
+  FormDataCarrier,
+  Step1Data,
+  Step2Data,
+  Step3Data,
+  Step4Data,
+  Step5Data,
+  Step6Data,
+} from "@/views/view-create-carrier/interfaces";
 import { RequestTable } from "@/views/view-create-request/interfaces";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -28,6 +41,8 @@ interface Props {
   refetch: VoidFunction;
 }
 
+const steps = ["Inclusión", "Exclusión"];
+
 export const ChangeAddressModal = ({
   isOpen,
   onClose,
@@ -35,18 +50,112 @@ export const ChangeAddressModal = ({
   request,
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [values, setValues] = useState({
-    type1: "",
-    number: "",
-    type2: "",
-    information: "",
+  const [completeForm, setCompleteForm] = useState<boolean>(false);
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [formData, setFormData] = useState<RequestTable>({
+    ...request,
+    carrier: {
+      ...request.carrier,
+      inclusionArea: {
+        street: "",
+        number: "",
+        additionalInformation: "",
+        commune: "",
+        region: "",
+        road: "",
+        population: "",
+        zipCode: "",
+        geographicCoordinates: "",
+        radio: "",
+        complianceSchedule: "",
+        characteristics: "",
+      },
+      exclusionArea: {
+        street: "",
+        number: "",
+        additionalInformation: "",
+        commune: "",
+        region: "",
+        road: "",
+        population: "",
+        zipCode: "",
+        geographicCoordinates: "",
+        radio: "",
+        characteristics: "",
+        paternalSurname: "",
+        motherSurname: "",
+        names: "",
+        rut: "",
+        victimEmail: "",
+        homeTelephone: "",
+        workplaceTelephone: "",
+      },
+    },
   });
+
+  const updateDataCarrier = useCallback(
+    (
+      step: keyof FormDataCarrier,
+      data:
+        | Step1Data
+        | Step2Data
+        | Step3Data
+        | Step4Data
+        | Step5Data
+        | Step6Data
+    ) => {
+      setFormData((prevData) => ({
+        ...prevData,
+        carrier: {
+          ...prevData.carrier,
+          [step]: data,
+        },
+      }));
+    },
+    []
+  );
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <InclusionZoneForm
+            formData={formData.carrier.inclusionArea}
+            setFormData={(data) => updateDataCarrier("inclusionArea", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+      case 1:
+        return (
+          <ExclusionZoneForm
+            formData={formData.carrier.exclusionArea}
+            setFormData={(data) => updateDataCarrier("exclusionArea", data)}
+            setCompleteForm={setCompleteForm}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const handleNext = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
       await updatedRequest({
-        ...request,
+        ...formData,
         status: "reviewing",
       });
       refetch();
@@ -61,74 +170,45 @@ export const ChangeAddressModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="h-[800px] overflow-auto">
         <DialogHeader>
           <DialogTitle className="text-xl mb-3">Cambiar domicilió</DialogTitle>
+          <Timeline steps={steps} currentStep={currentStep} />
         </DialogHeader>
 
-        <div className="space-y-3">
-          <div className="space-y-1">
-            <Label>Tipo</Label>
-            <Select
-              onValueChange={(value) =>
-                setValues((prev) => ({ ...prev, type1: value }))
-              }
-              value={values.type1}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccione una opción" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Calle">Calle</SelectItem>
-                <SelectItem value="Carrera">Carrera</SelectItem>
-                <SelectItem value="Avenida">Avenida</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-1">
-            <Label>Número de la dirección</Label>
-            <Input
-              placeholder="Número"
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, number: e.target.value }))
-              }
-            />
-          </div>
-          <div className="space-y-1">
-            <Label>Tipo de residencia</Label>
-            <Input
-              placeholder="Apt/Casa/Local"
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, type2: e.target.value }))
-              }
-            />
-          </div>
-          <div className="space-y-1">
-            <Label>Información adicional</Label>
-            <Textarea
-              onChange={(e) =>
-                setValues((prev) => ({ ...prev, information: e.target.value }))
-              }
-            />
-          </div>
-        </div>
+        <CardContent>{renderCurrentStep()}</CardContent>
 
         <DialogFooter className="flex items-center justify-between">
           <Button
             variant={"primary"}
-            onClick={handleSubmit}
-            disabled={
-              isLoading ||
-              values.type1 === "" ||
-              values.number === "" ||
-              values.type2 === "" ||
-              values.information === ""
-            }
+            onClick={handlePrevious}
+            disabled={currentStep <= 0}
           >
-            {isLoading ? (
-              <div className="loader-button" />
+            Atras
+          </Button>
+
+          <Button
+            variant={"primary"}
+            onClick={() => {
+              if (currentStep === steps.length - 1) {
+                handleSubmit();
+              } else {
+                handleNext();
+              }
+            }}
+            disabled={isLoading || !completeForm}
+          >
+            {currentStep === steps.length - 1 ? (
+              isLoading ? (
+                <div className="flex justify-center items-center gap-3">
+                  <div className="loader-button" />
+                  <span>Cambiando domicilió</span>
+                </div>
+              ) : (
+                "Crear domicilió"
+              )
             ) : (
-              "Crear una nueva SIFT"
+              "Siguiente"
             )}
           </Button>
         </DialogFooter>
