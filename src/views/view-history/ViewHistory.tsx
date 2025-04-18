@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { DropdownFilter } from "@/components";
 
 import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { Column, ColumnBodyOptions } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import { Card, CardContent } from "@/components/ui/card";
 // import CreationProcess from "./components/CreationProcess";
@@ -252,6 +252,10 @@ const ViewHistory = () => {
     }
   };
 
+  const idBody = (process: ProcessType, options: ColumnBodyOptions) => {
+    return options.rowIndex + 1;
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
@@ -286,6 +290,7 @@ const ViewHistory = () => {
               "type_resolution",
             ]}
           >
+            <Column field="id" header="#" body={idBody}></Column>
             <Column field="date" header="Fecha"></Column>
             <Column
               field="type_law"
