@@ -42,6 +42,15 @@ const CeseControlModal = ({ onClose, process, open, type }: Props) => {
             presentation_date: type === "1" ? date : null,
           },
         });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            note: nota,
+            presentation_date: type === "1" ? date : null,
+          },
+        });
         // refetch();
         setNota("");
         setDate("");

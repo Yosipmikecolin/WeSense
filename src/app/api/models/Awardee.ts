@@ -59,3 +59,25 @@ export const Awardee =
   mongoose.models.Awardee || mongoose.model("Awardee", AwardeeSchema);
 
 /** ---------------------------------------------------------------- */
+
+const AwardeeProcessMasterSchema = new mongoose.Schema(
+  {
+    date: String,
+    type_law: String,
+    rit: String,
+    ruc: String,
+    run: String,
+    // document: String,
+    date_limit: String,
+    type_resolution: String,
+    status: { type: String, default: "Sin estado" },
+    denied_note: String,
+    approved_note: String,
+    resolution: {},
+  },
+  { timestamps: true }
+);
+
+export const AwardeeProcessMaster =
+  mongoose.models.AwardeeProcessMaster ||
+  mongoose.model("AwardeeProcessMaster", AwardeeProcessMasterSchema);

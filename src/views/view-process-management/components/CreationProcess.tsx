@@ -60,6 +60,7 @@ const CreationProcess = ({ onClose, refetch }: Props) => {
 
   const save = async () => {
     const response = await axios.post(`/api/awardee/process`, formData);
+    await axios.post(`/api/awardee/process`, formData);
     refetch();
     setFormData({
       type_law: "",

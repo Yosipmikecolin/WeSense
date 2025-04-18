@@ -40,6 +40,14 @@ const InformeModal = ({ onClose, process, open, type }: Props) => {
             answer: nota,
           },
         });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            answer: nota,
+          },
+        });
         // refetch();
         setNota("");
         onClose();

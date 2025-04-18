@@ -46,6 +46,16 @@ const InstallationModal = ({ onClose, process, open, type }: Props) => {
             note: nota,
           },
         });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            presentation_date: date,
+            first_visit: firstVisit,
+            note: nota,
+          },
+        });
         // refetch();
         setNota("");
         setDate("");

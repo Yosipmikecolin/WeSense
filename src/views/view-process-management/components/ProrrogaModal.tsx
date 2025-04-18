@@ -41,6 +41,14 @@ const ProrrogaModal = ({ onClose, process, open, type }: Props) => {
             new_prorroga: date,
           },
         });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            new_prorroga: date,
+          },
+        });
         // refetch();
         setDate("");
         onClose();

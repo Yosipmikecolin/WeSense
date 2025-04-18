@@ -98,11 +98,7 @@ const ViewHistory = () => {
   };
 
   const getAllProcess = async () => {
-    const response = await axios.get(`/api/awardee/process`, {
-      params: {
-        method: "get.all.master",
-      },
-    });
+    const response = await axios.get(`/api/awardee/process-master`);
     return response.data;
     // setProducts(response.data);
   };
@@ -162,44 +158,44 @@ const ViewHistory = () => {
       const val = key as keyof ResolutionType;
       if (process.resolution[val]) {
         if (process.resolution.answer) {
-          flattenedData[`${process.type_resolution}.Fecha_de_resolución`] =
-            process.resolution[val];
+          flattenedData[`${process.type_resolution}.Respuesta`] =
+            process.resolution.answer;
         }
         if (process.resolution.comuna) {
           flattenedData[`${process.type_resolution}.Comuna`] =
-            process.resolution[val];
+            process.resolution.comuna;
         }
         if (process.resolution.domicilio) {
           flattenedData[`${process.type_resolution}.Domicilio`] =
-            process.resolution[val];
+            process.resolution.domicilio;
         }
         if (process.resolution.first_visit) {
           flattenedData[`${process.type_resolution}.Primera_visita`] =
-            process.resolution[val];
+            process.resolution.first_visit;
         }
         if (process.resolution.new_prorroga) {
           flattenedData[`${process.type_resolution}.Nueva_prórroga`] =
-            process.resolution[val];
+            process.resolution.new_prorroga;
         }
         if (process.resolution.note) {
           flattenedData[`${process.type_resolution}.Nota`] =
-            process.resolution[val];
+            process.resolution.note;
         }
         if (process.resolution.presentation_date) {
           flattenedData[`${process.type_resolution}.Fecha_de_presentación`] =
-            process.resolution[val];
+            process.resolution.presentation_date;
         }
         if (process.resolution.radio) {
           flattenedData[`${process.type_resolution}.Radio`] =
-            process.resolution[val];
+            process.resolution.radio;
         }
         if (process.resolution.region) {
           flattenedData[`${process.type_resolution}.Región`] =
-            process.resolution[val];
+            process.resolution.region;
         }
         if (process.resolution.second_visit) {
           flattenedData[`${process.type_resolution}.Segunda_visita`] =
-            process.resolution[val];
+            process.resolution.second_visit;
         }
       }
     }
