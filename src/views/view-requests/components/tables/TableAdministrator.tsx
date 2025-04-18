@@ -123,7 +123,7 @@ export const TableAdministrator = () => {
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600">
-                  RESPUESTA DEL ADJUDICADO
+                  RESPUESTA DE LA EMPRESA
                 </TableHead>
 
                 <TableHead className="text-xs font-bold text-gray-600 ">

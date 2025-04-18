@@ -676,7 +676,7 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
             ) : (
               <div className="h-[500px] flex justify-center items-center flex-col gap-3">
                 <h1 className="text-lg text-gray-600">
-                  No hay respuesta del adjudicado
+                  No hay respuesta de la empresa
                 </h1>
                 <PackageOpen size={100} color="gray" strokeWidth={1} />
               </div>
