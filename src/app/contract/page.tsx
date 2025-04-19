@@ -21,11 +21,11 @@ import {
 
 const Contract = () => {
   const menuItems = [
-    {
-      icon: <FilePlus size={17} />,
-      label: "Crear obligación",
-      content: <ViewCreateObligations />,
-    },
+    // {
+    //   icon: <FilePlus size={17} />,
+    //   label: "Crear obligación",
+    //   content: <ViewCreateObligations />,
+    // },
     {
       icon: <FileSearch2 size={17} />,
       label: "Obligaciones",

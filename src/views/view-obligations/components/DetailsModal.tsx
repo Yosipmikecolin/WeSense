@@ -6,14 +6,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Circle } from "lucide-react";
+import { ObligationType } from "./TableObligations";
 
 interface Props {
-  obligation?: {
-    contractualObligation: string;
-    fileName: string;
-    status: string;
-    observations: string;
-  };
+  obligation?: ObligationType | null;
   open: boolean;
   onClose: VoidFunction;
 }
@@ -35,14 +31,14 @@ const DetailsModal = ({ obligation, open, onClose }: Props) => {
                 Obligación contractual
               </span>
               <span className="font-medium">
-                {obligation?.contractualObligation}
+                {obligation?.contractual_obligation}
               </span>
             </div>
             <div className="flex justify-between items-center pb-4 border-b">
               <span className="text-sm text-gray-500">Archivo adjunto</span>
-              <span className="font-mono">{obligation?.fileName}</span>
+              <span className="font-mono">{obligation?.file_name}</span>
             </div>
-            <div className="flex justify-between items-center pb-4 border-b">
+            {/* <div className="flex justify-between items-center pb-4 border-b">
               <span className="text-sm text-gray-500">Estado</span>
               <span
                 className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
@@ -71,7 +67,7 @@ const DetailsModal = ({ obligation, open, onClose }: Props) => {
                   </div>
                 )}
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
       </DialogContent>

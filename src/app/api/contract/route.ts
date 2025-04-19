@@ -19,12 +19,21 @@ export async function PUT(req: Request) {
   await connectDB();
   const body = await req.json();
   const data = {
-    date: body.date,
-    note: body.note,
-    type: body.type,
-    user: body.user,
+    contractual_obligation: body.contractual_obligation,
+    notes: body.notes,
+    file_url: body.file_url,
+    file_name: body.file_name,
+    relation: body.relation,
   };
 
   const updatedAwardee = await Contract.updateOne({ _id: body._id }, data);
   return NextResponse.json(updatedAwardee, { status: 201 });
+}
+
+export async function DELETE(req: Request) {
+  await connectDB();
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id") || "";
+  const deletedAwardee = await Contract.deleteOne({ _id: id });
+  return NextResponse.json(deletedAwardee, { status: 201 });
 }

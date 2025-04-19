@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table as TableUI,
   TableBody,
@@ -19,6 +19,7 @@ import {
   FileSymlink,
   FileUp,
   Pencil,
+  PlusCircle,
   Trash,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -35,6 +36,7 @@ import DetailsModal from "./DetailsModal";
 import ObservationModal from "./ObservationModal";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import CreateObligationModal from "./CreateObligation";
 
 export interface ObligationType {
   _id: string;
@@ -49,7 +51,8 @@ const TableObligations = () => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [obligation, setObligation] = useState<ObligationType>();
+  const [isModalCreate, setIsModalCreate] = useState(false);
+  const [obligation, setObligation] = useState<ObligationType | null>(null);
   const filters = [
     { id: 1, name: "Obligación" },
     { id: 2, name: "Nombre" },
@@ -72,6 +75,25 @@ const TableObligations = () => {
 
   const { data, isLoading, refetch } = useQueryAllObligations();
 
+  const onDelete = async (obligation: ObligationType) => {
+    const response = await axios.delete(`/api/contract`, {
+      params: {
+        id: obligation._id,
+      },
+    });
+    refetch();
+  };
+
+  const onUpdate = (obligation: ObligationType) => {
+    setIsModalCreate(true);
+    setObligation(obligation);
+  };
+
+  const onCloseCreateModal = () => {
+    setIsModalCreate(false);
+    setObligation(null);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -93,6 +115,12 @@ const TableObligations = () => {
         </div>
       </div>
       <Card className="w-full shadow-lg py-2">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <Button onClick={() => setIsModalCreate(true)}>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Crear Obligación
+          </Button>
+        </CardHeader>
         <CardContent className="w-full px-3">
           <TableUI>
             <TableHeader>
@@ -195,7 +223,9 @@ const TableObligations = () => {
                               <span>Detalles</span>
                             </div>
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => onUpdate(obligation)}
+                          >
                             <div className="flex items-center gap-2 cursor-pointer">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                                 <Pencil />
@@ -203,7 +233,9 @@ const TableObligations = () => {
                               <span>Editar</span>
                             </div>
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => onDelete(obligation)}
+                          >
                             <div className="flex items-center gap-2 cursor-pointer">
                               <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
                                 <Trash />
@@ -260,7 +292,7 @@ const TableObligations = () => {
         </CardContent>
       </Card>
       <Pagination />
-      {/* <DetailsModal
+      <DetailsModal
         open={isModalOpen}
         obligation={obligation}
         onClose={() => setIsModalOpen(false)}
@@ -269,7 +301,13 @@ const TableObligations = () => {
         open={isModalOpen2}
         obligation={obligation}
         onClose={() => setIsModalOpen2(false)}
-      /> */}
+      />
+      <CreateObligationModal
+        open={isModalCreate}
+        obligation={obligation}
+        onClose={onCloseCreateModal}
+        refetch={refetch}
+      />
     </div>
   );
 };
