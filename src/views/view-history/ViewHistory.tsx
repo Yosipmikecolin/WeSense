@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -72,6 +71,8 @@ const ViewHistory = () => {
 
   const [modal, setModal] = useState(false);
 
+  const refTable = useRef<DataTable<any> | null>(null);
+
   const [typeModal, setTypeModal] = useState("0");
 
   const [products, setProducts] = useState<ProcessType[]>([]);
@@ -127,7 +128,12 @@ const ViewHistory = () => {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <div className="flex flex-1"></div>
+        <div className="flex flex-1">
+          <Button onClick={downloadCSV} type="button" variant={"primary"}>
+            <i className="pi pi-file-excel"></i>
+            Descargar CSV
+          </Button>
+        </div>
         <div>
           <Input
             autoFocus
@@ -256,6 +262,10 @@ const ViewHistory = () => {
     return options.rowIndex + 1;
   };
 
+  const downloadCSV = () => {
+    refTable.current?.exportCSV();
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
@@ -271,6 +281,7 @@ const ViewHistory = () => {
       <Card className="mt-6">
         <CardContent>
           <DataTable
+            ref={refTable}
             className="mt-6"
             dataKey="_id"
             value={data}
