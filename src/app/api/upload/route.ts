@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     const fileName = `${uuidv4()}-${file.name}`;
 
     const uploadParams = {
-      Bucket: "wesense-maqueta",
+      Bucket: String(process.env.AWS_S3_BUCKET_NAME),
       Key: fileName,
       Body: buffer,
       ContentType: file.type,
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     };
 
     await s3.send(new PutObjectCommand(uploadParams));
-    const imageUrl = `https://${"wesense-maqueta"}.s3.${"us-east-2"}.amazonaws.com/${fileName}`;
+    const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
     return NextResponse.json({ url: imageUrl }, { status: 201 });
   } catch (error) {
