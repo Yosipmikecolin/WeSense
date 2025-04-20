@@ -89,6 +89,37 @@ const EditRequestModal = ({
   const handleSubmit = async () => {
     setLoading(true);
     if (formData) {
+      const create_wearer = {
+        group_id: "2108",
+        first_name: formData.carrier.personalData.fullName,
+        surname: formData.carrier.personalData.paternalSurname,
+        ref: "555",
+        email: formData.carrier.cause.penatype,
+        // notes: "",
+        start_tagging_time: "2025-04-13 00:15:00",
+        end_tagging_time: "2025-04-15 00:45:00",
+        device_profile_id: "179",
+        // device_profile_sb_id: "",
+        device_profile_name: "1. Live Tracking",
+        timezone_id: "74",
+        wearer_type_id: "21",
+        address_name: formData.carrier.personalData.nationality,
+        line_1: formData.carrier.personalData.maritalStatus,
+        line_2: formData.carrier.personalData.dateBirth,
+        line_3: formData.carrier.personalData.gender,
+        city: "Santiago",
+        county: formData.carrier.personalData.nationality,
+        postcode: "111221",
+        address_type_id: "2",
+        telephone: formData.carrier.personalData.phone,
+        interpretor_required: "0",
+        // size_id: "",
+        responsible_officer_id: "2452",
+        country_id: "185",
+        // risk_level_id: "",
+        lat: "4.650221",
+        lon: "-74.070586",
+      };
       try {
         await updatedRequest(formData);
         toast.success("Solicitud creada exitosamente");
@@ -96,7 +127,7 @@ const EditRequestModal = ({
         setLoading(false);
         setCurrentStep(0);
         onClose();
-        //localStorage.setItem("carrier-buddie", JSON.stringify(formData));
+        localStorage.setItem("carrier-buddie", JSON.stringify(create_wearer));
       } catch (error) {
         toast.error("Error al crear la solicitud");
       } finally {
@@ -179,7 +210,7 @@ const EditRequestModal = ({
                   handleNext();
                 }
               }}
-              disabled={loading || !completeForm}
+              disabled={loading}
             >
               {currentStep === steps.length - 1 ? (
                 loading ? (
