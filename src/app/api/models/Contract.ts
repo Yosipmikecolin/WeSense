@@ -7,6 +7,7 @@ const ContractSchema = new mongoose.Schema(
     file_url: String,
     notes: String,
     relation: String,
+    status: String,
   },
   { timestamps: true }
 );

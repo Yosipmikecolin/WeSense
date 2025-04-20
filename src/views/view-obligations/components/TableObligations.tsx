@@ -45,6 +45,7 @@ export interface ObligationType {
   file_url: string;
   file_name: string;
   relation: string;
+  status: string;
 }
 
 const TableObligations = () => {
@@ -135,10 +136,13 @@ const TableObligations = () => {
                   NOMBRE DEL ARCHIVO
                 </TableHead>
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  ARCHIVO
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
                   RELACIÓN
                 </TableHead>
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
-                  ARCHIVO
+                  ESTADO
                 </TableHead>
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
                   OBERVACIÓN
@@ -155,24 +159,30 @@ const TableObligations = () => {
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{obligation.contractual_obligation}</TableCell>
-                    <TableCell>{obligation.file_name}</TableCell>
+                    <TableCell>
+                      {obligation.file_name ? obligation.file_name : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {obligation.file_url ? (
+                        <a
+                          className=" underline text-green-500 "
+                          href={obligation.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Descargar
+                        </a>
+                      ) : (
+                        "N/A"
+                      )}
+                    </TableCell>
                     <TableCell>
                       {!obligation.relation || obligation.relation === ""
                         ? "Sin relación"
                         : `Obligación #${obligation.relation}`}
                     </TableCell>
-                    <TableCell>
-                      <a
-                        className=" underline text-green-500 "
-                        href={obligation.file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Descargar
-                      </a>
-                    </TableCell>
 
-                    {/* <TableCell>
+                    <TableCell>
                       <span
                         className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
                           obligation.status === "Activo"
@@ -200,7 +210,7 @@ const TableObligations = () => {
                           </div>
                         )}
                       </span>
-                    </TableCell> */}
+                    </TableCell>
                     <TableCell>{obligation.notes}</TableCell>
                     <TableCell className="mr-10 flex justify-end">
                       <DropdownMenu>

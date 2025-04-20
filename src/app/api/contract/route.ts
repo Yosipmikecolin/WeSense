@@ -24,6 +24,7 @@ export async function PUT(req: Request) {
     file_url: body.file_url,
     file_name: body.file_name,
     relation: body.relation,
+    status: body.status,
   };
 
   const updatedAwardee = await Contract.updateOne({ _id: body._id }, data);

@@ -19,6 +19,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UploadButtonWithModal } from "@/components/upload-file/upload-button-with-modal";
 import { ObligationType } from "./TableObligations";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props {
   open: boolean;
@@ -43,6 +50,7 @@ const CreateObligationModal = ({
     file_name: "",
     notes: "",
     relation: "",
+    status: "",
   });
 
   useEffect(() => {
@@ -104,6 +112,7 @@ const CreateObligationModal = ({
       file_name: "",
       notes: "",
       relation: "",
+      status: "",
     });
     setIsUpdate(false);
     refetch();
@@ -117,6 +126,7 @@ const CreateObligationModal = ({
       file_url: data ? data.url : "",
       file_name: file ? file.name : "",
       relation: formData.relation,
+      status: formData.status,
     };
 
     console.log("FORM 1: ", formData);
@@ -132,6 +142,7 @@ const CreateObligationModal = ({
       file_url: data ? data.url : formData.file_url,
       file_name: file ? file.name : formData.file_name,
       relation: formData.relation,
+      status: formData.status,
     };
     console.log("FORM 2: ", data_form);
     const response = await axios.put(`/api/contract`, data_form);
@@ -172,6 +183,25 @@ const CreateObligationModal = ({
           <div className="space-y-2">
             <Label htmlFor="document">Adjuntar archivo</Label>
             <Input ref={fileRef} type="file" />
+          </div>
+
+          <div>
+            <Label htmlFor="type_support">Estado</Label>
+            <Select
+              onValueChange={(value) =>
+                setFormData((prev) => ({ ...prev, status: value }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Ej: Activo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Activo">Activo</SelectItem>
+                <SelectItem value="Pendiente">Pendiente</SelectItem>
+                <SelectItem value="En progreso">En progreso</SelectItem>
+                <SelectItem value="Completado">Completado</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* <div className="grid gap-2">

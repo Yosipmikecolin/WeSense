@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Circle } from "lucide-react";
 import { ObligationType } from "./TableObligations";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   obligation?: ObligationType | null;
@@ -73,6 +74,11 @@ const ObservationModal = ({ obligation, open, onClose }: Props) => {
             <div className="space-y-2">
               <Label htmlFor="status">Observaciones</Label>
               <Textarea />
+            </div>
+            <div className="flex justify-end">
+              <Button onClick={onClose} variant={"primary"} className=" mt-2" type="submit">
+                Guardar cambios
+              </Button>
             </div>
           </div>
         </div>
