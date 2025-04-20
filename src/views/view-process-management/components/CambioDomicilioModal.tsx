@@ -36,6 +36,27 @@ const CambioDomicilioModal = ({ onClose, process, open, type }: Props) => {
     if (process) {
       try {
         setLoading(true);
+        const response = await axios.put(`/api/awardee/process`, {
+          _id: process._id,
+          method: "update.resolution",
+          resolution: {
+            region,
+            comuna,
+            domicilio,
+            radio,
+          },
+        });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            region,
+            comuna,
+            domicilio,
+            radio,
+          },
+        });
         // refetch();
         setRegion("");
         setRadio("");

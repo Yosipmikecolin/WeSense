@@ -28,19 +28,29 @@ const ProrrogaModal = ({ onClose, process, open, type }: Props) => {
   const [loading, setLoading] = useState(false);
   const [nota, setNota] = useState("");
   const [date, setDate] = useState("");
-  const [firstVisit, setFirstVisit] = useState("");
-  const [secondVisit, setSecondVisit] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (process) {
       try {
         setLoading(true);
+        const response = await axios.put(`/api/awardee/process`, {
+          _id: process._id,
+          method: "update.resolution",
+          resolution: {
+            new_prorroga: date,
+          },
+        });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            new_prorroga: date,
+          },
+        });
         // refetch();
-        setNota("");
         setDate("");
-        setFirstVisit("");
-        setSecondVisit("");
         onClose();
       } catch (error) {
         toast.error("Ocurrio un error");

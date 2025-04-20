@@ -29,18 +29,37 @@ const InstallationModal = ({ onClose, process, open, type }: Props) => {
   const [nota, setNota] = useState("");
   const [date, setDate] = useState("");
   const [firstVisit, setFirstVisit] = useState("");
-  const [secondVisit, setSecondVisit] = useState("");
+  // const [secondVisit, setSecondVisit] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (process) {
       try {
         setLoading(true);
+        const response = await axios.put(`/api/awardee/process`, {
+          _id: process._id,
+          method: "update.resolution",
+          resolution: {
+            presentation_date: date,
+            first_visit: firstVisit,
+            // second_visit: secondVisit,
+            note: nota,
+          },
+        });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            presentation_date: date,
+            first_visit: firstVisit,
+            note: nota,
+          },
+        });
         // refetch();
         setNota("");
         setDate("");
         setFirstVisit("");
-        setSecondVisit("");
         onClose();
       } catch (error) {
         toast.error("Ocurrio un error");
@@ -77,33 +96,22 @@ const InstallationModal = ({ onClose, process, open, type }: Props) => {
                     onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
+
                 <div>
                   <Label htmlFor="presentation_date">Primera visita?</Label>
-                  <div className="flex items-center">
-                    <Input
-                      className="w-4"
-                      id="presentation_date"
-                      name="presentation_date"
-                      type="checkbox"
-                      value={firstVisit}
-                      onChange={(e) => setFirstVisit(e.target.value)}
-                    />
-                    <span className="ml-2">Si</span>
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="presentation_date">Segunda visita?</Label>
-                  <div className="flex items-center">
-                    <Input
-                      className="w-4"
-                      id="presentation_date"
-                      name="presentation_date"
-                      type="checkbox"
-                      value={secondVisit}
-                      onChange={(e) => setSecondVisit(e.target.value)}
-                    />
-                    <span className="ml-2">Si</span>
-                  </div>
+                  <RadioGroup
+                    defaultValue="r1"
+                    onValueChange={(e) => setFirstVisit(e)}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Si" id="r1" />
+                      <Label htmlFor="r1">Si</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="No" id="r2" />
+                      <Label htmlFor="r2">No</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
               </>
             )}
@@ -129,7 +137,7 @@ const InstallationModal = ({ onClose, process, open, type }: Props) => {
               <Button
                 type="submit"
                 variant={"primary"}
-                disabled={nota === "" || date === ""}
+                disabled={nota === "" || date === "" || firstVisit === ""}
               >
                 Aceptar
               </Button>

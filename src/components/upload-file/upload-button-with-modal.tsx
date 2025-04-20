@@ -32,6 +32,7 @@ export function UploadButtonWithModal() {
   return (
     <div className="w-full space-y-4 mt-4">
       <Button
+        type="button"
         size={"lg"}
         variant={"outline"}
         onClick={() => setIsModalOpen(true)}
@@ -62,6 +63,7 @@ export function UploadButtonWithModal() {
                 </div>
                 <div className="flex gap-1">
                   <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-blue-600 hover:text-blue-700"
@@ -70,6 +72,7 @@ export function UploadButtonWithModal() {
                     <Download className="h-4 w-4" />
                   </Button>
                   <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
                     onClick={() => handleRemoveFile(index)}

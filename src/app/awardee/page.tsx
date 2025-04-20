@@ -19,25 +19,16 @@ const Awardee = () => {
       label: "Solicitudes",
       content: <TableAwardee />,
     },
-    {
-      icon: <RefreshCcwDot size={17} />,
-      label: "Gestión de resoluciones",
-      content: <ViewProcessManagement />,
-    },
-    {
-      icon: <Cog size={17} />,
-      label: "Gestión de soporte",
-      content: <ViewSupportManagement />,
-    },
+
     {
       icon: <CalendarPlus size={17} />,
       label: "Creación de eventos",
       content: <ViewCreationEvents />,
     },
     {
-      icon: <FileStack size={17} />,
-      label: "Histórico de resoluciones",
-      content: <ViewHistory />,
+      icon: <BookText size={17} />,
+      label: "Reportes",
+      content: <ViewReport />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;
