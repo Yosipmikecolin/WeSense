@@ -71,6 +71,7 @@ export const ChangeAddressModal = ({
         characteristics: "",
       },
       exclusionArea: {
+        complianceSchedule: "",
         street: "",
         number: "",
         additionalInformation: "",
