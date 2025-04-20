@@ -233,7 +233,6 @@ const UpdatedCarrierModal = ({ carrier, open, onClose, refetch }: Props) => {
           categories: "none",
           rule_template_ids: "none",
         };
-        console.log("DATA: ", update_wearer);
         const response_update = await axios.post("/api/buddie", {
           method: "setup.wearer.update",
           token,

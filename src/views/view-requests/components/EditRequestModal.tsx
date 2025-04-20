@@ -96,7 +96,7 @@ const EditRequestModal = ({
         setLoading(false);
         setCurrentStep(0);
         onClose();
-        localStorage.setItem("carrier-buddie", JSON.stringify(formData));
+        //localStorage.setItem("carrier-buddie", JSON.stringify(formData));
       } catch (error) {
         toast.error("Error al crear la solicitud");
       } finally {
