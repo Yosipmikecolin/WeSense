@@ -36,6 +36,8 @@ const ProcessModal = ({ onClose, process, open, type, refetch }: Props) => {
         const response = await axios.put(`/api/awardee/process`, {
           _id: process._id,
           status: type === "1" ? "Aceptado" : "Devuelto",
+          aproved: type === "1" ? nota : null,
+          denied: type === "0" ? nota : null,
           method: "update.process",
         });
         console.log("RESPONSE: ", response.data);

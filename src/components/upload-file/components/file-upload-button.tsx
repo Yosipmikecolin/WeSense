@@ -127,6 +127,7 @@ export function FileUploadButton({ onUploadComplete }: FileUploadButtonProps) {
           imágenes)
         </p>
         <Button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             fileInputRef.current?.click();
@@ -168,6 +169,7 @@ export function FileUploadButton({ onUploadComplete }: FileUploadButtonProps) {
                   </div>
                 </div>
                 <Button
+                  type="button"
                   variant="ghost"
                   size="icon"
                   onClick={() => removeFile(index)}
@@ -192,6 +194,7 @@ export function FileUploadButton({ onUploadComplete }: FileUploadButtonProps) {
       )}
 
       <Button
+        type="button"
         onClick={handleUpload}
         className="w-full bg-blue-600 hover:bg-blue-700 text-white"
         disabled={!files.length || uploading}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { PlusCircle, Eye } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PlusCircle, Eye, Ellipsis, Send, Edit, Delete } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -29,17 +29,38 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DropdownFilter } from "@/components";
+import axios from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
 
 interface DeviceStock {
-  id: string;
+  _id: string;
   region: string;
-  aggressorDevice: number;
-  obcCharger: number;
-  obdAdapter: number;
+  smart_tack: number;
+  charger_obc: number;
+  adapter_obd: number;
   beacon: number;
-  victimDevice: number;
-  victimCharger: number;
-  lastUpdated: Date;
+  victim_device: number;
+  victim_charger: number;
+  notes: string;
+}
+
+interface Stock {
+  _id?: string;
+  region: string;
+  smart_tack: number;
+  charger_obc: number;
+  adapter_obd: number;
+  beacon: number;
+  victim_device: number;
+  victim_charger: number;
   notes: string;
 }
 
@@ -47,111 +68,35 @@ const filters = [{ id: 1, name: "Región" }];
 
 export default function ViewDeviceStock() {
   const [idFilter, setIdFilter] = useState(1);
-  const [stocks, setStocks] = useState<DeviceStock[]>(() => {
-    // Generate sample stock records for different regions
-    return [
-      {
-        id: "1",
-        region: "Norte",
-        aggressorDevice: 15,
-        obcCharger: 12,
-        obdAdapter: 10,
-        beacon: 8,
-        victimDevice: 20,
-        victimCharger: 18,
-        lastUpdated: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        notes: "Stock actualizado después del último envío a Barranquilla.",
-      },
-      {
-        id: "2",
-        region: "Sur",
-        aggressorDevice: 8,
-        obcCharger: 7,
-        obdAdapter: 5,
-        beacon: 4,
-        victimDevice: 10,
-        victimCharger: 9,
-        lastUpdated: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-        notes: "Se requiere reposición de adaptadores OBD.",
-      },
-      {
-        id: "3",
-        region: "Este",
-        aggressorDevice: 12,
-        obcCharger: 10,
-        obdAdapter: 8,
-        beacon: 6,
-        victimDevice: 15,
-        victimCharger: 14,
-        lastUpdated: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        notes: "Inventario completo después de la última auditoría.",
-      },
-      {
-        id: "4",
-        region: "Oeste",
-        aggressorDevice: 6,
-        obcCharger: 4,
-        obdAdapter: 3,
-        beacon: 2,
-        victimDevice: 8,
-        victimCharger: 7,
-        lastUpdated: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-        notes:
-          "Stock bajo, se ha solicitado reposición de todos los dispositivos.",
-      },
-      {
-        id: "5",
-        region: "Central",
-        aggressorDevice: 25,
-        obcCharger: 22,
-        obdAdapter: 20,
-        beacon: 18,
-        victimDevice: 30,
-        victimCharger: 28,
-        lastUpdated: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-        notes: "Stock principal con disponibilidad para todas las regiones.",
-      },
-    ];
+  const [isUpdateStock, setIsUpdateStock] = useState(false);
+  const [stocks, setStocks] = useState<DeviceStock[]>([]);
+  // const [currentStock, setCurrentStock] = useState<DeviceStock>();
+  const [formData, setFormData] = useState<Stock>({
+    _id: "",
+    region: "",
+    smart_tack: 0,
+    charger_obc: 0,
+    adapter_obd: 0,
+    beacon: 0,
+    victim_device: 0,
+    victim_charger: 0,
+    notes: "",
   });
 
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [detailsStock, setDetailsStock] = useState<DeviceStock | null>(null);
 
-  const [newStock, setNewStock] = useState<Partial<DeviceStock>>({
-    lastUpdated: new Date(),
-  });
+  // const [newStock, setNewStock] = useState<Partial<DeviceStock>>({
+  //   lastUpdated: new Date(),
+  // });
   const [openNewDialog, setOpenNewDialog] = useState(false);
 
   const handleCreateStock = () => {
-    if (
-      !newStock.region ||
-      newStock.aggressorDevice === undefined ||
-      newStock.obcCharger === undefined ||
-      newStock.obdAdapter === undefined ||
-      newStock.beacon === undefined ||
-      newStock.victimDevice === undefined ||
-      newStock.victimCharger === undefined
-    ) {
-      return;
+    if (isUpdateStock) {
+      update();
+    } else {
+      save();
     }
-
-    const stock: DeviceStock = {
-      id: Date.now().toString(),
-      region: newStock.region,
-      aggressorDevice: Number(newStock.aggressorDevice),
-      obcCharger: Number(newStock.obcCharger),
-      obdAdapter: Number(newStock.obdAdapter),
-      beacon: Number(newStock.beacon),
-      victimDevice: Number(newStock.victimDevice),
-      victimCharger: Number(newStock.victimCharger),
-      lastUpdated: newStock.lastUpdated || new Date(),
-      notes: newStock.notes || "",
-    };
-
-    setStocks([...stocks, stock]);
-    setNewStock({
-      lastUpdated: new Date(),
-    });
     setOpenNewDialog(false);
   };
 
@@ -165,6 +110,66 @@ export default function ViewDeviceStock() {
     if (quantity <= 3) return "destructive";
     if (quantity <= 7) return "warning";
     return "default";
+  };
+
+  const getAllStocks = async () => {
+    const response = await axios.get<DeviceStock[]>(`/api/contract/devices`);
+    setStocks(response.data);
+    return response.data;
+  };
+
+  const useQueryAll = () => {
+    return useQuery({
+      queryKey: ["all_stocks"],
+      queryFn: () => getAllStocks(),
+      // refetchInterval: 5000
+    });
+  };
+
+  const { data, isLoading, refetch } = useQueryAll();
+
+  const save = async () => {
+    const response = await axios.post<DeviceStock[]>(
+      `/api/contract/devices`,
+      formData
+    );
+    refetch();
+    console.log("SAVE: ", response.data);
+    return response.data;
+  };
+
+  const update = async () => {
+    const response = await axios.put<DeviceStock[]>(
+      `/api/contract/devices`,
+      formData
+    );
+    refetch();
+    return response.data;
+  };
+
+  useEffect(() => {
+    getAllStocks();
+  }, []);
+
+  const onUpdateStock = (stock: DeviceStock) => {
+    setIsUpdateStock(true);
+    setOpenNewDialog(true);
+    setFormData(stock);
+    // setCurrentStock(stock);
+  };
+
+  const onCreateStock = () => {
+    setIsUpdateStock(false);
+    setOpenNewDialog(true);
+  };
+
+  const onDeleteStock = async (stock: DeviceStock) => {
+    const response = await axios.delete(`/api/contract/devices`, {
+      params: {
+        id: stock._id,
+      },
+    });
+    refetch();
   };
 
   return (
@@ -191,15 +196,17 @@ export default function ViewDeviceStock() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <Dialog open={openNewDialog} onOpenChange={setOpenNewDialog}>
-            <DialogTrigger asChild>
-              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Agregar Stock
-              </Button>
-            </DialogTrigger>
+            {/* <DialogTrigger asChild> */}
+            <Button onClick={onCreateStock}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Crear Stock
+            </Button>
+            {/* </DialogTrigger> */}
             <DialogContent className="sm:max-w-[500px]">
               <DialogHeader>
-                <DialogTitle>Nuevo Registro de Stock</DialogTitle>
+                <DialogTitle>
+                  {isUpdateStock ? "Actualizar" : "Nuevo"} Registro de Stock
+                </DialogTitle>
                 <DialogDescription>
                   Complete los detalles para registrar el stock de dispositivos
                   para una región.
@@ -210,9 +217,12 @@ export default function ViewDeviceStock() {
                   <Label htmlFor="region">Región</Label>
                   <Input
                     id="region"
-                    value={newStock.region || ""}
+                    value={formData.region || ""}
                     onChange={(e) =>
-                      setNewStock({ ...newStock, region: e.target.value })
+                      setFormData((prev) => ({
+                        ...prev,
+                        region: e.target.value,
+                      }))
                     }
                   />
                 </div>
@@ -223,12 +233,12 @@ export default function ViewDeviceStock() {
                       id="aggressorDevice"
                       type="number"
                       min="0"
-                      value={newStock.aggressorDevice || ""}
+                      value={formData.smart_tack || ""}
                       onChange={(e) =>
-                        setNewStock({
-                          ...newStock,
-                          aggressorDevice: +e.target.value,
-                        })
+                        setFormData((prev) => ({
+                          ...prev,
+                          smart_tack: +e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -238,12 +248,12 @@ export default function ViewDeviceStock() {
                       id="obcCharger"
                       type="number"
                       min="0"
-                      value={newStock.obcCharger || ""}
+                      value={formData.charger_obc || ""}
                       onChange={(e) =>
-                        setNewStock({
-                          ...newStock,
-                          obcCharger: +e.target.value,
-                        })
+                        setFormData((prev) => ({
+                          ...prev,
+                          charger_obc: +e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -255,12 +265,12 @@ export default function ViewDeviceStock() {
                       id="obdAdapter"
                       type="number"
                       min="0"
-                      value={newStock.obdAdapter || ""}
+                      value={formData.adapter_obd || ""}
                       onChange={(e) =>
-                        setNewStock({
-                          ...newStock,
-                          obdAdapter: +e.target.value,
-                        })
+                        setFormData((prev) => ({
+                          ...prev,
+                          adapter_obd: +e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -270,9 +280,12 @@ export default function ViewDeviceStock() {
                       id="beacon"
                       type="number"
                       min="0"
-                      value={newStock.beacon || ""}
+                      value={formData.beacon || ""}
                       onChange={(e) =>
-                        setNewStock({ ...newStock, beacon: +e.target.value })
+                        setFormData((prev) => ({
+                          ...prev,
+                          beacon: +e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -284,12 +297,12 @@ export default function ViewDeviceStock() {
                       id="victimDevice"
                       type="number"
                       min="0"
-                      value={newStock.victimDevice || ""}
+                      value={formData.victim_device || ""}
                       onChange={(e) =>
-                        setNewStock({
-                          ...newStock,
-                          victimDevice: +e.target.value,
-                        })
+                        setFormData((prev) => ({
+                          ...prev,
+                          victim_device: +e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -299,12 +312,12 @@ export default function ViewDeviceStock() {
                       id="victimCharger"
                       type="number"
                       min="0"
-                      value={newStock.victimCharger || ""}
+                      value={formData.victim_charger || ""}
                       onChange={(e) =>
-                        setNewStock({
-                          ...newStock,
-                          victimCharger: +e.target.value,
-                        })
+                        setFormData((prev) => ({
+                          ...prev,
+                          victim_charger: +e.target.value,
+                        }))
                       }
                     />
                   </div>
@@ -313,9 +326,12 @@ export default function ViewDeviceStock() {
                   <Label htmlFor="notes">Notas</Label>
                   <Textarea
                     id="notes"
-                    value={newStock.notes || ""}
+                    value={formData.notes || ""}
                     onChange={(e) =>
-                      setNewStock({ ...newStock, notes: e.target.value })
+                      setFormData((prev) => ({
+                        ...prev,
+                        notes: e.target.value,
+                      }))
                     }
                     placeholder="Observaciones sobre el stock"
                   />
@@ -328,7 +344,9 @@ export default function ViewDeviceStock() {
                 >
                   Cancelar
                 </Button>
-                <Button onClick={handleCreateStock}>Guardar</Button>
+                <Button onClick={handleCreateStock}>
+                  {isUpdateStock ? "Actualizar" : "Guardar"}
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -339,46 +357,35 @@ export default function ViewDeviceStock() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Región</TableHead>
-                  <TableHead>Dispositivo Agresor</TableHead>
+                  <TableHead>Smart Tag</TableHead>
                   <TableHead>Cargador OBC</TableHead>
                   <TableHead>Adaptador OBD</TableHead>
                   <TableHead>BEACON</TableHead>
                   <TableHead>Dispositivo Víctima</TableHead>
                   <TableHead>Cargador Víctima</TableHead>
-                  <TableHead>Detalles</TableHead>
+                  <TableHead>Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stocks.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={8}
-                      className="text-center text-muted-foreground"
-                    >
-                      No hay registros de stock disponibles
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  stocks.map((stock) => (
-                    <TableRow key={stock.id}>
+                {data &&
+                  data.map((stock) => (
+                    <TableRow key={stock._id}>
                       <TableCell className="font-medium">
                         {stock.region}
                       </TableCell>
                       <TableCell>
-                        <Badge
-                          variant={getStockStatusColor(stock.aggressorDevice)}
-                        >
-                          {stock.aggressorDevice}
+                        <Badge variant={getStockStatusColor(stock.smart_tack)}>
+                          {stock.smart_tack}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={getStockStatusColor(stock.obcCharger)}>
-                          {stock.obcCharger}
+                        <Badge variant={getStockStatusColor(stock.charger_obc)}>
+                          {stock.charger_obc}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={getStockStatusColor(stock.obdAdapter)}>
-                          {stock.obdAdapter}
+                        <Badge variant={getStockStatusColor(stock.adapter_obd)}>
+                          {stock.adapter_obd}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -388,31 +395,75 @@ export default function ViewDeviceStock() {
                       </TableCell>
                       <TableCell>
                         <Badge
-                          variant={getStockStatusColor(stock.victimDevice)}
+                          variant={getStockStatusColor(stock.victim_device)}
                         >
-                          {stock.victimDevice}
+                          {stock.victim_device}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <Badge
-                          variant={getStockStatusColor(stock.victimCharger)}
+                          variant={getStockStatusColor(stock.victim_charger)}
                         >
-                          {stock.victimCharger}
+                          {stock.victim_charger}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleOpenDetailsDialog(stock)}
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          Ver
-                        </Button>
+                        {/* <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleOpenDetailsDialog(stock)}
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        Ver
+                      </Button> */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                            <Ellipsis />
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              onClick={() => handleOpenDetailsDialog(stock)}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Eye />
+                                </Button>
+                                <span>Ver detalles</span>
+                              </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                onUpdateStock(stock);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Edit />
+                                </Button>
+                                <span>Actualizar</span>
+                              </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                onDeleteStock(stock);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Delete />
+                                </Button>
+                                <span>Eliminar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
+                  ))}
+                {/* )} */}
               </TableBody>
             </Table>
           </div>
@@ -454,15 +505,15 @@ function DetailsDialog({ open, onOpenChange, stock }: DetailsDialogProps) {
                 <p className="text-sm text-muted-foreground">
                   Dispositivo Agresor:
                 </p>
-                <p className="font-medium text-lg">{stock.aggressorDevice}</p>
+                <p className="font-medium text-lg">{stock.smart_tack}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Cargador OBC:</p>
-                <p className="font-medium text-lg">{stock.obcCharger}</p>
+                <p className="font-medium text-lg">{stock.charger_obc}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Adaptador OBD:</p>
-                <p className="font-medium text-lg">{stock.obdAdapter}</p>
+                <p className="font-medium text-lg">{stock.adapter_obd}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">BEACON:</p>
@@ -472,23 +523,23 @@ function DetailsDialog({ open, onOpenChange, stock }: DetailsDialogProps) {
                 <p className="text-sm text-muted-foreground">
                   Dispositivo Víctima:
                 </p>
-                <p className="font-medium text-lg">{stock.victimDevice}</p>
+                <p className="font-medium text-lg">{stock.victim_device}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">
                   Cargador Víctima:
                 </p>
-                <p className="font-medium text-lg">{stock.victimCharger}</p>
+                <p className="font-medium text-lg">{stock.victim_charger}</p>
               </div>
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <h3 className="font-medium">Última actualización:</h3>
             <p>
               {format(stock.lastUpdated, "dd/MM/yyyy HH:mm", { locale: es })}
             </p>
-          </div>
+          </div> */}
 
           <div>
             <h3 className="font-medium">Notas:</h3>
@@ -498,17 +549,17 @@ function DetailsDialog({ open, onOpenChange, stock }: DetailsDialogProps) {
           <div className="bg-muted p-4 rounded-md">
             <h3 className="font-medium mb-2">Estado del inventario:</h3>
             <div className="space-y-2">
-              {stock.aggressorDevice <= 3 && (
+              {stock.smart_tack <= 3 && (
                 <p className="text-destructive">
                   ⚠️ Nivel crítico de Dispositivos Agresores
                 </p>
               )}
-              {stock.obcCharger <= 3 && (
+              {stock.charger_obc <= 3 && (
                 <p className="text-destructive">
                   ⚠️ Nivel crítico de Cargadores OBC
                 </p>
               )}
-              {stock.obdAdapter <= 3 && (
+              {stock.adapter_obd <= 3 && (
                 <p className="text-destructive">
                   ⚠️ Nivel crítico de Adaptadores OBD
                 </p>
@@ -516,22 +567,22 @@ function DetailsDialog({ open, onOpenChange, stock }: DetailsDialogProps) {
               {stock.beacon <= 3 && (
                 <p className="text-destructive">⚠️ Nivel crítico de BEACONs</p>
               )}
-              {stock.victimDevice <= 3 && (
+              {stock.victim_device <= 3 && (
                 <p className="text-destructive">
                   ⚠️ Nivel crítico de Dispositivos Víctima
                 </p>
               )}
-              {stock.victimCharger <= 3 && (
+              {stock.victim_charger <= 3 && (
                 <p className="text-destructive">
                   ⚠️ Nivel crítico de Cargadores Víctima
                 </p>
               )}
-              {stock.aggressorDevice > 3 &&
-                stock.obcCharger > 3 &&
-                stock.obdAdapter > 3 &&
+              {stock.smart_tack > 3 &&
+                stock.charger_obc > 3 &&
+                stock.adapter_obd > 3 &&
                 stock.beacon > 3 &&
-                stock.victimDevice > 3 &&
-                stock.victimCharger > 3 && (
+                stock.victim_device > 3 &&
+                stock.victim_charger > 3 && (
                   <p className="text-success">
                     ✅ Niveles de inventario adecuados
                   </p>

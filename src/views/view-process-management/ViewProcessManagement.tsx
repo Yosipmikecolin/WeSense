@@ -96,6 +96,7 @@ const ViewProcessManagement = () => {
     return useQuery({
       queryKey: ["all_process"],
       queryFn: () => getAllProcess(),
+      refetchInterval: 5000
     });
   };
 
@@ -191,7 +192,7 @@ const ViewProcessManagement = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">
-        Gestión de sentencias y resoluciones
+      Proceso de recepción de sentencia y resoluciones
       </h1>
 
       <Dialog open={isShowModal} onOpenChange={onChangeModal}>
@@ -223,13 +224,14 @@ const ViewProcessManagement = () => {
             ]}
           >
             <Column field="date" header="Fecha"></Column>
-            <Column field="type_law" sortable header="Tipo de ley"></Column>
-            <Column field="rit" sortable header="RIT"></Column>
-            <Column field="ruc" sortable header="RUC"></Column>
-            <Column field="run" sortable header="RUN"></Column>
+            <Column field="type_law" filter filterPlaceholder="Buscar por ley" sortable header="Tipo de ley"></Column>
+            <Column field="rit" filter filterPlaceholder="Buscar por RIT" sortable header="RIT"></Column>
+            <Column field="ruc" filter filterPlaceholder="Buscar por RUC" sortable header="RUC"></Column>
+            <Column field="run" filter filterPlaceholder="Buscar por RUN" sortable header="RUN"></Column>
             <Column field="date_limit" header="Fecha limite"></Column>
             <Column
               field="type_resolution"
+              filter filterPlaceholder="Buscar por resolución"
               sortable
               header="Tipo de resolución"
             ></Column>

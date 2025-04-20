@@ -8,13 +8,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Circle } from "lucide-react";
+import { ObligationType } from "./TableObligations";
+import { Button } from "@/components/ui/button";
 
 interface Props {
-  obligation?: {
-    contractualObligation: string;
-    fileName: string;
-    status: string;
-  };
+  obligation?: ObligationType | null;
   open: boolean;
   onClose: VoidFunction;
 }
@@ -36,12 +34,12 @@ const ObservationModal = ({ obligation, open, onClose }: Props) => {
                 Obligación contractual
               </span>
               <span className="font-medium">
-                {obligation?.contractualObligation}
+                {obligation?.contractual_obligation}
               </span>
             </div>
             <div className="flex justify-between items-center pb-4 border-b">
               <span className="text-sm text-gray-500">Archivo adjunto</span>
-              <span className="font-mono">{obligation?.fileName}</span>
+              <span className="font-mono">{obligation?.file_name}</span>
             </div>
             <div className="flex justify-between items-center pb-4 border-b">
               <span className="text-sm text-gray-500">Estado</span>
@@ -76,6 +74,16 @@ const ObservationModal = ({ obligation, open, onClose }: Props) => {
             <div className="space-y-2">
               <Label htmlFor="status">Observaciones</Label>
               <Textarea />
+            </div>
+            <div className="flex justify-end">
+              <Button
+                onClick={onClose}
+                variant={"primary"}
+                className=" mt-2"
+                type="submit"
+              >
+                Guardar cambios
+              </Button>
             </div>
           </div>
         </div>

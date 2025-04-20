@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table as TableUI,
   TableBody,
@@ -19,6 +19,7 @@ import {
   FileSymlink,
   FileUp,
   Pencil,
+  PlusCircle,
   Trash,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -33,22 +34,71 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DetailsModal from "./DetailsModal";
 import ObservationModal from "./ObservationModal";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import CreateObligationModal from "./CreateObligation";
 
-const TableObligations = () => {
+export interface ObligationType {
+  _id: string;
+  contractual_obligation: string;
+  notes: string;
+  file_url: string;
+  file_name: string;
+  relation: string;
+  status: string;
+}
+
+interface Props {
+  mode_supervise: boolean;
+}
+
+const TableObligations = ({ mode_supervise }: Props) => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [obligation, setObligation] = useState<{
-    contractualObligation: string;
-    fileName: string;
-    status: string;
-    observations: string;
-  }>();
+  const [isModalCreate, setIsModalCreate] = useState(false);
+  const [obligation, setObligation] = useState<ObligationType | null>(null);
   const filters = [
     { id: 1, name: "Obligación" },
     { id: 2, name: "Nombre" },
     { id: 3, name: "Estado" },
   ];
+
+  const getAllObligations = async () => {
+    const response = await axios.get<ObligationType[]>(`/api/contract`);
+    return response.data;
+    // setProducts(response.data);
+  };
+
+  const useQueryAllObligations = () => {
+    return useQuery({
+      queryKey: ["all_obligations"],
+      queryFn: () => getAllObligations(),
+      refetchInterval: 5000,
+    });
+  };
+
+  const { data, isLoading, refetch } = useQueryAllObligations();
+
+  const onDelete = async (obligation: ObligationType) => {
+    const response = await axios.delete(`/api/contract`, {
+      params: {
+        id: obligation._id,
+      },
+    });
+    refetch();
+  };
+
+  const onUpdate = (obligation: ObligationType) => {
+    setIsModalCreate(true);
+    setObligation(obligation);
+  };
+
+  const onCloseCreateModal = () => {
+    setIsModalCreate(false);
+    setObligation(null);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -70,15 +120,34 @@ const TableObligations = () => {
         </div>
       </div>
       <Card className="w-full shadow-lg py-2">
+        <CardHeader className="flex flex-row items-center justify-between">
+          {mode_supervise ? (
+            ""
+          ) : (
+            <Button onClick={() => setIsModalCreate(true)}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Crear Obligación
+            </Button>
+          )}
+        </CardHeader>
         <CardContent className="w-full px-3">
           <TableUI>
             <TableHeader>
               <TableRow>
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  ID
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
                   OBLIGACIÓN CONTRACTUAL
                 </TableHead>
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
                   NOMBRE DEL ARCHIVO
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  ARCHIVO
+                </TableHead>
+                <TableHead className="text-xs font-bold uppercase text-gray-600">
+                  RELACIÓN
                 </TableHead>
                 <TableHead className="text-xs font-bold uppercase text-gray-600">
                   ESTADO
@@ -93,122 +162,169 @@ const TableObligations = () => {
               </TableRow>
             </TableHeader>
             <TableBody className="mt-5">
-              {obligations.map((obligation, index) => (
-                <TableRow key={index}>
-                  <TableCell>{obligation.contractualObligation}</TableCell>
-                  <TableCell>{obligation.fileName}</TableCell>
-
-                  <TableCell>
-                    <span
-                      className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
-                        obligation.status === "Activo"
-                          ? "bg-green-400 text-white"
-                          : obligation.status === "Pendiente"
-                          ? "bg-yellow-400 text-black"
-                          : obligation.status === "En progreso"
-                          ? "bg-blue-400 text-white"
-                          : obligation.status === "Completado"
-                          ? "bg-purple-400 text-white"
-                          : "bg-gray-100 text-gray-800" // Estado por defecto
-                      }`}
-                    >
-                      {obligation.status === "Activo" ? (
-                        "● Activo"
-                      ) : obligation.status === "Pendiente" ? (
-                        "● Pendiente"
-                      ) : obligation.status === "En progreso" ? (
-                        "● En progreso"
-                      ) : obligation.status === "Completado" ? (
-                        "● Completado"
+              {data &&
+                data.map((obligation, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{obligation.contractual_obligation}</TableCell>
+                    <TableCell>
+                      {obligation.file_name ? obligation.file_name : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {obligation.file_url ? (
+                        <a
+                          className=" underline text-green-500 "
+                          href={obligation.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Descargar
+                        </a>
                       ) : (
-                        <div className="flex items-center gap-1">
-                          <Circle size={7} /> Desconocido
-                        </div>
+                        "N/A"
                       )}
-                    </span>
-                  </TableCell>
-                  <TableCell>{obligation.observations}</TableCell>
-                  <TableCell className="mr-10 flex justify-end">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
-                        <Ellipsis />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-10">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setIsModalOpen(true);
-                            setObligation(obligation);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Eye />
-                            </Button>
-                            <span>Detalles</span>
+                    </TableCell>
+                    <TableCell>
+                      {!obligation.relation || obligation.relation === ""
+                        ? "Sin relación"
+                        : `Obligación #${obligation.relation}`}
+                    </TableCell>
+
+                    <TableCell>
+                      <span
+                        className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium ${
+                          obligation.status === "Activo"
+                            ? "bg-green-400 text-white"
+                            : obligation.status === "Pendiente"
+                            ? "bg-yellow-400 text-black"
+                            : obligation.status === "En progreso"
+                            ? "bg-blue-400 text-white"
+                            : obligation.status === "Completado"
+                            ? "bg-purple-400 text-white"
+                            : "bg-gray-100 text-gray-800" // Estado por defecto
+                        }`}
+                      >
+                        {obligation.status === "Activo" ? (
+                          "● Activo"
+                        ) : obligation.status === "Pendiente" ? (
+                          "● Pendiente"
+                        ) : obligation.status === "En progreso" ? (
+                          "● En progreso"
+                        ) : obligation.status === "Completado" ? (
+                          "● Completado"
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            <Circle size={7} /> Desconocido
                           </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Pencil />
-                            </Button>
-                            <span>Editar</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Trash />
-                            </Button>
-                            <span>Eliminar</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setIsModalOpen2(true);
-                            setObligation(obligation);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <FileUp />
-                            </Button>
-                            <span>Fiscalizar</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setIsModalOpen2(true);
-                            setObligation(obligation);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <FileSymlink />
-                            </Button>
-                            <span>Auditar</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setIsModalOpen2(true);
-                            setObligation(obligation);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <FilePenLine />
-                            </Button>
-                            <span>Registrar</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        )}
+                      </span>
+                    </TableCell>
+                    <TableCell>{obligation.notes}</TableCell>
+                    <TableCell className="mr-10 flex justify-end">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
+                          <Ellipsis />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-10">
+                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsModalOpen(true);
+                                setObligation(obligation);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Eye />
+                                </Button>
+                                <span>Detalles</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => onUpdate(obligation)}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Pencil />
+                                </Button>
+                                <span>Editar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => onDelete(obligation)}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Trash />
+                                </Button>
+                                <span>Eliminar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setIsModalOpen2(true);
+                              setObligation(obligation);
+                            }}
+                          >
+                            <div className="flex items-center gap-2 cursor-pointer">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FileUp />
+                              </Button>
+                              <span>Fiscalizar</span>
+                            </div>
+                          </DropdownMenuItem>
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsModalOpen2(true);
+                                setObligation(obligation);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FileSymlink />
+                                </Button>
+                                <span>Auditar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsModalOpen2(true);
+                                setObligation(obligation);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FilePenLine />
+                                </Button>
+                                <span>Registrar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </TableUI>
         </CardContent>
@@ -223,6 +339,12 @@ const TableObligations = () => {
         open={isModalOpen2}
         obligation={obligation}
         onClose={() => setIsModalOpen2(false)}
+      />
+      <CreateObligationModal
+        open={isModalCreate}
+        obligation={obligation}
+        onClose={onCloseCreateModal}
+        refetch={refetch}
       />
     </div>
   );

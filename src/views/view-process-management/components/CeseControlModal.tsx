@@ -28,19 +28,32 @@ const CeseControlModal = ({ onClose, process, open, type }: Props) => {
   const [loading, setLoading] = useState(false);
   const [nota, setNota] = useState("");
   const [date, setDate] = useState("");
-  const [firstVisit, setFirstVisit] = useState("");
-  const [secondVisit, setSecondVisit] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (process) {
       try {
         setLoading(true);
+        const response = await axios.put(`/api/awardee/process`, {
+          _id: process._id,
+          method: "update.resolution",
+          resolution: {
+            note: nota,
+            presentation_date: type === "1" ? date : null,
+          },
+        });
+        let data = JSON.parse(JSON.stringify(process));
+        delete data._id;
+        const response2 = await axios.post(`/api/awardee/process-master`, {
+          ...data,
+          resolution: {
+            note: nota,
+            presentation_date: type === "1" ? date : null,
+          },
+        });
         // refetch();
         setNota("");
         setDate("");
-        setFirstVisit("");
-        setSecondVisit("");
         onClose();
       } catch (error) {
         toast.error("Ocurrio un error");
