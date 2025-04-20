@@ -50,6 +50,16 @@ const CauseForm = ({ formData, setFormData, setCompleteForm }: StepProps2) => {
       </div>
 
       <div>
+        <Label htmlFor="crs">CRS donde se controla</Label>
+        <Input
+          id="crs"
+          name="crs"
+          value={formData.crs}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
         <Label htmlFor="crime">Delito</Label>
         <Input
           id="crime"

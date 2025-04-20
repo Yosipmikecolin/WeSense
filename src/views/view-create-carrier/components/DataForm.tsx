@@ -110,7 +110,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
       </div>
 
       <div>
-        <Label>Tipo de portador</Label>
+        <Label>Tipo de persona sujeta a control</Label>
         <Select
           value={formData.type_current}
           onValueChange={(value) => handleSelectChange("type_current", value)}
@@ -125,7 +125,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             <SelectItem value="Personas sujeta a control">
               Personas sujeta a control
             </SelectItem>
-            <SelectItem value="Persona en libertad condicional">
+            {/* <SelectItem value="Persona en libertad condicional">
               Persona en libertad condicional
             </SelectItem>
             <SelectItem value="Persona con arresto domiciliario">
@@ -148,7 +148,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             </SelectItem>
             <SelectItem value="Persona con permiso de trabajo externo">
               Persona con permiso de trabajo externo
-            </SelectItem>
+            </SelectItem> */}
             <SelectItem value="Víctima">Víctima</SelectItem>
           </SelectContent>
         </Select>

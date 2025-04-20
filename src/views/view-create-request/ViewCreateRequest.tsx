@@ -39,7 +39,7 @@ const ViewCreateRequest = () => {
     "Requirente",
     "Persona sujeta a control",
     "Causa",
-    "Monitoreo",
+    // "Monitoreo",
     "Inclusión",
     "Exclusión",
   ];
@@ -188,15 +188,15 @@ const ViewCreateRequest = () => {
             setCompleteForm={setCompleteForm}
           />
         );
+      // case 3:
+      //   return (
+      //     <MonitoringForm
+      //       formData={formDataCarrier.monitoring}
+      //       setFormData={(data) => updateDataCarrier("monitoring", data)}
+      //       setCompleteForm={setCompleteForm}
+      //     />
+      //   );
       case 3:
-        return (
-          <MonitoringForm
-            formData={formDataCarrier.monitoring}
-            setFormData={(data) => updateDataCarrier("monitoring", data)}
-            setCompleteForm={setCompleteForm}
-          />
-        );
-      case 4:
         return (
           <InclusionZoneForm
             formData={formDataCarrier.inclusionArea}
@@ -204,7 +204,7 @@ const ViewCreateRequest = () => {
             setCompleteForm={setCompleteForm}
           />
         );
-      case 5:
+      case 4:
         return (
           <ExclusionZoneForm
             formData={formDataCarrier.exclusionArea}
@@ -364,7 +364,7 @@ const ViewCreateRequest = () => {
                 handleNext();
               }
             }}
-            disabled={loading || !completeForm}
+            // disabled={loading || !completeForm}
           >
             {currentStep === steps.length - 1 ? (
               loading ? (
