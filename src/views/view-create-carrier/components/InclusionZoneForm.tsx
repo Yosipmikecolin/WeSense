@@ -2,7 +2,14 @@ import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { StepProps4 } from "../interfaces";
+import { Step4Data, StepProps4 } from "../interfaces";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const InclusionZoneForm = ({
   formData,
@@ -20,6 +27,12 @@ const InclusionZoneForm = ({
     const { name, value } = e.target;
     const updatedData = { ...formData, [name]: value };
     setFormData(updatedData);
+  };
+
+  const handleSelectChange = (name: keyof Step4Data, value: string) => {
+    const updated = { ...formData, [name]: value };
+    setFormData(updated);
+    setFormData(updated);
   };
 
   return (
@@ -116,12 +129,27 @@ const InclusionZoneForm = ({
       </div>
       <div>
         <Label htmlFor="complianceSchedule">Horario de Cumplimiento</Label>
-        <Input
+        {/* <Input
           id="complianceSchedule"
           name="complianceSchedule"
           value={formData.complianceSchedule}
           onChange={handleChange}
-        />
+        /> */}
+        <Select
+          value={formData.complianceSchedule}
+          onValueChange={(value) =>
+            handleSelectChange("complianceSchedule", value)
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione el horario" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Nocturna">Nocturna</SelectItem>
+            <SelectItem value="Diurna">Diurna</SelectItem>
+            <SelectItem value="Fin de semana">Fin de semana</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div>
         <Label htmlFor="characteristics">Características del sector</Label>

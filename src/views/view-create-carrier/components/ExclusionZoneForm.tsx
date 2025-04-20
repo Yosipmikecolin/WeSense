@@ -2,15 +2,20 @@ import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { StepProps5 } from "../interfaces";
+import { Step5Data, StepProps5 } from "../interfaces";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ExclusionZoneForm = ({
   formData,
   setFormData,
   setCompleteForm,
 }: StepProps5) => {
-
-  
   useEffect(() => {
     const isComplete = Object.values(formData).every((value) => value !== "");
     setCompleteForm(isComplete);
@@ -22,6 +27,12 @@ const ExclusionZoneForm = ({
     const { name, value } = e.target;
     const updatedData = { ...formData, [name]: value };
     setFormData(updatedData);
+  };
+
+  const handleSelectChange = (name: keyof Step5Data, value: string) => {
+    const updated = { ...formData, [name]: value };
+    setFormData(updated);
+    setFormData(updated);
   };
 
   return (
@@ -106,6 +117,30 @@ const ExclusionZoneForm = ({
           value={formData.geographicCoordinates}
           onChange={handleChange}
         />
+      </div>
+      <div>
+        <Label htmlFor="complianceSchedule">Horario de Cumplimiento</Label>
+        {/* <Input
+          id="complianceSchedule"
+          name="complianceSchedule"
+          value={formData.complianceSchedule}
+          onChange={handleChange}
+        /> */}
+        <Select
+          value={formData.complianceSchedule}
+          onValueChange={(value) =>
+            handleSelectChange("complianceSchedule", value)
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione el horario" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Nocturna">Nocturna</SelectItem>
+            <SelectItem value="Diurna">Diurna</SelectItem>
+            <SelectItem value="Fin de semana">Fin de semana</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div>
         <Label htmlFor="radio">Radio</Label>

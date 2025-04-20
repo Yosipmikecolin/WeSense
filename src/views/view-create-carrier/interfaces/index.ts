@@ -43,6 +43,7 @@ export interface Step1Data {
 
 export interface Step2Data {
   penatype: string;
+  crs: string;
   crime: string;
   courtAppeals: string;
   courtRegion: string;
@@ -100,6 +101,7 @@ export interface Step5Data {
   motherSurname: string;
   names: string;
   rut: string;
+  complianceSchedule: string;
   victimEmail: string;
   homeTelephone: string;
   workplaceTelephone: string;

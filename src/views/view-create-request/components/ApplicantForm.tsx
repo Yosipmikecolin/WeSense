@@ -88,7 +88,7 @@ const ApplicantForm = ({ setCompleteForm, setFormData }: Props) => {
           <div className="font-semibold flex">Institución:</div>
           <div className="text-end">
             <div className="flex items-center gap-2">
-              <span>Tribunal Pereira</span>
+              <span>Primer Juzgado Santiago</span>
             </div>
           </div>
         </div>
