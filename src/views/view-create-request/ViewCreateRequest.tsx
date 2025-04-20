@@ -33,6 +33,10 @@ import InclusionZoneForm from "../view-create-carrier/components/InclusionZoneFo
 import ExclusionZoneForm from "../view-create-carrier/components/ExclusionZoneForm";
 import DataForm from "../view-create-carrier/components/DataForm";
 
+function generarNumeroAleatorio() {
+  return Math.floor(Math.random() * 3001); // 0 a 3000 inclusive
+}
+
 const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const steps = [
@@ -50,6 +54,7 @@ const ViewCreateRequest = () => {
   const [formData, setFormData] = useState<RequestPost>({
     answer: "---",
     law: "",
+    folio: generarNumeroAleatorio(),
     reason_return: "",
     description_reason: "",
     issue_date: getDate(),
@@ -288,6 +293,7 @@ const ViewCreateRequest = () => {
       setFormData({
         answer: "---",
         law: "",
+        folio: 0,
         reason_return: "",
         description_reason: "",
         issue_date: getDate(),

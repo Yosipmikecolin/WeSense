@@ -19,6 +19,7 @@ import {
   Ellipsis,
   Eye,
   FilePen,
+  FileText,
   Info,
   RotateCw,
   Search,
@@ -45,6 +46,7 @@ import {
 import { useQueryRequest } from "@/api/queries";
 import { RequestTable } from "@/views/view-create-request/interfaces";
 import AddressModal from "../AddressModal";
+import { generatePDF } from "@/views/view-carriers/functions";
 
 export const TableAwardee = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -62,7 +64,6 @@ export const TableAwardee = () => {
     { id: 3, name: "Numero de identificación" },
     { id: 4, name: "Tipo de situación" },
   ];
-  console.log("requests", requests);
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -284,6 +285,23 @@ export const TableAwardee = () => {
                                   <Search />
                                 </Button>
                                 <span>Motivo</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+
+                          {request.status === "answered" && (
+                            <DropdownMenuItem
+                              className="cursor-pointer"
+                              onClick={async () => {
+                                console.log("request", request);
+                                generatePDF(request);
+                              }}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FileText />
+                                </Button>
+                                <span>Ver informe</span>
                               </div>
                             </DropdownMenuItem>
                           )}

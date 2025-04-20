@@ -1,5 +1,6 @@
 import { Dashboard } from "@/components";
 import {
+  BookText,
   BriefcaseBusiness,
   FileInput,
   Files,
@@ -12,6 +13,7 @@ import {
   ViewCreateRequest,
   ViewCreateRequester,
   ViewCreateUser,
+  ViewReport,
   ViewRequester,
   ViewRequests,
   ViewUsers,
@@ -64,6 +66,11 @@ const Admin = () => {
       icon: <BriefcaseBusiness size={17} />,
       label: "Carga laboral",
       content: <ViewWorkload />,
+    },
+    {
+      icon: <BookText size={17} />,
+      label: "Reportes",
+      content: <ViewReport />,
     },
   ];
   return <Dashboard menuItems={menuItems} />;

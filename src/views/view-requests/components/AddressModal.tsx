@@ -254,45 +254,51 @@ const AddressModal = ({
             </div>
           </div>
         </div>
-        <Label>Pruebas fotograficas</Label>
-        <div className="flex gap-2 flex-wrap">
-          <Image
-            width={70}
-            height={70}
-            src={Foto1}
-            alt="foto-1"
-            className="rounded-md"
-          />
+        {status !== "positive" && (
+          <div>
+            <Label>Pruebas fotograficas</Label>
+            <div className="flex gap-2 flex-wrap">
+              <Image
+                width={70}
+                height={70}
+                src={Foto1}
+                alt="foto-1"
+                className="rounded-md"
+              />
 
-          <Image
-            width={70}
-            height={70}
-            src={Foto2}
-            alt="foto-2"
-            className="rounded-md"
-          />
+              <Image
+                width={70}
+                height={70}
+                src={Foto2}
+                alt="foto-2"
+                className="rounded-md"
+              />
 
-          <Image
-            width={70}
-            height={70}
-            src={Foto3}
-            alt="foto-3"
-            className="rounded-md"
-          />
+              <Image
+                width={70}
+                height={70}
+                src={Foto3}
+                alt="foto-3"
+                className="rounded-md"
+              />
 
-          <Image
-            width={70}
-            height={70}
-            src={Foto4}
-            alt="foto-4"
-            className="rounded-md"
-          />
-        </div>
+              <Image
+                width={70}
+                height={70}
+                src={Foto4}
+                alt="foto-4"
+                className="rounded-md"
+              />
+            </div>
+          </div>
+        )}
 
         <UploadButtonWithModal />
 
         <DialogFooter className="flex items-center justify-between">
-          <PhotoUpload onPhotosSelected={setImages} />
+          {status !== "positive" && (
+            <PhotoUpload onPhotosSelected={setImages} />
+          )}
           <Button
             disabled={
               isLoading ||

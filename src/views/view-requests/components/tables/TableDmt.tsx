@@ -99,6 +99,24 @@ export const TableDmt = () => {
             idFilter={idFilter}
             setIdFilter={setIdFilter}
           />
+          <Button
+            variant={"primary"}
+            onClick={() => {
+              if (requests) {
+                exportToExcel(
+                  (idFilter === 1 || idFilter === 2) && valueFilter !== ""
+                    ? requests?.filter(
+                        (i) =>
+                          i.carrier.cause[idFilter === 1 ? "ruc" : "rit"] ===
+                          valueFilter
+                      )
+                    : requests
+                );
+              }
+            }}
+          >
+            Exportar SFIT
+          </Button>
         </div>
       </div>
       <Card className="w-full shadow-lg py-2">
@@ -424,7 +442,7 @@ export const TableDmt = () => {
                         )}
 
                         {/* OPCIONES PARA LA GENDARMERRIA SI ACEPTO LA SOLCIITUD DE BUDDI */}
-                        {request.status === "confirmed" && (
+                        {/*              {request.status === "confirmed" && (
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={() => {
@@ -438,7 +456,7 @@ export const TableDmt = () => {
                               <span>Exportar SFIT</span>
                             </div>
                           </DropdownMenuItem>
-                        )}
+                        )} */}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

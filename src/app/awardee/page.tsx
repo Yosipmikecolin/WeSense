@@ -35,11 +35,6 @@ const Awardee = () => {
       content: <ViewCreationEvents />,
     },
     {
-      icon: <BookText size={17} />,
-      label: "Reportes",
-      content: <ViewReport />,
-    },
-    {
       icon: <FileStack size={17} />,
       label: "Histórico de resoluciones",
       content: <ViewHistory />,

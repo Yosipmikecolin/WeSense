@@ -1,4 +1,5 @@
 import { RequesterPost } from "@/db/requester";
+import { getDate } from "@/functions";
 import {
   FormDataCarrier,
   FormDataWearer,
@@ -25,6 +26,28 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 
+function getHour(): string {
+  const ahora = new Date();
+  const horas = ahora.getHours().toString().padStart(2, "0");
+  const minutos = ahora.getMinutes().toString().padStart(2, "0");
+  const segundos = ahora.getSeconds().toString().padStart(2, "0");
+
+  return `${horas}:${minutos}:${segundos}`;
+}
+
+const getValue = (key: string) => {
+  switch (key) {
+    case "date":
+      return getDate() + " - " + getHour();
+
+    case "test":
+      return "Abogado";
+
+    default:
+      return "N/A";
+  }
+};
+
 export const generatePDF = (selectedCarrier: RequestTable) => {
   const doc = new jsPDF();
 
@@ -41,6 +64,7 @@ export const generatePDF = (selectedCarrier: RequestTable) => {
   const sections: {
     title: string;
     data:
+      | RequestTable
       | Step1Data
       | Step2Data
       | Step3Data
@@ -50,6 +74,17 @@ export const generatePDF = (selectedCarrier: RequestTable) => {
       | RequesterPost;
     fields: { key: string; label: string }[];
   }[] = [
+    {
+      title: "---------",
+      data: selectedCarrier,
+      fields: [
+        /*  { key: "crime", label: "Delito" }, */
+        { key: "date", label: "Fecha y Hora" },
+        { key: "law", label: "Tipo de ley" },
+        { key: "folio", label: "Folio" },
+      ],
+    },
+
     {
       title: "Información de la causa",
       data: selectedCarrier.carrier.cause,
@@ -194,8 +229,7 @@ export const generatePDF = (selectedCarrier: RequestTable) => {
       }
 
       const value =
-        (data as unknown as Record<string, unknown>)?.[key] ??
-        (key === "test" ? "Abogado" : "N/A");
+        (data as unknown as Record<string, unknown>)?.[key] ?? getValue(key);
 
       // Fondo alternado
       if (index % 2 === 0) {
@@ -523,17 +557,16 @@ export const generateWord = (selectedCarrier: FormDataWearer) => {
   });
 };
 
-export const exportToExcel = (request: RequestTable) => {
+export const exportToExcel = (requests: RequestTable[]) => {
+  // Define el tipo del objeto aplanado
+  interface FlattenedData {
+    [key: string]: string | number | boolean | undefined;
+  }
+
   // Flatten the nested data for Excel with Spanish column names
-  const flattenedData: Record<string, string> = {
-    /* ID: request._id, */
+  const flattenedDataArray: FlattenedData[] = requests.map((request) => ({
     Respuesta: request.answer,
     Fecha_Emisión: request.issue_date,
-    /*     Motivo_Devolución: request.reason_return,
-    Descripción_Motivo: request.description_reason, */
-    /*   Fecha_Respuesta: request.response_date,
-    Fecha_Devolución: request.return_date, */
-    //Tiempo_Respuesta: request.time_respond,
     Estado: request.status,
 
     // Datos del Solicitante
@@ -671,7 +704,7 @@ export const exportToExcel = (request: RequestTable) => {
     Adjudicatario_Evidencia_Fotográfica:
       request.awardee_response.photographic_evidence.join(", "),
 
-    // Motivos de Revolución del Solicitante (serializados como valores separados por coma)
+    // Motivos de Revolución del Solicitante
     Motivos_Revolución_Solicitante: request.reason_revolution_requester
       .map(
         (r, index) =>
@@ -681,7 +714,7 @@ export const exportToExcel = (request: RequestTable) => {
       )
       .join("; "),
 
-    // Motivos de Revolución del Adjudicatario (serializados como valores separados por coma)
+    // Motivos de Revolución del Adjudicatario
     Motivos_Revolución_Adjudicatario: request.reason_revolution_awardee
       .map(
         (r, index) =>
@@ -690,25 +723,26 @@ export const exportToExcel = (request: RequestTable) => {
           }`
       )
       .join("; "),
-  };
+  }));
 
-  // Create worksheet
-  const worksheet = XLSX.utils.json_to_sheet([flattenedData]);
+  // Create worksheet from the array of flattened data
+  const worksheet = XLSX.utils.json_to_sheet(flattenedDataArray);
 
   // Create workbook and add worksheet
   const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Datos Solicitud");
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Datos Solicitudes");
 
   // Auto-size columns (approximate)
-  const colWidths = Object.keys(flattenedData).map((key) => ({
-    wch:
-      Math.max(key.length, String(flattenedData[key]).length) > 50
-        ? 50
-        : Math.max(key.length, String(flattenedData[key]).length),
-  }));
+  const colWidths = Object.keys(flattenedDataArray[0] || {}).map((key) => {
+    const maxLength = Math.max(
+      key.length,
+      ...flattenedDataArray.map((data) => String(data[key] || "").length)
+    );
+    return { wch: maxLength > 50 ? 50 : maxLength };
+  });
   worksheet["!cols"] = colWidths;
 
   // Generate Excel file
-  const fileName = `Solicitud_${request._id}.xlsx`;
+  const fileName = `Solicitudes_${new Date().toISOString().slice(0, 10)}.xlsx`;
   XLSX.writeFile(workbook, fileName);
 };

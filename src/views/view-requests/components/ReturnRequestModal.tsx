@@ -132,6 +132,7 @@ const ReturnRequestModal = ({
                 <SelectItem value="Aclarar los resultados">
                   Aclarar los resultados
                 </SelectItem>
+                <SelectItem value="Otros">Otros</SelectItem>
               </SelectContent>
             </Select>
             <div className="flex flex-col gap-2 w-full mt-3">

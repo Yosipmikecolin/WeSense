@@ -12,6 +12,7 @@ export interface TimelineProps {
 export interface FormDataRequest {
   answer: string;
   law: string;
+  folio:number
   issue_date: string;
   reason_return: string;
   description_reason: string;
