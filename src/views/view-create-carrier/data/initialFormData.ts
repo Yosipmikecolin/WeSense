@@ -19,6 +19,7 @@ export const initialFormData: FormDataCarrier = {
   },
   cause: {
     penatype: "",
+    crs: "",
     crime: "",
     courtAppeals: "",
     courtRegion: "",
@@ -58,6 +59,7 @@ export const initialFormData: FormDataCarrier = {
     characteristics: "",
   },
   exclusionArea: {
+    complianceSchedule: "",
     street: "",
     number: "",
     additionalInformation: "",
