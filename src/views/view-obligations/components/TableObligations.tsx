@@ -48,7 +48,11 @@ export interface ObligationType {
   status: string;
 }
 
-const TableObligations = () => {
+interface Props {
+  mode_supervise: boolean;
+}
+
+const TableObligations = ({ mode_supervise }: Props) => {
   const [idFilter, setIdFilter] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
@@ -117,10 +121,14 @@ const TableObligations = () => {
       </div>
       <Card className="w-full shadow-lg py-2">
         <CardHeader className="flex flex-row items-center justify-between">
-          <Button onClick={() => setIsModalCreate(true)}>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Crear Obligación
-          </Button>
+          {mode_supervise ? (
+            ""
+          ) : (
+            <Button onClick={() => setIsModalCreate(true)}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Crear Obligación
+            </Button>
+          )}
         </CardHeader>
         <CardContent className="w-full px-3">
           <TableUI>
@@ -220,39 +228,51 @@ const TableObligations = () => {
                         <DropdownMenuContent className="w-10">
                           <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setIsModalOpen(true);
-                              setObligation(obligation);
-                            }}
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Eye />
-                              </Button>
-                              <span>Detalles</span>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onUpdate(obligation)}
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Pencil />
-                              </Button>
-                              <span>Editar</span>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onDelete(obligation)}
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <Trash />
-                              </Button>
-                              <span>Eliminar</span>
-                            </div>
-                          </DropdownMenuItem>
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsModalOpen(true);
+                                setObligation(obligation);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Eye />
+                                </Button>
+                                <span>Detalles</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => onUpdate(obligation)}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Pencil />
+                                </Button>
+                                <span>Editar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => onDelete(obligation)}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <Trash />
+                                </Button>
+                                <span>Eliminar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem
                             onClick={() => {
                               setIsModalOpen2(true);
@@ -266,32 +286,40 @@ const TableObligations = () => {
                               <span>Fiscalizar</span>
                             </div>
                           </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setIsModalOpen2(true);
-                              setObligation(obligation);
-                            }}
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FileSymlink />
-                              </Button>
-                              <span>Auditar</span>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => {
-                              setIsModalOpen2(true);
-                              setObligation(obligation);
-                            }}
-                          >
-                            <div className="flex items-center gap-2 cursor-pointer">
-                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                                <FilePenLine />
-                              </Button>
-                              <span>Registrar</span>
-                            </div>
-                          </DropdownMenuItem>
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsModalOpen2(true);
+                                setObligation(obligation);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FileSymlink />
+                                </Button>
+                                <span>Auditar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
+                          {mode_supervise ? (
+                            ""
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsModalOpen2(true);
+                                setObligation(obligation);
+                              }}
+                            >
+                              <div className="flex items-center gap-2 cursor-pointer">
+                                <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                  <FilePenLine />
+                                </Button>
+                                <span>Registrar</span>
+                              </div>
+                            </DropdownMenuItem>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
