@@ -8,13 +8,12 @@ import { Input } from "../ui/input";
 import axios from "axios";
 import { useBuddieStore } from "@/store/index";
 import { toast } from "@/hooks/use-toast";
+import { getCarriersAPI } from "@/api/request";
 
 const Login = () => {
   const { setToken: setTokenBuddie } = useBuddieStore();
   const [code, setCode] = useState("");
-  const [token, setToken] = useState("");
   const [urlCaptcha, setUrlCaptcha] = useState("");
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,6 +26,7 @@ const Login = () => {
         title: "Sesión caducada",
         variant: "destructive",
       });
+      localStorage.removeItem("sesion");
     }
   }, []);
 
@@ -49,7 +49,6 @@ const Login = () => {
     });
 
     const response_user = await axios.get(`/api/buddie?method=user.read`);
-    setToken(response_user.data.csrf_token);
     setTokenBuddie(response_user.data.csrf_token);
 
     console.log("AUTH: ", response_auth.data);
@@ -101,18 +100,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "administrator@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso administrador",
-            description: "administrator@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/administrator");
-        }, 500);
+        toast({
+          title: "Acceso administrador",
+          description: "administrator@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/administrator");
       }
     } else if (username === "requiring@gmail.com" && password === "12345") {
       setLoading(true);
@@ -121,17 +118,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "requiring@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso requirente",
-            description: "requiring@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/requiring");
-        }, 500);
+        toast({
+          title: "Acceso requirente",
+          description: "requiring@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/requiring");
       }
     } else if (username === "coordinator@gmail.com" && password === "12345") {
       setLoading(true);
@@ -139,17 +135,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "coordinator@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso coordinador",
-            description: "coordinator@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/coordinator");
-        }, 500);
+        toast({
+          title: "Acceso coordinador",
+          description: "coordinator@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/coordinator");
       }
     } else if (username === "awardee@gmail.com" && password === "12345") {
       setLoading(true);
@@ -157,17 +152,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "awardee@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso adjudicatorio",
-            description: "awardee@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/awardee");
-        }, 500);
+        toast({
+          title: "Acceso adjudicatorio",
+          description: "awardee@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/awardee");
       }
     } else if (username === "contract@gmail.com" && password === "12345") {
       setLoading(true);
@@ -175,17 +169,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "contract@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso adjudicatorio",
-            description: "contract@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/contract");
-        }, 500);
+        toast({
+          title: "Acceso adjudicatorio",
+          description: "contract@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/contract");
       }
     } else if (username === "dmt@gmail.com" && password === "12345") {
       setLoading(true);
@@ -193,17 +186,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "dmt@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso DMT",
-            description: "dmt@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/dmt");
-        }, 500);
+        toast({
+          title: "Acceso DMT",
+          description: "dmt@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/dmt");
       }
     } else if (username === "crs@gmail.com" && password === "12345") {
       setLoading(true);
@@ -211,17 +203,16 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      if (is_valid) {
+      const res = await getCarriersAPI();
+      if (is_valid && res.grid) {
         localStorage.setItem("email", "crs@gmail.com");
-        setTimeout(() => {
-          toast({
-            title: "Acceso CRS",
-            description: "crs@gmail.com",
-          });
-          localStorage.removeItem("sesion");
-          setUrlCaptcha("");
-          navigation.push("/dmt");
-        }, 500);
+        toast({
+          title: "Acceso CRS",
+          description: "crs@gmail.com",
+        });
+        localStorage.removeItem("sesion");
+        setUrlCaptcha("");
+        navigation.push("/dmt");
       }
     } else {
       toast({

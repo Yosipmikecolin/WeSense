@@ -28,13 +28,12 @@ import toast from "react-hot-toast";
 import { addRequest } from "@/api/request";
 import { getDate } from "@/functions";
 import CauseForm from "../view-create-carrier/components/CauseForm";
-import MonitoringForm from "../view-create-carrier/components/MonitoringForm";
 import InclusionZoneForm from "../view-create-carrier/components/InclusionZoneForm";
 import ExclusionZoneForm from "../view-create-carrier/components/ExclusionZoneForm";
 import DataForm from "../view-create-carrier/components/DataForm";
 
 function generarNumeroAleatorio() {
-  return Math.floor(Math.random() * 3001); // 0 a 3000 inclusive
+  return Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
 }
 
 const ViewCreateRequest = () => {

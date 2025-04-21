@@ -23,6 +23,7 @@ import {
   WidthType,
 } from "docx";
 import { saveAs } from "file-saver";
+import { request } from "http";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 
@@ -35,13 +36,22 @@ function getHour(): string {
   return `${horas}:${minutos}:${segundos}`;
 }
 
-const getValue = (key: string) => {
+const getValue = (key: string, selectedCarrier: Step1Data) => {
   switch (key) {
     case "date":
       return getDate() + " - " + getHour();
 
     case "test":
       return "Abogado";
+
+    case "nameComplete":
+      return (
+        selectedCarrier.fullName +
+        " " +
+        selectedCarrier.paternalSurname +
+        " " +
+        selectedCarrier.motherSurname
+      );
 
     default:
       return "N/A";
@@ -111,10 +121,10 @@ export const generatePDF = (selectedCarrier: RequestTable) => {
     },
 
     {
-      title: "Datos del condenado/inputado",
+      title: "Datos de la persona sujeta control / Condenado",
       data: selectedCarrier.carrier.personalData,
       fields: [
-        { key: "fullName", label: "Nombre Completo" },
+        { key: "nameComplete", label: "Nombre Completo" },
         /*   { key: "socialName", label: "Nombre Social" },
         { key: "paternalSurname", label: "Apellido Paterno" },
         { key: "motherSurname", label: "Apellido Materno" },
@@ -229,7 +239,8 @@ export const generatePDF = (selectedCarrier: RequestTable) => {
       }
 
       const value =
-        (data as unknown as Record<string, unknown>)?.[key] ?? getValue(key);
+        (data as unknown as Record<string, unknown>)?.[key] ??
+        getValue(key, data as Step1Data);
 
       // Fondo alternado
       if (index % 2 === 0) {

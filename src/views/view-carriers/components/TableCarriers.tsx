@@ -96,7 +96,7 @@ const TableCarriers = () => {
           />
         </div>
       </div>
-      <Card className="w-full shadow-lg py-2">
+ {/*      <Card className="w-full shadow-lg py-2">
         <CardContent className="w-full px-3">
           <TableUI>
             <TableHeader>
@@ -149,78 +149,7 @@ const TableCarriers = () => {
                   <TableCell>{carrier.line_3}</TableCell>
                   <TableCell>{carrier.telephone}</TableCell>
 
-                  <TableCell className="mr-10 flex justify-end">
-                    {/*    <DropdownMenu>
-                      <DropdownMenuTrigger className="focus:outline-none focus:ring-0">
-                        <Ellipsis />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-10">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setSelectedCarrier({
-                              wearer: {
-                                id: carrier.id,
-                                first_name: carrier.first_name,
-                                surname: carrier.surname,
-                                email: carrier.email,
-                              },
-                            });
-                            setIsModalOpen(true);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Eye />
-                            </Button>
-                            <span>Detalles</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setSelectedCarrier({
-                              wearer: {
-                                id: carrier.id,
-                                first_name: carrier.first_name,
-                                surname: carrier.surname,
-                                email: carrier.email,
-                              },
-                            });
-                            setIsModalOpen2(true);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Pencil />
-                            </Button>
-                            <span>Editar</span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setSelectedCarrier({
-                              wearer: {
-                                id: carrier.id,
-                                first_name: carrier.first_name,
-                                surname: carrier.surname,
-                                email: carrier.email,
-                              },
-                            });
-                            setIsModalOpen3(true);
-                          }}
-                        >
-                          <div className="flex items-center gap-2 cursor-pointer">
-                            <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
-                              <Trash />
-                            </Button>
-                            <span>Eliminar</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu> */}
-                  </TableCell>
+              
                 </TableRow>
               ))}
             </TableBody>
@@ -231,7 +160,7 @@ const TableCarriers = () => {
             </div>
           )}
         </CardContent>
-      </Card>
+      </Card> */}
       <Pagination />
       <DetailsModal
         open={isModalOpen}

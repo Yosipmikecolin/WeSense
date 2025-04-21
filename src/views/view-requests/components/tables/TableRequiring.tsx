@@ -217,11 +217,13 @@ export const TableRequiring = () => {
                           <div className="flex items-center gap-2">---</div>
                         )}
 
-                        
-                      {
-                        request.status === "reviewing" && (
-                          <div className="flex items-center gap-2">---</div>
-                        )}
+                      {request.status === "reviewing" && (
+                        <div className="flex items-center gap-2">---</div>
+                      )}
+
+                      {request.status === "unconfirmed" && (
+                        <div className="flex items-center gap-2">---</div>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>{request.issue_date}</TableCell>
@@ -258,6 +260,13 @@ export const TableRequiring = () => {
                     )}
 
                     {request.status === "answered" && (
+                      <div className="flex items-center gap-2">
+                        <CircleSlash size={17} color="#B7B7B7" />
+                        <span className="text-sm">En proceso</span>
+                      </div>
+                    )}
+
+                    {request.status === "returned" && (
                       <div className="flex items-center gap-2">
                         <CircleSlash size={17} color="#B7B7B7" />
                         <span className="text-sm">En proceso</span>

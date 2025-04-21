@@ -99,5 +99,5 @@ export const getCarriersAPI = async () => {
         }[];
       };
     }>("/api/buddie?method=setup.wearer.grid")
-  ).data.grid.rows;
+  ).data;
 };

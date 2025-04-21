@@ -40,6 +40,7 @@ const RequestSchema = new mongoose.Schema(
   {
     answer: String,
     law: String,
+    folio: String,
     issue_date: String,
     response_date: String,
     return_date: String,

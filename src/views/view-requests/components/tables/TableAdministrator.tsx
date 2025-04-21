@@ -402,6 +402,7 @@ export const TableAdministrator = () => {
                                 });
                                 setToken(response_create.data.csrf_token);
                               }
+                              refetch();
                             }}
                           >
                             <div className="flex items-center gap-2">
