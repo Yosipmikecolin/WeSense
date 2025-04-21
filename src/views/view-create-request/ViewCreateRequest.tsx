@@ -130,7 +130,7 @@ const ViewCreateRequest = () => {
     interpretor_required: "0",
     // size_id: "",
     responsible_officer_id: "",
-    country_id: getCountryCode(formDataCarrier.personalData.nationality),
+    country_id: "185",
     // risk_level_id: "",
     lat: "4.650221",
     lon: "-74.070586",

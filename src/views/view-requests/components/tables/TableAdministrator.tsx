@@ -401,8 +401,8 @@ export const TableAdministrator = () => {
                                   time_respond: "",
                                 });
                                 setToken(response_create.data.csrf_token);
+                                refetch();
                               }
-                              refetch();
                             }}
                           >
                             <div className="flex items-center gap-2">
