@@ -26,7 +26,7 @@ import {
 import { initialFormData } from "../view-create-carrier/data/initialFormData";
 import toast from "react-hot-toast";
 import { addRequest } from "@/api/request";
-import { getDate } from "@/functions";
+import { getCountryCode, getDate } from "@/functions";
 import CauseForm from "../view-create-carrier/components/CauseForm";
 import InclusionZoneForm from "../view-create-carrier/components/InclusionZoneForm";
 import ExclusionZoneForm from "../view-create-carrier/components/ExclusionZoneForm";
@@ -96,31 +96,41 @@ const ViewCreateRequest = () => {
 
   const create_wearer = {
     group_id: "2108",
-    first_name: formDataCarrier.personalData.fullName,
-    surname: formDataCarrier.personalData.paternalSurname,
-    ref: "555",
-    email: formDataCarrier.cause.penatype,
+    first_name:
+      formDataCarrier.personalData.socialName +
+      " " +
+      formDataCarrier.personalData.paternalSurname +
+      " " +
+      formDataCarrier.personalData.motherSurname,
+    surname: formDataCarrier.personalData.run,
+    ref: formDataCarrier.cause.rol,
+    email: "",
     // notes: "",
-    start_tagging_time: "2025-04-13 00:15:00",
-    end_tagging_time: "2025-04-15 00:45:00",
+    start_tagging_time: "",
+    end_tagging_time: "",
     device_profile_id: "179",
     // device_profile_sb_id: "",
     device_profile_name: "1. Live Tracking",
-    timezone_id: "74",
-    wearer_type_id: "21",
-    address_name: formDataCarrier.personalData.nationality,
-    line_1: formDataCarrier.personalData.maritalStatus,
-    line_2: formDataCarrier.personalData.dateBirth,
-    line_3: formDataCarrier.personalData.gender,
-    city: "Santiago",
+    timezone_id: "368",
+    wearer_type_id: formDataCarrier.personalData.type_current,
+    address_name: "DOMICILIO",
+    line_1:
+      formDataCarrier.inclusionArea.street +
+      " " +
+      formDataCarrier.inclusionArea.number +
+      " " +
+      formDataCarrier.inclusionArea.additionalInformation,
+    line_2: "",
+    line_3: formDataCarrier.inclusionArea.commune,
+    city: "",
     county: formData.carrier.personalData.nationality,
-    postcode: "111221",
-    address_type_id: "2",
+    postcode: "",
+    address_type_id: "",
     telephone: formDataCarrier.personalData.phone,
     interpretor_required: "0",
     // size_id: "",
-    responsible_officer_id: "2452",
-    country_id: "185",
+    responsible_officer_id: "",
+    country_id: getCountryCode(formDataCarrier.personalData.nationality),
     // risk_level_id: "",
     lat: "4.650221",
     lon: "-74.070586",

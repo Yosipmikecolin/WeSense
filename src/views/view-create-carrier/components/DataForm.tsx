@@ -119,10 +119,10 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             <SelectValue placeholder="Seleccione un tipo" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Personas condenada">
+            <SelectItem value="20">
               Personas condenada
             </SelectItem>
-            <SelectItem value="Personas sujeta a control">
+            <SelectItem value="20">
               Personas sujeta a control
             </SelectItem>
             {/* <SelectItem value="Persona en libertad condicional">
@@ -149,7 +149,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             <SelectItem value="Persona con permiso de trabajo externo">
               Persona con permiso de trabajo externo
             </SelectItem> */}
-            <SelectItem value="Víctima">Víctima</SelectItem>
+            <SelectItem value="21">Víctima</SelectItem>
           </SelectContent>
         </Select>
       </div>
