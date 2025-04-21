@@ -383,12 +383,6 @@ export const TableAdministrator = () => {
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onClick={async () => {
-                              await updatedRequest({
-                                ...request,
-                                status: "confirmed",
-                                time_respond: "",
-                              });
-                              toast.success("Solicitud confirmada");
                               const response_create = await axios.post(
                                 "/api/buddie",
                                 {
@@ -398,13 +392,16 @@ export const TableAdministrator = () => {
                                 }
                               );
                               if (response_create.data.error) {
-                                await axios.post("/api/buddie", {
-                                  method: "auth.logout",
-                                });
                                 route.push("/");
                                 localStorage.setItem("sesion", "1");
+                              } else {
+                                await updatedRequest({
+                                  ...request,
+                                  status: "confirmed",
+                                  time_respond: "",
+                                });
+                                setToken(response_create.data.csrf_token);
                               }
-                              setToken(response_create.data.csrf_token);
                             }}
                           >
                             <div className="flex items-center gap-2">

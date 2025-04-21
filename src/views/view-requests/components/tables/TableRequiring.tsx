@@ -216,6 +216,12 @@ export const TableRequiring = () => {
                         request.status === "reviewing" && (
                           <div className="flex items-center gap-2">---</div>
                         )}
+
+                        
+                      {
+                        request.status === "reviewing" && (
+                          <div className="flex items-center gap-2">---</div>
+                        )}
                     </div>
                   </TableCell>
                   <TableCell>{request.issue_date}</TableCell>
