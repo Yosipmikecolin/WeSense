@@ -49,6 +49,7 @@ import { updatedRequest } from "@/api/request";
 import axios from "axios";
 import { useBuddieStore } from "@/store";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export const TableAdministrator = () => {
   const [idFilter, setIdFilter] = useState(1);
@@ -65,6 +66,7 @@ export const TableAdministrator = () => {
   const [type, setType] = useState<"requester" | "awardee">("requester");
   const { data: requests, isLoading, refetch } = useQueryRequest();
   const { token, setToken } = useBuddieStore();
+  const route = useRouter();
   const [carrier, setCarrier] = useState();
   const filters = [
     { id: 1, name: "Tipo de requirente" },
@@ -395,6 +397,13 @@ export const TableAdministrator = () => {
                                   create_wearer: carrier,
                                 }
                               );
+                              if (response_create.data.error) {
+                                await axios.post("/api/buddie", {
+                                  method: "auth.logout",
+                                });
+                                route.push("/");
+                                localStorage.setItem("sesion", "1");
+                              }
                               setToken(response_create.data.csrf_token);
                             }}
                           >

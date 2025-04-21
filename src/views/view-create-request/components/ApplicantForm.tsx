@@ -19,7 +19,7 @@ const ApplicantForm = ({ setCompleteForm, setFormData }: Props) => {
   const [law, setLaw] = useState("");
   useEffect(() => {
     if (law) {
-      setCompleteForm(true);
+      setCompleteForm(false);
       setFormData((prev) => ({ ...prev, law }));
     }
   }, [law]);

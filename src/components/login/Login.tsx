@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
-import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useBuddieStore } from "@/store/index";
+import { toast } from "@/hooks/use-toast";
 
 const Login = () => {
   const { setToken: setTokenBuddie } = useBuddieStore();
@@ -19,6 +19,16 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigation = useRouter();
+
+  useEffect(() => {
+    const sesion = localStorage.getItem("sesion");
+    if (sesion) {
+      toast({
+        title: "Sesión caducada",
+        variant: "destructive",
+      });
+    }
+  }, []);
 
   const loginBuddie = async (username: string, password: string) => {
     const _CAPTCHA = code;
@@ -91,6 +101,7 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
+
       if (is_valid) {
         localStorage.setItem("email", "administrator@gmail.com");
         setTimeout(() => {
@@ -98,6 +109,7 @@ const Login = () => {
             title: "Acceso administrador",
             description: "administrator@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/administrator");
         }, 500);
@@ -116,6 +128,7 @@ const Login = () => {
             title: "Acceso requirente",
             description: "requiring@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/requiring");
         }, 500);
@@ -133,6 +146,7 @@ const Login = () => {
             title: "Acceso coordinador",
             description: "coordinator@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/coordinator");
         }, 500);
@@ -150,6 +164,7 @@ const Login = () => {
             title: "Acceso adjudicatorio",
             description: "awardee@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/awardee");
         }, 500);
@@ -167,6 +182,7 @@ const Login = () => {
             title: "Acceso adjudicatorio",
             description: "contract@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/contract");
         }, 500);
@@ -184,6 +200,7 @@ const Login = () => {
             title: "Acceso DMT",
             description: "dmt@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/dmt");
         }, 500);
@@ -201,6 +218,7 @@ const Login = () => {
             title: "Acceso CRS",
             description: "crs@gmail.com",
           });
+          localStorage.removeItem("sesion");
           setUrlCaptcha("");
           navigation.push("/dmt");
         }, 500);

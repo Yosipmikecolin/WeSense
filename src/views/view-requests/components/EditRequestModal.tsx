@@ -219,7 +219,7 @@ const EditRequestModal = ({
                     <span>Creando solicitud</span>
                   </div>
                 ) : (
-                  "Crear solicitud"
+                  "Corregir solicitud"
                 )
               ) : (
                 "Siguiente"

@@ -49,6 +49,7 @@ const ViewCreateRequest = () => {
   ];
   const [completeForm, setCompleteForm] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [complete, setComplete] = useState(true);
   const [formDataCarrier, setFormDataCarrier] =
     useState<FormDataCarrier>(initialFormData);
   const [formData, setFormData] = useState<RequestPost>({
@@ -172,7 +173,7 @@ const ViewCreateRequest = () => {
       case 0:
         return (
           <ApplicantForm
-            setCompleteForm={setCompleteForm}
+            setCompleteForm={setComplete}
             setFormData={setFormData}
           />
         );
@@ -182,7 +183,7 @@ const ViewCreateRequest = () => {
           <DataForm
             formData={formDataCarrier.personalData}
             setFormData={(data) => updateDataCarrier("personalData", data)}
-            setCompleteForm={setCompleteForm}
+            setCompleteForm={setComplete}
           />
         );
       case 2:
@@ -362,6 +363,7 @@ const ViewCreateRequest = () => {
             Atras
           </Button>
           <Button
+            disabled={complete}
             variant={"primary"}
             onClick={() => {
               if (currentStep === steps.length - 1) {

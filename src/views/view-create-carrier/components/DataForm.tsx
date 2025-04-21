@@ -35,7 +35,7 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
     const isComplete = Object.values(formData).every(
       (value) => value !== "" && date
     );
-    setCompleteForm(isComplete);
+    setCompleteForm(!isComplete);
   }, [formData, setFormData, date]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
