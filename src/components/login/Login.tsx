@@ -109,7 +109,7 @@ const Login = () => {
         });
         localStorage.removeItem("sesion");
         setUrlCaptcha("");
-        //navigation.push("/administrator");
+        navigation.push("/administrator");
       }
     } else if (username === "requiring@gmail.com" && password === "12345") {
       setLoading(true);
