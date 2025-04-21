@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PlusCircle, Eye, Check, Clock } from "lucide-react";
+import { PlusCircle, Eye, Check, Clock, FileDown } from "lucide-react";
 import { format, differenceInDays, isWithinInterval, addDays } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -1021,7 +1021,7 @@ export default function BillingHistoryView() {
                           {billing.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="flex gap-5 justify-end">
                         <Button
                           variant="outline"
                           size="sm"
@@ -1029,6 +1029,15 @@ export default function BillingHistoryView() {
                         >
                           <Eye className="h-4 w-4 mr-2" />
                           Ver
+                        </Button>
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleOpenDetailsDialog(billing)}
+                        >
+                          <FileDown className="h-4 w-4 mr-2" />
+                          Descargar
                         </Button>
                       </TableCell>
                     </TableRow>
