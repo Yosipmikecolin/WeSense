@@ -83,6 +83,7 @@ interface BillingRecord {
   paymentDate?: Date;
   notes: string;
   carriers?: Carrier[];
+  url: string;
 }
 
 // Simulated carriers data
@@ -303,11 +304,12 @@ export default function BillingHistoryView() {
   const [billingRecords, setBillingRecords] = useState<BillingRecord[]>(() => {
     // Generate sample billing records
     return [
+
       {
         id: "1",
-        billingDate: new Date(2023, 11, 15), // December 15, 2023
-        startDate: new Date(2023, 8, 1), // September 1, 2023
-        endDate: new Date(2023, 10, 30), // November 30, 2023
+        billingDate: new Date(2025, 11, 15), // December 15, 2023
+        startDate: new Date(2025, 0, 1), // September 1, 2023
+        endDate: new Date(2025, 0, 30), // November 30, 2023
         billingPeriod: 3,
         billingAmount: 12500000,
         deviceCount: 50,
@@ -318,12 +320,64 @@ export default function BillingHistoryView() {
         paymentDate: new Date(2023, 11, 20), // December 20, 2023
         notes:
           "Facturación trimestral por servicio de monitoreo de 50 dispositivos.",
+        url: "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwesense-maqueta.s3.us-east-2.amazonaws.com%2FReporte_Facturacion_Enero_2025.xlsx&wdOrigin=BROWSELINK",
       },
       {
         id: "2",
-        billingDate: new Date(2024, 0, 10), // January 10, 2024
-        startDate: new Date(2023, 11, 1), // December 1, 2023
-        endDate: new Date(2023, 11, 31), // December 31, 2023
+        billingDate: new Date(2025, 11, 15), // December 15, 2023
+        startDate: new Date(2025, 1, 1), // September 1, 2023
+        endDate: new Date(2025, 1, 28), // November 30, 2023
+        billingPeriod: 3,
+        billingAmount: 12500000,
+        deviceCount: 50,
+        status: "Pagado",
+        invoiceNumber: "FAC-2023-001",
+        clientName: "Empresa de Seguridad Nacional",
+        paymentMethod: "Transferencia bancaria",
+        paymentDate: new Date(2023, 11, 20), // December 20, 2023
+        notes:
+          "Facturación trimestral por servicio de monitoreo de 50 dispositivos.",
+        url: "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwesense-maqueta.s3.us-east-2.amazonaws.com%2FReporte_Facturacion_Febrero_2025.xlsx&wdOrigin=BROWSELINK",
+      },
+      {
+        id: "3",
+        billingDate: new Date(2025, 11, 15), // December 15, 2023
+        startDate: new Date(2025, 2, 1), // September 1, 2023
+        endDate: new Date(2025, 2, 30), // November 30, 2023
+        billingPeriod: 3,
+        billingAmount: 12500000,
+        deviceCount: 50,
+        status: "Pagado",
+        invoiceNumber: "FAC-2023-001",
+        clientName: "Empresa de Seguridad Nacional",
+        paymentMethod: "Transferencia bancaria",
+        paymentDate: new Date(2023, 11, 20), // December 20, 2023
+        notes:
+          "Facturación trimestral por servicio de monitoreo de 50 dispositivos.",
+        url: "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwesense-maqueta.s3.us-east-2.amazonaws.com%2FReporte_Facturacion_Marzo_2025.xlsx&wdOrigin=BROWSELINK",
+      },
+      {
+        id: "4",
+        billingDate: new Date(2025, 11, 15), // December 15, 2023
+        startDate: new Date(2025, 3, 1), // September 1, 2023
+        endDate: new Date(2025, 3, 30), // November 30, 2023
+        billingPeriod: 3,
+        billingAmount: 12500000,
+        deviceCount: 50,
+        status: "Pagado",
+        invoiceNumber: "FAC-2023-001",
+        clientName: "Empresa de Seguridad Nacional",
+        paymentMethod: "Transferencia bancaria",
+        paymentDate: new Date(2023, 11, 20), // December 20, 2023
+        notes:
+          "Facturación trimestral por servicio de monitoreo de 50 dispositivos.",
+        url: "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwesense-maqueta.s3.us-east-2.amazonaws.com%2FReporte_Facturacion_Abril_2025.xlsx&wdOrigin=BROWSELINK",
+      },
+      {
+        id: "5",
+        billingDate: new Date(2025, 0, 10), // January 10, 2024
+        startDate: new Date(2025, 10, 1), // December 1, 2023
+        endDate: new Date(2025, 10, 30), // December 31, 2023
         billingPeriod: 1,
         billingAmount: 5000000,
         deviceCount: 20,
@@ -334,12 +388,13 @@ export default function BillingHistoryView() {
         paymentDate: new Date(2024, 0, 25), // January 25, 2024
         notes:
           "Facturación mensual por servicio de monitoreo de 20 dispositivos.",
+        url: "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwesense-maqueta.s3.us-east-2.amazonaws.com%2FReporte_Facturacion_Noviembre_2024.xlsx&wdOrigin=BROWSELINK",
       },
       {
-        id: "3",
-        billingDate: new Date(2024, 1, 5), // February 5, 2024
-        startDate: new Date(2023, 6, 1), // July 1, 2023
-        endDate: new Date(2023, 11, 31), // December 31, 2023
+        id: "6",
+        billingDate: new Date(2025, 1, 5), // February 5, 2024
+        startDate: new Date(2025,11, 1), // July 1, 2023
+        endDate: new Date(2025, 11, 31), // December 31, 2023
         billingPeriod: 6,
         billingAmount: 36000000,
         deviceCount: 60,
@@ -350,35 +405,9 @@ export default function BillingHistoryView() {
         paymentDate: new Date(2024, 1, 15), // February 15, 2024
         notes:
           "Facturación semestral por servicio de monitoreo de 60 dispositivos.",
+        url: "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwesense-maqueta.s3.us-east-2.amazonaws.com%2FReporte_Facturacion_Diciembre_2024.xlsx&wdOrigin=BROWSELINK",
       },
-      {
-        id: "4",
-        billingDate: new Date(2024, 2, 1), // March 1, 2024
-        startDate: new Date(2024, 1, 1), // February 1, 2024
-        endDate: new Date(2024, 1, 29), // February 29, 2024
-        billingPeriod: 1,
-        billingAmount: 7500000,
-        deviceCount: 30,
-        status: "Pendiente",
-        invoiceNumber: "FAC-2024-003",
-        clientName: "Vigilancia Tecnológica S.A.",
-        notes:
-          "Facturación mensual por servicio de monitoreo de 30 dispositivos. Pendiente de pago.",
-      },
-      {
-        id: "5",
-        billingDate: new Date(2024, 2, 15), // March 15, 2024
-        startDate: new Date(2023, 2, 15), // March 15, 2023
-        endDate: new Date(2024, 2, 14), // March 14, 2024
-        billingPeriod: 12,
-        billingAmount: 120000000,
-        deviceCount: 100,
-        status: "Pendiente",
-        invoiceNumber: "FAC-2024-004",
-        clientName: "Corporación de Seguridad Nacional",
-        notes:
-          "Facturación anual por servicio de monitoreo de 100 dispositivos. Pendiente de pago.",
-      },
+
     ];
   });
 
@@ -504,6 +533,7 @@ export default function BillingHistoryView() {
       paymentDate: newBilling.paymentDate,
       notes: newBilling.notes || "",
       carriers: selectedCarrierObjects,
+      url: "",
     };
 
     setBillingRecords([...billingRecords, billing]);
@@ -1030,15 +1060,16 @@ export default function BillingHistoryView() {
                           <Eye className="h-4 w-4 mr-2" />
                           Ver
                         </Button>
-
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleOpenDetailsDialog(billing)}
+                        <a
+                          href={billing.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          <FileDown className="h-4 w-4 mr-2" />
-                          Descargar
-                        </Button>
+                          <Button variant="outline" size="sm">
+                            <FileDown className="h-4 w-4 mr-2" />
+                            Descargar
+                          </Button>
+                        </a>
                       </TableCell>
                     </TableRow>
                   ))
