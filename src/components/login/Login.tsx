@@ -100,8 +100,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "administrator@gmail.com");
         toast({
           title: "Acceso administrador",
@@ -118,8 +118,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "requiring@gmail.com");
         toast({
           title: "Acceso requirente",
@@ -135,8 +135,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "coordinator@gmail.com");
         toast({
           title: "Acceso coordinador",
@@ -152,8 +152,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "awardee@gmail.com");
         toast({
           title: "Acceso adjudicatorio",
@@ -169,8 +169,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "contract@gmail.com");
         toast({
           title: "Acceso adjudicatorio",
@@ -186,8 +186,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "dmt@gmail.com");
         toast({
           title: "Acceso DMT",
@@ -203,8 +203,8 @@ const Login = () => {
         "yosip.parrado@wesense.com.co",
         "Yp2025$pY"
       );
-      const res = await getCarriersAPI();
-      if (is_valid && res.grid) {
+
+      if (is_valid) {
         localStorage.setItem("email", "crs@gmail.com");
         toast({
           title: "Acceso CRS",
