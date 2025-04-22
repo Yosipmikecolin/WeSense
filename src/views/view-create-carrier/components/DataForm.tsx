@@ -251,28 +251,6 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
       </div>
 
       <div>
-        <Label htmlFor="nationality">Nacionalidad</Label>
-
-        <Select
-          value={formData.nationality}
-          onValueChange={(value) => handleSelectChange("nationality", value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Seleccione un país" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Chile">Chile</SelectItem>
-            <SelectItem value="Colombia">Colombia</SelectItem>
-            <SelectItem value="Brasil">Brasil</SelectItem>
-            <SelectItem value="Argentina">Argentina</SelectItem>
-            <SelectItem value="Perú">Perú</SelectItem>
-            <SelectItem value="México">México</SelectItem>
-            <SelectItem value="Uruguay">Uruguay</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div>
         <Label htmlFor="phone">Número teléfono celular</Label>
         <Input
           name="phone"

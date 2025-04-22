@@ -87,6 +87,13 @@ const EditRequestModal = ({
     }
   };
 
+  function convertDate(date: Date): string {
+    const anio = date.getFullYear();
+    const mes = String(date.getMonth() + 1).padStart(2, "0");
+    const dia = String(date.getDate()).padStart(2, "0");
+    return `${anio}-${mes}-${dia} 00:00:00`;
+  }
+
   const handleSubmit = async () => {
     setLoading(true);
     if (formData) {
@@ -102,8 +109,12 @@ const EditRequestModal = ({
         ref: formData.carrier.cause.rol,
         email: "",
         // notes: "",
-        start_tagging_time: formData.carrier.personalData.start_tagging_time,
-        end_tagging_time: formData.carrier.personalData.end_tagging_time,
+        start_tagging_time: convertDate(
+          formData.carrier.personalData.start_tagging_time
+        ),
+        end_tagging_time: convertDate(
+          formData.carrier.personalData.end_tagging_time
+        ),
         device_profile_id: "179",
         // device_profile_sb_id: "",
         device_profile_name: "1. Live Tracking",
