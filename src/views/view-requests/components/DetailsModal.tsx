@@ -280,6 +280,7 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                       label="Tribunal"
                       value={request?.carrier.cause.court}
                     />
+                    <InfoItem label="CRS" value={request?.carrier.cause.crs} />
                     <InfoItem label="RUC" value={request?.carrier.cause.ruc} />
                     <InfoItem label="RIT" value={request?.carrier.cause.rit} />
                     <InfoItem label="ROL" value={request?.carrier.cause.rol} />
@@ -293,10 +294,6 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
-                    <InfoItem
-                      label="CRS"
-                      value={request?.carrier.monitoring.crs}
-                    />
                     <InfoItem
                       label="Áreas"
                       value={request?.carrier.monitoring.areas}

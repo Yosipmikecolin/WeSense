@@ -29,7 +29,6 @@ export const initialFormData: FormDataCarrier = {
     rol: "",
   },
   monitoring: {
-    crs: "",
     areas: "",
     durationMeasurement: "",
     controlSchedule: "",

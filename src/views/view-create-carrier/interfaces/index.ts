@@ -54,7 +54,6 @@ export interface Step2Data {
 }
 
 export interface Step3Data {
-  crs: string;
   areas: string;
   durationMeasurement: string;
   controlSchedule: string;

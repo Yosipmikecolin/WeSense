@@ -17,6 +17,7 @@ export const Step1Schema = new mongoose.Schema({
 });
 
 export const Step2Schema = new mongoose.Schema({
+  crs: String,
   penatype: String,
   crime: String,
   courtAppeals: String,
@@ -28,7 +29,6 @@ export const Step2Schema = new mongoose.Schema({
 });
 
 export const Step3Schema = new mongoose.Schema({
-  crs: String,
   areas: String,
   durationMeasurement: String,
   controlSchedule: String,
