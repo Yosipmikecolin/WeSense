@@ -96,10 +96,7 @@ const Login = () => {
 
     if (username === "administrator@gmail.com" && password === "12345") {
       setLoading(true);
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "administrator@gmail.com");
@@ -114,10 +111,7 @@ const Login = () => {
     } else if (username === "requiring@gmail.com" && password === "12345") {
       setLoading(true);
 
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "requiring@gmail.com");
@@ -131,10 +125,7 @@ const Login = () => {
       }
     } else if (username === "coordinator@gmail.com" && password === "12345") {
       setLoading(true);
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "coordinator@gmail.com");
@@ -148,10 +139,7 @@ const Login = () => {
       }
     } else if (username === "awardee@gmail.com" && password === "12345") {
       setLoading(true);
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "awardee@gmail.com");
@@ -165,10 +153,7 @@ const Login = () => {
       }
     } else if (username === "contract@gmail.com" && password === "12345") {
       setLoading(true);
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "contract@gmail.com");
@@ -182,10 +167,7 @@ const Login = () => {
       }
     } else if (username === "dmt@gmail.com" && password === "12345") {
       setLoading(true);
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "dmt@gmail.com");
@@ -199,10 +181,7 @@ const Login = () => {
       }
     } else if (username === "crs@gmail.com" && password === "12345") {
       setLoading(true);
-      const is_valid = await loginBuddie(
-        "yosip.parrado@wesense.com.co",
-        "Yp2025$pY"
-      );
+      const is_valid = await loginBuddie("colinparrado@gmail.com", "Yosip123");
 
       if (is_valid) {
         localStorage.setItem("email", "crs@gmail.com");
