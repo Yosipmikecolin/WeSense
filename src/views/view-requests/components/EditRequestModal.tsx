@@ -1,3 +1,5 @@
+"use client"
+
 import { updatedRequest } from "@/api/request";
 import Timeline from "@/components/timeline/Timeline";
 import { Button } from "@/components/ui/button";
