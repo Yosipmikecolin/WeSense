@@ -26,16 +26,6 @@ const MonitoringForm = ({
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="crs">CRS donde se controla</Label>
-        <Input
-          id="crs"
-          name="crs"
-          value={formData.crs}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div>
         <Label htmlFor="areas">Área de inclusión y exclusión</Label>
         <Textarea
           id="areas"
