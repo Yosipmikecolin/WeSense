@@ -36,7 +36,7 @@ function getHour(): string {
   return `${horas}:${minutos}:${segundos}`;
 }
 
-const getValue = (key: string, selectedCarrier: Step1Data) => {
+const getValue = (key: string, selectedCarrier: Step1Data | any) => {
   switch (key) {
     case "date":
       return getDate() + " - " + getHour();
@@ -53,8 +53,27 @@ const getValue = (key: string, selectedCarrier: Step1Data) => {
         selectedCarrier.motherSurname
       );
 
+    case "response":
+      return returnStatus(selectedCarrier.answer);
+
     default:
-      return "N/A";
+      return selectedCarrier[key] ?? "N/A";
+  }
+};
+
+const returnStatus = (answer: string) => {
+  switch (answer) {
+    case "positive":
+      return "Positivo";
+
+    case "negative":
+      return "Negativo";
+
+    case "not-recommended":
+      return "No recomendable";
+
+    default:
+      return undefined;
   }
 };
 
@@ -92,6 +111,7 @@ export const generatePDF = (selectedCarrier: RequestTable) => {
         { key: "date", label: "Fecha y Hora" },
         { key: "law", label: "Tipo de ley" },
         { key: "folio", label: "Folio" },
+        { key: "response", label: "Respuesta de la empresa" },
       ],
     },
 
