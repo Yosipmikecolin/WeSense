@@ -39,6 +39,9 @@ export interface Step1Data {
   run: string;
   phone: string;
   foreigner: boolean;
+  start_tagging_time: Date;
+  end_tagging_time: Date;
+  days: number;
 }
 
 export interface Step2Data {

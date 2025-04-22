@@ -40,7 +40,7 @@ const ViewCreateRequest = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const steps = [
     "Requirente",
-    "Persona sujeta a control",
+    "Persona sujeta a control, condenado o víctima",
     "Causa",
     // "Monitoreo",
     "Inclusión",
@@ -97,7 +97,7 @@ const ViewCreateRequest = () => {
   const create_wearer = {
     group_id: "2108",
     first_name:
-      formDataCarrier.personalData.socialName +
+      formDataCarrier.personalData.fullName +
       " " +
       formDataCarrier.personalData.paternalSurname +
       " " +
@@ -106,8 +106,8 @@ const ViewCreateRequest = () => {
     ref: formDataCarrier.cause.rol,
     email: "",
     // notes: "",
-    start_tagging_time: "",
-    end_tagging_time: "",
+    start_tagging_time: formDataCarrier.personalData.start_tagging_time,
+    end_tagging_time: formDataCarrier.personalData.end_tagging_time,
     device_profile_id: "179",
     // device_profile_sb_id: "",
     device_profile_name: "1. Live Tracking",

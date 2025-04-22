@@ -42,7 +42,6 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
     const { name, value } = e.target;
     const updated = { ...formData, [name]: value };
     setFormData(updated);
-    setFormData(updated);
   };
 
   const handleSelectChange = (name: keyof Step1Data, value: string) => {
@@ -55,6 +54,31 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
     const updated = { ...formData, foreigner: checked };
     setFormData(updated);
     setFormData(updated);
+  };
+
+  function convertDate(date: string) {
+    const [anio, mes, dia] = date.split("-").map(Number);
+    return new Date(anio, mes - 1, dia); // mes - 1 porque los meses van de 0 a 11
+  }
+
+  const formStarDate = (date: Date) => {
+    const dia = String(date.getDate()).padStart(2, "0");
+    const mes = String(date.getMonth() + 1).padStart(2, "0"); // +1 porque los meses van de 0 a 11
+    const anio = date.getFullYear();
+    return `${anio}-${mes}-${dia}`;
+  };
+
+  const setTimeEnd = (days: number) => {
+    const result = new Date(formData.start_tagging_time);
+    result.setDate(result.getDate() + days);
+    const updated = { ...formData, end_tagging_time: result, days };
+    setFormData(updated);
+  };
+
+  const setTimeEnd2 = (days: number, start_tagging_time: Date) => {
+    const result = new Date(start_tagging_time);
+    result.setDate(result.getDate() + days);
+    return result;
   };
 
   useEffect(() => {
@@ -119,12 +143,8 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
             <SelectValue placeholder="Seleccione un tipo" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="20">
-              Personas condenada
-            </SelectItem>
-            <SelectItem value="20">
-              Personas sujeta a control
-            </SelectItem>
+            <SelectItem value="20">Personas condenada</SelectItem>
+            <SelectItem value="20">Personas sujeta a control</SelectItem>
             {/* <SelectItem value="Persona en libertad condicional">
               Persona en libertad condicional
             </SelectItem>
@@ -260,6 +280,60 @@ const DataForm = ({ formData, setCompleteForm, setFormData }: StepProps1) => {
           value={formData.phone}
           onChange={handleChange}
         />
+      </div>
+
+      <div className="flex items-end gap-5">
+        <div>
+          <Label htmlFor="start_tagging_time">Fecha de inicio</Label>
+          <Input
+            name="start_tagging_time"
+            type="date"
+            value={formStarDate(formData.start_tagging_time)}
+            onChange={(e) => {
+              const updated = {
+                ...formData,
+                start_tagging_time: convertDate(e.target.value),
+                end_tagging_time: setTimeEnd2(
+                  formData.days,
+                  convertDate(e.target.value)
+                ),
+              };
+              setFormData(updated);
+            }}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="days">Número de días de monitoreo</Label>
+          <Input
+            name="days"
+            min={1}
+            type="number"
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setTimeEnd(value < 1 ? 1 : value);
+            }}
+          />
+        </div>
+      </div>
+      <div>
+        <Label>Nacionalidad</Label>
+        <Select
+          onValueChange={(value) => handleSelectChange("nationality", value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccione un país" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Chile">Chile</SelectItem>
+            <SelectItem value="Colombia">Colombia</SelectItem>
+            <SelectItem value="Brasil">Brasil</SelectItem>
+            <SelectItem value="Argentina">Argentina</SelectItem>
+            <SelectItem value="Perú">Perú</SelectItem>
+            <SelectItem value="México">México</SelectItem>
+            <SelectItem value="Uruguay">Uruguay</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="flex items-center gap-3">

@@ -11,10 +11,10 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
   return (
     <div className="w-full py-8">
       <div className="relative flex justify-between">
-        {/* Line connecting all steps */}
+        {/* Línea base */}
         <div className="absolute top-1/2 mt-2 left-0 right-0 h-0.5 -translate-y-1/2 bg-gray-200" />
 
-        {/* Active line that grows based on current step */}
+        {/* Línea activa */}
         <div
           className="absolute top-1/2 mt-2 left-0 h-0.5 -translate-y-1/2 bg-green-500 transition-all duration-300 ease-in-out"
           style={{
@@ -24,10 +24,13 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
           }}
         />
 
-        {/* Steps */}
+        {/* Pasos */}
         {steps.map((step, index) => (
-          <div key={index} className="relative flex flex-col items-center z-10">
-            {/* Step circle */}
+          <div
+            key={index}
+            className="relative flex flex-col items-center z-10 w-[120px] text-center"
+          >
+            {/* Círculo del paso */}
             <div
               className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-300",
@@ -57,10 +60,10 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
               )}
             </div>
 
-            {/* Step label */}
+            {/* Etiqueta del paso */}
             <span
               className={cn(
-                "mt-7 text-sm font-medium text-center max-w-[120px]",
+                "text-sm font-medium text-center mt-2 whitespace-pre-line",
                 index <= currentStep ? "text-gray-900" : "text-gray-500"
               )}
             >

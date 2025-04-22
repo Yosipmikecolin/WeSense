@@ -14,6 +14,8 @@ export const Step1Schema = new mongoose.Schema({
   run: String,
   phone: String,
   foreigner: Boolean,
+  start_tagging_time: Date,
+  end_tagging_time: Date,
 });
 
 export const Step2Schema = new mongoose.Schema({

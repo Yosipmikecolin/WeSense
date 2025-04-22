@@ -280,10 +280,10 @@ const DetailsModal = ({ request, open, onClose }: DetailsModalProps) => {
                       label="Tribunal"
                       value={request?.carrier.cause.court}
                     />
-                    <InfoItem label="CRS" value={request?.carrier.cause.crs} />
                     <InfoItem label="RUC" value={request?.carrier.cause.ruc} />
                     <InfoItem label="RIT" value={request?.carrier.cause.rit} />
                     <InfoItem label="ROL" value={request?.carrier.cause.rol} />
+                    <InfoItem label="CRS" value={request?.carrier.cause.crs} />
                   </div>
                 </AccordionContent>
               </AccordionItem>

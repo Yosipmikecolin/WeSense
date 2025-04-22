@@ -3,6 +3,9 @@ import { FormDataCarrier } from "../interfaces";
 export const initialFormData: FormDataCarrier = {
   _id: "",
   personalData: {
+    days: 1,
+    start_tagging_time: new Date(),
+    end_tagging_time: new Date(),
     sex: "",
     fullName: "",
     socialName: "",

@@ -634,7 +634,6 @@ export const exportToExcel = (requests: RequestTable[]) => {
     Portador_Causa_ROL: request.carrier.cause.rol,
 
     // Portador: Monitoreo
-    Portador_Monitoreo_CRS: request.carrier.monitoring.crs,
     Portador_Monitoreo_Áreas: request.carrier.monitoring.areas,
     Portador_Monitoreo_Duración_Medida:
       request.carrier.monitoring.durationMeasurement,
