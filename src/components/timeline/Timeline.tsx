@@ -28,7 +28,7 @@ export default function Timeline({ steps, currentStep }: TimelineProps) {
         {steps.map((step, index) => (
           <div
             key={index}
-            className="relative flex flex-col items-center z-10 w-[120px] text-center"
+            className="relative flex flex-col items-center z-10 text-center w-full"
           >
             {/* Círculo del paso */}
             <div

@@ -90,9 +90,10 @@ const EditRequestModal = ({
   };
 
   function convertDate(date: Date): string {
-    const anio = date.getFullYear();
-    const mes = String(date.getMonth() + 1).padStart(2, "0");
-    const dia = String(date.getDate()).padStart(2, "0");
+    const newDate = new Date(date)
+    const anio = newDate.getFullYear();
+    const mes = String(newDate.getMonth() + 1).padStart(2, "0");
+    const dia = String(newDate.getDate()).padStart(2, "0");
     return `${anio}-${mes}-${dia} 00:00:00`;
   }
 
@@ -215,7 +216,7 @@ const EditRequestModal = ({
           <DialogTitle>Editar solicitud</DialogTitle>
           <Timeline steps={steps} currentStep={currentStep} />
         </DialogHeader>
-        <CardContent>{renderCurrentStep()}</CardContent>
+        <CardContent className="w-full">{renderCurrentStep()}</CardContent>
         <DialogFooter>
           <CardFooter className="flex justify-between gap-3">
             <Button
