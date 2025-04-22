@@ -212,14 +212,12 @@ export const TableRequiring = () => {
                           <div className="flex items-center gap-2">---</div>
                         )}
 
-                      {request.answer !== "---" &&
-                        request.status === "reviewing" && (
+                      {(request.answer !== "---" &&
+                        request.status === "reviewing" ) && (
                           <div className="flex items-center gap-2">---</div>
                         )}
 
-                      {request.status === "reviewing" && (
-                        <div className="flex items-center gap-2">---</div>
-                      )}
+                   
 
                       {request.status === "unconfirmed" && (
                         <div className="flex items-center gap-2">---</div>
