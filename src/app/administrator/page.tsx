@@ -2,6 +2,7 @@ import { Dashboard } from "@/components";
 import {
   BookText,
   BriefcaseBusiness,
+  File,
   FileInput,
   Files,
   UserPlus,
@@ -19,6 +20,7 @@ import {
   ViewUsers,
   ViewWorkload,
 } from "@/views";
+import { TableHoja } from "@/views/view-requests/components/tables/TableHoja";
 
 const Admin = () => {
   const menuItems = [
@@ -66,6 +68,11 @@ const Admin = () => {
       icon: <BriefcaseBusiness size={17} />,
       label: "Carga laboral",
       content: <ViewWorkload />,
+    },
+    {
+      icon: <FileInput size={17} />,
+      label: "Hoja devolución",
+      content: <TableHoja />,
     },
     {
       icon: <BookText size={17} />,
