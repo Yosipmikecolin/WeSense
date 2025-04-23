@@ -53,6 +53,15 @@ export const TableHoja = () => {
     document.body.removeChild(link);
   };
 
+  const dowloadPDF = () => {
+    const link = document.createElement("a");
+    link.href = "/Informe de incumplimiento.pdf"; // Ruta al archivo en la carpeta `public`
+    link.download = "Informe_incumplimiento.pdf"; // Nombre del archivo que se descargará
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -152,6 +161,20 @@ export const TableHoja = () => {
                                 <FileDown />
                               </Button>
                               <span>Descargar EXCEL</span>
+                            </div>
+                          </DropdownMenuItem>
+
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => {
+                              dowloadPDF();
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Button className="bg-gray-200 hover:bg-gray-200 text-gray-800 p-2">
+                                <FileDown />
+                              </Button>
+                              <span>Ver Incumplimiento</span>
                             </div>
                           </DropdownMenuItem>
                           <DropdownMenuItem
